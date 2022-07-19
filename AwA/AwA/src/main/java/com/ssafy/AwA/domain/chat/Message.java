@@ -16,6 +16,12 @@ public class Message extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long message_id;
 
+    //채팅방
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
+
+
     @Column(length = 500,nullable = false)
     private String content;
 
