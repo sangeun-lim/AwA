@@ -14,16 +14,21 @@ public class Profile extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long no;
+    private Long profile_id;
 
-    @Column(length = 15, nullable = false)
+    @Column(length = 20, nullable = false)
     private String nickname;
 
-    @Column(length = 50)
+    @Column(length = 100)
     private String description;
 
+    //팔로워리스트
+    //팔로잉리스트
+    //선호분야
+    //구매리스트
 
-    @Builder
+
+   @Builder
     public Profile(String nickname, String description) {
         this.nickname = nickname;
         this. description = description;
