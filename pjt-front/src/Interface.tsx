@@ -1,30 +1,29 @@
 // 유저 Object
 export interface User {
-  uid: number;
+  id: number;
   email?: string;
   nickname: string;
-  is_seller?: boolean;
-  is_manager?: boolean;
+  isSeller?: boolean;
+  isManager?: boolean;
 }
 
 // 프로필 Object
 export interface Profile {
-  pid: number;
-  uid: number;
+  id: number;
   nickname: string;
   description: string;
   followers: Array<string>;
   followings: Array<string>;
-  like_genres: Array<string>;
+  likeGenres: Array<string>;
 }
 
 // 댓글 Object
 export interface Comment {
-  cid: number;
+  id: number;
   uid: number;
   nickname: string;
   content: string;
-  created_at: string;
+  createdAt: Date;
 }
 
 // 판매글 Object
@@ -35,17 +34,43 @@ export interface Item {
   nickname: string;
   genres: Array<string>;
   material: string;
-  detail_info: string;
-  created_at: Date;
+  detail: string;
+  createdAt: Date;
   like: Array<User>;
-  view_cnt: number;
+  viewCount: number;
+  comments: Array<Comment>;
 }
 
 // 공지사항 Object
-export interface Notice {}
+export interface Notice {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: Date;
+}
 
-// 채팅 Object
-export interface Chatting {}
+// 채팅방 Object
+export interface ChattingRoom {
+  id: number;
+  uid: number;
+  nickname: string;
+  updatedAt: Date;
+  image: string;
+}
+
+// 채팅메시지 Object
+export interface Chatting {
+  nickname: string;
+  message: string;
+  createdAt: Date;
+  image: string;
+}
 
 // 신고 Object
-export interface Report {}
+export interface Report {
+  id: number;
+  uid: number; // 신고자 id
+  itemId: number;
+  category: string;
+  content: string;
+}
