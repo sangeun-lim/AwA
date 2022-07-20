@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -19,6 +21,10 @@ public class PurchaseArtwork extends BaseTimeEntity {
 
     //구매 유저 번호
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "purchase_user_id")
     private User purchase_user;
+
+    @OneToOne
+    @JoinColumn(name = "artwork_id")
+    private Artwork artwork;
 }

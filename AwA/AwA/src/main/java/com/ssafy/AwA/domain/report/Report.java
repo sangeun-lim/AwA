@@ -17,8 +17,6 @@ public class Report extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long report_id;
 
-    //게시물 번호 외래키
-
     @Column(length = 20, nullable = false)
     private String category;
 
@@ -26,8 +24,8 @@ public class Report extends BaseTimeEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "artwork_id")
-    private Artwork artwork;
+    @JoinColumn(name = "reported_artwork")
+    private Artwork reported_artwork;
 
     @Builder
     public Report(Long report_id, String category, String content) {

@@ -1,6 +1,7 @@
 package com.ssafy.AwA.domain.attachment;
 
 import com.ssafy.AwA.domain.BaseTimeEntity;
+import com.ssafy.AwA.domain.artwork.Artwork;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,9 @@ public class Attachment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long file_id;
 
-    //게시물번호
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "artwork_id")
+    private Artwork artwork_id;
 
     @Column(length = 50, nullable = false)
     private String type;

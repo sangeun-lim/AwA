@@ -18,10 +18,10 @@ public class Comment extends BaseTimeEntity {
     private Long comment_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "artwork_id")
+    @JoinColumn(name = "parent_artwork")
     private Artwork parent_artwork;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "writer")
     private User writer;
 }

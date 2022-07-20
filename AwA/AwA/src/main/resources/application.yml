@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mariadb://ssafy.c9weq5esl3km.ap-northeast-2.rds.amazonaws.com/AwA
+    url: jdbc:mariadb://ssafy.c9weq5esl3km.ap-northeast-2.rds.amazonaws.com/AwA_temp
     username: ssafy
-    password: ssafy1234
+    password: tpwlslrnldudnj!#%
     driver-class-name: org.mariadb.jdbc.Driver
 
 

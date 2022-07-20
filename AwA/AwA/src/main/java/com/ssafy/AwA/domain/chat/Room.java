@@ -2,6 +2,7 @@ package com.ssafy.AwA.domain.chat;
 
 
 import com.ssafy.AwA.domain.BaseTimeEntity;
+import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,9 @@ public class Room extends BaseTimeEntity {
     private Long room_id;
 
     //게시물 번호 외래키
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "artwork_id")
+    private Artwork related_artwork;
 
     //채팅방 생성 유저
     @ManyToOne(fetch = FetchType.LAZY)
