@@ -15,7 +15,7 @@
   justify-content: center;
   flex-direction: column;
   margin: 10px;
-  width: 70%;
+  width: 50%;
 }
 
 .inputContainer {
@@ -25,31 +25,29 @@
   margin: 10px;
 }
 
-input[type="text"],
-input[type="password"] {
+.loginInput {
   height: 25px;
   border: 1.5px solid rgb(0, 0, 0);
 }
 
-input[type="text"]:focus-visible,
-input[type="password"]:focus-visible {
+.loginInput:focus-visible {
   height: 25px;
   outline: 0px solid rgba(254, 111, 59, 1);
   border: 1px solid rgba(254, 111, 59, 1);
 }
 
-input[type="submit"] {
+.loginSubmit {
   margin-top: 10px;
   cursor: pointer;
   font-size: 15px;
   padding: 5px 20px;
-  background: white;
+  background: rgb(255, 255, 255);
   border: 1px solid black;
   margin: 10px;
   /* color: rgba(254, 111, 59, 1); */
 }
 
-input[type="submit"]:hover {
+.loginSubmit:hover {
   /* background: rgba(254, 111, 59, 0.2); */
   border: 1px solid rgba(254, 111, 59, 1);
   color: rgba(254, 111, 59, 1);

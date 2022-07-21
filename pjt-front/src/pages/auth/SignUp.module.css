@@ -1,0 +1,93 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 25px;
+  margin: 20px;
+}
+
+.signup {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 10px;
+  width: 50%;
+}
+
+.signContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px;
+}
+
+.genderContainer {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  margin: 10px;
+}
+
+.signInput {
+  height: 25px;
+  border: 1.5px solid rgb(0, 0, 0);
+}
+
+.signInput:focus-visible {
+  height: 25px;
+  outline: 0px solid rgba(254, 111, 59, 1);
+  border: 1px solid rgba(254, 111, 59, 1);
+}
+
+/* radio button */
+.select {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  margin: 20px 10px;
+}
+
+.radioInput {
+  display: none;
+}
+
+.radioInput + .radioLabel {
+  display: inline-block;
+  cursor: pointer;
+  width: 50%;
+  border: 1px solid #333;
+  line-height: 24px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
+  background-color: #fff;
+  color: #333;
+}
+
+.radioInput:checked + .radioLabel {
+  border: 1px solid rgba(254, 111, 59, 1);
+  background-color: rgba(254, 111, 59, 0.1);
+  color: rgba(254, 111, 59, 1);
+}
+
+.signSubmit {
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 5px 20px;
+  background: rgb(255, 255, 255);
+  border: 1px solid black;
+  margin: 10px;
+  /* color: rgba(254, 111, 59, 1); */
+}
+
+.signSubmit:hover {
+  /* background: rgba(254, 111, 59, 0.2); */
+  border: 1px solid rgba(254, 111, 59, 1);
+  color: rgba(254, 111, 59, 1);
+}
