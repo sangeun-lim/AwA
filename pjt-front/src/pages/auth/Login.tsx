@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import "./Login.css";
 
 interface LoginData {
   id: string;
@@ -32,22 +33,29 @@ function Login(): JSX.Element {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input
-          name="id"
-          type="text"
-          value={loginForm.id}
-          placeholder="ID"
-          onChange={onChange}
-        />
-        <input
-          name="pw"
-          type="password"
-          value={loginForm.pw}
-          placeholder="Password"
-          onChange={onChange}
-        />
+    <div className="container">
+      <div className="title">LogIn</div>
+      <form onSubmit={onSubmit} className="login">
+        <div className="inputContainer">
+          <input
+            name="id"
+            type="text"
+            value={loginForm.id}
+            placeholder="ID"
+            onChange={onChange}
+            className="loginInput"
+          />
+        </div>
+        <div className="inputContainer">
+          <input
+            name="pw"
+            type="password"
+            value={loginForm.pw}
+            placeholder="Password"
+            onChange={onChange}
+            className="loginInput"
+          />
+        </div>
         <input type="submit" value="로그인" />
       </form>
     </div>

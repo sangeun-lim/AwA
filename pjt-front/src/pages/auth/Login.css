@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 25px;
+  margin: 20px;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 10px;
+  width: 70%;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px;
+}
+
+input[type="text"],
+input[type="password"] {
+  height: 25px;
+  border: 1.5px solid rgb(0, 0, 0);
+}
+
+input[type="text"]:focus-visible,
+input[type="password"]:focus-visible {
+  height: 25px;
+  outline: 0px solid rgba(254, 111, 59, 1);
+  border: 1px solid rgba(254, 111, 59, 1);
+}
+
+input[type="submit"] {
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 5px 20px;
+  background: white;
+  border: 1px solid black;
+  margin: 10px;
+  /* color: rgba(254, 111, 59, 1); */
+}
+
+input[type="submit"]:hover {
+  /* background: rgba(254, 111, 59, 0.2); */
+  border: 1px solid rgba(254, 111, 59, 1);
+  color: rgba(254, 111, 59, 1);
+}
