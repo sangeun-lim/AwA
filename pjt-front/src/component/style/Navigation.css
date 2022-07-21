@@ -1,0 +1,49 @@
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  height: 35px;
+  background-color: rgb(254, 111, 59);
+  border-radius: 5px;
+  margin: 5px 0px 0px 0px;
+  padding: 0 0px 0px 0px;
+}
+nav ul {
+  display: inline;
+}
+nav li a {
+  float: left;
+  margin-right: 5px;
+  padding: 0px 100px;
+  line-height: 35px;
+}
+
+nav li a:hover {
+  color: #fff;
+}
+nav ul ul {
+  position: absolute;
+  width: 100px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+nav ul li:hover > ul {
+  display: block;
+}
+nav ul ul li a {
+  width: 100px;
+  padding: 10px 20px;
+  line-height: 1.4em;
+}
+nav ul ul li a:hover {
+  background: #444;
+}
+a.nav_a {
+  color: #33ccff;
+}
+.clear {
+  clear: both;
+}
