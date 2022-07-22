@@ -18,8 +18,14 @@ import SearchResult from "../pages/SearchResult";
 import Rank from "../pages/Rank";
 import Error from "../pages/Error";
 import Navigation from "./Navigation";
+import { User } from "firebase/auth";
 
-const AppRouter = (): JSX.Element => {
+interface Props {
+  isLoggedIn: boolean;
+  userObject: User | null;
+}
+
+const AppRouter = ({ isLoggedIn, userObject }: Props): JSX.Element => {
   return (
     <>
       <Router>
@@ -27,8 +33,14 @@ const AppRouter = (): JSX.Element => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/preview" element={<Preview />} />
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/signup" element={<SignUp />} />
+          <Route
+            path="/auth/login"
+            element={<Login isLoggedIn={isLoggedIn} />}
+          />
+          <Route
+            path="/auth/signup"
+            element={<SignUp isLoggedIn={isLoggedIn} />}
+          />
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route path="/profile/:nickname" element={<Profile />} />
           <Route path="/profile/favorite" element={<Favorite />} />

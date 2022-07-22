@@ -14,7 +14,6 @@ function Error(): JSX.Element {
   useEffect(() => {
     const id = setInterval(() => {
       setT((t) => t - 1);
-      console.log(t);
     }, 1000);
     if (t === 0) {
       clearInterval(id);
