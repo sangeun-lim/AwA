@@ -10,21 +10,30 @@
   border-bottom: 2px solid rgba(254, 111, 59, 0.3);
 }
 
-.menuList {
+.navList,
+.bugerList {
   display: flex;
   justify-content: space-between;
   margin: 0px 20px;
 }
 
-.menuList > div > a:hover {
+.navList > div > a:hover,
+.bugerList > a:hover,
+.profile > a:hover {
   color: rgba(254, 111, 59, 0.7);
 }
 
-.menuList > div > .active {
+.navList > div > .active,
+.bugerList > .active,
+.profile > .active {
   color: rgba(254, 111, 59, 0.7);
 }
 
-@media (max-width: 1099px) {
+@media (max-width: 768px) {
+  .navList {
+    display: none;
+  }
+
   .bugerMenu,
   .menu {
     display: block;
@@ -65,30 +74,19 @@
     display: none;
   }
 
-  .menuList {
+  .bugerList {
     position: flex;
     top: 50px;
     left: 50px;
     flex-direction: column;
   }
-
-  .menuList > .left {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .menuList > .center {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .menuList > .right {
-    display: flex;
-    flex-direction: column;
-  }
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 769px) {
+  .bugerList {
+    display: none;
+  }
+
   .navBox {
     flex-direction: row;
     align-items: center;
@@ -105,27 +103,42 @@
     height: fit-content;
   }
 
-  .menuList {
+  .navList {
     flex-direction: row;
     align-items: center;
   }
 
-  .menuList > .left {
+  .navList > .left {
     display: flex;
     justify-content: flex-start;
     width: 100%;
   }
 
-  .menuList > .center {
+  .navList > .center {
     display: flex;
     justify-content: center;
     width: 100%;
   }
 
-  .menuList > .right {
+  .navList > .right {
     display: flex;
     justify-content: flex-end;
     width: 100%;
+  }
+
+  .profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 20px;
+  }
+
+  .profile > a {
+    margin: 0px;
+  }
+
+  .profile > p {
+    white-space: nowrap;
   }
 }
 
