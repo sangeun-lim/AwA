@@ -1,0 +1,136 @@
+.navBox {
+  width: 100%;
+  height: 75px;
+  position: sticky;
+  display: flex;
+  align-items: center;
+  top: 0;
+  z-index: 9999;
+  background-color: white;
+  border-bottom: 2px solid rgba(254, 111, 59, 0.3);
+}
+
+.menuList {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 20px;
+}
+
+.menuList > div > a:hover {
+  color: rgba(254, 111, 59, 0.7);
+}
+
+.menuList > div > .active {
+  color: rgba(254, 111, 59, 0.7);
+}
+
+@media (max-width: 1099px) {
+  .bugerMenu,
+  .menu {
+    display: block;
+    margin-left: 40px;
+    cursor: pointer;
+  }
+
+  .bugerMenu > div,
+  .menu > div {
+    width: 25px;
+    height: 3px;
+    background-color: rgba(254, 111, 59, 0.3);
+    margin: 5px;
+    transition: all 0.3s ease;
+  }
+
+  .menu > .burgerLine1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .menu > .burgerLine2 {
+    opacity: 0;
+  }
+
+  .menu > .burgerLine3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+
+  .menuBoxVisible {
+    width: 180px;
+    position: absolute;
+    left: 0;
+    top: 77px;
+    background-color: rgb(255, 255, 255);
+  }
+
+  .menuBoxHidden {
+    display: none;
+  }
+
+  .menuList {
+    position: flex;
+    top: 50px;
+    left: 50px;
+    flex-direction: column;
+  }
+
+  .menuList > .left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menuList > .center {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menuList > .right {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 1100px) {
+  .navBox {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bugerMenu,
+  .menu {
+    display: none;
+  }
+
+  .menuBox {
+    width: 100%;
+    height: fit-content;
+  }
+
+  .menuList {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .menuList > .left {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .menuList > .center {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .menuList > .right {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
+
+a {
+  text-decoration: none;
+  margin: 20px;
+  color: black;
+}

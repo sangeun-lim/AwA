@@ -1,41 +1,89 @@
 import React from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import "../component/style/Navigation.css";
+import style from "./Navigation.module.css";
 
 function Navigation(): JSX.Element {
+  const [menuToggle, setMenuToggle] = useState<boolean>(false);
   return (
-    // 로그인했을때와 안했을때 구분해야되는디
-    <nav>
-      <ul>
-        <li>
-          <NavLink to="/auction">Auction</NavLink>
-        </li>
-        <li>
-          <NavLink to="/notice">Notice</NavLink>
-        </li>
+    <nav className={style.navBox}>
+      <div
+        className={!menuToggle ? style.bugerMenu : style.menu}
+        onClick={() =>
+          menuToggle ? setMenuToggle(false) : setMenuToggle(true)
+        }
+      >
+        <div className={style.burgerLine1}></div>
+        <div className={style.burgerLine2}></div>
+        <div className={style.burgerLine3}></div>
+      </div>
 
-        <li>
-          <li>
-            <NavLink to="/">AwA 이미지 </NavLink>
-          </li>
-        </li>
-
-        {/* <button>
-        <NavLink to="/알림모달창">알림이모티콘</NavLink>
-      </button> */}
-
-        <li>
-          <NavLink to="/auth/login">Login</NavLink>
-        </li>
-
-        <li>
-          <NavLink to="/auth/signup">SignUp</NavLink>
-        </li>
-
-        {/* <button>
-        <NavLink to="/검색바컴포넌트">검색이모티콘</NavLink>
-      </button> */}
-      </ul>
+      <div
+        className={[
+          style.menuBox,
+          !menuToggle ? style.menuBoxHidden : style.menuBoxVisible,
+        ].join(" ")}
+      >
+        <div className={style.menuList}>
+          <div className={style.left}>
+            <NavLink
+              to="/auction"
+              className={({ isActive }) => (isActive ? style.active : "")}
+              onClick={() =>
+                menuToggle ? setMenuToggle(false) : setMenuToggle(true)
+              }
+            >
+              Auction
+            </NavLink>
+            <NavLink
+              to="/notice"
+              className={({ isActive }) => (isActive ? style.active : "")}
+              onClick={() =>
+                menuToggle ? setMenuToggle(false) : setMenuToggle(true)
+              }
+            >
+              Notice
+            </NavLink>
+          </div>
+          <div className={style.center}>
+            <NavLink
+              to="/"
+              className={({ isActive }) => (isActive ? style.active : "")}
+              onClick={() =>
+                menuToggle ? setMenuToggle(false) : setMenuToggle(true)
+              }
+            >
+              AwA 이미지{" "}
+            </NavLink>
+          </div>
+          <div className={style.right}>
+            <NavLink
+              to="/auth/login"
+              className={({ isActive }) => (isActive ? style.active : "")}
+              onClick={() =>
+                menuToggle ? setMenuToggle(false) : setMenuToggle(true)
+              }
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/auth/signup"
+              className={({ isActive }) => (isActive ? style.active : "")}
+              onClick={() =>
+                menuToggle ? setMenuToggle(false) : setMenuToggle(true)
+              }
+            >
+              SignUp
+            </NavLink>
+          </div>
+          {/* <button>
+            <NavLink to="/알림모달창">알림이모티콘</NavLink>
+          </button>
+          <button>
+            <NavLink to="/검색바컴포넌트">검색이모티콘</NavLink>
+          </button> */}
+        </div>
+      </div>
     </nav>
   );
 }
