@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.apache.tomcat.util.digester.ArrayStack;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,12 +25,15 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
 
+    @NotEmpty
     @Column(length = 50, nullable = false, unique = true)
     private String email;
 
+    @NotEmpty
     @Column(length=20, nullable = false)
     private String password;
 
+    @NotEmpty
     @Column(length = 20, nullable = false, unique = true)
     private String nickname;
 
@@ -37,7 +41,7 @@ public class User extends BaseTimeEntity {
     private int gender;
 
     @Column
-    private LocalDate birth_date;
+    private int age;
 
 //    @Column
 //    private boolean is_seller;
@@ -79,12 +83,12 @@ public class User extends BaseTimeEntity {
     private List<Artwork> sell_list = new ArrayList<>();
 
     @Builder
-    public User(String email, String password, String nickname, int gender, LocalDate birth_date, boolean is_manager, String description) {
+    public User(String email, String password, String nickname, int gender, int age, boolean is_manager, String description) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.gender = gender;
-        this.birth_date = birth_date;
+        this.age = age;
         this.is_manager = is_manager;
         this.description = description;
     }

@@ -27,11 +27,43 @@ public class UserApiController {
         }
     }
 
-    @PostMapping("/auth/signup")
-    public CreateUserResponse saveMemberV1(@RequestBody @Valid User user) {
-        Long user_id = userService.join(user);
-        return new CreateUserResponse(user_id);
+    @Data
+    static class CreateUserRequest {
+        @NotEmpty
+        private String email;
+        @NotEmpty
+        private String password;
+        @NotEmpty
+        private String nickname;
+        private int gender;
+        private int age;
+        private boolean is_manager;
+        private String description;
     }
+
+    //엔티티를 파라미터로 받지말라 !!!!!!!!!!!!!!!!!
+//    @PostMapping("/auth/signup")
+//    public CreateUserResponse saveMemberV1(@RequestBody @Valid User user) {
+//        Long user_id = userService.join(user);
+//        return new CreateUserResponse(user_id);
+//    }
+
+    @PostMapping("/auth/signup")
+    public CreateUserResponse saveUser(@RequestBody @Valid CreateUserRequest request)
+    {
+        User user = User.builder()
+                .password(request.getPassword())
+                .age(request.getAge())
+                .description(request.getDescription())
+                .email(request.getEmail())
+                .gender(request.getGender())
+                .is_manager(request.is_manager)
+                .nickname(request.getNickname())
+                .build();
+        userService.join(user);
+        return new CreateUserResponse(user.getUser_id());
+    }
+
 
 
 }
