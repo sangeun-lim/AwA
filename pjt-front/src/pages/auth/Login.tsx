@@ -1,6 +1,13 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { authService } from "../../fbase";
 import style from "./Login.module.css";
+
+interface Props {
+  isLoggedIn: boolean;
+}
 
 interface LoginData {
   id: string;
@@ -12,8 +19,9 @@ const defaultData = {
   pw: "",
 };
 
-function Login(): JSX.Element {
+function Login({ isLoggedIn }: Props): JSX.Element {
   const [loginForm, setLoginForm] = useState<LoginData>(defaultData);
+  const navigate = useNavigate();
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -26,10 +34,16 @@ function Login(): JSX.Element {
     });
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    setLoginForm(defaultData);
+    try {
+      await signInWithEmailAndPassword(authService, loginForm.id, loginForm.pw);
+      setLoginForm(defaultData);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -39,11 +53,12 @@ function Login(): JSX.Element {
         <div className={style.inputContainer}>
           <input
             name="id"
-            type="text"
+            type="email"
             value={loginForm.id}
             placeholder="ID"
             onChange={onChange}
             className={style.loginInput}
+            required
           />
         </div>
         <div className={style.inputContainer}>
@@ -54,6 +69,7 @@ function Login(): JSX.Element {
             placeholder="Password"
             onChange={onChange}
             className={style.loginInput}
+            required
           />
         </div>
         <br />

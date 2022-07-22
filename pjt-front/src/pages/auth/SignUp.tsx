@@ -1,6 +1,13 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { authService } from "../../fbase";
 import style from "./SignUp.module.css";
+
+interface Props {
+  isLoggedIn: boolean;
+}
 
 interface SignUpData {
   id: string;
@@ -20,8 +27,9 @@ const defaultData = {
   gender: null,
 };
 
-function SignUp(): JSX.Element {
+function SignUp({ isLoggedIn }: Props): JSX.Element {
   const [signUpForm, setSignUpForm] = useState<SignUpData>(defaultData);
+  const navigate = useNavigate();
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -34,10 +42,21 @@ function SignUp(): JSX.Element {
     });
   };
 
-  const onSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    setSignUpForm(defaultData);
+    if (signUpForm.pw1 === signUpForm.pw2) {
+      try {
+        await createUserWithEmailAndPassword(
+          authService,
+          signUpForm.id,
+          signUpForm.pw1
+        );
+        navigate("/");
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   return (
@@ -49,7 +68,7 @@ function SignUp(): JSX.Element {
           <input
             name="id"
             id="id"
-            type="text"
+            type="email"
             value={signUpForm.id}
             placeholder="[필수]아이디"
             onChange={onChange}
