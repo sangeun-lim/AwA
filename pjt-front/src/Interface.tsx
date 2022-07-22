@@ -42,8 +42,8 @@ export interface Item {
 }
 
 // 공지사항 Object
-export interface Notice {
-  id: number;
+export interface NoticeItem {
+  id: string;
   title: string;
   content: string;
   createdAt: Date;
