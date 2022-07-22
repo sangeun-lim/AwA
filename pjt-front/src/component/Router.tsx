@@ -29,7 +29,7 @@ const AppRouter = ({ isLoggedIn, userObject }: Props): JSX.Element => {
   return (
     <>
       <Router>
-        <Navigation />
+        <Navigation userEmail={userObject?.email} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/preview" element={<Preview />} />
