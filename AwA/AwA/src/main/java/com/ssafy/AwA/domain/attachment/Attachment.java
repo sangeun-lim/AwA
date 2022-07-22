@@ -33,4 +33,9 @@ public class Attachment extends BaseTimeEntity {
         this.type = type;
         this.name = name;
     }
+
+    //연관관계 메서드
+    public void connectArtwork(Artwork artwork) {
+        this.artwork_id = artwork;
+    }
 }

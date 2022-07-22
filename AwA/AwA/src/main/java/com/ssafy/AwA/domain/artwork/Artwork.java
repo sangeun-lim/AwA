@@ -47,7 +47,7 @@ public class Artwork extends BaseTimeEntity {
     @Column
     private boolean is_sell;
 
-    @OneToOne(mappedBy = "artwork")
+    @OneToOne(fetch = FetchType.LAZY ,mappedBy = "artwork")
     private PurchaseArtwork purchase_artwork;
 
     @OneToMany(mappedBy = "related_artwork")
@@ -66,4 +66,42 @@ public class Artwork extends BaseTimeEntity {
         this.like_count = like_count;
         this.is_sell = is_sell;
     }
+
+    //연관관계 메서드
+    public void set_Sell_User(User user) {
+        this.sell_user = user;
+        user.getSell_list().add(this);
+    }
+
+    public void addChatRoom(Room room)
+    {
+        rooms.add(room);
+        room.connectArtwork(this);
+    }
+
+    public void addAttachement(Attachment attachment) {
+        attachment_list.add(attachment);
+        attachment.connectArtwork(this);
+    }
+
+    public void addReport(Report report)
+    {
+        report_list.add(report);
+        report.createArtwork(this);
+    }
+
+
+    //비즈니스 로직
+    public void addLikeCount() {
+        this.like_count++;
+    }
+
+    public void addViewCount() {
+        this.view_count++;
+    }
+
+    public void isSell() {
+        this.is_sell = !this.is_sell;
+    }
+
 }

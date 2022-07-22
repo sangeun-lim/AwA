@@ -37,6 +37,9 @@ public class Room extends BaseTimeEntity {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<Message> chat_log = new ArrayList<>();
 
-
+    //연관관계 메서드
+    public void connectArtwork(Artwork artwork) {
+        this.related_artwork = artwork;
+    }
 
 }

@@ -33,4 +33,9 @@ public class Report extends BaseTimeEntity {
         this.category = category;
         this.content = content;
     }
+
+    public void createArtwork(Artwork artwork)
+    {
+        reported_artwork = artwork;
+    }
 }

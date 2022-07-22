@@ -16,7 +16,7 @@ public class FavoriteField {
     @Column(length = 15)
     private String field;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User select_user;
 
