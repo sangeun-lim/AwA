@@ -2,17 +2,25 @@ import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { dbService } from "../../fbase";
+import { NoticeItem } from "../../Interface";
 
 interface Editing {
   title: string;
   content: string;
 }
 
+const defaultNotice: NoticeItem = {
+  title: "",
+  content: "",
+  createdAt: new Date(),
+  id: "",
+};
+
 function NoticeDetail(): JSX.Element {
   const params = useParams();
   const address = params.id;
   const navigate = useNavigate();
-  const [notice, setNotice] = useState<any>(null);
+  const [notice, setNotice] = useState<NoticeItem | any>(defaultNotice);
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [editNotice, setEditNotice] = useState<Editing>({
     title: notice.title,
@@ -38,11 +46,21 @@ function NoticeDetail(): JSX.Element {
     setOnEdit(!onEdit);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
     await updateDoc(doc(dbService, `notice/${address}`), {
       title: editNotice.title,
       content: editNotice.content,
     });
+
+    const updateValue = await getDoc(doc(dbService, `notice/${address}`));
+    const newData = updateValue.data();
+
+    setNotice({
+      ...newData,
+      id: address,
+    });
+
     setOnEdit(!onEdit);
   };
 
@@ -55,23 +73,22 @@ function NoticeDetail(): JSX.Element {
   };
 
   useEffect(() => {
-    const loadData = async () => {
+    async function loadData() {
       const data = await getDoc(doc(dbService, `notice/${address}`));
       const newData = data.data();
 
-      return newData;
-    };
-
-    if (address) {
-      const newData = loadData();
       setNotice({
         ...newData,
         id: address,
       });
+    }
+
+    if (address) {
+      loadData();
     } else {
       navigate("/notice");
     }
-  }, [address]);
+  }, [address, navigate]);
 
   useEffect(() => {
     setEditNotice({
