@@ -37,7 +37,7 @@ function Notice(): JSX.Element {
 
   useEffect(() => {
     callNotice();
-  });
+  }, []);
 
   return (
     <>

@@ -71,7 +71,7 @@ function NoticeDetail(): JSX.Element {
     } else {
       navigate("/notice");
     }
-  }, [address, navigate]);
+  }, [address]);
 
   useEffect(() => {
     setEditNotice({
