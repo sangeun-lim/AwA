@@ -4,22 +4,19 @@ import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.artwork.PurchaseArtwork;
 import com.ssafy.AwA.domain.chat.Room;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.apache.tomcat.util.digester.ArrayStack;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"user_id", "nickname", "email", "password"})
 @Entity
 public class User extends BaseTimeEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -97,10 +94,12 @@ public class User extends BaseTimeEntity {
     //비즈니스로직
 
     //닉네임 수정
-    public void updateNickname(String nickname) {
+    public void changeNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    //자기소개 수정
+    public void changeDescription(String description) { this.description = description; }
     //팔로우관련
     public void addFollowing(User following) {
         this.following_list.add(following); //나를 팔로잉 하는 사람 추가

@@ -2,15 +2,16 @@ package com.ssafy.AwA.api;
 
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.hibernate.sql.Update;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,13 +42,19 @@ public class UserApiController {
         private String description;
     }
 
-    //엔티티를 파라미터로 받지말라 !!!!!!!!!!!!!!!!!
+    @Data
+    static class Description {
+        private String description;
+    }
+
+    //version 1)  엔티티를 파라미터로 받지말라 !!!!!!!!!!!!!!!!!
 //    @PostMapping("/auth/signup")
 //    public CreateUserResponse saveMemberV1(@RequestBody @Valid User user) {
 //        Long user_id = userService.join(user);
 //        return new CreateUserResponse(user_id);
 //    }
 
+    //회원가입
     @PostMapping("/auth/signup")
     public CreateUserResponse saveUser(@RequestBody @Valid CreateUserRequest request)
     {
@@ -64,6 +71,49 @@ public class UserApiController {
         return new CreateUserResponse(user.getUser_id());
     }
 
+    //이메일 중복검사
+    @GetMapping("/auth/signup/email/{email}")
+    public int ValidateEmail(@PathVariable String email) {
+        return userService.validateDuplicateEmail(email);
+    }
 
+    //닉네임 중복검사
+    @GetMapping("auth/signup/nickname/{nickname}")
+    public int ValidateNickname(@PathVariable String nickname) {
+        return userService.validateDuplcateNickname(nickname);
+    }
+    //닉네임 변경
+    @PutMapping("/profile/{nickname}/{newnickname}")
+    public int chageNickname(@PathVariable("nickname") String nickname,
+                                         @PathVariable("newnickname") String newNickname) {
+        try {
+            return userService.changeNickname(nickname,newNickname);
+        } catch (Exception e)
+        {
+            return 0;
+        }
+    }
+
+    @PutMapping("/profile/{nickname}/description")
+    public int changeDescription(@PathVariable("nickname") String nickname, @RequestBody Description newDescription)
+    {
+        try {
+            return userService.changeDescription(nickname, newDescription.description);
+        } catch (Exception e)
+        {
+            return 0;
+        }
+    }
+    @Data
+    @AllArgsConstructor
+    static class UpdateNicknameResponse {
+        private Long id;
+        private String nickname;
+    }
+
+//    @Data
+//    static class UpdateUserRequest {
+//        private String nickname;
+//    }
 
 }

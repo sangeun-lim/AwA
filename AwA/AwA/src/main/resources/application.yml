@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://ssafy.c9weq5esl3km.ap-northeast-2.rds.amazonaws.com/AwA_temp
+    url: jdbc:mariadb://awa.cwesz7tzcefm.ap-northeast-2.rds.amazonaws.com/AwA
     username: ssafy
     password: tpwlslrnldudnj!#%
     driver-class-name: org.mariadb.jdbc.Driver
@@ -11,9 +11,9 @@ spring:
       ddl-auto: create
       properties:
         hibernate:
-          show_sql: true
+          #show_sql: true
           format_sql: true
-    generate-ddl: true
+    #generate-ddl: true
 
 logging:
   level:
