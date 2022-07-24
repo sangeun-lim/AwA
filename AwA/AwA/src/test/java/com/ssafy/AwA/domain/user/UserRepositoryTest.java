@@ -33,6 +33,4 @@ public class UserRepositoryTest {
         Assertions.assertThat(findUser.getPassword()).isEqualTo(user.getPassword());
 
     }
-
-    //tdd 설정 완료
 }

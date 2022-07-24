@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.apache.tomcat.util.digester.ArrayStack;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,23 +25,26 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
 
-    @Column(length = 50, nullable = false)
+    @NotEmpty
+    @Column(length = 50, nullable = false, unique = true)
     private String email;
 
+    @NotEmpty
     @Column(length=20, nullable = false)
     private String password;
 
-    @Column(length = 20, nullable = false)
+    @NotEmpty
+    @Column(length = 20, nullable = false, unique = true)
     private String nickname;
 
     @Column
     private int gender;
 
     @Column
-    private LocalDateTime birth_date;
+    private int age;
 
-    @Column
-    private boolean is_seller;
+//    @Column
+//    private boolean is_seller;
 
     @Column
     private boolean is_manager;
@@ -48,11 +53,11 @@ public class User extends BaseTimeEntity {
     private String description;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User userFollowing = this;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User userFollower = this;
 
@@ -66,7 +71,7 @@ public class User extends BaseTimeEntity {
 
     //선호분야리스트
     @OneToMany(mappedBy = "select_user", cascade = CascadeType.ALL)
-    private List<FavoriteField> favortie_list = new ArrayList<>();
+    private List<FavoriteField> favorite_list = new ArrayList<>();
 
     @OneToMany(mappedBy = "create_room_user", cascade = CascadeType.ALL)
     private List<Room> chatrooms = new ArrayList<>();
@@ -78,20 +83,23 @@ public class User extends BaseTimeEntity {
     private List<Artwork> sell_list = new ArrayList<>();
 
     @Builder
-    public User(Long user_id, String email, String password, String nickname, int gender, LocalDateTime birth_date, boolean is_seller, boolean is_manager, String description) {
-        this.user_id = user_id;
+    public User(String email, String password, String nickname, int gender, int age, boolean is_manager, String description) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.gender = gender;
-        this.birth_date = birth_date;
-        this.is_seller = is_seller;
+        this.age = age;
         this.is_manager = is_manager;
         this.description = description;
     }
 
 
     //비즈니스로직
+
+    //닉네임 수정
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     //팔로우관련
     public void addFollowing(User following) {
@@ -107,5 +115,14 @@ public class User extends BaseTimeEntity {
         }
     }
 
-
+    //위에거 안되면 김영한씨 강의보고 참조
+//    public void setParentUser(User parent)
+//    {
+//
+//    }
+//    public void addFollowing(User follower)
+//    {
+//        this.following_list.add(follower);
+//        follower.
+//    }
 }

@@ -22,6 +22,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
+	implementation('org.glassfish:jakarta.el')
+	implementation('org.springframework.boot:spring-boot-starter-validation')
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.4'

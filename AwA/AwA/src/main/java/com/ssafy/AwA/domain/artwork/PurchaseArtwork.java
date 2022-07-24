@@ -24,7 +24,7 @@ public class PurchaseArtwork extends BaseTimeEntity {
     @JoinColumn(name = "purchase_user_id")
     private User purchase_user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artwork_id")
     private Artwork artwork;
 }
