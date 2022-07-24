@@ -59,6 +59,9 @@ public class UserService {
        return 0;
    }
 
+   public List<User> findManUsers(int gender) {
+       return userRepository.findUserByGender(gender);
+   }
 //    @Transactional
 //    public Long updateNickname(String nickname, String newNickname) {
 //        //User findUser = userRepository.findByNickname(nickname);

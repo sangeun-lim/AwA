@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -102,6 +103,17 @@ public class UserApiController {
         } catch (Exception e)
         {
             return 0;
+        }
+    }
+
+    @GetMapping("/profile/gender/{gender}")
+    public List<User> findMans(@PathVariable("gender") int gender) {
+        try {
+            System.out.println("here");
+            return userService.findManUsers(gender);
+        }
+        catch (Exception e) {
+            return null;
         }
     }
     @Data

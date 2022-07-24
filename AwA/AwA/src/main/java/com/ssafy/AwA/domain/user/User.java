@@ -1,5 +1,8 @@
 package com.ssafy.AwA.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.artwork.PurchaseArtwork;
@@ -13,7 +16,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"user_id", "nickname", "email", "password"})
+@ToString(of = {"user_id", "nickname", "email", "password","age","gender"})
 @Entity
 public class User extends BaseTimeEntity {
 
@@ -50,21 +53,29 @@ public class User extends BaseTimeEntity {
     private String description;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private User userFollowing = this;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private User userFollower = this;
-
-    //나를 팔로잉 하는 사람들
-    @OneToMany(mappedBy = "userFollowing")
-    private List<User> following_list = new ArrayList<User>();
-
-    //나를 팔로우 하는 사람들
-    @OneToMany(mappedBy = "userFollower")
-    private List<User> follower_list = new ArrayList<User>();
+    //이거 단방향으로 할지 생각 !!!!!!!!!! 아래 List까지
+    //팔로우 팔로잉 리스트는 따로 뺴는게 맞는건가??
+//    @ManyToOne
+//    @JoinColumn
+//    @JsonBackReference
+//    private User userFollowing = this;
+//
+//
+//    @ManyToOne
+//    @JoinColumn
+//    @JsonBackReference
+//    private User userFollower = this;
+//
+//    //나를 팔로잉 하는 사람들
+//
+//    @OneToMany(mappedBy = "userFollowing")
+//    @JsonManagedReference
+//    private List<User> following_list = new ArrayList<User>();
+//
+//    //나를 팔로우 하는 사람들
+//    @OneToMany(mappedBy = "userFollower")
+//    @JsonManagedReference
+//    private List<User> follower_list = new ArrayList<User>();
 
     //선호분야리스트
     @OneToMany(mappedBy = "select_user", cascade = CascadeType.ALL)
@@ -101,18 +112,18 @@ public class User extends BaseTimeEntity {
     //자기소개 수정
     public void changeDescription(String description) { this.description = description; }
     //팔로우관련
-    public void addFollowing(User following) {
-        this.following_list.add(following); //나를 팔로잉 하는 사람 추가
-
-        if(!following.getFollower_list().contains(this)) { //새롭게 나를 팔로잉 한 사람의 팔로워 리스트에서 내가 있는지 확인
-            following.getFollowing_list().add(this); //없으면 넣기
-        }
-
-        //연간관계 주인을 통한 확인
-        if(!following.getUserFollower().getFollowing_list().contains(this)) { //나를 팔로잉 하는 사람의 팔로워 리스트를 받아와 내가 있느지 확인
-            following.getUserFollower().getFollower_list().add(this); //없으면 넣어주기..?
-        }
-    }
+//    public void addFollowing(User following) {
+//        this.following_list.add(following); //나를 팔로잉 하는 사람 추가
+//
+//        if(!following.getFollower_list().contains(this)) { //새롭게 나를 팔로잉 한 사람의 팔로워 리스트에서 내가 있는지 확인
+//            following.getFollowing_list().add(this); //없으면 넣기
+//        }
+//
+//        //연간관계 주인을 통한 확인
+//        if(!following.getUserFollower().getFollowing_list().contains(this)) { //나를 팔로잉 하는 사람의 팔로워 리스트를 받아와 내가 있느지 확인
+//            following.getUserFollower().getFollower_list().add(this); //없으면 넣어주기..?
+//        }
+//    }
 
     //위에거 안되면 김영한씨 강의보고 참조
 //    public void setParentUser(User parent)
