@@ -38,7 +38,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     private String email;
 
     @NotEmpty
-    @Column(length=20, nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @NotEmpty

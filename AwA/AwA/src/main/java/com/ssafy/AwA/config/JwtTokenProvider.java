@@ -30,7 +30,7 @@ public class JwtTokenProvider {
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 //    private final UserService userService;
     private final UserRepository userRepository;
-    private String secretKey = "secretKey";
+    private String secretKey = "secretKeyasdfasdfasdfasdfasdfdsafsadfasdfsadfasdfsadfsdafsdafsdafsadfasdfsadfsadfsadhgfkjsdahfkjsadhfkjh";
     private final long tokenValidMillisecond = 1000L*60*60;
 
     @PostConstruct

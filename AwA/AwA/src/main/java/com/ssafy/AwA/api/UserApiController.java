@@ -56,6 +56,13 @@ public class UserApiController {
     }
 
     @Data
+    static class loginRequest {
+        @NotEmpty
+        private String email;
+        @NotEmpty
+        private String password;
+    }
+    @Data
     static class Description {
         private String description;
     }
@@ -83,7 +90,7 @@ public class UserApiController {
     }
 
     @PostMapping("/auth/sign-in")
-    public SignInResultDto signIn(@RequestBody @Valid CreateUserRequest request) {
+    public SignInResultDto signIn(@RequestBody @Valid loginRequest request) {
         SignInResultDto signInResultDto = userService.signIn(request.email, request.password);
 
         if(signInResultDto.getCode() == 0) {
