@@ -4,8 +4,14 @@ spring:
     username: ssafy
     password: tpwlslrnldudnj!#%
     driver-class-name: org.mariadb.jdbc.Driver
-  main:
-    allow-circular-references: true
+
+  #main:
+    #allow-circular-references: true 서로 참조하는 무한루프에서 빠져나오기 위한것이였는데 뭐였더라.. userService내에서 jwtTokenProvider쓰고 JwtTokenProvider에서 userService또불러서 썼는데 걍 userRepository 쓰는걸로 해결
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 
   jpa:
     hibernate:
@@ -20,5 +26,6 @@ logging:
   level:
     org.hibernate.sql: debug
     org.hibernate.type: trace
+
 
 
