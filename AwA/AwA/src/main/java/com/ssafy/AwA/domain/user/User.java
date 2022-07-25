@@ -3,22 +3,30 @@ package com.ssafy.AwA.domain.user;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.artwork.PurchaseArtwork;
 import com.ssafy.AwA.domain.chat.Room;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"user_id", "nickname", "email", "password","age","gender"})
 @Entity
-public class User extends BaseTimeEntity {
+public class User extends BaseTimeEntity implements UserDetails {
 
 
     @Id
@@ -38,10 +46,11 @@ public class User extends BaseTimeEntity {
     private String nickname;
 
     @Column
-    private int gender;
+    private boolean gender;
 
     @Column
-    private int age;
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private LocalDate birth;
 
 //    @Column
 //    private boolean is_seller;
@@ -68,14 +77,14 @@ public class User extends BaseTimeEntity {
 //
 //    //나를 팔로잉 하는 사람들
 //
-//    @OneToMany(mappedBy = "userFollowing")
-//    @JsonManagedReference
-//    private List<User> following_list = new ArrayList<User>();
-//
-//    //나를 팔로우 하는 사람들
-//    @OneToMany(mappedBy = "userFollower")
-//    @JsonManagedReference
-//    private List<User> follower_list = new ArrayList<User>();
+    @OneToMany
+    @JsonManagedReference
+    private List<User> following_list = new ArrayList<User>();
+
+    //나를 팔로우 하는 사람들
+    @OneToMany
+    @JsonManagedReference
+    private List<User> follower_list = new ArrayList<User>();
 
     //선호분야리스트
     @OneToMany(mappedBy = "select_user", cascade = CascadeType.ALL)
@@ -90,15 +99,49 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "sell_user",cascade = CascadeType.ALL)
     private List<Artwork> sell_list = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+//    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+    @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+    @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     @Builder
-    public User(String email, String password, String nickname, int gender, int age, boolean is_manager, String description) {
+    public User(String email, String password, String nickname, boolean gender, int age, LocalDate birth, List<String> roles) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.gender = gender;
-        this.age = age;
-        this.is_manager = is_manager;
-        this.description = description;
+        this.birth = birth;
+        this.roles = roles;
     }
 
 

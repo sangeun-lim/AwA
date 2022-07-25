@@ -4,7 +4,8 @@ spring:
     username: ssafy
     password: tpwlslrnldudnj!#%
     driver-class-name: org.mariadb.jdbc.Driver
-
+  main:
+    allow-circular-references: true
 
   jpa:
     hibernate:
@@ -19,4 +20,5 @@ logging:
   level:
     org.hibernate.sql: debug
     org.hibernate.type: trace
+
 
