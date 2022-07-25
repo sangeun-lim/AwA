@@ -1,4 +1,4 @@
-package com.ssafy.AwA.config;
+package com.ssafy.AwA.config.security;
 
 import lombok.*;
 

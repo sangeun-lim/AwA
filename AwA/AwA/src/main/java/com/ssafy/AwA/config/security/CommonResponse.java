@@ -1,4 +1,4 @@
-package com.ssafy.AwA.config;
+package com.ssafy.AwA.config.security;
 
 public enum CommonResponse {
     SUCCESS(0,"Success"), FAIL(-1,"Fail");

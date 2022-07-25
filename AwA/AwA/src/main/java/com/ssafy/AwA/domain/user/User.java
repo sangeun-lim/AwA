@@ -37,6 +37,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(length = 50, nullable = false, unique = true)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //JSON 결과로 출력하지 않을데이터에 대해 설정 비밀번호는 유출되면 안되니까
     @NotEmpty
     @Column(nullable = false)
     private String password;
@@ -103,31 +104,41 @@ public class User extends BaseTimeEntity implements UserDetails {
 //    @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+    //계정이 가지고 있는 권한 목록 리턴
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
+    //계정의 ID 리턴
     @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
         return this.email;
     }
+
+    //계정이 만료됐는지 리턴
     @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
+    //계정이 잠겨있는지 리턴
     @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
+    //비밀번호가 만료됐는지 리턴
     @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
+    //계정이 활성화돼 있는지 리턴
     @JsonProperty(access =  JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isEnabled() {

@@ -1,4 +1,4 @@
-package com.ssafy.AwA.config;
+package com.ssafy.AwA.config.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

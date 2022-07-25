@@ -1,4 +1,4 @@
-package com.ssafy.AwA.config;
+package com.ssafy.AwA.config.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
-        logger.info("[doFilterInternal] token 값 추출 완료. token : {}", token);
+        logger.info("[doFilterInternal] header에 있는 token 값 추출 완료. token : {}", token);
 
         logger.info("[doFilterInternal] token값 유효성 체크 시작");
         if(token != null && jwtTokenProvider.validateToken(token)) {

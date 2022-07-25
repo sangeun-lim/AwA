@@ -1,15 +1,12 @@
-package com.ssafy.AwA.config;
+package com.ssafy.AwA.config.security;
 
 import com.ssafy.AwA.domain.user.User;
-import com.ssafy.AwA.domain.user.UserDetails;
 import com.ssafy.AwA.repository.UserRepository;
-import com.ssafy.AwA.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +27,9 @@ public class JwtTokenProvider {
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 //    private final UserService userService;
     private final UserRepository userRepository;
+
+
+//    @Value("${springboot.jwt.secret}")
     private String secretKey = "secretKeyasdfasdfasdfasdfasdfdsafsadfasdfsadfasdfsadfsdafsdafsdafsadfasdfsadfsadfsadhgfkjsdahfkjsadhfkjh";
     private final long tokenValidMillisecond = 1000L*60*60;
 
@@ -42,9 +42,9 @@ public class JwtTokenProvider {
 
     public String createToken(String userEmail, List<String> roles) {
         logger.info("[createToken] 토큰 생성 시작");
-        Claims claims = Jwts.claims().setSubject(userEmail);
-        claims.put("roles",roles);
-        Date now = new Date();
+        Claims claims = Jwts.claims().setSubject(userEmail); //이메일
+        claims.put("roles",roles); //권한
+        Date now = new Date(); //날짜
 
         String token = Jwts.builder()
                 .setClaims(claims)
@@ -60,6 +60,7 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         logger.info("[getAuthentication] 토큰 인증 정보 조회 시작");
         User user = userRepository.findByEmail(this.getUserEmail(token));
+        //이메일로만 얘가 맞다고 판단하는게 맞는건가????
         logger.info("[getAuthentication] 토큰 인증 정보 조회 완료, User UserEmail : {}", user.getEmail());
 
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
