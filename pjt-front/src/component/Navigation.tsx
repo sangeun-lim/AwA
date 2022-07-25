@@ -163,7 +163,7 @@ function Navigation({ userEmail }: Props): JSX.Element {
             </div>
           ) : (
             // 로그인 안 했을 때
-            <div>
+            <div className={style.bugerList}>
               <NavLink
                 to="/auth/signup"
                 className={({ isActive }) => (isActive ? style.active : "")}
