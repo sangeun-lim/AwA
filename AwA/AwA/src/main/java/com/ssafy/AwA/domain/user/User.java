@@ -62,9 +62,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(length = 500)
     private String description;
 
+    @Column
     private String accessToken;
 
-    private String refreshToken;
 
     //이거 단방향으로 할지 생각 !!!!!!!!!! 아래 List까지
     //팔로우 팔로잉 리스트는 따로 뺴는게 맞는건가??
@@ -81,14 +81,14 @@ public class User extends BaseTimeEntity implements UserDetails {
 //
 //    //나를 팔로잉 하는 사람들
 //
-    @OneToMany
-    @JsonManagedReference
-    private List<User> following_list = new ArrayList<User>();
-
-    //나를 팔로우 하는 사람들
-    @OneToMany
-    @JsonManagedReference
-    private List<User> follower_list = new ArrayList<User>();
+//    @OneToMany
+//    @JsonManagedReference
+//    private List<User> following_list = new ArrayList<User>();
+//
+//    //나를 팔로우 하는 사람들
+//    @OneToMany
+//    @JsonManagedReference
+//    private List<User> follower_list = new ArrayList<User>();
 
     //선호분야리스트
     @OneToMany(mappedBy = "select_user", cascade = CascadeType.ALL)
