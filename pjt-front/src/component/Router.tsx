@@ -47,7 +47,12 @@ const AppRouter = ({ isLoggedIn, userObject }: Props): JSX.Element => {
           <Route path="/chatting" element={<Chatting />} />
           <Route path="/auction" element={<Auction />} />
           <Route path="/auction/:id" element={<AuctionDetail />} />
-          <Route path="/auction/edit" element={<AuctionEdit />} />
+          {userObject && (
+            <Route
+              path="/auction/edit"
+              element={<AuctionEdit userObject={userObject} />}
+            />
+          )}
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/:id" element={<NoticeDetail />} />
           <Route path="/notice/edit" element={<NoticeEdit />} />
