@@ -19,6 +19,7 @@ import Rank from "../pages/Rank";
 import Error from "../pages/Error";
 import Navigation from "./Navigation";
 import { User } from "firebase/auth";
+import { useState } from "react";
 
 interface Props {
   isLoggedIn: boolean;
@@ -26,6 +27,8 @@ interface Props {
 }
 
 const AppRouter = ({ isLoggedIn, userObject }: Props): JSX.Element => {
+  const [selectChat, setSelectChat] = useState<string | null>(null); // 채팅 상대유저의 이메일을 저장
+
   return (
     <>
       <Router>
@@ -44,7 +47,18 @@ const AppRouter = ({ isLoggedIn, userObject }: Props): JSX.Element => {
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route path="/profile/:nickname" element={<Profile />} />
           <Route path="/profile/favorite" element={<Favorite />} />
-          <Route path="/chatting" element={<Chatting />} />
+          {userObject && (
+            <Route
+              path="/chatting"
+              element={
+                <Chatting
+                  userObject={userObject}
+                  selectChat={selectChat}
+                  setSelectChat={setSelectChat}
+                />
+              }
+            />
+          )}
           <Route path="/auction" element={<Auction />} />
           <Route path="/auction/:id" element={<AuctionDetail />} />
           {userObject && (

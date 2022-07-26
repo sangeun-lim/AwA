@@ -59,11 +59,10 @@ export interface ChattingRoom {
 }
 
 // 채팅메시지 Object
-export interface Chatting {
-  nickname: string;
+export interface MessageObject {
+  email: string;
   message: string;
-  createdAt: Date;
-  image: string;
+  createdAt: number;
 }
 
 // 신고 Object
