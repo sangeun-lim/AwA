@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Profile } from "../../Interface";
+import Followers from "./Followers";
 
 interface Props {
   isLoggedIn: boolean;
@@ -13,73 +15,48 @@ const defaultProfile: Profile = {
   followers: [],
   followings: [],
   likeGenres: [],
+  // 내가쓴거 : [],
+  // 찜목록: [],
+  // 구매작품: [],
 };
 
 const ProfilePage = ({ isLoggedIn }: Props): JSX.Element => {
-  const [id, setId] = useState();
-  const [nickname, setNickName] = useState();
-  const [profileImage, setProfileImage] = useState();
-  const [followers, setFollowers] = useState();
-  const [followings, setFollowings] = useState();
-  const [likeGenres, setLikeGenres] = useState();
+  // nickname 가져오기
+  const params = useParams();
+  const [profileObject, setProfileObject] = useState<Profile>(defaultProfile);
+  const [viewList, setViewList] = useState<boolean>(false);
 
-  const getProfile = async () => {
-    // 사용자 정보 획득 하기
-    let accessToken = localStorage.getItem("accessToken");
+  // const [values] = useState<작품obj[]>;
 
-    // setId(data.id);
-    // setNickName(data.properties.nickname);?
-    // setProfileImage(data.properties.profileImage);
-    // setFollowers();
-    // setFollowings();
-    // setLikeGenres();
+  const navigate = useNavigate();
+
+  const moveFavorite = () => {
+    navigate("/profile/favorite");
   };
 
-  // 팔로워 버튼을 눌렀을때 컴포넌트 연결
-
-  // 팔로잉 버튼를 눌렀을때 컴포넌트 연결
-
-  // 선호분야 버튼을 눌렀을때 컴포넌트 연결
-
   useEffect(() => {
+    const getProfile = async () => {
+      // 유저 프로필 정보 받아오기
+    };
     getProfile();
   }, []);
 
   return (
     <div>
-      {/* 내 프로필일때 */}
-      <img src={profileImage}></img>
-      <h2>{nickname}</h2>
-      {/* 프로필편집 컴포넌트 버튼형식*/}
-      <h3>게시물 수</h3>
-      <h3>팔로워 수</h3>
-      <button>팔로우목록버튼</button>
-      <h3>팔로잉 수</h3>
-      <button>팔로잉목록버튼</button>
-      <button>선호분야선택버튼</button>
+      {viewList && <Followers />}
+      <img src={profileObject.profileImage} alt="프로필사진" />
+      <h2>{profileObject.nickname}</h2>
+      {/* 프로필편집 컴포넌트이동 버튼 넣기 (폼태그 형식) */}
+      <h3>팔로워 수 : {profileObject.followers.length} </h3>
+      <h3>팔로잉 수 : {profileObject.followings.length}</h3>
+      <button onClick={moveFavorite}>선호분야선택버튼</button>
 
-      <h3>게시물버튼 누르면 보일 컴포넌트들</h3>
-      <h3>찜목록버튼 누르면 보일 컴포넌트들</h3>
-      <h3>구매작품버튼 누르면 보일 컴포넌트들</h3>
-
-      {/* 다른사람 프로필일때 */}
-      <img src={profileImage}></img>
-      <h2>{nickname}</h2>
-
-      {/* 게시물수를 나타내야되나? */}
-      <h3>게시물 수</h3>
-      <h3>팔로워 수</h3>
-      <button>팔로우목록버튼</button>
-      <h3>팔로잉 수</h3>
-      <button>팔로잉목록버튼</button>
-
-      <button>팔로우하기 버튼</button>
-      <button>채팅 연결 컴포넌트</button>
-      <button>선호분야 확인하는 버튼</button>
-
-      <h3>게시물버튼 누르면 보일 컴포넌트들</h3>
-      <h3>찜목록버튼 누르면 보일 컴포넌트들</h3>
-      <h3>구매작품버튼 누르면 보일 컴포넌트들</h3>
+      {/* 큰 컴포넌트안에 작은 컴포넌트들 넣기? */}
+      <div>
+        <button> 게시물버튼 누르면 내가 쓴 게시물들이 보여야함 </button>
+        <button> 찜목록버튼 누르면 보일 컴포넌트들 </button>
+        <button> 구매작품버튼 누르면 보일 컴포넌트들 </button>
+      </div>
     </div>
   );
 };
