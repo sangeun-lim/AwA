@@ -7,7 +7,7 @@ import SignUp from "../pages/auth/SignUp";
 import FindPw from "../pages/auth/FindPw";
 import Profile from "../pages/profile/Profile";
 import Favorite from "../pages/profile/Favorite";
-import Chatting from "../pages/Chatting";
+import Chatting from "../pages/Chatting/Chatting";
 import Auction from "../pages/auction/Auction";
 import AuctionDetail from "../pages/auction/AuctionDetail";
 import AuctionEdit from "../pages/auction/AuctionEdit";

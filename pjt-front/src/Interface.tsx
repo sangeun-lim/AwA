@@ -51,11 +51,9 @@ export interface NoticeItem {
 
 // 채팅방 Object
 export interface ChattingRoom {
-  id: number;
-  uid: number;
-  nickname: string;
-  updatedAt: Date;
-  image: string;
+  id: string;
+  user1: string;
+  user2: string;
 }
 
 // 채팅메시지 Object
