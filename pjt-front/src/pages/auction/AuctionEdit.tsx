@@ -2,12 +2,20 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "firebase/auth";
 
+import { addDoc, collection } from "firebase/firestore";
+import { dbService } from "../../fbase";
+
 interface Props {
   userObject: User;
 }
 
+interface ButtonProps {
+  item: string;
+  deleteGenre(item: string): void;
+}
+
 interface newItem {
-  id?: number;
+  id?: string;
   title: string;
   price: number;
   nickname: string;
@@ -25,11 +33,32 @@ const defaultItem: newItem = {
   detail: "",
 };
 
+// Button Component
+function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
+  useEffect(() => {}, []);
+
+  return (
+    <div>
+      <b>{item}</b>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          if (window.confirm(`${item}을 삭제하시겠습니까?`)) {
+            deleteGenre(item);
+          }
+        }}
+      >
+        X
+      </button>
+    </div>
+  );
+}
+
 function AuctionEdit({ userObject }: Props): JSX.Element {
   const navigate = useNavigate();
   const userEmail: string | null = userObject.email;
 
-  const [genresList, setGenresList] = useState<string[]>(["안녕", "메롱"]);
+  const [genresList, setGenresList] = useState<string[] | undefined>([]);
   const [newItem, setNewItem] = useState<newItem>(defaultItem);
 
   const onChange = (e: any) => {
@@ -45,15 +74,49 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
 
   const selectGenres = (e: ChangeEvent<HTMLSelectElement>) => {
     const selected: string = e.target.value;
-    setGenresList((prev) => [...prev, selected]);
+    setGenresList((prev) => {
+      if (prev) {
+        if (!prev.includes(selected)) {
+          return [...prev, selected];
+        } else {
+          return [...prev];
+        }
+      } else {
+        return [selected];
+      }
+    });
+  };
+
+  const deleteGenre = (item: any) => {
+    setGenresList((prev) => {
+      const newGenreList = prev?.filter((genre) => genre !== item);
+      return newGenreList;
+    });
+  };
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const newAuction = await addDoc(collection(dbService, "auction"), {
+      title: newItem.title,
+      price: newItem.price,
+      nickname: userEmail,
+      genres: genresList,
+      material: newItem.material,
+      detail: newItem.detail,
+      createdAt: Date.now(),
+    });
+
+    setNewItem(defaultItem);
+    navigate(`/auction/${newAuction.id}`);
   };
 
   useEffect(() => {}, []);
 
   return (
     <div>
-      <h1>AuctionEdit</h1>
-      <form>
+      <h1>Auction Create</h1>
+      <form onSubmit={onSubmit}>
         <input
           name="title"
           type="text"
@@ -74,15 +137,21 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
           required
         />
         <br />
-        {genresList.map((item, i) => (
-          <p key={i}>
-            {item}
-            {/* <button value={item} onClick={onDeleteGenre}>
-              X
-            </button> */}
-          </p>
-        ))}
-        <select name="genres" id="genres" onChange={selectGenres}>
+        {genresList &&
+          genresList.map((item, i) => (
+            <div key={i}>
+              <GenreButton deleteGenre={deleteGenre} item={item}></GenreButton>
+            </div>
+          ))}
+        <select
+          name="genres"
+          id="genres"
+          onChange={selectGenres}
+          defaultValue=""
+        >
+          <option value="" disabled>
+            선택
+          </option>
           <option value="빨강">빨강</option>
           <option value="주황">주황</option>
           <option value="노랑">노랑</option>

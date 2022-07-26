@@ -28,7 +28,7 @@ export interface Comment {
 
 // 판매글 Object
 export interface Item {
-  id: number;
+  id: string;
   title: string;
   price: number;
   nickname: string;
