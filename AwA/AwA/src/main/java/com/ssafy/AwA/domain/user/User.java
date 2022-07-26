@@ -62,6 +62,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(length = 500)
     private String description;
 
+    private String accessToken;
+
+    private String refreshToken;
 
     //이거 단방향으로 할지 생각 !!!!!!!!!! 아래 List까지
     //팔로우 팔로잉 리스트는 따로 뺴는게 맞는건가??

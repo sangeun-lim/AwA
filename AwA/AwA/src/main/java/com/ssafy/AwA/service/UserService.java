@@ -24,11 +24,6 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    //회원가입 잘되면 user_id 반환 / 안되면 0 반환
-    public Long join(User user) {
-        userRepository.save(user);
-        return user.getUser_id();
-    }
 
     //중복검사
     public int validateDuplicateEmail(String email) {

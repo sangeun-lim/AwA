@@ -1,27 +1,18 @@
 package com.ssafy.AwA.api;
 
-import com.ssafy.AwA.config.security.SignInResultDto;
-import com.ssafy.AwA.config.security.SignUpResultDto;
 import com.ssafy.AwA.domain.user.User;
-import com.ssafy.AwA.service.SignService;
 import com.ssafy.AwA.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

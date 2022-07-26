@@ -1,7 +1,7 @@
 package com.ssafy.AwA.api;
 
-import com.ssafy.AwA.config.security.SignInResultDto;
-import com.ssafy.AwA.config.security.SignUpResultDto;
+import com.ssafy.AwA.dto.SignInResultDto;
+import com.ssafy.AwA.dto.SignUpResultDto;
 import com.ssafy.AwA.service.SignService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +22,11 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-public class SignController {
+public class SignApiController {
 
     private final SignService signService;
 
-    private Logger logger = LoggerFactory.getLogger(SignController.class);
+    private Logger logger = LoggerFactory.getLogger(SignApiController.class);
 
     @Data
     static class loginRequest {

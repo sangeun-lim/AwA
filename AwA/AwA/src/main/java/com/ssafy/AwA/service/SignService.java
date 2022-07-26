@@ -2,8 +2,8 @@ package com.ssafy.AwA.service;
 
 import com.ssafy.AwA.config.security.CommonResponse;
 import com.ssafy.AwA.config.security.JwtTokenProvider;
-import com.ssafy.AwA.config.security.SignInResultDto;
-import com.ssafy.AwA.config.security.SignUpResultDto;
+import com.ssafy.AwA.dto.SignInResultDto;
+import com.ssafy.AwA.dto.SignUpResultDto;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

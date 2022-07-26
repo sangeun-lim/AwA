@@ -1,4 +1,4 @@
-package com.ssafy.AwA.config.security;
+package com.ssafy.AwA.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

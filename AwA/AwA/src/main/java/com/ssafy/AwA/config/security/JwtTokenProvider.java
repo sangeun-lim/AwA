@@ -68,7 +68,7 @@ public class JwtTokenProvider {
 
     public String getUserEmail(String token) {
         logger.info("[getUserEmail] 토큰 기반 회원 구별 정보 추출");
-        String info = Jwts.parser().setSigningKey(secretKey).parseClaimsJwt(token).getBody().getSubject();
+        String info = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
         logger.info("[getUserEmail] 토큰 기반 회원 구별 정보 추출 완료, info : {}", info);
         return info;
     }

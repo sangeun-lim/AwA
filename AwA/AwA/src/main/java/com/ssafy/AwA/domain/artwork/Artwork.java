@@ -58,13 +58,13 @@ public class Artwork extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "reported_artwork")
     List<Report> report_list = new ArrayList<>();
+
+
     @Builder
-    public Artwork(Long artwork_id, int price, int view_count, int like_count, boolean is_sell) {
-        this.artwork_id = artwork_id;
+    public Artwork(User sell_user, String title, int price, List<Attachment> attachment_list) {
+        this.sell_user = sell_user;
+        this.title = title;
         this.price = price;
-        this.view_count = view_count;
-        this.like_count = like_count;
-        this.is_sell = is_sell;
     }
 
     //연관관계 메서드
