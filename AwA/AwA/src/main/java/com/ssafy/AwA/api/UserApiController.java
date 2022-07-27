@@ -70,17 +70,7 @@ public class UserApiController {
 
 
 
-    //이메일 중복검사
-    @GetMapping("/auth/signup/email/{email}")
-    public int ValidateEmail(@PathVariable String email) {
-        return userService.validateDuplicateEmail(email);
-    }
 
-    //닉네임 중복검사
-    @GetMapping("auth/signup/nickname/{nickname}")
-    public int ValidateNickname(@PathVariable String nickname) {
-        return userService.validateDuplcateNickname(nickname);
-    }
     //닉네임 변경
     @PutMapping("/profile/{nickname}/{newnickname}")
     public int chageNickname(@PathVariable("nickname") String nickname,

@@ -1,6 +1,8 @@
+
+
 spring:
   datasource:
-    url: jdbc:mariadb://i7c101.p.ssafy.io/AwA
+    url: jdbc:mariadb://i7c101.p.ssafy.io:3306/AwA?characterEncoding=utf-8&createDatabaseIfNotExist=true #데이터 베이스 이름 수정 필요
     username: AwA
     password: tpwlslrnldudnj!#%
     driver-class-name: org.mariadb.jdbc.Driver
@@ -21,6 +23,8 @@ spring:
           #show_sql: true
           format_sql: true
     #generate-ddl: true
+
+
 
 logging:
   level:

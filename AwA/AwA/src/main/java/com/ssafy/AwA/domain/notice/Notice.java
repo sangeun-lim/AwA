@@ -23,10 +23,24 @@ public class Notice extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    @Column
+    private int viewCount;
+
     @Builder
-    public Notice(Long notice_id, String title, String content) {
-        this.notice_id = notice_id;
+    public Notice(String title, String content) {
         this.title = title;
+        this.content = content;
+    }
+
+    public void addViewCount() {
+        this.viewCount++;
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateContent(String content) {
         this.content = content;
     }
 }

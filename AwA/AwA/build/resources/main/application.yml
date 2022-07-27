@@ -1,9 +1,18 @@
+
+
 spring:
   datasource:
-    url: jdbc:mariadb://ssafy.c9weq5esl3km.ap-northeast-2.rds.amazonaws.com/AwA
-    username: ssafy
-    password: ssafy1234
+    url: jdbc:mariadb://i7c101.p.ssafy.io:3306/AwA?characterEncoding=utf-8&createDatabaseIfNotExist=true #데이터 베이스 이름 수정 필요
+    username: AwA
+    password: tpwlslrnldudnj!#%
     driver-class-name: org.mariadb.jdbc.Driver
+
+  #main:
+    #allow-circular-references: true 서로 참조하는 무한루프에서 빠져나오기 위한것이였는데 뭐였더라.. userService내에서 jwtTokenProvider쓰고 JwtTokenProvider에서 userService또불러서 썼는데 걍 userRepository 쓰는걸로 해결
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 
   jpa:
@@ -11,12 +20,16 @@ spring:
       ddl-auto: create
       properties:
         hibernate:
-          show_sql: true
+          #show_sql: true
           format_sql: true
-    generate-ddl: true
+    #generate-ddl: true
+
+
 
 logging:
   level:
     org.hibernate.sql: debug
     org.hibernate.type: trace
+
+
 

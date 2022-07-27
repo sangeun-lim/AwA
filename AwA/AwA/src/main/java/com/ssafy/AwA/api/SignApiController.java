@@ -3,6 +3,7 @@ package com.ssafy.AwA.api;
 import com.ssafy.AwA.dto.SignInResultDto;
 import com.ssafy.AwA.dto.SignUpResultDto;
 import com.ssafy.AwA.service.SignService;
+import com.ssafy.AwA.service.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ import java.util.Map;
 public class SignApiController {
 
     private final SignService signService;
-
+    private final UserService userService;
     private Logger logger = LoggerFactory.getLogger(SignApiController.class);
 
     @Data
@@ -92,4 +93,15 @@ public class SignApiController {
         return new ResponseEntity<>(map, responseHeaders, httpStatus);
     }
 
+    //이메일 중복검사
+    @GetMapping("/auth/signup/email/{email}")
+    public int ValidateEmail(@PathVariable String email) {
+        return userService.validateDuplicateEmail(email);
+    }
+
+    //닉네임 중복검사
+    @GetMapping("auth/signup/nickname/{nickname}")
+    public int ValidateNickname(@PathVariable String nickname) {
+        return userService.validateDuplcateNickname(nickname);
+    }
 }

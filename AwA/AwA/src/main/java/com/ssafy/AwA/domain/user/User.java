@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"user_id", "nickname", "email", "password","age","gender"})
+@ToString(of = {"user_id", "nickname", "email", "password", "gender"})
 @Entity
 public class User extends BaseTimeEntity implements UserDetails {
 
