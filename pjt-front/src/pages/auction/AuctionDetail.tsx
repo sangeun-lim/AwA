@@ -21,7 +21,7 @@ interface editItem {
 }
 
 const defaultItem: Item = {
-  imageUrl: "",
+  imageUrlList: [],
   id: "",
   title: "",
   price: 0,
@@ -76,8 +76,10 @@ function AuctionDetail(): JSX.Element {
     material: item.material,
     detail: item.detail,
   });
-  const [imgUrl, setImgUrl] = useState<string>("");
-  const [image, setImage] = useState<File | null>(null);
+  // const [imgUrl, setImgUrl] = useState<string>("");
+  const [images, setImages] = useState<File[]>([]);
+  const [showImages, setShowImages] = useState<string[]>([]);
+  const [delImages, setDelImages] = useState<string[]>([]);
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -90,19 +92,49 @@ function AuctionDetail(): JSX.Element {
     });
   };
 
-  const onFileChange = (e: any) => {
-    const { files } = e.target;
-    const file = files[0];
-    setImage(file);
+  // 이미지를 여러개 가져와 보자!!!!!
+  const handleAddImages = (e: any) => {
+    const imageLists = e.target.files;
+    let imageUrlLists = [...showImages];
 
-    const render = new FileReader();
-    render.onload = (finishedEvent: any) => {
-      const { result } = finishedEvent.currentTarget;
-      setImgUrl(result);
-    };
+    for (let i = 0; i < imageLists.length; i++) {
+      const file = imageLists[i];
+      setImages((prev) => [...prev, file]);
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(currentImageUrl);
+    }
 
-    render.readAsDataURL(file);
+    if (imageUrlLists.length > 10) {
+      imageUrlLists = imageUrlLists.slice(0, 10);
+    }
+
+    setShowImages(imageUrlLists);
   };
+
+  // X버튼 클릭 시 이미지 삭제
+  const handleDeleteImage = (id: any) => {
+    setImages(images.filter((_, index) => index !== id));
+    setShowImages(showImages.filter((_, index) => index !== id));
+    setDelImages((prev) => {
+      const delImage = item.imageUrlList[id];
+      return [...prev, delImage];
+    });
+    console.log(delImages);
+  };
+
+  // const onFileChange = (e: any) => {
+  //   const { files } = e.target;
+  //   const file = files[0];
+  //   setImage(file);
+
+  //   const render = new FileReader();
+  //   render.onload = (finishedEvent: any) => {
+  //     const { result } = finishedEvent.currentTarget;
+  //     setImgUrl(result);
+  //   };
+
+  //   render.readAsDataURL(file);
+  // };
 
   const selectGenres = (e: ChangeEvent<HTMLSelectElement>) => {
     const selected: string = e.target.value;
@@ -137,16 +169,18 @@ function AuctionDetail(): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    let imageUrl: string = "";
+    let imageUrlList: Array<string> = [];
 
-    if (image) {
+    for (let i = 0; i < images.length; i++) {
+      let imageUrl: string = "";
       const imgRef = ref(storageService, `${item.nickname}/${uuidv4()}`);
-      const response = await uploadBytes(imgRef, image);
+      const response = await uploadBytes(imgRef, images[i]);
       imageUrl = await getDownloadURL(response.ref);
+      imageUrlList.push(imageUrl);
     }
 
     await updateDoc(doc(dbService, `auction/${address}`), {
-      imageUrl: imageUrl,
+      imageUrlList: imageUrlList,
       title: editItem.title,
       price: editItem.price,
       genres: genresList,
@@ -165,17 +199,17 @@ function AuctionDetail(): JSX.Element {
     setOnEdit(!onEdit);
   };
 
-  const onClearImg = () => {
-    setImgUrl("");
-    setImage(null);
-  };
+  // const onClearImg = () => {
+  //   // setImgUrl("");
+  //   setImage(null);
+  // };
 
   const onDeleteClick = async () => {
     const del: boolean = window.confirm("삭제하시겠습니까?");
     if (del) {
       await deleteDoc(doc(dbService, `auction/${address}`));
-      if (item.imageUrl !== "") {
-        const imgRef = ref(storageService, item.imageUrl);
+      for (let i = 0; i < item.imageUrlList.length; i++) {
+        const imgRef = ref(storageService, item.imageUrlList[i]);
         await deleteObject(imgRef);
       }
       navigate("/auction");
@@ -213,8 +247,10 @@ function AuctionDetail(): JSX.Element {
     });
 
     setGenresList(item.genres);
-    setImgUrl(item.imageUrl);
+    setShowImages(item.imageUrlList);
   }, [onEdit, item]);
+
+  // console.log(item.imageUrlList);
 
   return (
     <div>
@@ -222,11 +258,33 @@ function AuctionDetail(): JSX.Element {
         <div>
           <h1>Auction Create</h1>
           <form onSubmit={onSubmit}>
-            <input type="file" accept="image/*" onChange={onFileChange} />
-            {imgUrl && (
+            <label htmlFor="input-file" onChange={handleAddImages}>
+              <input type="file" id="input-file" multiple />
+              {/* <Plus fill="#646F7C" /> */}
+              <span>사진추가</span>
+            </label>
+            {showImages && (
               <div>
-                <img src={imgUrl} alt="미리보기" width="30%" height="30%" />
-                <button onClick={onClearImg}>취소</button>
+                {showImages.map((image, id) => (
+                  <div key={id}>
+                    <img
+                      src={image}
+                      alt={`${image}-${id}`}
+                      width="30%"
+                      height="30%"
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (window.confirm("사진뺄거야?")) {
+                          handleDeleteImage(id);
+                        }
+                      }}
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
               </div>
             )}
             <br />
@@ -299,8 +357,19 @@ function AuctionDetail(): JSX.Element {
       ) : (
         <div>
           <h1>AuctionDetail</h1>
-          {item.imageUrl && (
-            <img src={item.imageUrl} alt="image" width="30%" height="30%" />
+          {item.imageUrlList && (
+            <div>
+              {item.imageUrlList.map((image: any, id: any) => (
+                <div key={id}>
+                  <img
+                    src={image}
+                    alt={`${image}-${id}`}
+                    width="30%"
+                    height="30%"
+                  />
+                </div>
+              ))}
+            </div>
           )}
           <h2>{item.title}</h2>
           <p>작성자 : {item.nickname}</p>

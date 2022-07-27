@@ -12,11 +12,24 @@ const AuctionListItem = ({ item }: Props): JSX.Element => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
+  const imageUrlList = item.imageUrlList;
+
   return (
     <div>
       <p>
-        {item.imageUrl && (
-          <img src={item.imageUrl} alt="image" width="20%" height="20%" />
+        {imageUrlList && (
+          <div>
+            {imageUrlList.map((image, id) => (
+              <div key={id}>
+                <img
+                  src={image}
+                  alt={`${image}-${id}`}
+                  width="30%"
+                  height="30%"
+                />
+              </div>
+            ))}
+          </div>
         )}
       </p>
       <b>

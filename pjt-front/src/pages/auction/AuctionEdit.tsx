@@ -18,7 +18,7 @@ interface ButtonProps {
 
 interface newItem {
   id?: string;
-  imageUrl: string;
+  imageUrl: Array<string>;
   title: string;
   price: number;
   nickname: string;
@@ -28,7 +28,7 @@ interface newItem {
 }
 
 const defaultItem: newItem = {
-  imageUrl: "",
+  imageUrl: [],
   title: "",
   price: 0,
   nickname: "",
@@ -64,8 +64,10 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
 
   const [genresList, setGenresList] = useState<string[] | undefined>([]);
   const [newItem, setNewItem] = useState<newItem>(defaultItem);
-  const [imgUrl, setImgUrl] = useState<string>("");
-  const [image, setImage] = useState<File | null>(null);
+
+  // const [imgUrl, setImgUrl] = useState<string>("");
+  const [images, setImages] = useState<File[]>([]);
+  const [showImages, setShowImages] = useState<string[]>([]);
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -78,19 +80,43 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
     });
   };
 
-  const onFileChange = (e: any) => {
-    const { files } = e.target;
-    const file = files[0];
-    setImage(file);
+  // 이미지를 여러개 가져와 보자!!!!!
+  const handleAddImages = (e: any) => {
+    const imageLists = e.target.files;
+    let imageUrlLists = [...showImages];
 
-    const render = new FileReader();
-    render.onload = (finishedEvent: any) => {
-      const { result } = finishedEvent.currentTarget;
-      setImgUrl(result);
-    };
+    for (let i = 0; i < imageLists.length; i++) {
+      const file = imageLists[i];
+      setImages((prev) => [...prev, file]);
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(currentImageUrl);
+    }
 
-    render.readAsDataURL(file);
+    if (imageUrlLists.length > 10) {
+      imageUrlLists = imageUrlLists.slice(0, 10);
+    }
+
+    setShowImages(imageUrlLists);
   };
+
+  // X버튼 클릭 시 이미지 삭제
+  const handleDeleteImage = (id: any) => {
+    setShowImages(showImages.filter((_, index) => index !== id));
+  };
+
+  // const onFileChange = (e: any) => {
+  //   const { files } = e.target;
+  //   const file = files[0];
+  //   setImage(file);
+
+  //   const render = new FileReader();
+  //   render.onload = (finishedEvent: any) => {
+  //     const { result } = finishedEvent.currentTarget;
+  //     setImgUrl(result);
+  //   };
+
+  //   render.readAsDataURL(file);
+  // };
 
   const selectGenres = (e: ChangeEvent<HTMLSelectElement>) => {
     const selected: string = e.target.value;
@@ -117,16 +143,18 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    let imageUrl: string = "";
+    let imageUrlList: Array<string> = [];
 
-    if (image) {
+    for (let i = 0; i < images.length; i++) {
+      let imageUrl: string = "";
       const imgRef = ref(storageService, `${userEmail}/${uuidv4()}`);
-      const response = await uploadBytes(imgRef, image);
+      const response = await uploadBytes(imgRef, images[i]);
       imageUrl = await getDownloadURL(response.ref);
+      imageUrlList.push(imageUrl);
     }
 
     const newAuction = await addDoc(collection(dbService, "auction"), {
-      imageUrl: imageUrl,
+      imageUrlList: imageUrlList,
       title: newItem.title,
       price: newItem.price,
       nickname: userEmail,
@@ -137,14 +165,16 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
     });
 
     setNewItem(defaultItem);
-    setImgUrl("");
+    // setImgUrl("");
+    setShowImages([]);
     navigate(`/auction/${newAuction.id}`);
   };
 
-  const onClearImg = () => {
-    setImgUrl("");
-    setImage(null);
-  };
+  // const onClearImg = () => {
+  //   setShowImages([]);
+  //   // setImgUrl("");
+  //   setImages([]);
+  // };
 
   useEffect(() => {}, []);
 
@@ -152,11 +182,33 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
     <div>
       <h1>Auction Create</h1>
       <form onSubmit={onSubmit}>
-        <input type="file" accept="image/*" onChange={onFileChange} />
-        {imgUrl && (
+        <label htmlFor="input-file" onChange={handleAddImages}>
+          <input type="file" id="input-file" multiple />
+          {/* <Plus fill="#646F7C" /> */}
+          <span>사진추가</span>
+        </label>
+        {showImages && (
           <div>
-            <img src={imgUrl} alt="미리보기" width="30%" height="30%" />
-            <button onClick={onClearImg}>취소</button>
+            {showImages.map((image, id) => (
+              <div key={id}>
+                <img
+                  src={image}
+                  alt={`${image}-${id}`}
+                  width="30%"
+                  height="30%"
+                />
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (window.confirm("사진뺄거야?")) {
+                      handleDeleteImage(id);
+                    }
+                  }}
+                >
+                  X
+                </button>
+              </div>
+            ))}
           </div>
         )}
         <br />
