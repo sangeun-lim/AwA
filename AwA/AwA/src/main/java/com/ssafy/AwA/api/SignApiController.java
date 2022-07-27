@@ -1,5 +1,7 @@
 package com.ssafy.AwA.api;
 
+import com.ssafy.AwA.domain.profile.Profile;
+import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.SignInResultDto;
 import com.ssafy.AwA.dto.SignUpResultDto;
 import com.ssafy.AwA.service.ProfileService;
@@ -72,7 +74,9 @@ public class SignApiController {
         SignUpResultDto signUpResultDto = signService.signUp(request.email, request.password, request.nickname, request.gender, request.birth);
 
         logger.info("[signUp] 회원가입을 완료했습니다.");
-        profileService.createProfile(request.getNickname());
+        User user = userService.findByEmail(request.getEmail());
+        profileService.createProfile(request.getNickname(),user);
+
         return signUpResultDto;
     }
 

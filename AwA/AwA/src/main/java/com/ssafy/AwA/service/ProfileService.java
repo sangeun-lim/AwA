@@ -13,25 +13,35 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
-    public int changeDescription(String nickname, String description) {
 
+    public void changeDescription(String nickname, String description) {
         Profile findByNickname = profileRepository.findByNickname(nickname);
         findByNickname.changeDescription(description);
+    }
 
-        if(findByNickname.getDescription().equals(description))
-            return 1;
-        return 0;
+    public void changeNickname(String nickname, String newNickname) {
+        Profile findByNickname = profileRepository.findByNickname(nickname);
+        findByNickname.changeNickname(newNickname);
+    }
+
+    public void changePictureURL(String nickname, String url) {
+        Profile findByNickname = profileRepository.findByNickname(nickname);
+        findByNickname.changeProfilePictureURL(url);
     }
 
     public Profile getProfile(String targetNickname) {
         return profileRepository.findByNickname(targetNickname);
     }
 
-    public Profile createProfile(String targetNickname) {
+    public Profile createProfile(String targetNickname, User user) {
         Profile newProfile = Profile.builder()
                 .nickname(targetNickname)
+                .user(user)
                 .build();
 
         return profileRepository.save(newProfile);
     }
+
+
+
 }

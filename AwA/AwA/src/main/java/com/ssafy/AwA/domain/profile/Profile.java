@@ -31,8 +31,7 @@ public class Profile extends BaseTimeEntity {
     private String nickname;
 
     @Builder
-    public Profile(Long profile_id, User user, String profilePictureURL, String description, String nickname) {
-        this.profile_id = profile_id;
+    public Profile(User user, String profilePictureURL, String description, String nickname) {
         this.user = user;
         this.profilePictureURL = profilePictureURL;
         this.description = description;
@@ -41,5 +40,11 @@ public class Profile extends BaseTimeEntity {
 
     public void changeDescription(String description) {
         this.description = description;
+    }
+    public void changeProfilePictureURL(String profilePictureURL) {
+        this.profilePictureURL = profilePictureURL;
+    }
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

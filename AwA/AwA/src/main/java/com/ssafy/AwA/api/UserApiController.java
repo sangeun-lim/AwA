@@ -97,7 +97,7 @@ public class UserApiController {
     @GetMapping("/profile/gender/{gender}")
     public List<User> findMans(@PathVariable("gender") int gender) {
         try {
-            System.out.println("here");
+
             return userService.findManUsers(gender);
         }
         catch (Exception e) {

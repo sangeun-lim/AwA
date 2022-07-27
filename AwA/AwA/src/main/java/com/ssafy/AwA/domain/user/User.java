@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"user_id", "nickname", "email", "password", "birth", "gender"})
+//@ToString(of = {"user_id", "nickname", "email", "password", "birth", "gender"})
 @Entity
 public class User extends BaseTimeEntity implements UserDetails {
 
@@ -44,9 +44,6 @@ public class User extends BaseTimeEntity implements UserDetails {
     @NotEmpty
     @Column(length = 20, nullable = false, unique = true)
     private String nickname;
-
-    @OneToOne(mappedBy = "user")
-    private Profile profile;
 
     @Column
     private boolean gender;
@@ -116,8 +113,9 @@ public class User extends BaseTimeEntity implements UserDetails {
         return true;
     }
 
+
     @Builder
-    public User(String email, String password, String nickname, boolean gender, int age, LocalDate birth, List<String> roles) {
+    public User(String email, String password, String nickname, boolean gender, LocalDate birth, List<String> roles) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -125,8 +123,6 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.birth = birth;
         this.roles = roles;
     }
-
-
     //비즈니스로직
 
     //닉네임 수정
@@ -136,28 +132,6 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     //토큰 발급
     public void giveToken(String accessToken) {this.accessToken = accessToken; }
-    //팔로우관련
-//    public void addFollowing(User following) {
-//        this.following_list.add(following); //나를 팔로잉 하는 사람 추가
-//
-//        if(!following.getFollower_list().contains(this)) { //새롭게 나를 팔로잉 한 사람의 팔로워 리스트에서 내가 있는지 확인
-//            following.getFollowing_list().add(this); //없으면 넣기
-//        }
-//
-//        //연간관계 주인을 통한 확인
-//        if(!following.getUserFollower().getFollowing_list().contains(this)) { //나를 팔로잉 하는 사람의 팔로워 리스트를 받아와 내가 있느지 확인
-//            following.getUserFollower().getFollower_list().add(this); //없으면 넣어주기..?
-//        }
-//    }
 
-    //위에거 안되면 김영한씨 강의보고 참조
-//    public void setParentUser(User parent)
-//    {
-//
-//    }
-//    public void addFollowing(User follower)
-//    {
-//        this.following_list.add(follower);
-//        follower.
-//    }
+
 }
