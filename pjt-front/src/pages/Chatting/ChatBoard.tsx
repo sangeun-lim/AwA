@@ -1,4 +1,4 @@
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { User } from "firebase/auth";
 import React, {
   Dispatch,
@@ -10,11 +10,13 @@ import React, {
 import { MessageObject } from "../../Interface";
 import socketIOClient from "socket.io-client";
 import "./ChatBoard.css";
+import { dbService } from "../../fbase";
 
 interface Props {
   roomName: string | null;
   setRoomName: Dispatch<React.SetStateAction<string | null>>;
   userObject: User;
+  selectChat: string | null;
 }
 
 interface SubProps {
@@ -24,7 +26,7 @@ interface SubProps {
 const SOCKET = socketIOClient("localhost:4002");
 
 // 페이지 우측 현재 채팅 중인 채팅방 컴포넌트
-function ChatBoard({ roomName, setRoomName, userObject }: Props) {
+function ChatBoard({ roomName, setRoomName, userObject, selectChat }: Props) {
   const [messageList, setMessageList] = useState<MessageObject[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
 
@@ -37,14 +39,15 @@ function ChatBoard({ roomName, setRoomName, userObject }: Props) {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (userObject.email) {
+    if (userObject.email && roomName) {
       const newMessageObject: MessageObject = {
         message: newMessage,
         email: userObject.email,
         createdAt: Date.now(),
+        roomName: roomName,
       };
 
-      SOCKET.emit("send message", newMessageObject, roomName);
+      SOCKET.emit("send message", newMessageObject, selectChat);
 
       // db에 저장하는 코드 필요
       setMessageList((prev) => prev.concat(newMessageObject));
@@ -63,7 +66,35 @@ function ChatBoard({ roomName, setRoomName, userObject }: Props) {
 
   useEffect(() => {
     // 상대방과의 기존 채팅 목록을 가져옴
-  }, []);
+    const getChat = async () => {
+      if (roomName) {
+        const q = query(
+          collection(dbService, "chatting"),
+          where(roomName, "==", "roomName"),
+          orderBy("createdAt", "asc")
+        );
+
+        const data = (await getDocs(q)).docs;
+
+        const chats: MessageObject[] = data.map((chat) => {
+          const { message, email, createdAt, roomName } = chat.data();
+
+          const chatData: MessageObject = {
+            roomName,
+            message,
+            email,
+            createdAt,
+          };
+
+          return chatData;
+        });
+
+        setMessageList(chats);
+      }
+    };
+
+    getChat();
+  }, [roomName]);
 
   useEffect(() => {
     SOCKET.on("receive message", (message: MessageObject) => {

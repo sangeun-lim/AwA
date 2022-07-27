@@ -58,6 +58,7 @@ export interface ChattingRoom {
 
 // 채팅메시지 Object
 export interface MessageObject {
+  roomName: string;
   email: string;
   message: string;
   createdAt: number;
