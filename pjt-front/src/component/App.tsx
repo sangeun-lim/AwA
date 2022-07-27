@@ -17,7 +17,7 @@ function App(): JSX.Element {
         setUserObject(null);
       }
     });
-  });
+  }, []);
 
   return (
     <div>

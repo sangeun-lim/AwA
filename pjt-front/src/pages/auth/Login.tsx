@@ -1,9 +1,9 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../../fbase";
 import style from "./Login.module.css";
+import api from "../../api/api";
+import axios from "axios";
 
 interface Props {
   isLoggedIn: boolean;
@@ -23,6 +23,24 @@ function Login({ isLoggedIn }: Props): JSX.Element {
   const [loginForm, setLoginForm] = useState<LoginData>(defaultData);
   const navigate = useNavigate();
 
+  const loginRequest = async () => {
+    const response = await axios({
+      url: api.auth.login(),
+      method: "post",
+      data: {
+        email: loginForm.id,
+        password: loginForm.pw,
+      },
+    });
+    if (response.status === 200) {
+      localStorage.setItem("token", response.data.token);
+      navigate("/");
+    } else {
+      alert("로그인에 실패했습니다.");
+      setLoginForm(defaultData);
+    }
+  };
+
   const onChange = (e: any) => {
     const { name, value } = e.target;
 
@@ -38,9 +56,7 @@ function Login({ isLoggedIn }: Props): JSX.Element {
     e.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(authService, loginForm.id, loginForm.pw);
-      setLoginForm(defaultData);
-      navigate("/");
+      loginRequest();
     } catch (err) {
       console.log(err);
     }

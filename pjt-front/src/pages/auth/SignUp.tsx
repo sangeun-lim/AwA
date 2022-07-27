@@ -1,9 +1,9 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { authService } from "../../fbase";
 import style from "./SignUp.module.css";
+import api from "../../api/api";
+import axios from "axios";
 
 interface Props {
   isLoggedIn: boolean;
@@ -30,6 +30,61 @@ const defaultData = {
 function SignUp({ isLoggedIn }: Props): JSX.Element {
   const [signUpForm, setSignUpForm] = useState<SignUpData>(defaultData);
   const navigate = useNavigate();
+  const [checkEmail, setCheckEmail] = useState<boolean | string>(false);
+  const [checkNickname, setCheckNickname] = useState<boolean | string>(false);
+
+  const signupRequest = async () => {
+    const response = await axios({
+      url: api.auth.signup(),
+      method: "post",
+      data: {
+        birth: signUpForm.birth,
+        email: signUpForm.id,
+        gender: signUpForm.gender,
+        nickname: signUpForm.nickname,
+        password: signUpForm.pw1,
+      },
+    });
+    if (response.status === 200) {
+      console.log(signUpForm);
+      alert("회원가입이 완료되었습니다.");
+      navigate("/auth/login");
+    } else {
+      alert("회원가입에 실패했습니다.");
+    }
+  };
+
+  const checkEmailButton = async () => {
+    const emailCheck = await axios({
+      url: api.auth.signup() + `/email/${signUpForm.id}`,
+      method: "get",
+    });
+    // 중복 이메일일때
+    if (!emailCheck.data) {
+      alert("이미 사용중인 이메일입니다.");
+      setCheckEmail(false);
+    }
+    // 중복 이메일이 아닐 때
+    else {
+      setCheckEmail(signUpForm.id);
+    }
+  };
+
+  const checkNicknameButton = async () => {
+    const nicknameCheck = await axios({
+      url: api.auth.signup() + `/nickname/${signUpForm.nickname}`,
+      method: "get",
+    });
+    // 중복 닉네임일때
+    if (!nicknameCheck.data) {
+      alert("중복 닉네임입니다.");
+      setCheckNickname(false);
+    }
+    // 중복 닉네임이 아닐 때
+    else {
+      setCheckNickname(signUpForm.nickname);
+    }
+  };
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -47,115 +102,135 @@ function SignUp({ isLoggedIn }: Props): JSX.Element {
 
     if (signUpForm.pw1 === signUpForm.pw2) {
       try {
-        await createUserWithEmailAndPassword(
-          authService,
-          signUpForm.id,
-          signUpForm.pw1
-        );
-        navigate("/");
+        signupRequest();
       } catch (err) {
         console.log(err);
       }
+    } else {
+      alert("비밀번호가 일치하지 않습니다.");
     }
   };
+
+  useEffect(() => {
+    if (checkEmail && signUpForm.id !== checkEmail) {
+      setCheckEmail(false);
+    }
+  }, [checkEmail, signUpForm.id]);
+
+  useEffect(() => {
+    if (checkNickname && signUpForm.nickname !== checkNickname) {
+      setCheckNickname(false);
+    }
+  }, [checkNickname, signUpForm.nickname]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <div className={style.container}>
       <div className={style.title}>Sign Up</div>
-      <form onSubmit={onSubmit} className={style.signup}>
-        <div className={style.signContainer}>
-          <label htmlFor="id">아이디 </label>
-          <input
-            name="id"
-            id="id"
-            type="email"
-            value={signUpForm.id}
-            placeholder="[필수]아이디"
-            onChange={onChange}
-            required
-            className={style.signInput}
-            // 중복확인
-          />
-        </div>
-        <div className={style.signContainer}>
-          <label htmlFor="password">비밀번호 </label>
-          <input
-            name="pw1"
-            id="password"
-            type="password"
-            value={signUpForm.pw1}
-            placeholder="[필수]비밀번호"
-            onChange={onChange}
-            required
-            className={style.signInput}
-          />
-        </div>
-        <div className={style.signContainer}>
-          <label htmlFor="password2">비밀번호 확인 </label>
-          <input
-            name="pw2"
-            id="password2"
-            type="password"
-            value={signUpForm.pw2}
-            placeholder="[필수]비밀번호 확인"
-            onChange={onChange}
-            required
-            className={style.signInput}
-          />
-        </div>
-        <div className={style.signContainer}>
-          <label htmlFor="nickname">닉네임 </label>
-          <input
-            name="nickname"
-            id="nickname"
-            type="text"
-            value={signUpForm.nickname}
-            placeholder="[필수]닉네임"
-            onChange={onChange}
-            required
-            className={style.signInput}
-            //중복확인
-          />
-        </div>
-        <div className={style.signContainer}>
-          <label htmlFor="birth">생년월일</label>
-          <input
-            name="birth"
-            id="birth"
-            type="date"
-            value={signUpForm.birth}
-            placeholder="[선택]생년월일"
-            onChange={onChange}
-            className={style.signInput}
-          />
-        </div>
-        <div className={style.select}>
-          <input
-            name="gender"
-            id="male"
-            type="radio"
-            value="true"
-            onChange={onChange}
-            className={style.radioInput}
-          />
-          <label htmlFor="male" className={style.radioLabel}>
-            남
-          </label>
-          <input
-            name="gender"
-            id="female"
-            type="radio"
-            value="false"
-            onChange={onChange}
-            className={style.radioInput}
-          />
-          <label htmlFor="female" className={style.radioLabel}>
-            여
-          </label>
-        </div>
-        <br />
-        <input type="submit" value="회원가입" className={style.signSubmit} />
-      </form>
+
+      <div className={style.signContainer}>
+        <label htmlFor="id">아이디 </label>
+        <input
+          name="id"
+          id="id"
+          type="email"
+          value={signUpForm.id}
+          placeholder="[필수]아이디"
+          onChange={onChange}
+          required
+          className={style.signInput}
+        />
+        <button onClick={checkEmailButton}>중복확인</button>
+      </div>
+      <div className={style.signContainer}>
+        <label htmlFor="password">비밀번호 </label>
+        <input
+          name="pw1"
+          id="password"
+          type="password"
+          value={signUpForm.pw1}
+          placeholder="[필수]비밀번호"
+          onChange={onChange}
+          required
+          className={style.signInput}
+        />
+      </div>
+      <div className={style.signContainer}>
+        <label htmlFor="password2">비밀번호 확인 </label>
+        <input
+          name="pw2"
+          id="password2"
+          type="password"
+          value={signUpForm.pw2}
+          placeholder="[필수]비밀번호 확인"
+          onChange={onChange}
+          required
+          className={style.signInput}
+        />
+      </div>
+      <div className={style.signContainer}>
+        <label htmlFor="nickname">닉네임 </label>
+        <input
+          name="nickname"
+          id="nickname"
+          type="text"
+          value={signUpForm.nickname}
+          placeholder="[필수]닉네임"
+          onChange={onChange}
+          required
+          className={style.signInput}
+        />
+        <button onClick={checkNicknameButton}>중복확인</button>
+      </div>
+      <div className={style.signContainer}>
+        <label htmlFor="birth">생년월일</label>
+        <input
+          name="birth"
+          id="birth"
+          type="date"
+          value={signUpForm.birth}
+          placeholder="[선택]생년월일"
+          onChange={onChange}
+          className={style.signInput}
+        />
+      </div>
+      <div className={style.select}>
+        <input
+          name="gender"
+          id="male"
+          type="radio"
+          value="true"
+          onChange={onChange}
+          className={style.radioInput}
+        />
+        <label htmlFor="male" className={style.radioLabel}>
+          남
+        </label>
+        <input
+          name="gender"
+          id="female"
+          type="radio"
+          value="false"
+          onChange={onChange}
+          className={style.radioInput}
+        />
+        <label htmlFor="female" className={style.radioLabel}>
+          여
+        </label>
+      </div>
+      <br />
+      <input
+        disabled={!(checkEmail && checkNickname)}
+        type="submit"
+        value="회원가입"
+        onClick={onSubmit}
+        className={style.signSubmit}
+      />
     </div>
   );
 }
