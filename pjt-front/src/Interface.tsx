@@ -9,12 +9,13 @@ export interface User {
 
 // 프로필 Object
 export interface Profile {
-  id: number;
+  id: string;
   nickname: string;
   description: string;
   followers: Array<string>;
   followings: Array<string>;
   likeGenres: Array<string>;
+  profileImage: string;
 }
 
 // 댓글 Object
@@ -34,6 +35,7 @@ export interface Item {
   nickname: string;
   genres: Array<string>;
   material: string;
+  itemImage: string;
   detail: string;
   createdAt: Date;
   like: Array<User>;

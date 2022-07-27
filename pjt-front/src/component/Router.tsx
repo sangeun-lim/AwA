@@ -42,7 +42,10 @@ const AppRouter = ({ isLoggedIn, userObject }: Props): JSX.Element => {
             element={<SignUp isLoggedIn={isLoggedIn} />}
           />
           <Route path="/auth/findpw" element={<FindPw />} />
-          <Route path="/profile/:nickname" element={<Profile />} />
+          <Route
+            path="/profile/:nickname"
+            element={<Profile isLoggedIn={isLoggedIn} />}
+          />
           <Route path="/profile/favorite" element={<Favorite />} />
           <Route path="/chatting" element={<Chatting />} />
           <Route path="/auction" element={<Auction />} />
