@@ -24,6 +24,7 @@ function Auction(): JSX.Element {
 
     const newAuctions: Array<Item> = auctions.map((auction) => {
       const {
+        imageUrl,
         title,
         price,
         nickname,
@@ -36,6 +37,7 @@ function Auction(): JSX.Element {
         comments,
       } = auction.data();
       const newAuction: Item = {
+        imageUrl,
         title,
         price,
         nickname,
@@ -56,7 +58,6 @@ function Auction(): JSX.Element {
   useEffect(() => {
     callAuction();
   }, []);
-  console.log(itemList);
 
   return (
     <>

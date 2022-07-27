@@ -14,6 +14,11 @@ const AuctionListItem = ({ item }: Props): JSX.Element => {
 
   return (
     <div>
+      <p>
+        {item.imageUrl && (
+          <img src={item.imageUrl} alt="image" width="20%" height="20%" />
+        )}
+      </p>
       <b>
         <NavLink to={`/auction/${item.id}`}>{item.title}</NavLink>
       </b>

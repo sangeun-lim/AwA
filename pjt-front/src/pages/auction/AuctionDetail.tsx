@@ -3,7 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Item } from "../../Interface";
 
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
-import { dbService } from "../../fbase";
+import { dbService, storageService } from "../../fbase";
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 interface editItem {
   title: string;
@@ -14,6 +21,7 @@ interface editItem {
 }
 
 const defaultItem: Item = {
+  imageUrl: "",
   id: "",
   title: "",
   price: 0,
@@ -68,6 +76,8 @@ function AuctionDetail(): JSX.Element {
     material: item.material,
     detail: item.detail,
   });
+  const [imgUrl, setImgUrl] = useState<string>("");
+  const [image, setImage] = useState<File | null>(null);
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -78,6 +88,20 @@ function AuctionDetail(): JSX.Element {
         [name]: value,
       };
     });
+  };
+
+  const onFileChange = (e: any) => {
+    const { files } = e.target;
+    const file = files[0];
+    setImage(file);
+
+    const render = new FileReader();
+    render.onload = (finishedEvent: any) => {
+      const { result } = finishedEvent.currentTarget;
+      setImgUrl(result);
+    };
+
+    render.readAsDataURL(file);
   };
 
   const selectGenres = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -112,7 +136,17 @@ function AuctionDetail(): JSX.Element {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
+
+    let imageUrl: string = "";
+
+    if (image) {
+      const imgRef = ref(storageService, `${item.nickname}/${uuidv4()}`);
+      const response = await uploadBytes(imgRef, image);
+      imageUrl = await getDownloadURL(response.ref);
+    }
+
     await updateDoc(doc(dbService, `auction/${address}`), {
+      imageUrl: imageUrl,
       title: editItem.title,
       price: editItem.price,
       genres: genresList,
@@ -131,10 +165,19 @@ function AuctionDetail(): JSX.Element {
     setOnEdit(!onEdit);
   };
 
+  const onClearImg = () => {
+    setImgUrl("");
+    setImage(null);
+  };
+
   const onDeleteClick = async () => {
     const del: boolean = window.confirm("삭제하시겠습니까?");
     if (del) {
       await deleteDoc(doc(dbService, `auction/${address}`));
+      if (item.imageUrl !== "") {
+        const imgRef = ref(storageService, item.imageUrl);
+        await deleteObject(imgRef);
+      }
       navigate("/auction");
     }
   };
@@ -170,6 +213,7 @@ function AuctionDetail(): JSX.Element {
     });
 
     setGenresList(item.genres);
+    setImgUrl(item.imageUrl);
   }, [onEdit, item]);
 
   return (
@@ -178,6 +222,14 @@ function AuctionDetail(): JSX.Element {
         <div>
           <h1>Auction Create</h1>
           <form onSubmit={onSubmit}>
+            <input type="file" accept="image/*" onChange={onFileChange} />
+            {imgUrl && (
+              <div>
+                <img src={imgUrl} alt="미리보기" width="30%" height="30%" />
+                <button onClick={onClearImg}>취소</button>
+              </div>
+            )}
+            <br />
             <input
               name="title"
               type="text"
@@ -247,6 +299,9 @@ function AuctionDetail(): JSX.Element {
       ) : (
         <div>
           <h1>AuctionDetail</h1>
+          {item.imageUrl && (
+            <img src={item.imageUrl} alt="image" width="30%" height="30%" />
+          )}
           <h2>{item.title}</h2>
           <p>작성자 : {item.nickname}</p>
           <p>가격 : {item.price}원</p>

@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { User } from "firebase/auth";
 
 import { addDoc, collection } from "firebase/firestore";
-import { dbService } from "../../fbase";
+import { dbService, storageService } from "../../fbase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 interface Props {
   userObject: User;
@@ -16,6 +18,7 @@ interface ButtonProps {
 
 interface newItem {
   id?: string;
+  imageUrl: string;
   title: string;
   price: number;
   nickname: string;
@@ -25,6 +28,7 @@ interface newItem {
 }
 
 const defaultItem: newItem = {
+  imageUrl: "",
   title: "",
   price: 0,
   nickname: "",
@@ -60,6 +64,8 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
 
   const [genresList, setGenresList] = useState<string[] | undefined>([]);
   const [newItem, setNewItem] = useState<newItem>(defaultItem);
+  const [imgUrl, setImgUrl] = useState<string>("");
+  const [image, setImage] = useState<File | null>(null);
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -70,6 +76,20 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
         [name]: value,
       };
     });
+  };
+
+  const onFileChange = (e: any) => {
+    const { files } = e.target;
+    const file = files[0];
+    setImage(file);
+
+    const render = new FileReader();
+    render.onload = (finishedEvent: any) => {
+      const { result } = finishedEvent.currentTarget;
+      setImgUrl(result);
+    };
+
+    render.readAsDataURL(file);
   };
 
   const selectGenres = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -97,7 +117,16 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
+    let imageUrl: string = "";
+
+    if (image) {
+      const imgRef = ref(storageService, `${userEmail}/${uuidv4()}`);
+      const response = await uploadBytes(imgRef, image);
+      imageUrl = await getDownloadURL(response.ref);
+    }
+
     const newAuction = await addDoc(collection(dbService, "auction"), {
+      imageUrl: imageUrl,
       title: newItem.title,
       price: newItem.price,
       nickname: userEmail,
@@ -108,7 +137,13 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
     });
 
     setNewItem(defaultItem);
+    setImgUrl("");
     navigate(`/auction/${newAuction.id}`);
+  };
+
+  const onClearImg = () => {
+    setImgUrl("");
+    setImage(null);
   };
 
   useEffect(() => {}, []);
@@ -117,6 +152,14 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
     <div>
       <h1>Auction Create</h1>
       <form onSubmit={onSubmit}>
+        <input type="file" accept="image/*" onChange={onFileChange} />
+        {imgUrl && (
+          <div>
+            <img src={imgUrl} alt="미리보기" width="30%" height="30%" />
+            <button onClick={onClearImg}>취소</button>
+          </div>
+        )}
+        <br />
         <input
           name="title"
           type="text"
