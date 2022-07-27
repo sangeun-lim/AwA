@@ -13,6 +13,8 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/socket.io-client": "^3.0.0",
+    "@types/uuid": "^8.3.4",
+    "@types/uuidv4": "^5.0.0",
     "firebase": "^9.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,6 +22,7 @@
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.5.1",
     "typescript": "^4.7.4",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
