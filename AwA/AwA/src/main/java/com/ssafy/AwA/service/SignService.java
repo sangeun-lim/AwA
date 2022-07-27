@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collections;
 
 @Service
@@ -26,7 +27,7 @@ public class SignService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public SignUpResultDto signUp(String email, String password, String nickname
+    public SignUpResultDto signUp(String email, String password, String nickname, boolean gender, LocalDate birth
                                   //String role 무조건 User로 회원가입 할거니까 권한 USER
                                    ) {
         logger.info("[getSignUpResult] 회원 가입 정보 전달");
@@ -46,6 +47,8 @@ public class SignService {
                 .email(email)
                 .nickname(nickname)
                 .password(passwordEncoder.encode(password)) //password암호화 인코딩
+                .gender(gender)
+                .birth(birth)
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build();
 
@@ -86,6 +89,7 @@ public class SignService {
                 .token(jwtTokenProvider.createToken(String.valueOf(user.getEmail()), user.getRoles()))
                 .build();
 
+        user.giveToken(signInResultDto.getToken());
         logger.info("[getSignInResult] SignInResultDto 객체에 값 주입");
         setSuccessResult(signInResultDto);
 

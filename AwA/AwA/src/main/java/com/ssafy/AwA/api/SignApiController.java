@@ -59,6 +59,7 @@ public class SignApiController {
         if(signInResultDto.getCode() == 0) {
             logger.info("[signIn] 정상적으로 로그인 되었습니다. id {} , token : {}", request.email, signInResultDto.getToken());
         }
+
         return signInResultDto;
     }
 
@@ -66,7 +67,7 @@ public class SignApiController {
     @PostMapping("/sign-up")
     public SignUpResultDto signUp(@RequestBody @Valid CreateUserRequest request) {
         logger.info("[signUp] 회원가입을 수행합니다. id : {}, password : ****, name : {}", request.getEmail(), request.getNickname());
-        SignUpResultDto signUpResultDto = signService.signUp(request.email, request.password, request.nickname);
+        SignUpResultDto signUpResultDto = signService.signUp(request.email, request.password, request.nickname, request.gender, request.birth);
 
         logger.info("[signUp] 회원가입을 완료했습니다.");
         return signUpResultDto;

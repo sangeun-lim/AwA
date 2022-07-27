@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"user_id", "nickname", "email", "password", "gender"})
+@ToString(of = {"user_id", "nickname", "email", "password", "birth", "gender"})
 @Entity
 public class User extends BaseTimeEntity implements UserDetails {
 
@@ -168,6 +168,9 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     //자기소개 수정
     public void changeDescription(String description) { this.description = description; }
+
+    //토큰 발급
+    public void giveToken(String accessToken) {this.accessToken = accessToken; }
     //팔로우관련
 //    public void addFollowing(User following) {
 //        this.following_list.add(following); //나를 팔로잉 하는 사람 추가
