@@ -25,23 +25,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    //중복검사
-    public int validateDuplicateEmail(String email) {
-        //이메일 중복검사
-        //중복 시 0 / 정상 1
-        User findByEmailUser = userRepository.findByEmail(email);
-        if(findByEmailUser == null)
-            return 1;
-        return 0;
-    }
-//
-    public int validateDuplcateNickname(String nickname) {
-        //닉네임 중복검사
-       User findByNicknameUser = userRepository.findByNickname(nickname);
-        if(findByNicknameUser==null)
-            return 1;
-        return 0;
-    }
+
 
    public int changeNickname(String nickname, String newNickname) {
        User findByNickname = userRepository.findByNickname(nickname);
@@ -52,14 +36,7 @@ public class UserService {
        return 0;
    }
 
-   public int changeDescription(String nickname, String description) {
-       User findByNickname = userRepository.findByNickname(nickname);
-       findByNickname.changeDescription(description);
 
-       if(findByNickname.getDescription().equals(description))
-           return 1;
-       return 0;
-   }
 
    public List<User> findManUsers(int gender) {
        return userRepository.findUserByGender(gender);
@@ -80,6 +57,10 @@ public class UserService {
 
     public User loadUserByEmail(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email);
+    }
+
+    public User findByEmail(String userEmail) {
+       return userRepository.findByEmail(userEmail);
     }
 
 

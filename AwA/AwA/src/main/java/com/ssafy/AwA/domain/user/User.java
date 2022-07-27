@@ -1,13 +1,12 @@
 package com.ssafy.AwA.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.artwork.PurchaseArtwork;
 import com.ssafy.AwA.domain.chat.Room;
+import com.ssafy.AwA.domain.profile.Profile;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,6 +45,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column(length = 20, nullable = false, unique = true)
     private String nickname;
 
+    @OneToOne(mappedBy = "user")
+    private Profile profile;
+
     @Column
     private boolean gender;
 
@@ -53,42 +55,8 @@ public class User extends BaseTimeEntity implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate birth;
 
-//    @Column
-//    private boolean is_seller;
-
-    @Column
-    private boolean is_manager;
-
-    @Column(length = 500)
-    private String description;
-
     @Column
     private String accessToken;
-
-
-    //이거 단방향으로 할지 생각 !!!!!!!!!! 아래 List까지
-    //팔로우 팔로잉 리스트는 따로 뺴는게 맞는건가??
-//    @ManyToOne
-//    @JoinColumn
-//    @JsonBackReference
-//    private User userFollowing = this;
-//
-//
-//    @ManyToOne
-//    @JoinColumn
-//    @JsonBackReference
-//    private User userFollower = this;
-//
-//    //나를 팔로잉 하는 사람들
-//
-//    @OneToMany
-//    @JsonManagedReference
-//    private List<User> following_list = new ArrayList<User>();
-//
-//    //나를 팔로우 하는 사람들
-//    @OneToMany
-//    @JsonManagedReference
-//    private List<User> follower_list = new ArrayList<User>();
 
     //선호분야리스트
     @OneToMany(mappedBy = "select_user", cascade = CascadeType.ALL)
@@ -165,9 +133,6 @@ public class User extends BaseTimeEntity implements UserDetails {
     public void changeNickname(String nickname) {
         this.nickname = nickname;
     }
-
-    //자기소개 수정
-    public void changeDescription(String description) { this.description = description; }
 
     //토큰 발급
     public void giveToken(String accessToken) {this.accessToken = accessToken; }

@@ -2,6 +2,7 @@ package com.ssafy.AwA.api;
 
 import com.ssafy.AwA.dto.SignInResultDto;
 import com.ssafy.AwA.dto.SignUpResultDto;
+import com.ssafy.AwA.service.ProfileService;
 import com.ssafy.AwA.service.SignService;
 import com.ssafy.AwA.service.UserService;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class SignApiController {
 
     private final SignService signService;
     private final UserService userService;
+    private final ProfileService profileService;
     private Logger logger = LoggerFactory.getLogger(SignApiController.class);
 
     @Data
@@ -70,6 +72,7 @@ public class SignApiController {
         SignUpResultDto signUpResultDto = signService.signUp(request.email, request.password, request.nickname, request.gender, request.birth);
 
         logger.info("[signUp] 회원가입을 완료했습니다.");
+        profileService.createProfile(request.getNickname());
         return signUpResultDto;
     }
 
@@ -95,14 +98,14 @@ public class SignApiController {
     }
 
     //이메일 중복검사
-    @GetMapping("/auth/signup/email/{email}")
+    @GetMapping("/sign-up/email/{email}")
     public int ValidateEmail(@PathVariable String email) {
-        return userService.validateDuplicateEmail(email);
+        return signService.validateDuplicateEmail(email);
     }
 
     //닉네임 중복검사
-    @GetMapping("auth/signup/nickname/{nickname}")
+    @GetMapping("/sign-up/nickname/{nickname}")
     public int ValidateNickname(@PathVariable String nickname) {
-        return userService.validateDuplcateNickname(nickname);
+        return signService.validateDuplcateNickname(nickname);
     }
 }

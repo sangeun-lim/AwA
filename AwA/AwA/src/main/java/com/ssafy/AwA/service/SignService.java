@@ -107,4 +107,22 @@ public class SignService {
         result.setCode(CommonResponse.FAIL.getCode());
         result.setMsg(CommonResponse.FAIL.getMsg());
     }
+
+    //중복검사
+    public int validateDuplicateEmail(String email) {
+        //이메일 중복검사
+        //중복 시 0 / 정상 1
+        User findByEmailUser = userRepository.findByEmail(email);
+        if(findByEmailUser == null)
+            return 1;
+        return 0;
+    }
+    //
+    public int validateDuplcateNickname(String nickname) {
+        //닉네임 중복검사
+        User findByNicknameUser = userRepository.findByNickname(nickname);
+        if(findByNicknameUser==null)
+            return 1;
+        return 0;
+    }
 }

@@ -83,16 +83,16 @@ public class UserApiController {
         }
     }
 
-    @PutMapping("/profile/{nickname}/description")
-    public int changeDescription(@PathVariable("nickname") String nickname, @RequestBody Description newDescription)
-    {
-        try {
-            return userService.changeDescription(nickname, newDescription.description);
-        } catch (Exception e)
-        {
-            return 0;
-        }
-    }
+//    @PutMapping("/profile/{nickname}/description")
+//    public int changeDescription(@PathVariable("nickname") String nickname, @RequestBody Description newDescription)
+//    {
+//        try {
+//            return userService.changeDescription(nickname, newDescription.description);
+//        } catch (Exception e)
+//        {
+//            return 0;
+//        }
+//    }
 
     @GetMapping("/profile/gender/{gender}")
     public List<User> findMans(@PathVariable("gender") int gender) {
@@ -112,10 +112,7 @@ public class UserApiController {
         @NotEmpty
         private String password;
     }
-    @PostMapping("/auth/login")
-    public User login(@RequestBody @Valid LoginUserRequest request) {
-       return userService.login(request.getEmail(), request.getPassword());
-    }
+
     @Data
     @AllArgsConstructor
     static class UpdateNicknameResponse {

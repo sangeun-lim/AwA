@@ -1,5 +1,6 @@
 package com.ssafy.AwA.domain.follow;
 
+import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
 import lombok.*;
 
@@ -14,17 +15,17 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "from_user_id")
+    @JoinColumn(name = "from_profile_id")
     @ManyToOne
-    private User fromUser; //팔로우하는 유저
+    private Profile fromProfile; //팔로우하는 유저
 
-    @JoinColumn(name = "to_user_id")
+    @JoinColumn(name = "to_profile_id")
     @ManyToOne
-    private User toUser; //팔로우 당하는 유저
+    private Profile toProfile; //팔로우 당하는 유저
 
     @Builder
-    public Follow(User fromUser, User toUser) {
-        this.fromUser = fromUser;
-        this.toUser = toUser;
+    public Follow(Profile fromProfile, Profile toProfile) {
+        this.fromProfile = fromProfile;
+        this.toProfile = toProfile;
     }
 }
