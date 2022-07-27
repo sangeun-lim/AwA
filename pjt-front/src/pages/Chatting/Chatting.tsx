@@ -50,7 +50,7 @@ function Chatting({
 
       setRoomName(newRoom[0] + newRoom[1]);
     }
-  }, [selectChat]);
+  }, [selectChat, userObject.email]);
 
   return (
     <div>
@@ -64,6 +64,7 @@ function Chatting({
           userObject={userObject}
           roomName={roomName}
           setRoomName={setRoomName}
+          selectChat={selectChat}
         ></ChatBoard>
       )}
     </div>

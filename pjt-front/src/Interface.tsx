@@ -35,7 +35,7 @@ export interface Item {
   nickname: string;
   genres: Array<string>;
   material: string;
-  itemImage: string;
+  itemImage?: string;
   detail: string;
   createdAt: Date;
   like: Array<User>;

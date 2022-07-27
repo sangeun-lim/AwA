@@ -62,7 +62,7 @@ function ChatBoard({ roomName, setRoomName, userObject, selectChat }: Props) {
 
   useEffect(() => {
     SOCKET.emit("enter_room", roomName);
-  }, []);
+  }, [roomName]);
 
   useEffect(() => {
     // 상대방과의 기존 채팅 목록을 가져옴

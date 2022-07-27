@@ -1,7 +1,7 @@
 import { User } from "firebase/auth";
 import React, { Dispatch, useEffect, useState } from "react";
 import { ChattingRoom } from "../../Interface";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 
 import "./ChatList.css";
@@ -46,7 +46,7 @@ function ChatList({ userObject, setSelectChat }: Props): JSX.Element {
     };
 
     callChatList();
-  }, []);
+  }, [userObject.email]);
 
   return (
     <div>
