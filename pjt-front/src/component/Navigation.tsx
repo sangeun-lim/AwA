@@ -1,7 +1,9 @@
 import React from "react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import style from "./Navigation.module.css";
+import api from "../api/api";
+import axios from "axios";
 
 interface Props {
   userEmail: string | null | undefined;
@@ -9,6 +11,25 @@ interface Props {
 
 function Navigation({ userEmail }: Props): JSX.Element {
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  // userObject 도 null 값으로 바꿔주기
+
+  const logoutRequest = async () => {
+    const response = await axios({
+      url: api.auth.logout(),
+      method: "post",
+      data: localStorage.getItem("token"),
+    });
+    if (response.status === 200) {
+      navigate("/preview");
+    }
+  };
+
+  const Logout = () => {
+    logoutRequest();
+  };
+
   return (
     <nav className={style.navBox}>
       <div
@@ -85,6 +106,7 @@ function Navigation({ userEmail }: Props): JSX.Element {
               >
                 Logout
               </NavLink>
+              <button onClick={Logout}>Logout</button>
             </div>
           ) : (
             // 로그인 안 했을 때
@@ -160,6 +182,7 @@ function Navigation({ userEmail }: Props): JSX.Element {
               >
                 Logout
               </NavLink>
+              <button onClick={Logout}>Logout</button>
             </div>
           ) : (
             // 로그인 안 했을 때
