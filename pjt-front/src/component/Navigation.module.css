@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   top: 0;
-  z-index: 9999;
+  z-index: 1000;
   background-color: white;
   border-bottom: 2px solid rgba(254, 111, 59, 0.3);
 }

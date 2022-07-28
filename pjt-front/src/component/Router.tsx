@@ -19,18 +19,20 @@ import Rank from "../pages/Rank";
 import Error from "../pages/Error";
 import Navigation from "./Navigation";
 import { User } from "./../Interface";
-import { useState } from "react";
+import { useState, Dispatch } from "react";
 
 interface Props {
   isLoggedIn: boolean;
   userObject: User | null;
   getUserData: Function;
+  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AppRouter = ({
   isLoggedIn,
   userObject,
   getUserData,
+  setIsLoading,
 }: Props): JSX.Element => {
   const [selectChat, setSelectChat] = useState<string | null>(null); // 채팅 상대유저의 이메일을 저장
 
@@ -44,12 +46,18 @@ const AppRouter = ({
           <Route
             path="/auth/login"
             element={
-              <Login isLoggedIn={isLoggedIn} getUserData={getUserData} />
+              <Login
+                isLoggedIn={isLoggedIn}
+                getUserData={getUserData}
+                setIsLoading={setIsLoading}
+              />
             }
           />
           <Route
             path="/auth/signup"
-            element={<SignUp isLoggedIn={isLoggedIn} />}
+            element={
+              <SignUp isLoggedIn={isLoggedIn} setIsLoading={setIsLoading} />
+            }
           />
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route
