@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,9 +34,18 @@ public class ArtworkApiController {
         return ResponseEntity.status(HttpStatus.OK).body(artworkResponseDto);
     }
 
-//    @GetMapping("/{userEmail}")
-//    public ResponseEntity<ArtworkResponseDto> findArtworkByEmail(@PathVariable(name = "userEmail") String userEmail) {
-//
-//    }
+    @GetMapping
+    public List<ArtworkResponseDto> getAllArtwork() {
+        List<ArtworkResponseDto> artworkResponseDto = artworkService.getAllArtwork();
+
+        return artworkResponseDto;
+    }
+
+    @GetMapping("/{artwork_id}")
+    public ArtworkResponseDto getArtworkById(@PathVariable("artwork_id") Long artwork_id) {
+        ArtworkResponseDto artworkResponseDto = artworkService.getArtworkById(artwork_id);
+        return artworkResponseDto;
+//        return null;
+    }
 
 }

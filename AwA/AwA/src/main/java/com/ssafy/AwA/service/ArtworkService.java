@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -75,5 +76,66 @@ public class ArtworkService {
                 .build();
 
         return artworkResponseDto;
+    }
+
+    public List<ArtworkResponseDto> getAllArtwork() {
+        List<Artwork> allArtworks = artworkRepository.findAll();
+
+
+        List<ArtworkResponseDto> artworkResponseDtoList = new ArrayList<>();
+
+        for(int i=0;i<allArtworks.size();i++) {
+            Artwork targetArtwork = allArtworks.get(i);
+
+            User sellUser = targetArtwork.getSell_user();
+
+            List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
+            for (int j = 0; j < targetArtwork.getAttachment_list().size(); j++)
+            {       attachmentRequestDtoList.add(AttachmentRequestDto.builder()
+                        .type(targetArtwork.getAttachment_list().get(j).getType())
+                        .url(targetArtwork.getAttachment_list().get(j).getUrl())
+                        .build()
+                );
+            }
+
+            artworkResponseDtoList.add(ArtworkResponseDto.builder()
+                    .artwork_id(targetArtwork.getArtwork_id())
+                    .sell_user(sellUser.getNickname())
+                    .title(targetArtwork.getTitle())
+                    .view_count(targetArtwork.getView_count())
+                    .like_count(targetArtwork.getLike_count())
+                    .price(targetArtwork.getPrice())
+                    .genre(targetArtwork.getGenre())
+                    .ingredient(targetArtwork.getIngredient())
+                    .attachmentRequestDtoList(attachmentRequestDtoList)
+                    .build());
+        }
+
+        return artworkResponseDtoList;
+    }
+
+    public ArtworkResponseDto getArtworkById(Long artwork_id) {
+        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+        List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
+        for(int i=0;i<targetArtwork.getAttachment_list().size();i++) {
+            attachmentRequestDtoList.add(AttachmentRequestDto.builder()
+                    .type(targetArtwork.getAttachment_list().get(0).getType())
+                    .url(targetArtwork.getAttachment_list().get(0).getUrl())
+                    .build()
+            );
+        }
+        User targetUser = targetArtwork.getSell_user();
+
+        return ArtworkResponseDto.builder()
+                .artwork_id(artwork_id)
+                .attachmentRequestDtoList(attachmentRequestDtoList)
+                .ingredient(targetArtwork.getIngredient())
+                .genre(targetArtwork.getGenre())
+                .title(targetArtwork.getTitle())
+                .sell_user(targetUser.getNickname())
+                .like_count(targetArtwork.getLike_count())
+                .price(targetArtwork.getPrice())
+                .view_count(targetArtwork.getView_count())
+                .build();
     }
 }
