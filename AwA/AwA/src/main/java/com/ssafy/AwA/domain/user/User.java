@@ -1,6 +1,7 @@
 package com.ssafy.AwA.domain.user;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.artwork.Artwork;
@@ -74,6 +75,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     private List<PurchaseArtwork> purchase_list = new ArrayList<>();
 
     @OneToMany(mappedBy = "sell_user",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Artwork> sell_list = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)

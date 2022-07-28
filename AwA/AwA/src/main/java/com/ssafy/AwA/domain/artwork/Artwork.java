@@ -1,5 +1,6 @@
 package com.ssafy.AwA.domain.artwork;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.attachment.Attachment;
 import com.ssafy.AwA.domain.chat.Room;
@@ -26,6 +27,7 @@ public class Artwork extends BaseTimeEntity {
     //판매 등록 유저
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sell_user_id")
+    @JsonBackReference
     private User sell_user;
 
     @Column(length = 200, nullable = false)
@@ -33,9 +35,6 @@ public class Artwork extends BaseTimeEntity {
 
     @Column
     private int view_count;
-
-    @Column
-    private int like_count;
 
     @Column
     private int price;
@@ -76,11 +75,10 @@ public class Artwork extends BaseTimeEntity {
 
 
     @Builder
-    public Artwork(User sell_user, String title, int view_count, int like_count, int price, String description, boolean is_sell, List<String> genre, List<String> ingredient, List<Attachment> attachment_list) {
+    public Artwork(User sell_user, String title, int view_count, int price, String description, boolean is_sell, List<String> genre, List<String> ingredient, List<Attachment> attachment_list) {
         this.sell_user = sell_user;
         this.title = title;
         this.view_count = view_count;
-        this.like_count = like_count;
         this.price = price;
         this.description = description;
         this.is_sell = is_sell;
@@ -114,10 +112,6 @@ public class Artwork extends BaseTimeEntity {
 
 
     //비즈니스 로직
-    public void addLikeCount() {
-        this.like_count++;
-    }
-
     public void addViewCount() {
         this.view_count++;
     }
@@ -126,4 +120,23 @@ public class Artwork extends BaseTimeEntity {
         this.is_sell = !this.is_sell;
     }
 
+    public void updateTitle(String newTitle) {
+        this.title = newTitle;
+    }
+
+    public void updatePrice(int newPrice) {
+        this.price = newPrice;
+    }
+
+    public void updateDescription(String newDescription) {
+        this.description = newDescription;
+    }
+
+    public void updateGenre(List<String> genre) {
+        this.genre = genre;
+    }
+
+    public void updateIngredient(List<String> ingredient) {
+        this.ingredient = ingredient;
+    }
 }

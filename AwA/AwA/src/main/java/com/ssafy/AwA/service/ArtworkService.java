@@ -103,7 +103,6 @@ public class ArtworkService {
                     .sell_user(sellUser.getNickname())
                     .title(targetArtwork.getTitle())
                     .view_count(targetArtwork.getView_count())
-                    .like_count(targetArtwork.getLike_count())
                     .price(targetArtwork.getPrice())
                     .genre(targetArtwork.getGenre())
                     .ingredient(targetArtwork.getIngredient())
@@ -116,6 +115,9 @@ public class ArtworkService {
 
     public ArtworkResponseDto getArtworkById(Long artwork_id) {
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+
+        targetArtwork.addViewCount(); //조회수 증가
+
         List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
         for(int i=0;i<targetArtwork.getAttachment_list().size();i++) {
             attachmentRequestDtoList.add(AttachmentRequestDto.builder()
@@ -133,9 +135,42 @@ public class ArtworkService {
                 .genre(targetArtwork.getGenre())
                 .title(targetArtwork.getTitle())
                 .sell_user(targetUser.getNickname())
-                .like_count(targetArtwork.getLike_count())
                 .price(targetArtwork.getPrice())
                 .view_count(targetArtwork.getView_count())
                 .build();
+    }
+
+    public ArtworkResponseDto updateTitle(Long artwork_id, String newTitle) {
+        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+
+        targetArtwork.updateTitle(newTitle);
+        return ArtworkResponseDto.builder()
+                .title(newTitle)
+                .build();
+    }
+
+    public void updatePrice(Long artwork_id, int newPrice) {
+        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+
+        targetArtwork.updatePrice(newPrice);
+
+    }
+
+    public void updateDescription(Long artwork_id, String newDescription) {
+        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+
+        targetArtwork.updateDescription(newDescription);
+    }
+
+    public void updateGenre(Long artwork_id, List<String> genre) {
+        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+
+        targetArtwork.updateGenre(genre);
+    }
+
+    public void updateIngredient(Long artwork_id, List<String> ingredient) {
+        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+
+        targetArtwork.updateIngredient(ingredient);
     }
 }
