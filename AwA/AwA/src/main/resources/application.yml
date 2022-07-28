@@ -1,18 +1,18 @@
 
-#spring:
-#  datasource:
-#    url: jdbc:mariadb://i7c101.p.ssafy.io/AwA
-#    username: AwA
-#    password: tpwlslrnldudnj!#%
-#    driver-class-name: org.mariadb.jdbc.Driver
-
-
 spring:
   datasource:
-    url: jdbc:mariadb://awa.cwesz7tzcefm.ap-northeast-2.rds.amazonaws.com/AwA
-    username: ssafy
+    url: jdbc:mariadb://i7c101.p.ssafy.io/AwA
+    username: AwA
     password: tpwlslrnldudnj!#%
     driver-class-name: org.mariadb.jdbc.Driver
+
+
+#spring:
+#  datasource:
+#    url: jdbc:mariadb://awa.cwesz7tzcefm.ap-northeast-2.rds.amazonaws.com/AwA
+#    username: ssafy
+#    password: tpwlslrnldudnj!#%
+#    driver-class-name: org.mariadb.jdbc.Driver
 
   #main:
     #allow-circular-references: true 서로 참조하는 무한루프에서 빠져나오기 위한것이였는데 뭐였더라.. userService내에서 jwtTokenProvider쓰고 JwtTokenProvider에서 userService또불러서 썼는데 걍 userRepository 쓰는걸로 해결
@@ -24,7 +24,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       properties:
         hibernate:
           #show_sql: true
