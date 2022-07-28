@@ -116,10 +116,9 @@ function AuctionDetail(): JSX.Element {
     setImages(images.filter((_, index) => index !== id));
     setShowImages(showImages.filter((_, index) => index !== id));
     setDelImages((prev) => {
-      const delImage = item.imageUrlList[id];
+      const delImage = showImages[id];
       return [...prev, delImage];
     });
-    console.log(delImages);
   };
 
   // const onFileChange = (e: any) => {
@@ -169,18 +168,24 @@ function AuctionDetail(): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    let imageUrlList: Array<string> = [];
+    let imageUrlLists: Array<string> = item.imageUrlList;
 
     for (let i = 0; i < images.length; i++) {
       let imageUrl: string = "";
-      const imgRef = ref(storageService, `${item.nickname}/${uuidv4()}`);
+      const imgRef = ref(storageService, `zmmmm111@gmail.com/${uuidv4()}`);
       const response = await uploadBytes(imgRef, images[i]);
       imageUrl = await getDownloadURL(response.ref);
-      imageUrlList.push(imageUrl);
+      imageUrlLists.push(imageUrl);
+    }
+
+    for (let i = 0; i < delImages.length; i++) {
+      const imgRef = ref(storageService, delImages[i]);
+      await deleteObject(imgRef);
+      imageUrlLists = imageUrlLists.filter((item) => item !== delImages[i]);
     }
 
     await updateDoc(doc(dbService, `auction/${address}`), {
-      imageUrlList: imageUrlList,
+      imageUrlList: imageUrlLists,
       title: editItem.title,
       price: editItem.price,
       genres: genresList,
@@ -195,7 +200,6 @@ function AuctionDetail(): JSX.Element {
       ...newData,
       id: address,
     });
-
     setOnEdit(!onEdit);
   };
 
@@ -250,13 +254,11 @@ function AuctionDetail(): JSX.Element {
     setShowImages(item.imageUrlList);
   }, [onEdit, item]);
 
-  // console.log(item.imageUrlList);
-
   return (
     <div>
       {onEdit ? (
         <div>
-          <h1>Auction Create</h1>
+          <h1>Auction Edit</h1>
           <form onSubmit={onSubmit}>
             <label htmlFor="input-file" onChange={handleAddImages}>
               <input type="file" id="input-file" multiple />
@@ -270,8 +272,8 @@ function AuctionDetail(): JSX.Element {
                     <img
                       src={image}
                       alt={`${image}-${id}`}
-                      width="30%"
-                      height="30%"
+                      width="20%"
+                      height="20%"
                     />
                     <button
                       onClick={(e) => {
@@ -374,12 +376,12 @@ function AuctionDetail(): JSX.Element {
           <h2>{item.title}</h2>
           <p>작성자 : {item.nickname}</p>
           <p>가격 : {item.price}원</p>
-          <p>
+          {/* <p>
             장르 :{" "}
             {item.genres.map((item: string, i: number) => (
               <span key={i}>{item} </span>
             ))}
-          </p>
+          </p> */}
           <p>재료 : {item.material}</p>
           <p>{item.detail}</p>
           <button onClick={onEditClick}>수정</button>

@@ -7,9 +7,9 @@ import { dbService, storageService } from "../../fbase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 
-interface Props {
-  userObject: User;
-}
+// interface Props {
+//   userObject: User;
+// }
 
 interface ButtonProps {
   item: string;
@@ -58,9 +58,9 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   );
 }
 
-function AuctionEdit({ userObject }: Props): JSX.Element {
+function AuctionEdit(): JSX.Element {
   const navigate = useNavigate();
-  const userEmail: string | null = userObject.email;
+  // const userEmail: string | null = userObject.email;
 
   const [genresList, setGenresList] = useState<string[] | undefined>([]);
   const [newItem, setNewItem] = useState<newItem>(defaultItem);
@@ -147,7 +147,7 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
 
     for (let i = 0; i < images.length; i++) {
       let imageUrl: string = "";
-      const imgRef = ref(storageService, `${userEmail}/${uuidv4()}`);
+      const imgRef = ref(storageService, `zmmmm111@gmail.com/${uuidv4()}`);
       const response = await uploadBytes(imgRef, images[i]);
       imageUrl = await getDownloadURL(response.ref);
       imageUrlList.push(imageUrl);
@@ -157,7 +157,7 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
       imageUrlList: imageUrlList,
       title: newItem.title,
       price: newItem.price,
-      nickname: userEmail,
+      // nickname: userEmail,
       genres: genresList,
       material: newItem.material,
       detail: newItem.detail,
