@@ -17,7 +17,7 @@ const defaultNotice: NoticeItem = {
   modifiedDate: "",
 };
 
-function NoticeDetail(): JSX.Element {
+function NoticeDetailAndEdit(): JSX.Element {
   const params = useParams();
   const address = params.id || "";
   const navigate = useNavigate();
@@ -165,4 +165,4 @@ function NoticeDetail(): JSX.Element {
   );
 }
 
-export default NoticeDetail;
+export default NoticeDetailAndEdit;

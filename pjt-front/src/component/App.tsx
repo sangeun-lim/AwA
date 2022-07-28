@@ -4,16 +4,15 @@ import { authService } from "../fbase";
 import AppRouter from "./Router";
 
 function App(): JSX.Element {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userObject, setUserObject] = useState<User | null>(null);
 
   useEffect(() => {
+    const token = localStorage.getItem("token") || "";
+
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setIsLoggedIn(true);
         setUserObject(user);
       } else {
-        setIsLoggedIn(false);
         setUserObject(null);
       }
     });
@@ -21,7 +20,7 @@ function App(): JSX.Element {
 
   return (
     <div>
-      <AppRouter isLoggedIn={isLoggedIn} userObject={userObject} />
+      <AppRouter isLoggedIn={!!userObject} userObject={userObject} />
     </div>
   );
 }

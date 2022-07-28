@@ -14,7 +14,7 @@ const defaultNotice: newNote = {
   content: "",
 };
 
-function NoticeEdit(): JSX.Element {
+function NoticeCreate(): JSX.Element {
   const navigate = useNavigate();
   const [newNotice, setNewNotice] = useState<newNote>(defaultNotice);
 
@@ -79,4 +79,4 @@ function NoticeEdit(): JSX.Element {
   );
 }
 
-export default NoticeEdit;
+export default NoticeCreate;

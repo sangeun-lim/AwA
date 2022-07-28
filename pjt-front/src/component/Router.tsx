@@ -12,8 +12,8 @@ import Auction from "../pages/auction/Auction";
 import AuctionDetail from "../pages/auction/AuctionDetail";
 import AuctionEdit from "../pages/auction/AuctionEdit";
 import Notice from "../pages/notice/Notice";
-import NoticeDetail from "../pages/notice/NoticeDetail";
-import NoticeEdit from "../pages/notice/NoticeEdit";
+import NoticeDetailAndEdit from "../pages/notice/NoticeDetailAndEdit";
+import NoticeCreate from "../pages/notice/NoticeCreate";
 import SearchResult from "../pages/SearchResult";
 import Rank from "../pages/Rank";
 import Error from "../pages/Error";
@@ -71,8 +71,8 @@ const AppRouter = ({ isLoggedIn, userObject }: Props): JSX.Element => {
             />
           )}
           <Route path="/notice" element={<Notice />} />
-          <Route path="/notice/:id" element={<NoticeDetail />} />
-          <Route path="/notice/edit" element={<NoticeEdit />} />
+          <Route path="/notice/:id" element={<NoticeDetailAndEdit />} />
+          <Route path="/notice/create" element={<NoticeCreate />} />
           <Route path="/searchresult" element={<SearchResult />} />
           <Route path="/rank" element={<Rank />} />
           <Route path="*" element={<Error />} />
