@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useState } from "react";
+import { useState, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./SignUp.module.css";
 import api from "../../api/api";
@@ -7,6 +7,7 @@ import axios from "axios";
 
 interface Props {
   isLoggedIn: boolean;
+  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface SignUpData {
@@ -27,38 +28,46 @@ const defaultData = {
   gender: null,
 };
 
-function SignUp({ isLoggedIn }: Props): JSX.Element {
+function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
   const [signUpForm, setSignUpForm] = useState<SignUpData>(defaultData);
   const navigate = useNavigate();
   const [checkEmail, setCheckEmail] = useState<boolean | string>(false);
   const [checkNickname, setCheckNickname] = useState<boolean | string>(false);
 
   const signupRequest = async () => {
-    const response = await axios({
-      url: api.auth.signup(),
-      method: "post",
-      data: {
-        birth: signUpForm.birth,
-        email: signUpForm.id,
-        gender: signUpForm.gender,
-        nickname: signUpForm.nickname,
-        password: signUpForm.pw1,
-      },
-    });
-    if (response.status === 200) {
-      console.log(signUpForm);
-      alert("회원가입이 완료되었습니다.");
-      navigate("/auth/login");
-    } else {
-      alert("회원가입에 실패했습니다.");
+    try {
+      setIsLoading(true);
+      const response = await axios({
+        url: api.auth.signup(),
+        method: "post",
+        data: {
+          birth: signUpForm.birth,
+          email: signUpForm.id,
+          gender: signUpForm.gender,
+          nickname: signUpForm.nickname,
+          password: signUpForm.pw1,
+        },
+      });
+      setIsLoading(false);
+      if (response.status === 200) {
+        alert("회원가입이 완료되었습니다.");
+        navigate("/auth/login");
+      } else {
+        alert("회원가입에 실패했습니다.");
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.error(err);
     }
   };
 
   const checkEmailButton = async () => {
+    setIsLoading(true);
     const emailCheck = await axios({
       url: api.auth.signup() + `/email/${signUpForm.id}`,
       method: "get",
     });
+    setIsLoading(false);
     // 중복 이메일일때
     if (!emailCheck.data) {
       alert("이미 사용중인 이메일입니다.");
@@ -71,10 +80,12 @@ function SignUp({ isLoggedIn }: Props): JSX.Element {
   };
 
   const checkNicknameButton = async () => {
+    setIsLoading(true);
     const nicknameCheck = await axios({
       url: api.auth.signup() + `/nickname/${signUpForm.nickname}`,
       method: "get",
     });
+    setIsLoading(false);
     // 중복 닉네임일때
     if (!nicknameCheck.data) {
       alert("중복 닉네임입니다.");
@@ -147,6 +158,7 @@ function SignUp({ isLoggedIn }: Props): JSX.Element {
         />
         <button onClick={checkEmailButton}>중복확인</button>
       </div>
+      {checkEmail && <span>사용가능합니다.</span>}
       <div className={style.signContainer}>
         <label htmlFor="password">비밀번호 </label>
         <input
@@ -173,6 +185,12 @@ function SignUp({ isLoggedIn }: Props): JSX.Element {
           className={style.signInput}
         />
       </div>
+      {signUpForm.pw1 && signUpForm.pw1 !== signUpForm.pw2 && (
+        <span>비밀번호가 다릅니다.</span>
+      )}
+      {signUpForm.pw1 && signUpForm.pw1 === signUpForm.pw2 && (
+        <span>비밀번호가 같습니다.</span>
+      )}
       <div className={style.signContainer}>
         <label htmlFor="nickname">닉네임 </label>
         <input
@@ -187,6 +205,7 @@ function SignUp({ isLoggedIn }: Props): JSX.Element {
         />
         <button onClick={checkNicknameButton}>중복확인</button>
       </div>
+      {checkNickname && <span>사용가능합니다.</span>}
       <div className={style.signContainer}>
         <label htmlFor="birth">생년월일</label>
         <input
@@ -225,11 +244,22 @@ function SignUp({ isLoggedIn }: Props): JSX.Element {
       </div>
       <br />
       <input
-        disabled={!(checkEmail && checkNickname)}
+        disabled={
+          !(checkEmail && checkNickname) &&
+          !!signUpForm.pw1 &&
+          signUpForm.pw1 === signUpForm.pw2
+        }
         type="submit"
         value="회원가입"
         onClick={onSubmit}
-        className={style.signSubmit}
+        className={
+          checkEmail &&
+          checkNickname &&
+          !!signUpForm.pw1 &&
+          signUpForm.pw1 === signUpForm.pw2
+            ? style.signSubmit
+            : style.signSubmitDisabled
+        }
       />
     </div>
   );

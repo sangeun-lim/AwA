@@ -75,6 +75,16 @@
   color: rgba(254, 111, 59, 1);
 }
 
+.signSubmitDisabled {
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 5px 20px;
+  background: rgb(255, 255, 255);
+  border: 1px solid black;
+  margin: 10px;
+}
+
 .signSubmit {
   margin-top: 10px;
   cursor: pointer;

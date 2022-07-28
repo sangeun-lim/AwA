@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useState } from "react";
+import { useState, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
 import api from "../../api/api";
@@ -8,6 +8,7 @@ import axios from "axios";
 interface Props {
   isLoggedIn: boolean;
   getUserData: Function;
+  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface LoginData {
@@ -20,12 +21,13 @@ const defaultData = {
   pw: "",
 };
 
-function Login({ isLoggedIn, getUserData }: Props): JSX.Element {
+function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
   const [loginForm, setLoginForm] = useState<LoginData>(defaultData);
   const navigate = useNavigate();
 
   const loginRequest = async () => {
     try {
+      setIsLoading(true);
       const response = await axios({
         url: api.auth.login(),
         method: "post",
@@ -34,12 +36,14 @@ function Login({ isLoggedIn, getUserData }: Props): JSX.Element {
           password: loginForm.pw,
         },
       });
+      setIsLoading(false);
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         getUserData();
         navigate("/");
       }
     } catch (err) {
+      setIsLoading(false);
       alert(err);
     }
   };
