@@ -8,7 +8,7 @@ import React, {
   FormEvent,
 } from "react";
 import { MessageObject } from "../../Interface";
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 import "./ChatBoard.css";
 import { dbService } from "../../fbase";
 
@@ -23,7 +23,7 @@ interface SubProps {
   message: MessageObject;
 }
 
-const SOCKET = socketIOClient("localhost:4002");
+// const SOCKET = socketIOClient("localhost:4002");
 
 // 페이지 우측 현재 채팅 중인 채팅방 컴포넌트
 function ChatBoard({ roomName, setRoomName, userObject, selectChat }: Props) {
@@ -47,7 +47,7 @@ function ChatBoard({ roomName, setRoomName, userObject, selectChat }: Props) {
         roomName: roomName,
       };
 
-      SOCKET.emit("send message", newMessageObject, selectChat);
+      // SOCKET.emit("send message", newMessageObject, selectChat);
 
       // db에 저장하는 코드 필요
       setMessageList((prev) => prev.concat(newMessageObject));
@@ -61,7 +61,7 @@ function ChatBoard({ roomName, setRoomName, userObject, selectChat }: Props) {
   };
 
   useEffect(() => {
-    SOCKET.emit("enter_room", roomName);
+    // SOCKET.emit("enter_room", roomName);
   }, [roomName]);
 
   useEffect(() => {
@@ -97,9 +97,9 @@ function ChatBoard({ roomName, setRoomName, userObject, selectChat }: Props) {
   }, [roomName]);
 
   useEffect(() => {
-    SOCKET.on("receive message", (message: MessageObject) => {
-      setMessageList((prev) => prev.concat(message));
-    });
+    // SOCKET.on("receive message", (message: MessageObject) => {
+    //   setMessageList((prev) => prev.concat(message));
+    // });
   }, []);
 
   return (

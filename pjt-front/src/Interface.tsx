@@ -46,10 +46,11 @@ export interface Item {
 
 // 공지사항 Object
 export interface NoticeItem {
-  id: string;
+  notice_id: number;
   title: string;
   content: string;
-  createdAt: Date;
+  createdDate: string;
+  modifiedDate: string;
 }
 
 // 채팅방 Object
