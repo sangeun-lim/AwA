@@ -10,7 +10,7 @@ function Notice(): JSX.Element {
   const [noticeList, setNoticeList] = useState<Array<NoticeItem>>([]);
 
   const onClick = () => {
-    navigate("/notice/edit");
+    navigate("/notice/create");
   };
 
   useEffect(() => {
