@@ -1,7 +1,6 @@
 package com.ssafy.AwA.domain.follow;
 
 import com.ssafy.AwA.domain.profile.Profile;
-import com.ssafy.AwA.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;

@@ -28,10 +28,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         SessionCreationPolicy.STATELESS) //REST API 기반 애플리케이션의 동작 방식 설정, 지금 JWT토큰으로 인증처리, 세션 사용안해서 STATELESS로 설정
                 .and()
                 .authorizeRequests()//애플리케이션에 들어오는 요청에 대한 사용권한 체크
-                .antMatchers("/auth/sign-in", "/auth/sign-up").permitAll() //antPattern을 통해 권한 설정 특정 경로에 모두 허용
-                .antMatchers(HttpMethod.GET, "/artwork").permitAll() //artwork로 시작하는 경로의 GET요청은 모두 허용
+//                .antMatchers("/auth/sign-in", "/auth/sign-up").permitAll() //antPattern을 통해 권한 설정 특정 경로에 모두 허용
+//                .antMatchers(HttpMethod.GET, "/artwork").permitAll() //artwork로 시작하는 경로의 GET요청은 모두 허용
 //                .antMatchers(HttpMethod.GET, "/profile").permitAll()
-                .antMatchers("**exception**").permitAll() //exception이란 단어가 들어간 경로는 모두 허용
+//                .antMatchers("**exception**").permitAll() //exception이란 단어가 들어간 경로는 모두 허용
+                .antMatchers("/").permitAll()
                 //.anyRequest().hasRole("ADMIN") //기타 요청은 인증된 권한을 가진 사용자에게 허용
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())//권한을 확인하는 과정에서 통과하지 못하는 예외가 발생하면 예외 전달 (ex 로그인 안했을 때 들어갈 수 없는곳 들어가면 로그인페이지로)

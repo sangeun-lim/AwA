@@ -2,9 +2,11 @@ package com.ssafy.AwA.service;
 
 import com.ssafy.AwA.config.security.CommonResponse;
 import com.ssafy.AwA.config.security.JwtTokenProvider;
+import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.dto.SignInResultDto;
 import com.ssafy.AwA.dto.SignUpResultDto;
 import com.ssafy.AwA.domain.user.User;
+import com.ssafy.AwA.repository.ProfileRepository;
 import com.ssafy.AwA.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ public class SignService {
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
@@ -32,6 +35,8 @@ public class SignService {
                                    ) {
         logger.info("[getSignUpResult] 회원 가입 정보 전달");
         User user;
+
+
 //        if(role.equalsIgnoreCase("admin")) {
 //            user = User.builder()
 //                    .email(email)
@@ -53,6 +58,11 @@ public class SignService {
                 .build();
 
         User savedUser = userRepository.save(user);
+        Profile profile = Profile.builder()
+                .nickname(nickname)
+                .owner_user(user)
+                .build();
+        profileRepository.save(profile);
         SignUpResultDto signUpResultDto = new SignInResultDto();
 
         logger.info("[getSignUpResult] userEntity 값이 들어왔는지 확인 후 결과값 주입");

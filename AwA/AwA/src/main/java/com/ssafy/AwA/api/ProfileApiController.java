@@ -2,13 +2,11 @@ package com.ssafy.AwA.api;
 
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
-import com.ssafy.AwA.dto.ProfileDto;
+import com.ssafy.AwA.dto.ProfileResponseDto;
 import com.ssafy.AwA.service.ProfileService;
 import com.ssafy.AwA.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,47 +15,53 @@ public class ProfileApiController {
 
     private final ProfileService profileService;
     private final UserService userService;
-
     @GetMapping("/{userEmail}")
-    public ProfileDto getProfile(@PathVariable(name = "userEmail") String userEmail) {
+    public ProfileResponseDto getProfile(@PathVariable(name = "userEmail") String userEmail) {
         User targetUser = userService.findByEmail(userEmail);
+        String nickname = targetUser.getNickname();
 
+        Profile targetProfile = profileService.findByNickname(nickname);
+        System.out.println(targetProfile.getNickname());
+        System.out.println(targetProfile.getDescription());
+        System.out.println(targetProfile.getProfile_picture_url());
+        ProfileResponseDto profileResponseDto = new ProfileResponseDto(
+                targetProfile.getNickname(), targetProfile.getDescription(), targetProfile.getProfile_picture_url()
+        );
+        return profileResponseDto;
+//        return null;
+    }
+
+    @PutMapping("{userEmail}/nickname/{newNickname}")
+    public String updateProfileNickname(@PathVariable(name = "userEmail")String userEmail, @PathVariable(name = "newNickname") String newNickname) {
+        User targetUser = userService.findByEmail(userEmail);
         String targetNickname = targetUser.getNickname();
-        Profile profile = profileService.getProfile(targetNickname);
 
-        return ProfileDto.builder()
-                .profilePictureURL(profile.getProfilePictureURL())
-                .nickname(profile.getNickname())
-                .description(profile.getDescription())
-                .build();
+        Profile targetProfile = profileService.findByNickname(targetNickname);
+        profileService.updateNickname(targetProfile.getProfile_id(), newNickname);
 
-    }
-
-    @PutMapping("/{userEmail}/picture/{newPictureURL}")
-    public String updateProfilePictureURL(@PathVariable(name = "userEmail") String userEmail,@PathVariable(name = "newPictureURL") String url) {
-        User targetUser = userService.findByEmail(userEmail);
-        Profile targetProfile = profileService.getProfile(targetUser.getNickname());
-
-        profileService.changePictureURL(targetUser.getNickname(), url);
-        return targetProfile.getProfilePictureURL();
-    }
-
-    @PutMapping("/{userEmail}/nickname/{newNickname}")
-    public String updateProfileNickname(@PathVariable(name = "userEmail") String userEmail,@PathVariable(name = "newNickname") String newNickname) {
-        User targetUser = userService.findByEmail(userEmail);
-        Profile targetProfile = profileService.getProfile(targetUser.getNickname());
-
-        profileService.changeNickname(targetUser.getNickname(), newNickname);
         return targetProfile.getNickname();
     }
 
-    @PutMapping("/{userEmail}/description/{description}")
-    public String updateDescription(@PathVariable(name = "userEmail") String userEmail, @PathVariable(name = "description") String description) {
+    @PutMapping("{userEmail}/picture/{newURL}")
+    public String updatePictureURL(@PathVariable(name = "userEmail") String userEmail, @PathVariable(name = "newURL") String newURL)
+    {
         User targetUser = userService.findByEmail(userEmail);
-        Profile targetProfile = profileService.getProfile(targetUser.getNickname());
+        String targetNickname = targetUser.getNickname();
 
-        profileService.changeDescription(targetUser.getNickname(), description);
-        return targetProfile.getDescription();
+        Profile targetProfile = profileService.findByNickname(targetNickname);
+        profileService.updatePictureURL(targetProfile.getProfile_id(), newURL);
+
+        return targetProfile.getProfile_picture_url();
     }
 
+    @PutMapping("{userEmail}/description/{newDescription}")
+    public String updateDescription(@PathVariable(name = "userEmail") String userEmail, @PathVariable(name = "newDescription") String newDescription) {
+        User targetUser = userService.findByEmail(userEmail);
+        String targetNickname = targetUser.getNickname();
+
+        Profile targetProfile = profileService.findByNickname(targetNickname);
+        profileService.updateDescription(targetProfile.getProfile_id(), newDescription);
+
+        return targetProfile.getDescription();
+    }
 }

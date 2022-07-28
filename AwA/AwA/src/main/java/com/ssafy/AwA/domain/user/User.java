@@ -52,6 +52,8 @@ public class User extends BaseTimeEntity implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate birth;
 
+    @OneToOne(mappedBy = "owner_user",cascade = CascadeType.ALL)
+    private Profile profile;
     @Column
     private String accessToken;
 
@@ -115,13 +117,14 @@ public class User extends BaseTimeEntity implements UserDetails {
 
 
     @Builder
-    public User(String email, String password, String nickname, boolean gender, LocalDate birth, List<String> roles) {
+    public User(String email, String password, String nickname, boolean gender, LocalDate birth, List<String> roles, Profile profile) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.gender = gender;
         this.birth = birth;
         this.roles = roles;
+        this.profile = profile;
     }
     //비즈니스로직
 
@@ -132,6 +135,8 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     //토큰 발급
     public void giveToken(String accessToken) {this.accessToken = accessToken; }
+
+    public void createProfile(Profile profile) {this.profile = profile;}
 
 
 }

@@ -2,7 +2,6 @@ package com.ssafy.AwA.service;
 
 import com.ssafy.AwA.domain.follow.Follow;
 import com.ssafy.AwA.domain.profile.Profile;
-import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.repository.FollowRepository;
 import com.ssafy.AwA.repository.ProfileRepository;
 import com.ssafy.AwA.repository.UserRepository;

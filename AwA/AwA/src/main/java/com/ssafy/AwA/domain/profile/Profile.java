@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -17,34 +18,37 @@ public class Profile extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long profile_id;
 
-    @OneToOne
-    @JoinColumn(name = "profileOwner_user_id")
-    private User user;
-
     @Column
-    private String profilePictureURL;
-
-    @Column
-    private String description;
+    private String profile_picture_url;
 
     @Column
     private String nickname;
 
+    @Column
+    private String description;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User owner_user;
+
+
     @Builder
-    public Profile(User user, String profilePictureURL, String description, String nickname) {
-        this.user = user;
-        this.profilePictureURL = profilePictureURL;
-        this.description = description;
+    public Profile(String profile_picture_url, String nickname, String description, User owner_user) {
+        this.profile_picture_url = profile_picture_url;
         this.nickname = nickname;
+        this.description = description;
+        this.owner_user = owner_user;
     }
 
-    public void changeDescription(String description) {
-        this.description = description;
+    public void updateNickname(String newNickname) {
+        this.nickname = newNickname;
     }
-    public void changeProfilePictureURL(String profilePictureURL) {
-        this.profilePictureURL = profilePictureURL;
+
+    public void updatePictureURL(String newURL) {
+        this.profile_picture_url = newURL;
     }
-    public void changeNickname(String nickname) {
-        this.nickname = nickname;
+
+    public void updateDescription(String newDescription) {
+        this.description = newDescription;
     }
 }
