@@ -20,14 +20,14 @@ const AuctionListItem = ({ item }: Props): JSX.Element => {
         {imageUrlList && (
           <div>
             {imageUrlList.map((image, id) => (
-              <div key={id}>
+              <span key={id}>
                 <img
                   src={image}
                   alt={`${image}-${id}`}
-                  width="30%"
-                  height="30%"
+                  width="10%"
+                  height="10%"
                 />
-              </div>
+              </span>
             ))}
           </div>
         )}
