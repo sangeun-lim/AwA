@@ -2,6 +2,7 @@ package com.ssafy.AwA.service;
 
 import com.ssafy.AwA.config.security.JwtTokenProvider;
 import com.ssafy.AwA.domain.user.User;
+import com.ssafy.AwA.dto.UserDto;
 import com.ssafy.AwA.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -61,6 +62,20 @@ public class UserService {
 
     public User findByEmail(String userEmail) {
        return userRepository.findByEmail(userEmail);
+    }
+
+    public UserDto findByToken(String token) {
+       User targetUser = userRepository.findByToken(token);
+
+       UserDto responseUserDto = UserDto.builder()
+               .user_id(targetUser.getUser_id())
+               .birth(targetUser.getBirth())
+               .gender(targetUser.isGender())
+               .nickname(targetUser.getNickname())
+               .email(targetUser.getEmail())
+               .build();
+
+       return responseUserDto;
     }
 
 

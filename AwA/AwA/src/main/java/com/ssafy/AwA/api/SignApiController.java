@@ -3,6 +3,7 @@ package com.ssafy.AwA.api;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.SignInResultDto;
 import com.ssafy.AwA.dto.SignUpResultDto;
+import com.ssafy.AwA.dto.UserDto;
 import com.ssafy.AwA.service.ProfileService;
 import com.ssafy.AwA.service.SignService;
 import com.ssafy.AwA.service.UserService;
@@ -52,6 +53,12 @@ public class SignApiController {
 
         @DateTimeFormat(pattern = "yyyy-mm-dd")
         private LocalDate birth;
+    }
+
+    @GetMapping("/userinfo")
+    public UserDto userInfo(@RequestHeader(value = "token") String token)
+    {
+        return userService.findByToken(token);
     }
 
     //반환하는 객체 boolean success, int code, String msg, String token(email, role)
