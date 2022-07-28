@@ -18,15 +18,20 @@ import SearchResult from "../pages/SearchResult";
 import Rank from "../pages/Rank";
 import Error from "../pages/Error";
 import Navigation from "./Navigation";
-import { User } from "firebase/auth";
+import { User } from "./../Interface";
 import { useState } from "react";
 
 interface Props {
   isLoggedIn: boolean;
   userObject: User | null;
+  getUserData: Function;
 }
 
-const AppRouter = ({ isLoggedIn, userObject }: Props): JSX.Element => {
+const AppRouter = ({
+  isLoggedIn,
+  userObject,
+  getUserData,
+}: Props): JSX.Element => {
   const [selectChat, setSelectChat] = useState<string | null>(null); // 채팅 상대유저의 이메일을 저장
 
   return (
@@ -38,7 +43,9 @@ const AppRouter = ({ isLoggedIn, userObject }: Props): JSX.Element => {
           <Route path="/preview" element={<Preview />} />
           <Route
             path="/auth/login"
-            element={<Login isLoggedIn={isLoggedIn} />}
+            element={
+              <Login isLoggedIn={isLoggedIn} getUserData={getUserData} />
+            }
           />
           <Route
             path="/auth/signup"

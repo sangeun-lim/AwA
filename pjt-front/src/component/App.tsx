@@ -1,26 +1,43 @@
-import { User } from "firebase/auth";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { authService } from "../fbase";
+import api from "../api/api";
 import AppRouter from "./Router";
+import { User } from "./../Interface";
 
 function App(): JSX.Element {
   const [userObject, setUserObject] = useState<User | null>(null);
 
-  useEffect(() => {
+  const getUserData = async () => {
     const token = localStorage.getItem("token") || "";
 
-    authService.onAuthStateChanged((user) => {
-      if (user) {
-        setUserObject(user);
-      } else {
-        setUserObject(null);
-      }
+    const response = await axios({
+      url: api.auth.userinfo(),
+      method: "get",
+      headers: {
+        token: token,
+      },
     });
+
+    if (response.status === 200) {
+      setUserObject(response.data);
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getUserData();
+    } else {
+      setUserObject(null);
+    }
   }, []);
 
   return (
     <div>
-      <AppRouter isLoggedIn={!!userObject} userObject={userObject} />
+      <AppRouter
+        isLoggedIn={!!userObject}
+        userObject={userObject}
+        getUserData={getUserData}
+      />
     </div>
   );
 }
