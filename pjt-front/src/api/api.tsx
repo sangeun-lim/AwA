@@ -3,11 +3,12 @@ const HOST = "http://i7c101.p.ssafy.io:8080/";
 const AUTH = "auth/";
 const NOTICE = "notice/";
 
-export default {
+const api = {
   auth: {
     login: () => HOST + AUTH + "sign-in",
     logout: () => HOST + AUTH + "logout",
     signup: () => HOST + AUTH + "sign-up",
+    userinfo: () => HOST + AUTH + "userinfo",
   },
 
   notice: {
@@ -16,3 +17,5 @@ export default {
     readAll: () => HOST + NOTICE + "list",
   },
 };
+
+export default api;

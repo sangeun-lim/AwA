@@ -1,5 +1,5 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { User } from "firebase/auth";
+import { User } from "./../../Interface";
 import React, {
   Dispatch,
   useEffect,

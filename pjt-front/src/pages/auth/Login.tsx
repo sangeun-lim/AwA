@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
@@ -7,6 +7,7 @@ import axios from "axios";
 
 interface Props {
   isLoggedIn: boolean;
+  getUserData: Function;
 }
 
 interface LoginData {
@@ -19,25 +20,27 @@ const defaultData = {
   pw: "",
 };
 
-function Login({ isLoggedIn }: Props): JSX.Element {
+function Login({ isLoggedIn, getUserData }: Props): JSX.Element {
   const [loginForm, setLoginForm] = useState<LoginData>(defaultData);
   const navigate = useNavigate();
 
   const loginRequest = async () => {
-    const response = await axios({
-      url: api.auth.login(),
-      method: "post",
-      data: {
-        email: loginForm.id,
-        password: loginForm.pw,
-      },
-    });
-    if (response.status === 200) {
-      localStorage.setItem("token", response.data.token);
-      navigate("/");
-    } else {
-      alert("로그인에 실패했습니다.");
-      setLoginForm(defaultData);
+    try {
+      const response = await axios({
+        url: api.auth.login(),
+        method: "post",
+        data: {
+          email: loginForm.id,
+          password: loginForm.pw,
+        },
+      });
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        getUserData();
+        navigate("/");
+      }
+    } catch (err) {
+      alert(err);
     }
   };
 
@@ -61,6 +64,12 @@ function Login({ isLoggedIn }: Props): JSX.Element {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <div className={style.container}>

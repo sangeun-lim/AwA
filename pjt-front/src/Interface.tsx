@@ -1,10 +1,10 @@
 // 유저 Object
 export interface User {
-  id: number;
-  email?: string;
+  user_id: number;
+  email: string;
   nickname: string;
-  isSeller?: boolean;
-  isManager?: boolean;
+  gender?: boolean | null;
+  birth?: string | null;
 }
 
 // 프로필 Object

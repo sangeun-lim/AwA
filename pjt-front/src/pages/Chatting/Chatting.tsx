@@ -1,4 +1,4 @@
-import { User } from "firebase/auth";
+import { User } from "./../../Interface";
 import React, { Dispatch, useEffect, useState } from "react";
 import ChatList from "./ChatList";
 import ChatBoard from "./ChatBoard";

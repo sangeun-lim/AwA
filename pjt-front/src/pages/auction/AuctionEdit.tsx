@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "firebase/auth";
+import { User } from "./../../Interface";
 
 import { addDoc, collection } from "firebase/firestore";
 import { dbService, storageService } from "../../fbase";
