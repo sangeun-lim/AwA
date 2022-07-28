@@ -40,6 +40,21 @@ public class Artwork extends BaseTimeEntity {
     @Column
     private int price;
 
+    @Column
+    private String description;
+
+    @ElementCollection
+    @CollectionTable(name = "genre", joinColumns =
+        @JoinColumn(name = "artwork_id")
+    )
+    private List<String> genre = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "ingredient", joinColumns =
+        @JoinColumn(name = "artwork_id")
+    )
+    private List<String> ingredient = new ArrayList<>();
+
     //댓글
     @OneToMany(mappedBy = "parent_artwork", cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -61,10 +76,17 @@ public class Artwork extends BaseTimeEntity {
 
 
     @Builder
-    public Artwork(User sell_user, String title, int price, List<Attachment> attachment_list) {
+    public Artwork(User sell_user, String title, int view_count, int like_count, int price, String description, boolean is_sell, List<String> genre, List<String> ingredient, List<Attachment> attachment_list) {
         this.sell_user = sell_user;
         this.title = title;
+        this.view_count = view_count;
+        this.like_count = like_count;
         this.price = price;
+        this.description = description;
+        this.is_sell = is_sell;
+        this.genre = genre;
+        this.ingredient = ingredient;
+        this.attachment_list = attachment_list;
     }
 
     //연관관계 메서드
@@ -81,7 +103,7 @@ public class Artwork extends BaseTimeEntity {
 
     public void addAttachement(Attachment attachment) {
         attachment_list.add(attachment);
-        attachment.connectArtwork(this);
+        attachment.connectArtwork(this.artwork_id);
     }
 
     public void addReport(Report report)

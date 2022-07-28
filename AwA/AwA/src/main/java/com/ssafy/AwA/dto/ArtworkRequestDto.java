@@ -1,7 +1,6 @@
 package com.ssafy.AwA.dto;
 
 import com.ssafy.AwA.domain.attachment.Attachment;
-import com.ssafy.AwA.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,12 +12,20 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ArtworkDto {
+public class ArtworkRequestDto {
 
-    private String sell_user;
+    private String sell_user_email;
 
     private String title;
 
     private int price;
+
+    private String description;
+
+    private List<String> genre;
+
+    private List<String> ingredient;
+
+    private List<AttachmentRequestDto> attachmentList;
 
 }

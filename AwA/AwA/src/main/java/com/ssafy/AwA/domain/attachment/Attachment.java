@@ -17,25 +17,24 @@ public class Attachment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long file_id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "artwork_id")
-    private Artwork artwork_id;
+    @Column
+    private Long artwork_id;
 
-    @Column(length = 50, nullable = false)
+    @Column
     private String type;
 
-    @Column(length = 200, nullable = false)
-    private String name;
+    @Column
+    private String url;
 
     @Builder
-    public Attachment(Long file_id, String type, String name) {
-        this.file_id = file_id;
+    public Attachment(Long artwork_id, String type, String url) {
+        this.artwork_id = artwork_id;
         this.type = type;
-        this.name = name;
+        this.url = url;
     }
 
     //연관관계 메서드
-    public void connectArtwork(Artwork artwork) {
+    public void connectArtwork(Long artwork) {
         this.artwork_id = artwork;
     }
 }

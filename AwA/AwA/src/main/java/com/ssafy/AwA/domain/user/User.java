@@ -57,6 +57,12 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column
     private String accessToken;
 
+    @Column
+    private boolean is_manager;
+
+    @Column
+    private boolean is_seller;
+
     //선호분야리스트
     @OneToMany(mappedBy = "select_user", cascade = CascadeType.ALL)
     private List<FavoriteField> favorite_list = new ArrayList<>();
@@ -117,7 +123,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
 
     @Builder
-    public User(String email, String password, String nickname, boolean gender, LocalDate birth, List<String> roles, Profile profile) {
+    public User(String email, String password, String nickname, boolean gender, LocalDate birth, List<String> roles, Profile profile, boolean is_manager, boolean is_seller) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -125,6 +131,8 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.birth = birth;
         this.roles = roles;
         this.profile = profile;
+        this.is_manager = is_manager;
+        this.is_seller = is_seller;
     }
     //비즈니스로직
 
