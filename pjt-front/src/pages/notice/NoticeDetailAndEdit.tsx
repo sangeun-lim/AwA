@@ -29,6 +29,11 @@ function NoticeDetailAndEdit(): JSX.Element {
     content: notice.content,
   });
 
+  const date = new Date(notice.createdDate);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
   const onChange = (e: any) => {
     const { name, value } = e.target;
 
@@ -168,9 +173,14 @@ function NoticeDetailAndEdit(): JSX.Element {
         </div>
       ) : (
         <div className={`container`}>
-          <h1 className={style.title}>NoticeDetail</h1>
-          <h2>{notice?.title}</h2>
-          <p>{notice?.content}</p>
+          <h1 className={style.title}>Notice</h1>
+          <div className={style.noticeTitle}>
+            <h2>{notice?.title}</h2>
+            <span>{`${year}.${month}.${day}`}</span>
+          </div>
+          <div className={style.noticeContent}>
+            <p>{notice?.content}</p>
+          </div>
           <div className={style.buttonBox}>
             <button onClick={onEditClick} className={style.btn}>
               수정
