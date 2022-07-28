@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
 import { NoticeItem } from "../../Interface";
+import style from "./Notice.module.css";
 
 interface Editing {
   title: string;
@@ -125,40 +126,62 @@ function NoticeDetailAndEdit(): JSX.Element {
   return (
     <div>
       {onEdit ? (
-        <div>
-          <h1>NoticeEdit</h1>
-          <form onSubmit={onSubmit}>
-            <input
-              name="title"
-              type="text"
-              placeholder="제목"
-              value={editNotice.title || ""}
-              onChange={onChange}
-              required
-            />
+        <div className={`container`}>
+          <h1 className={style.title}>NoticeEdit</h1>
+          <form onSubmit={onSubmit} className={style.form}>
+            <div className={style.inputContainer}>
+              <input
+                name="title"
+                type="text"
+                placeholder="제목"
+                value={editNotice.title || ""}
+                onChange={onChange}
+                className={style.input}
+                required
+              />
+            </div>
             <br></br>
-            <textarea
-              name="content"
-              value={editNotice.content || ""}
-              cols={30}
-              rows={10}
-              placeholder="내용을 입력해주세요"
-              onChange={onChange}
-              required
-            ></textarea>
+            <div className={style.inputContainer}>
+              <textarea
+                name="content"
+                value={editNotice.content || ""}
+                cols={30}
+                rows={10}
+                placeholder="내용을 입력해주세요"
+                onChange={onChange}
+                className={style.inputTextarea}
+                required
+              ></textarea>
+            </div>
             <br></br>
-            <input type="submit" value="수정" />
+            <div className={style.buttonBox}>
+              <input
+                type="submit"
+                value="수정"
+                className={style.submitButton}
+              />
+              <button onClick={onEditClick} className={style.btn}>
+                취소
+              </button>
+            </div>
           </form>
-          <button onClick={onEditClick}>취소</button>
         </div>
       ) : (
-        <div>
-          <h1>NoticeDetail</h1>
+        <div className={`container`}>
+          <h1 className={style.title}>NoticeDetail</h1>
           <h2>{notice?.title}</h2>
           <p>{notice?.content}</p>
-          <button onClick={onEditClick}>수정</button>
-          <button onClick={onDeleteClick}>삭제</button>
-          <button onClick={onListClick}>목록</button>
+          <div className={style.buttonBox}>
+            <button onClick={onEditClick} className={style.btn}>
+              수정
+            </button>
+            <button onClick={onDeleteClick} className={style.btn}>
+              삭제
+            </button>
+            <button onClick={onListClick} className={style.btn}>
+              목록
+            </button>
+          </div>
         </div>
       )}
     </div>
