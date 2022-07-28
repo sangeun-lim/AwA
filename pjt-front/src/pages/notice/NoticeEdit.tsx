@@ -1,7 +1,7 @@
-import { addDoc, collection } from "firebase/firestore";
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { dbService } from "../../fbase";
+import api from "../../api/api";
 
 interface newNote {
   title: string;
@@ -32,14 +32,22 @@ function NoticeEdit(): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    const newNote = await addDoc(collection(dbService, "notice"), {
-      title: newNotice.title,
-      content: newNotice.content,
-      createdAt: Date.now(),
+    const response = await axios({
+      url: api.notice.create(),
+      method: "post",
+      headers: {
+        token: localStorage.getItem("token") || "",
+      },
+      data: {
+        title: newNotice.title,
+        content: newNotice.content,
+      },
     });
 
-    setNewNotice(defaultNotice);
-    navigate(`/notice/${newNote.id}`);
+    if (response.status === 200) {
+      const note = response.data;
+      navigate(`/notice/${note.notice_id}`);
+    }
   };
 
   return (

@@ -1,7 +1,7 @@
-import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { dbService } from "../../fbase";
+import api from "../../api/api";
 import { NoticeItem } from "../../Interface";
 
 interface Editing {
@@ -12,13 +12,14 @@ interface Editing {
 const defaultNotice: NoticeItem = {
   title: "",
   content: "",
-  createdAt: new Date(),
-  id: "",
+  notice_id: 0,
+  createdDate: "",
+  modifiedDate: "",
 };
 
 function NoticeDetail(): JSX.Element {
   const params = useParams();
-  const address = params.id;
+  const address = params.id || "";
   const navigate = useNavigate();
   const [notice, setNotice] = useState<NoticeItem | any>(defaultNotice);
   const [onEdit, setOnEdit] = useState<boolean>(false);
@@ -48,18 +49,29 @@ function NoticeDetail(): JSX.Element {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-    await updateDoc(doc(dbService, `notice/${address}`), {
-      title: editNotice.title,
-      content: editNotice.content,
+    const response = await axios({
+      url: api.notice.readOrUpdateOrDelete(address),
+      method: "put",
+      headers: {
+        token: localStorage.getItem("token") || "",
+      },
+      data: {
+        title: editNotice.title,
+        content: editNotice.content,
+      },
     });
 
-    const updateValue = await getDoc(doc(dbService, `notice/${address}`));
-    const newData = updateValue.data();
+    if (response.status === 200) {
+      const updateValue = await axios({
+        url: api.notice.readOrUpdateOrDelete(address),
+        method: "GET",
+      });
+      const newData = updateValue.data;
 
-    setNotice({
-      ...newData,
-      id: address,
-    });
+      setNotice({
+        ...newData,
+      });
+    }
 
     setOnEdit(!onEdit);
   };
@@ -67,23 +79,36 @@ function NoticeDetail(): JSX.Element {
   const onDeleteClick = async () => {
     const del: boolean = window.confirm("삭제하시겠습니까?");
     if (del) {
-      await deleteDoc(doc(dbService, `notice/${address}`));
-      navigate("/notice");
+      const response = await axios({
+        url: api.notice.readOrUpdateOrDelete(address),
+        method: "delete",
+        headers: {
+          token: localStorage.getItem("token") || "",
+        },
+      });
+
+      if (response.status === 200) {
+        alert("삭제되었습니다");
+        navigate("/notice");
+      }
     }
   };
 
   useEffect(() => {
     async function loadData() {
-      const data = await getDoc(doc(dbService, `notice/${address}`));
-      const newData = data.data();
+      const response = await axios({
+        url: api.notice.readOrUpdateOrDelete(address),
+        method: "get",
+      });
+
+      const newData = response.data;
 
       setNotice({
         ...newData,
-        id: address,
       });
     }
 
-    if (address) {
+    if (address !== "") {
       loadData();
     } else {
       navigate("/notice");

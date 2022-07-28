@@ -7,14 +7,14 @@ interface Props {
 }
 
 const NoticeListItem = ({ notice }: Props): JSX.Element => {
-  const date = new Date(notice.createdAt);
+  const date = new Date(notice.createdDate);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
   return (
     <div>
-      <NavLink to={`/notice/${notice.id}`}>{notice.title}</NavLink>
+      <NavLink to={`/notice/${notice.notice_id}`}>{notice.title}</NavLink>
       <span>{`${year}.${month}.${day}`}</span>
     </div>
   );

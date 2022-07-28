@@ -1,8 +1,8 @@
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/api";
 import NoticeListItem from "../../component/NoticeListItem";
-import { dbService } from "../../fbase";
 import { NoticeItem } from "./../../Interface";
 
 function Notice(): JSX.Element {
@@ -13,31 +13,40 @@ function Notice(): JSX.Element {
     navigate("/notice/edit");
   };
 
-  const callNotice = async () => {
-    const q = query(
-      collection(dbService, "notice"),
-      orderBy("createdAt", "desc")
-    );
-
-    const notices = (await getDocs(q)).docs;
-
-    const newNotices: Array<NoticeItem> = notices.map((notice) => {
-      const { title, content, createdAt } = notice.data();
-      const newNotice: NoticeItem = {
-        title,
-        content,
-        createdAt,
-        id: notice.id,
-      };
-      return newNotice;
-    });
-
-    setNoticeList(newNotices);
-  };
-
   useEffect(() => {
+    const callNotice = async () => {
+      const response = await axios({
+        url: api.notice.readAll(),
+        method: "get",
+      });
+
+      console.log(response.status);
+
+      if (response.status === 200) {
+        const notices = response.data;
+        const newNotices: Array<NoticeItem> = notices.map(
+          (notice: NoticeItem) => {
+            const { notice_id, title, content, createdDate, modifiedDate } =
+              notice;
+            const newNotice: NoticeItem = {
+              notice_id,
+              title,
+              content,
+              createdDate,
+              modifiedDate,
+            };
+            return newNotice;
+          }
+        );
+        setNoticeList(newNotices);
+      } else {
+        alert("정보 조회에 실패했습니다.");
+        navigate("/");
+      }
+    };
+
     callNotice();
-  }, []);
+  }, [navigate]);
 
   return (
     <>
@@ -45,7 +54,7 @@ function Notice(): JSX.Element {
       <button onClick={onClick}>글쓰기</button>
       {noticeList.map((notice) => {
         return (
-          <div key={notice.id}>
+          <div key={notice.notice_id}>
             <NoticeListItem notice={notice}></NoticeListItem>
           </div>
         );
