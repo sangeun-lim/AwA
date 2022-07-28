@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import NoticeListItem from "../../component/NoticeListItem";
 import { NoticeItem } from "./../../Interface";
+import style from "./Notice.module.css";
 
 function Notice(): JSX.Element {
   const navigate = useNavigate();
@@ -49,17 +50,23 @@ function Notice(): JSX.Element {
   }, [navigate]);
 
   return (
-    <>
-      <h1>Notice</h1>
-      <button onClick={onClick}>글쓰기</button>
-      {noticeList.map((notice) => {
-        return (
-          <div key={notice.notice_id}>
-            <NoticeListItem notice={notice}></NoticeListItem>
-          </div>
-        );
-      })}
-    </>
+    <div className={`${style.notice} container`}>
+      <h1 className={style.title}>Notice</h1>
+      <ul>
+        {noticeList.map((notice) => {
+          return (
+            <div key={notice.notice_id}>
+              <NoticeListItem notice={notice}></NoticeListItem>
+            </div>
+          );
+        })}
+      </ul>
+      <div className={style.buttonBox}>
+        <button onClick={onClick} className={style.btn}>
+          작성
+        </button>
+      </div>
+    </div>
   );
 }
 

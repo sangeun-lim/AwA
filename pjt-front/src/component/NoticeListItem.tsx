@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { NoticeItem } from "../Interface";
+import style from "../pages/notice/Notice.module.css";
 
 interface Props {
   notice: NoticeItem;
@@ -13,7 +14,7 @@ const NoticeListItem = ({ notice }: Props): JSX.Element => {
   const day = date.getDate();
 
   return (
-    <div>
+    <div className={style.listBox}>
       <NavLink to={`/notice/${notice.notice_id}`}>{notice.title}</NavLink>
       <span>{`${year}.${month}.${day}`}</span>
     </div>

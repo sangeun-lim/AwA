@@ -1,0 +1,122 @@
+/* button */
+.btn {
+  margin: 10px;
+  padding: 5px 30px;
+  border: 2px solid rgb(231, 115, 92, 0.5);
+  border-radius: 7px;
+  background-color: white;
+  color: rgb(231, 115, 92);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  color: rgb(231, 115, 92);
+  border: 2px solid rgb(231, 115, 92);
+  font-weight: bold;
+}
+
+.buttonBox {
+  display: flex;
+  justify-content: end;
+}
+
+/* Notice */
+.notice {
+  text-align: justify;
+}
+
+.notice > ul {
+  padding: 0px;
+  background-color: white;
+}
+
+.title {
+  font-weight: bold;
+  margin: 10px 0px 0px 0px;
+  padding: 15px;
+  border-bottom: 2px solid rgb(231, 115, 92);
+  color: rgb(231, 115, 92);
+}
+
+/* NoticeListItem */
+.listBox {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(231, 115, 92, 0.5);
+}
+
+.listBox > a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  margin: 15px;
+}
+
+.listBox > a:hover {
+  color: rgb(231, 115, 92);
+}
+
+.listBox > span {
+  font-size: x-small;
+  margin-top: 10px;
+}
+
+/* NoticeCreate & NoticeEdit */
+.form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 10px;
+}
+
+.input {
+  height: 40px;
+  border: none;
+  border-bottom: 2px solid rgb(231, 115, 92, 0.2);
+  margin-top: 30px;
+}
+
+.input:focus-visible {
+  height: 40px;
+  outline: none;
+  border-bottom: 2px solid rgb(231, 115, 92);
+}
+
+.inputTextarea {
+  height: 300px;
+  border: none;
+  border-bottom: 2px solid rgb(231, 115, 92, 0.2);
+  margin-top: 30px;
+}
+
+.inputTextarea:focus-visible {
+  height: 300px;
+  outline: none;
+  border-bottom: 2px solid rgb(231, 115, 92);
+}
+
+.submitButton {
+  margin: 10px;
+  padding: 5px 30px;
+  border: 2px solid rgb(231, 115, 92, 0.5);
+  border-radius: 7px;
+  background: rgb(255, 255, 255);
+  color: rgb(231, 115, 92);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  border: 2px solid rgb(231, 115, 92);
+  color: rgba(231, 115, 92);
+  font-weight: bold;
+}
