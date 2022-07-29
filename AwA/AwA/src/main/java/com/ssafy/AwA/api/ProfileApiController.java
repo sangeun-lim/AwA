@@ -2,11 +2,14 @@ package com.ssafy.AwA.api;
 
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
+import com.ssafy.AwA.dto.DescriptionDto;
 import com.ssafy.AwA.dto.ProfileResponseDto;
 import com.ssafy.AwA.service.ProfileService;
 import com.ssafy.AwA.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,13 +57,13 @@ public class ProfileApiController {
         return targetProfile.getProfile_picture_url();
     }
 
-    @PutMapping("{userEmail}/description/{newDescription}")
-    public String updateDescription(@PathVariable(name = "userEmail") String userEmail, @PathVariable(name = "newDescription") String newDescription) {
+    @PutMapping("{userEmail}/description")
+    public String updateDescription(@PathVariable(name = "userEmail") String userEmail, @RequestBody @Valid DescriptionDto descriptionDto) {
         User targetUser = userService.findByEmail(userEmail);
         String targetNickname = targetUser.getNickname();
 
         Profile targetProfile = profileService.findByNickname(targetNickname);
-        profileService.updateDescription(targetProfile.getProfile_id(), newDescription);
+        profileService.updateDescription(targetProfile.getProfile_id(), descriptionDto.getDescription());
 
         return targetProfile.getDescription();
     }

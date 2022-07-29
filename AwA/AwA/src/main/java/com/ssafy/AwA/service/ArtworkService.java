@@ -2,12 +2,14 @@ package com.ssafy.AwA.service;
 
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.attachment.Attachment;
+import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.ArtworkRequestDto;
 import com.ssafy.AwA.dto.ArtworkResponseDto;
 import com.ssafy.AwA.dto.AttachmentRequestDto;
 import com.ssafy.AwA.repository.ArtworkRepository;
 import com.ssafy.AwA.repository.AttachmentRepositroy;
+import com.ssafy.AwA.repository.ProfileRepository;
 import com.ssafy.AwA.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -28,6 +30,7 @@ public class ArtworkService {
     private final ArtworkRepository artworkRepository;
     private final UserRepository userRepository;
     private final AttachmentRepositroy attachmentRepositroy;
+    private final ProfileRepository profileRepository;
 
     public ArtworkResponseDto saveArtwork(ArtworkRequestDto artworkRequestDto) {
         List<Attachment> attachmentList = new ArrayList<>();
@@ -88,6 +91,7 @@ public class ArtworkService {
             Artwork targetArtwork = allArtworks.get(i);
 
             User sellUser = targetArtwork.getSell_user();
+            Profile sellUserProfile = profileRepository.findByNickname(sellUser.getNickname());
 
             List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
             for (int j = 0; j < targetArtwork.getAttachment_list().size(); j++)
@@ -99,6 +103,9 @@ public class ArtworkService {
             }
 
             artworkResponseDtoList.add(ArtworkResponseDto.builder()
+                    .profile_picture(sellUserProfile.getProfile_picture_url())
+                    .createdDate(targetArtwork.getCreatedDate())
+                    .description(targetArtwork.getDescription())
                     .artwork_id(targetArtwork.getArtwork_id())
                     .sell_user(sellUser.getNickname())
                     .title(targetArtwork.getTitle())
@@ -127,8 +134,9 @@ public class ArtworkService {
             );
         }
         User targetUser = targetArtwork.getSell_user();
-
+        Profile sellUserProfile = profileRepository.findByNickname(targetUser.getNickname());
         return ArtworkResponseDto.builder()
+                .profile_picture(sellUserProfile.getProfile_picture_url())
                 .artwork_id(artwork_id)
                 .createdDate(targetArtwork.getCreatedDate())
                 .attachmentRequestDtoList(attachmentRequestDtoList)

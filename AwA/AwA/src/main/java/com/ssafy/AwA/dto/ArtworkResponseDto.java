@@ -18,6 +18,8 @@ public class ArtworkResponseDto {
 
     @CreatedDate
     private LocalDateTime createdDate;
+
+    private String profile_picture;
     private String sell_user;
 
     private String title;
@@ -36,11 +38,11 @@ public class ArtworkResponseDto {
     private int view_count;
 
     @Builder
-
-    public ArtworkResponseDto(Long artwork_id, LocalDateTime createdDate, String sell_user, String title, int price, List<AttachmentRequestDto> attachmentRequestDtoList,
+    public ArtworkResponseDto(Long artwork_id, LocalDateTime createdDate, String profile_picture, String sell_user, String title, int price, List<AttachmentRequestDto> attachmentRequestDtoList,
                               String description, List<String> genre, List<String> ingredient, int like_count, int view_count) {
         this.artwork_id = artwork_id;
         this.createdDate = createdDate;
+        this.profile_picture = profile_picture;
         this.sell_user = sell_user;
         this.title = title;
         this.price = price;
