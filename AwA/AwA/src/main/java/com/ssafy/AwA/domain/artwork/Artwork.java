@@ -5,6 +5,7 @@ import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.attachment.Attachment;
 import com.ssafy.AwA.domain.chat.Room;
 import com.ssafy.AwA.domain.comment.Comment;
+import com.ssafy.AwA.domain.like.Likes;
 import com.ssafy.AwA.domain.report.Report;
 import com.ssafy.AwA.domain.user.User;
 import lombok.Builder;
@@ -41,6 +42,9 @@ public class Artwork extends BaseTimeEntity {
 
     @Column
     private String description;
+
+    @OneToMany(mappedBy = "artwork")
+    List<Likes> like_count;
 
     @ElementCollection
     @CollectionTable(name = "genre", joinColumns =

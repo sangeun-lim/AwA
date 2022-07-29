@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -46,7 +45,7 @@ public class ArtworkService {
         }
 
         Artwork artwork = Artwork.builder()
-                .sell_user(userRepository.findByEmail(artworkRequestDto.getSell_user_email()))
+                .sell_user(userRepository.findByNickname(artworkRequestDto.getSell_user_nickname()))
                 .price(artworkRequestDto.getPrice())
                 .title(artworkRequestDto.getTitle())
                 .description(artworkRequestDto.getDescription())
@@ -68,11 +67,15 @@ public class ArtworkService {
                     .build());
         }
 
-        User findByEmail = userRepository.findByEmail(artworkRequestDto.getSell_user_email());
+        User findByEmail = userRepository.findByNickname(artworkRequestDto.getSell_user_nickname());
+        Profile findByNickname = profileRepository.findByNickname(artworkRequestDto.getSell_user_nickname());
         ArtworkResponseDto artworkResponseDto = ArtworkResponseDto.builder()
+                .createdDate(savedArtwork.getCreatedDate())
+                .profile_picture(findByNickname.getProfile_picture_url())
+                .description(savedArtwork.getDescription())
                 .artwork_id(savedArtwork.getArtwork_id())
                 .attachmentRequestDtoList(artworkRequestDto.getAttachmentList())
-                .sell_user(findByEmail.getNickname())
+                .sell_user_nickname(findByEmail.getNickname())
                 .title(savedArtwork.getTitle())
                 .genre(savedArtwork.getGenre())
                 .ingredient(savedArtwork.getIngredient())
@@ -107,7 +110,7 @@ public class ArtworkService {
                     .createdDate(targetArtwork.getCreatedDate())
                     .description(targetArtwork.getDescription())
                     .artwork_id(targetArtwork.getArtwork_id())
-                    .sell_user(sellUser.getNickname())
+                    .sell_user_nickname(sellUser.getNickname())
                     .title(targetArtwork.getTitle())
                     .view_count(targetArtwork.getView_count())
                     .price(targetArtwork.getPrice())
@@ -143,7 +146,7 @@ public class ArtworkService {
                 .ingredient(targetArtwork.getIngredient())
                 .genre(targetArtwork.getGenre())
                 .title(targetArtwork.getTitle())
-                .sell_user(targetUser.getNickname())
+                .sell_user_nickname(targetUser.getNickname())
                 .price(targetArtwork.getPrice())
                 .view_count(targetArtwork.getView_count())
                 .description(targetArtwork.getDescription())
@@ -182,5 +185,36 @@ public class ArtworkService {
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
 
         targetArtwork.updateIngredient(ingredient);
+    }
+
+    public ArtworkResponseDto updateArtwork(Long artwork_id, ArtworkRequestDto artworkRequestDto) {
+        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+        User targetUser = userRepository.findByNickname(artworkRequestDto.getSell_user_nickname());
+
+        targetArtwork.updateDescription(artworkRequestDto.getDescription());
+        targetArtwork.updateGenre(artworkRequestDto.getGenre());
+        targetArtwork.updateIngredient(artworkRequestDto.getIngredient());
+        targetArtwork.updateTitle(artworkRequestDto.getTitle());
+        targetArtwork.updatePrice(artworkRequestDto.getPrice());
+
+        ArtworkResponseDto artworkResponseDto = ArtworkResponseDto.builder()
+                .view_count(targetArtwork.getView_count())
+                .like_count(targetArtwork.getLike_count().size())
+                .artwork_id(artwork_id)
+                .createdDate(targetArtwork.getCreatedDate())
+                .attachmentRequestDtoList(artworkRequestDto.getAttachmentList())
+                .description(artworkRequestDto.getDescription())
+                .ingredient(artworkRequestDto.getIngredient())
+                .genre(artworkRequestDto.getGenre())
+                .price(artworkRequestDto.getPrice())
+                .sell_user_nickname(targetUser.getNickname())
+                .build();
+        return artworkResponseDto;
+    }
+
+    public int deleteArtwork(Long artwork_id) {
+        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+        artworkRepository.delete(targetArtwork);
+        return 1;
     }
 }

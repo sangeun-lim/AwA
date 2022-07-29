@@ -47,65 +47,75 @@ public class ArtworkApiController {
         return artworkResponseDto;
     }
 
-    @PutMapping("/{artwork_id}/title/{newTitle}")
-    public int updateArtworkTitle(@PathVariable("artwork_id") Long artwork_id,@PathVariable("newTitle") String newTitle) {
-        artworkService.updateTitle(artwork_id, newTitle);
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-        if(targetArtwork.getTitle().equals(newTitle))
-            return 1;
-        else
-            return 0;
+    @PutMapping("/{artwork_id}")
+    public ArtworkResponseDto updateArtwork(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid ArtworkRequestDto artworkRequestDto) {
+        ArtworkResponseDto artworkResponseDto = artworkService.updateArtwork(artwork_id, artworkRequestDto);
+        return artworkResponseDto;
     }
 
-    //좋아요도 따로 테이블 빼자
-
-    @PutMapping("/{artwork_id}/price/{newPrice}")
-    public int updateArtworkPrice(@PathVariable("artwork_id") Long artwork_id, @PathVariable("newPrice") int newPrice) {
-        artworkService.updatePrice(artwork_id, newPrice);
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-        if(targetArtwork.getPrice()==newPrice)
-            return 1;
-        else
-            return 0;
+    @DeleteMapping("{artwork_id}")
+    public int deleteArtwork(@PathVariable("artwork_id") Long artwork_id) {
+        return artworkService.deleteArtwork(artwork_id);
     }
-
-    @PutMapping("/{artwork_id}/description")
-    public int updateArtworkDescription(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid DescriptionDto descriptionDto) {
-        artworkService.updateDescription(artwork_id, descriptionDto.getDescription());
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-        if(targetArtwork.getDescription().equals(descriptionDto.getDescription()))
-            return 1;
-        else
-            return 0;
-    }
-
-    @PutMapping("/{artwork_id}/genre")
-    public int updateArtworkGenre(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid GenreDto genreDto) {
-        artworkService.updateGenre(artwork_id, genreDto.getGenre());
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-
-        for(int i=0;i<targetArtwork.getGenre().size(); i++) {
-            if(!(genreDto.getGenre().get(i).equals(targetArtwork.getGenre().get(i))))
-                return 0;
-        }
-        return 1;
-    }
-
-    @PutMapping("/{artwork_id}/ingredient")
-    public int updateArtworkGenre(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid IngredientDto ingredientDto) {
-        artworkService.updateIngredient(artwork_id, ingredientDto.getIngredient());
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-        for(int i=0;i<targetArtwork.getIngredient().size();i++)
-            if(!(ingredientDto.getIngredient().get(i).equals(targetArtwork.getIngredient().get(i)))) {
-                return 0;
-            }
-        return 1;
-    }
+//    @PutMapping("/{artwork_id}/title/{newTitle}")
+//    public int updateArtworkTitle(@PathVariable("artwork_id") Long artwork_id,@PathVariable("newTitle") String newTitle) {
+//        artworkService.updateTitle(artwork_id, newTitle);
+//        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+//
+//        if(targetArtwork.getTitle().equals(newTitle))
+//            return 1;
+//        else
+//            return 0;
+//    }
+//
+//    //좋아요도 따로 테이블 빼자
+//
+//    @PutMapping("/{artwork_id}/price/{newPrice}")
+//    public int updateArtworkPrice(@PathVariable("artwork_id") Long artwork_id, @PathVariable("newPrice") int newPrice) {
+//        artworkService.updatePrice(artwork_id, newPrice);
+//        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+//
+//        if(targetArtwork.getPrice()==newPrice)
+//            return 1;
+//        else
+//            return 0;
+//    }
+//
+//    @PutMapping("/{artwork_id}/description")
+//    public int updateArtworkDescription(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid DescriptionDto descriptionDto) {
+//        artworkService.updateDescription(artwork_id, descriptionDto.getDescription());
+//        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+//
+//        if(targetArtwork.getDescription().equals(descriptionDto.getDescription()))
+//            return 1;
+//        else
+//            return 0;
+//    }
+//
+//    @PutMapping("/{artwork_id}/genre")
+//    public int updateArtworkGenre(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid GenreDto genreDto) {
+//        artworkService.updateGenre(artwork_id, genreDto.getGenre());
+//        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+//
+//
+//        for(int i=0;i<targetArtwork.getGenre().size(); i++) {
+//            if(!(genreDto.getGenre().get(i).equals(targetArtwork.getGenre().get(i))))
+//                return 0;
+//        }
+//        return 1;
+//    }
+//
+//    @PutMapping("/{artwork_id}/ingredient")
+//    public int updateArtworkGenre(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid IngredientDto ingredientDto) {
+//        artworkService.updateIngredient(artwork_id, ingredientDto.getIngredient());
+//        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+//
+//        for(int i=0;i<targetArtwork.getIngredient().size();i++)
+//            if(!(ingredientDto.getIngredient().get(i).equals(targetArtwork.getIngredient().get(i)))) {
+//                return 0;
+//            }
+//        return 1;
+//    }
 
 //
 }

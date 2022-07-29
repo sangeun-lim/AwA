@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 public class ArtworkRequestDto {
 
-    private String sell_user_email;
+    private String sell_user_nickname;
 
     private String title;
 
