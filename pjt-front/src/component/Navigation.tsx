@@ -97,16 +97,9 @@ function Navigation({ userEmail }: Props): JSX.Element {
                 </NavLink>
                 <p>님 환영합니다!</p>
               </div>
-              <NavLink
-                to="/auth/logout"
-                className={({ isActive }) => (isActive ? style.active : "")}
-                onClick={() =>
-                  menuToggle ? setMenuToggle(false) : setMenuToggle(true)
-                }
-              >
+              <button onClick={Logout} className={style.btn}>
                 Logout
-              </NavLink>
-              <button onClick={Logout}>Logout</button>
+              </button>
             </div>
           ) : (
             // 로그인 안 했을 때
@@ -173,7 +166,7 @@ function Navigation({ userEmail }: Props): JSX.Element {
               >
                 Profile
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 to="/auth/logout"
                 className={({ isActive }) => (isActive ? style.active : "")}
                 onClick={() =>
@@ -181,8 +174,10 @@ function Navigation({ userEmail }: Props): JSX.Element {
                 }
               >
                 Logout
-              </NavLink>
-              <button onClick={Logout}>Logout</button>
+              </NavLink> */}
+              <button onClick={Logout} className={style.btn}>
+                Logout
+              </button>
             </div>
           ) : (
             // 로그인 안 했을 때

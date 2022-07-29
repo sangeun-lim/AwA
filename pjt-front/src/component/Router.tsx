@@ -87,8 +87,14 @@ const AppRouter = ({
           )} */}
           <Route path="/auction/edit" element={<AuctionEdit />} />
           <Route path="/notice" element={<Notice />} />
-          <Route path="/notice/:id" element={<NoticeDetailAndEdit />} />
-          <Route path="/notice/create" element={<NoticeCreate />} />
+          <Route
+            path="/notice/:id"
+            element={<NoticeDetailAndEdit setIsLoading={setIsLoading} />}
+          />
+          <Route
+            path="/notice/create"
+            element={<NoticeCreate setIsLoading={setIsLoading} />}
+          />
           <Route path="/searchresult" element={<SearchResult />} />
           <Route path="/rank" element={<Rank />} />
           <Route path="*" element={<Error />} />

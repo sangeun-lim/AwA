@@ -76,34 +76,36 @@ function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className={style.container}>
-      <div className={style.title}>LogIn</div>
-      <form onSubmit={onSubmit} className={style.login}>
-        <div className={style.inputContainer}>
-          <input
-            name="id"
-            type="email"
-            value={loginForm.id}
-            placeholder="ID"
-            onChange={onChange}
-            className={style.loginInput}
-            required
-          />
-        </div>
-        <div className={style.inputContainer}>
-          <input
-            name="pw"
-            type="password"
-            value={loginForm.pw}
-            placeholder="Password"
-            onChange={onChange}
-            className={style.loginInput}
-            required
-          />
-        </div>
-        <br />
-        <input type="submit" value="로그인" className={style.loginSubmit} />
-      </form>
+    <div className="container d-flex justify-content-center">
+      <div className={style.container}>
+        <div className={style.title}>LogIn</div>
+        <form onSubmit={onSubmit} className={style.login}>
+          <div className={style.inputContainer}>
+            <input
+              name="id"
+              type="email"
+              value={loginForm.id}
+              placeholder="ID"
+              onChange={onChange}
+              className={style.loginInput}
+              required
+            />
+          </div>
+          <div className={style.inputContainer}>
+            <input
+              name="pw"
+              type="password"
+              value={loginForm.pw}
+              placeholder="Password"
+              onChange={onChange}
+              className={style.loginInput}
+              required
+            />
+          </div>
+          <br />
+          <input type="submit" value="로그인" className={style.loginSubmit} />
+        </form>
+      </div>
     </div>
   );
 }
