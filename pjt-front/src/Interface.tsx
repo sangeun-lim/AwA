@@ -27,21 +27,42 @@ export interface Comment {
   createdAt: Date;
 }
 
+interface Media {
+  type: string;
+  url: string;
+}
+
+// 판매글 목록에 보이는 거
+export interface ArtworkItem {
+  artwork_id: number;
+  mediaList: Media[];
+  genre: string[];
+  ingredient: string;
+  like_count: number;
+  price: number;
+  sell_user: string;
+  profile_picture: string;
+  title: string;
+  view_count: number;
+  createdDate: string;
+}
+
 // 판매글 Object
 export interface Item {
-  id: string;
-  imageUrlList: Array<string>;
-  title: string;
+  artwork_id: number;
+  mediaList: Media[];
+  genre: string[];
+  ingredient: string[];
+  like_count: number;
   price: number;
-  nickname: string;
-  genres: Array<string>;
-  material: string;
-  itemImage?: string;
-  detail: string;
-  createdAt: Date;
-  like: Array<User>;
-  viewCount: number;
-  comments: Array<Comment>;
+  sell_user: string;
+  sell_user_nickname: string;
+  profile_picture: string;
+  title: string;
+  view_count: number;
+  description: string;
+  createdDate: string;
+  comments?: Comment[]; // 롸
 }
 
 // 공지사항 Object

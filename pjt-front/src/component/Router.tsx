@@ -78,14 +78,16 @@ const AppRouter = ({
             />
           )}
           <Route path="/auction" element={<Auction />} />
-          <Route path="/auction/:id" element={<AuctionDetail />} />
-          {/* {userObject && (
+          <Route
+            path="/auction/:id"
+            element={<AuctionDetail userObject={userObject} />}
+          />
+          {userObject && (
             <Route
               path="/auction/edit"
               element={<AuctionEdit userObject={userObject} />}
             />
-          )} */}
-          <Route path="/auction/edit" element={<AuctionEdit />} />
+          )}
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/:id" element={<NoticeDetailAndEdit />} />
           <Route path="/notice/create" element={<NoticeCreate />} />

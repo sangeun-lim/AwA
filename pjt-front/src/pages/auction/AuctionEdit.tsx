@@ -2,39 +2,44 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "./../../Interface";
 
-import { addDoc, collection } from "firebase/firestore";
-import { dbService, storageService } from "../../fbase";
+import { storageService } from "../../fbase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import api from "../../api/api";
 
-// interface Props {
-//   userObject: User;
-// }
+interface Props {
+  userObject: User;
+}
 
 interface ButtonProps {
   item: string;
   deleteGenre(item: string): void;
 }
 
+interface attachment {
+  type: string;
+  url: string;
+}
+
 interface newItem {
-  id?: string;
-  imageUrl: Array<string>;
+  attachmentList: attachment[];
   title: string;
   price: number;
-  nickname: string;
+  sell_user_email: string;
   genres: Array<string>;
-  material: string;
-  detail: string;
+  ingredient: string;
+  description: string;
 }
 
 const defaultItem: newItem = {
-  imageUrl: [],
+  attachmentList: [],
   title: "",
   price: 0,
-  nickname: "",
+  sell_user_email: "",
   genres: [],
-  material: "",
-  detail: "",
+  ingredient: "",
+  description: "",
 };
 
 // Button Component
@@ -58,14 +63,12 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   );
 }
 
-function AuctionEdit(): JSX.Element {
+function AuctionEdit({ userObject }: Props): JSX.Element {
   const navigate = useNavigate();
-  // const userEmail: string | null = userObject.email;
 
   const [genresList, setGenresList] = useState<string[] | undefined>([]);
   const [newItem, setNewItem] = useState<newItem>(defaultItem);
 
-  // const [imgUrl, setImgUrl] = useState<string>("");
   const [images, setImages] = useState<File[]>([]);
   const [showImages, setShowImages] = useState<string[]>([]);
 
@@ -104,20 +107,6 @@ function AuctionEdit(): JSX.Element {
     setShowImages(showImages.filter((_, index) => index !== id));
   };
 
-  // const onFileChange = (e: any) => {
-  //   const { files } = e.target;
-  //   const file = files[0];
-  //   setImage(file);
-
-  //   const render = new FileReader();
-  //   render.onload = (finishedEvent: any) => {
-  //     const { result } = finishedEvent.currentTarget;
-  //     setImgUrl(result);
-  //   };
-
-  //   render.readAsDataURL(file);
-  // };
-
   const selectGenres = (e: ChangeEvent<HTMLSelectElement>) => {
     const selected: string = e.target.value;
     setGenresList((prev) => {
@@ -143,40 +132,52 @@ function AuctionEdit(): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    let imageUrlList: Array<string> = [];
+    try {
+      let imageUrlList: Array<string> = [];
 
-    for (let i = 0; i < images.length; i++) {
-      let imageUrl: string = "";
-      const imgRef = ref(storageService, `zmmmm111@gmail.com/${uuidv4()}`);
-      const response = await uploadBytes(imgRef, images[i]);
-      imageUrl = await getDownloadURL(response.ref);
-      imageUrlList.push(imageUrl);
+      for (let i = 0; i < images.length; i++) {
+        let imageUrl: string = "";
+        const imgRef = ref(storageService, `${userObject.email}/${uuidv4()}`);
+        const response = await uploadBytes(imgRef, images[i]);
+        imageUrl = await getDownloadURL(response.ref);
+        imageUrlList.push(imageUrl);
+      }
+
+      const response = await axios({
+        url: api.artwork.readAllOrPost(),
+        method: "post",
+        headers: { token: localStorage.getItem("token") || "" },
+        data: {
+          ...newItem,
+          attachmentList: newItem.attachmentList.map((item) => {
+            return ["image", item];
+          }),
+        },
+      });
+
+      if (response.status === 200) {
+        const data = response.data;
+        const next_url = data.artwork_id;
+        setNewItem(defaultItem);
+        setShowImages([]);
+        alert("작성 완료");
+        navigate(`/auction/${next_url}`);
+      } else {
+        alert("작성 실패");
+      }
+    } catch (err) {
+      console.error(err);
     }
-
-    const newAuction = await addDoc(collection(dbService, "auction"), {
-      imageUrlList: imageUrlList,
-      title: newItem.title,
-      price: newItem.price,
-      // nickname: userEmail,
-      genres: genresList,
-      material: newItem.material,
-      detail: newItem.detail,
-      createdAt: Date.now(),
-    });
-
-    setNewItem(defaultItem);
-    // setImgUrl("");
-    setShowImages([]);
-    navigate(`/auction/${newAuction.id}`);
   };
 
-  // const onClearImg = () => {
-  //   setShowImages([]);
-  //   // setImgUrl("");
-  //   setImages([]);
-  // };
-
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setNewItem((prev) => {
+      return {
+        ...prev,
+        sell_user_email: userObject.email,
+      };
+    });
+  }, []);
 
   return (
     <div>
@@ -247,28 +248,30 @@ function AuctionEdit(): JSX.Element {
           <option value="" disabled>
             선택
           </option>
-          <option value="빨강">빨강</option>
-          <option value="주황">주황</option>
-          <option value="노랑">노랑</option>
-          <option value="초록">초록</option>
-          <option value="파랑">파랑</option>
+          <option value="회화">회화</option>
+          <option value="조소">조소</option>
+          <option value="건축">건축</option>
+          <option value="공예">공예</option>
+          <option value="서예">서예</option>
+          <option value="디지털">디지털</option>
+          <option value="기타">기타</option>
         </select>
         <br />
         <input
-          name="material"
+          name="ingredient"
           type="text"
-          placeholder="material"
-          value={newItem.material || ""}
+          placeholder="재료"
+          value={newItem.ingredient || ""}
           onChange={onChange}
           required
         />
         <br />
         <textarea
-          name="detail"
+          name="description"
           cols={30}
           rows={10}
-          placeholder="detail"
-          value={newItem.detail || ""}
+          placeholder="상세 설명"
+          value={newItem.description || ""}
           onChange={onChange}
         ></textarea>
         <br />

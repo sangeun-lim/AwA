@@ -21,8 +21,6 @@ function Notice(): JSX.Element {
         method: "get",
       });
 
-      console.log(response.status);
-
       if (response.status === 200) {
         const notices = response.data;
         const newNotices: Array<NoticeItem> = notices.map(

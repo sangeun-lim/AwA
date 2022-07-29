@@ -1,58 +1,58 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/api";
 import AuctionListItem from "../../component/AuctionListItem";
-import { Item } from "./../../Interface";
-
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { dbService } from "../../fbase";
+import { ArtworkItem } from "./../../Interface";
 
 function Auction(): JSX.Element {
   const navigate = useNavigate();
-  const [itemList, setItemList] = useState<Array<Item>>([]);
+  const [itemList, setItemList] = useState<Array<ArtworkItem>>([]);
 
   const onClick = () => {
     navigate("/auction/edit");
   };
 
   const callAuction = async () => {
-    const q = query(
-      collection(dbService, "auction"),
-      orderBy("createdAt", "desc")
-    );
-
-    const auctions = (await getDocs(q)).docs;
-
-    const newAuctions: Array<Item> = auctions.map((auction) => {
-      const {
-        imageUrlList,
-        title,
-        price,
-        nickname,
-        genres,
-        material,
-        detail,
-        createdAt,
-        like,
-        viewCount,
-        comments,
-      } = auction.data();
-      const newAuction: Item = {
-        imageUrlList,
-        title,
-        price,
-        nickname,
-        genres,
-        material,
-        detail,
-        createdAt,
-        like,
-        viewCount,
-        comments,
-        id: auction.id,
-      };
-      return newAuction;
+    const response = await axios({
+      url: api.artwork.readAllOrPost(),
+      method: "get",
     });
-    setItemList(newAuctions);
+
+    if (response.status === 200) {
+      const items = response.data;
+
+      const newAuctions: Array<ArtworkItem> = items.map((auction: any) => {
+        const {
+          artwork_id,
+          mediaList,
+          genre,
+          ingredient,
+          like_count,
+          price,
+          sell_user,
+          title,
+          view_count,
+          createdDate,
+          profile_picture,
+        } = auction;
+        const newAuction: ArtworkItem = {
+          artwork_id,
+          mediaList,
+          genre,
+          ingredient,
+          like_count,
+          price,
+          sell_user,
+          title,
+          view_count,
+          createdDate,
+          profile_picture,
+        };
+        return newAuction;
+      });
+      setItemList(newAuctions);
+    }
   };
 
   useEffect(() => {
@@ -65,7 +65,7 @@ function Auction(): JSX.Element {
       <button onClick={onClick}>상품등록</button>
       {itemList.map((item) => {
         return (
-          <div key={item.id}>
+          <div key={item.artwork_id}>
             <AuctionListItem item={item}></AuctionListItem>
           </div>
         );
