@@ -69,7 +69,7 @@ export interface MessageObject {
 }
 
 // 신고 Object
-export interface Report {
+export interface ReportObject {
   id: number;
   uid: number; // 신고자 id
   itemId: number;
