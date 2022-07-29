@@ -1,55 +1,62 @@
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.title {
-  font-size: 25px;
-  margin: 20px;
-}
-
 .signup {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin: 10px;
   width: 50%;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0px 0px 0px;
+  padding: 15px;
+  color: rgb(231, 115, 92);
 }
 
 .signContainer {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  gap: 8px;
-  margin: 10px;
+  gap: 10px;
+  margin: 5px;
 }
 
-.genderContainer {
+.signContainer > label {
+  font-size: small;
+  margin-top: 30px;
+}
+
+.signup > span {
+  font-size: small;
+  margin: 0px 5px;
+  color: rgb(231, 115, 92, 1);
+}
+
+.idContainer {
   display: flex;
-  justify-content: space-around;
-  gap: 8px;
-  margin: 10px;
+  justify-content: space-between;
 }
 
 .signInput {
-  height: 25px;
-  border: 1.5px solid rgb(0, 0, 0);
+  height: 30px;
+  border: none;
+  border-bottom: 2px solid rgb(231, 115, 92, 0.2);
+  width: 100%;
 }
 
 .signInput:focus-visible {
-  height: 25px;
-  outline: 0px solid rgba(254, 111, 59, 1);
-  border: 1px solid rgba(254, 111, 59, 1);
+  height: 30px;
+  outline: none;
+  border-bottom: 2px solid rgb(231, 115, 92);
 }
 
 /* radio button */
 .select {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   gap: 8px;
-  margin: 20px 10px;
+  margin: 20px 5px;
 }
 
 .radioInput {
@@ -59,45 +66,67 @@
 .radioInput + .radioLabel {
   display: inline-block;
   cursor: pointer;
-  width: 50%;
-  border: 1px solid #333;
+  width: 40%;
+  border: 2px solid rgb(231, 115, 92, 0.2);
   line-height: 24px;
   text-align: center;
   font-weight: bold;
   font-size: 13px;
   background-color: #fff;
-  color: #333;
+  color: rgb(231, 115, 92);
 }
 
 .radioInput:checked + .radioLabel {
-  border: 1px solid rgba(254, 111, 59, 1);
-  background-color: rgba(254, 111, 59, 0.1);
-  color: rgba(254, 111, 59, 1);
+  border: 2px solid rgb(231, 115, 92);
+  background-color: rgb(231, 115, 92, 0.1);
+  color: rgb(231, 115, 92);
 }
 
+/* 회원가입 button */
 .signSubmitDisabled {
-  margin-top: 10px;
-  cursor: pointer;
+  margin: 30px 0px;
+
+  cursor: default;
   font-size: 15px;
   padding: 5px 20px;
-  background: rgb(255, 255, 255);
-  border: 1px solid black;
-  margin: 10px;
+  border: 2px solid rgb(231, 115, 92, 0.5);
+  border-radius: 7px;
+  background-color: white;
+  color: rgb(231, 115, 92);
 }
 
 .signSubmit {
-  margin-top: 10px;
+  margin: 30px 0px;
   cursor: pointer;
   font-size: 15px;
   padding: 5px 20px;
-  background: rgb(255, 255, 255);
-  border: 1px solid black;
-  margin: 10px;
-  /* color: rgba(254, 111, 59, 1); */
+  border: 2px solid rgb(231, 115, 92, 0.5);
+  border-radius: 7px;
+  background-color: white;
+  color: rgb(231, 115, 92);
 }
 
 .signSubmit:hover {
-  /* background: rgba(254, 111, 59, 0.2); */
-  border: 1px solid rgba(254, 111, 59, 1);
-  color: rgba(254, 111, 59, 1);
+  border: 2px solid rgb(231, 115, 92);
+  color: rgb(231, 115, 92);
+  font-weight: bold;
+}
+
+/* 중복확인 button */
+.btn {
+  width: 100px;
+  border: 2px solid rgb(231, 115, 92, 0.5);
+  border-radius: 7px;
+  background-color: white;
+  color: rgb(231, 115, 92);
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: small;
+}
+
+.btn:hover {
+  color: rgb(231, 115, 92);
+  border: 2px solid rgb(231, 115, 92);
+  font-weight: bold;
 }

@@ -1,9 +1,13 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Dispatch } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
 import { NoticeItem } from "../../Interface";
 import style from "./Notice.module.css";
+
+interface Props {
+  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
+}
 
 interface Editing {
   title: string;
@@ -18,7 +22,7 @@ const defaultNotice: NoticeItem = {
   modifiedDate: "",
 };
 
-function NoticeDetailAndEdit(): JSX.Element {
+function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
   const params = useParams();
   const address = params.id || "";
   const navigate = useNavigate();
@@ -55,6 +59,8 @@ function NoticeDetailAndEdit(): JSX.Element {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
+
+    setIsLoading(true);
     const response = await axios({
       url: api.notice.readOrUpdateOrDelete(address),
       method: "put",
@@ -66,7 +72,7 @@ function NoticeDetailAndEdit(): JSX.Element {
         content: editNotice.content,
       },
     });
-
+    setIsLoading(false);
     if (response.status === 200) {
       const updateValue = await axios({
         url: api.notice.readOrUpdateOrDelete(address),

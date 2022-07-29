@@ -1,8 +1,12 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import style from "./Notice.module.css";
+
+interface Props {
+  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
+}
 
 interface newNote {
   title: string;
@@ -15,7 +19,7 @@ const defaultNotice: newNote = {
   content: "",
 };
 
-function NoticeCreate(): JSX.Element {
+function NoticeCreate({ setIsLoading }: Props): JSX.Element {
   const navigate = useNavigate();
   const [newNotice, setNewNotice] = useState<newNote>(defaultNotice);
 
@@ -37,6 +41,7 @@ function NoticeCreate(): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
+    setIsLoading(true);
     const response = await axios({
       url: api.notice.create(),
       method: "post",
@@ -48,7 +53,7 @@ function NoticeCreate(): JSX.Element {
         content: newNotice.content,
       },
     });
-
+    setIsLoading(false);
     if (response.status === 200) {
       const note = response.data;
       navigate(`/notice/${note.notice_id}`);

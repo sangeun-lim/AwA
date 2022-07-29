@@ -37,6 +37,20 @@
   color: rgb(231, 115, 92);
 }
 
+.btn {
+  margin: 20px;
+  padding: 0;
+  border: none;
+  background-color: white;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  text-align: left;
+}
+
+.btn:hover {
+  color: rgb(231, 115, 92);
+}
+
 @media (max-width: 768px) {
   .navList {
     display: none;
@@ -143,9 +157,12 @@
 
   .profile > a {
     margin: 0px;
+    font-size: small;
   }
 
   .profile > p {
     white-space: nowrap;
+    margin: 0px;
+    font-size: small;
   }
 }
