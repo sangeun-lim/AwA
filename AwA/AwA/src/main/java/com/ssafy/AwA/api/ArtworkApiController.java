@@ -1,10 +1,7 @@
 package com.ssafy.AwA.api;
 
 import com.ssafy.AwA.domain.artwork.Artwork;
-import com.ssafy.AwA.dto.ArtworkRequestDto;
-import com.ssafy.AwA.dto.ArtworkResponseDto;
-import com.ssafy.AwA.dto.GenreDto;
-import com.ssafy.AwA.dto.IngredientDto;
+import com.ssafy.AwA.dto.*;
 import com.ssafy.AwA.repository.ArtworkRepository;
 import com.ssafy.AwA.repository.ProfileRepository;
 import com.ssafy.AwA.service.ArtworkService;
@@ -74,12 +71,12 @@ public class ArtworkApiController {
             return 0;
     }
 
-    @PutMapping("/{artwork_id}/description/{newDescription}")
-    public int updateArtworkDescription(@PathVariable("artwork_id") Long artwork_id, @PathVariable("newDescription") String newDescription) {
-        artworkService.updateDescription(artwork_id, newDescription);
+    @PutMapping("/{artwork_id}/description")
+    public int updateArtworkDescription(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid DescriptionDto descriptionDto) {
+        artworkService.updateDescription(artwork_id, descriptionDto.getDescription());
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
 
-        if(targetArtwork.getDescription().equals(newDescription))
+        if(targetArtwork.getDescription().equals(descriptionDto.getDescription()))
             return 1;
         else
             return 0;

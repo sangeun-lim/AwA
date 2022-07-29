@@ -130,6 +130,7 @@ public class ArtworkService {
 
         return ArtworkResponseDto.builder()
                 .artwork_id(artwork_id)
+                .createdDate(targetArtwork.getCreatedDate())
                 .attachmentRequestDtoList(attachmentRequestDtoList)
                 .ingredient(targetArtwork.getIngredient())
                 .genre(targetArtwork.getGenre())
@@ -137,6 +138,7 @@ public class ArtworkService {
                 .sell_user(targetUser.getNickname())
                 .price(targetArtwork.getPrice())
                 .view_count(targetArtwork.getView_count())
+                .description(targetArtwork.getDescription())
                 .build();
     }
 

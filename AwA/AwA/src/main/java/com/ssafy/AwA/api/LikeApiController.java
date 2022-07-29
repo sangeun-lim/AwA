@@ -22,14 +22,17 @@ public class LikeApiController {
 
     @PostMapping("/{nickname}/{artwork_id}")
     public int likeArtwork(@PathVariable("nickname") String nickname, @PathVariable("artwork_id") Long artwork_id) {
-        likeService.likeArtwork(nickname, artwork_id);
+        if(likeService.likeArtwork(nickname, artwork_id) == 0)
+        {
+            return 0;
+        }
 
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
         Profile targetProfile = profileRepository.findByNickname(nickname);
 
         Likes targetLike = likeRepository.findByArtworkAndProfile(targetArtwork,targetProfile);
 
-        if(targetLike.getArtwork().getArtwork_id() == targetLike.getLike_id())
+        if(targetLike.getArtwork().getArtwork_id() == targetArtwork.getArtwork_id())
             if(targetLike.getProfile().getProfile_id() == targetProfile.getProfile_id())
                 return 1;
         return 0;
@@ -39,5 +42,13 @@ public class LikeApiController {
     public int unlikeArtwork(@PathVariable("nickname") String nickname, @PathVariable("artwork_id") Long artwork_id) {
         likeService.unlikeArtwork(nickname, artwork_id);
         return 1;
+    }
+
+    @GetMapping("have/{nickname}/{artwork_id}/")
+    public int isLike(@PathVariable("nickname") String nickname, @PathVariable("artwork_id") Long artwork_id)
+    {
+        if(likeService.isLike(nickname,artwork_id))
+            return 1;
+        return 0;
     }
 }
