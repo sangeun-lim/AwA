@@ -60,4 +60,25 @@ public class CommentService {
 
         return commentResponseDto;
     }
+
+    public int deleteComment(Long commentId) {
+        Comment targetComment = commentRepository.findByComment_id(commentId);
+        commentRepository.delete(targetComment);
+        return 1;
+    }
+
+    public CommentResponseDto getComment(Long commentId) {
+        Comment targetComment = commentRepository.findByComment_id(commentId);
+
+        CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                .createdDate(targetComment.getCreatedDate())
+                .modifiedDate(targetComment.getModifiedDate())
+                .comment_id(targetComment.getComment_id())
+                .parent_artwork_id(targetComment.getParent_artwork().getArtwork_id())
+                .nickname(targetComment.getProfile().getNickname())
+                .content(targetComment.getContent())
+                .build();
+
+        return commentResponseDto;
+    }
 }

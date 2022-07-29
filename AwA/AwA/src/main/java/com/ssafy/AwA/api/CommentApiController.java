@@ -21,4 +21,14 @@ public class CommentApiController {
     public CommentResponseDto updateComment(@PathVariable("commentId") Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
         return commentService.updateComment(commentRequestDto, commentId);
     }
+
+    @DeleteMapping("/{commentId}")
+    public int deleteComment(@PathVariable("commentId") Long commentId) {
+        return commentService.deleteComment(commentId);
+    }
+
+    @GetMapping("/{commentId}")
+    public CommentResponseDto getComment(@PathVariable("commentId") Long commentId) {
+        return commentService.getComment(commentId);
+    }
 }
