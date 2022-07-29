@@ -36,4 +36,7 @@ public class Comment extends BaseTimeEntity {
         this.profile = profile;
         this.content = content;
     }
+
+    //비즈니스 로직
+    public void updateContent(String content) { this.content = content; }
 }
