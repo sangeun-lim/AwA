@@ -1,6 +1,6 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "./../../Interface";
+import { User } from "../../Interface";
 
 import { storageService } from "../../fbase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -10,6 +10,7 @@ import api from "../../api/api";
 
 interface Props {
   userObject: User;
+  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ButtonProps {
@@ -17,27 +18,20 @@ interface ButtonProps {
   deleteGenre(item: string): void;
 }
 
-interface attachment {
-  type: string;
-  url: string;
-}
-
 interface newItem {
-  attachmentList: attachment[];
-  title: string;
-  price: number;
-  sell_user_email: string;
-  genres: Array<string>;
-  ingredient: string;
   description: string;
+  genre: string[];
+  ingredient: string;
+  price: number;
+  sell_user_nickname: string;
+  title: string;
 }
 
 const defaultItem: newItem = {
-  attachmentList: [],
   title: "",
   price: 0,
-  sell_user_email: "",
-  genres: [],
+  sell_user_nickname: "",
+  genre: [],
   ingredient: "",
   description: "",
 };
@@ -63,7 +57,7 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   );
 }
 
-function AuctionEdit({ userObject }: Props): JSX.Element {
+function AuctionCreate({ userObject, setIsLoading }: Props): JSX.Element {
   const navigate = useNavigate();
 
   const [genresList, setGenresList] = useState<string[] | undefined>([]);
@@ -124,7 +118,7 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
 
   const deleteGenre = (item: any) => {
     setGenresList((prev) => {
-      const newGenreList = prev?.filter((genre) => genre !== item);
+      const newGenreList = prev?.filter((gen) => gen !== item);
       return newGenreList;
     });
   };
@@ -132,6 +126,7 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
+    setIsLoading(true);
     try {
       let imageUrlList: Array<string> = [];
 
@@ -149,8 +144,9 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
         headers: { token: localStorage.getItem("token") || "" },
         data: {
           ...newItem,
-          attachmentList: newItem.attachmentList.map((item) => {
-            return ["image", item];
+          genre: genresList,
+          attachmentList: imageUrlList.map((item) => {
+            return { type: "image", url: item };
           }),
         },
       });
@@ -160,12 +156,15 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
         const next_url = data.artwork_id;
         setNewItem(defaultItem);
         setShowImages([]);
+        setIsLoading(false);
         alert("작성 완료");
-        navigate(`/auction/${next_url}`);
+        navigate(`/auction/detail/${next_url}`);
       } else {
+        setIsLoading(false);
         alert("작성 실패");
       }
     } catch (err) {
+      setIsLoading(false);
       console.error(err);
     }
   };
@@ -174,17 +173,17 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
     setNewItem((prev) => {
       return {
         ...prev,
-        sell_user_email: userObject.email,
+        sell_user_nickname: userObject.nickname,
       };
     });
-  }, []);
+  }, [userObject.nickname]);
 
   return (
     <div>
       <h1>Auction Create</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="input-file" onChange={handleAddImages}>
-          <input type="file" id="input-file" multiple />
+          <input type="file" accept="image/*" id="input-file" multiple />
           {/* <Plus fill="#646F7C" /> */}
           <span>사진추가</span>
         </label>
@@ -239,12 +238,7 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
               <GenreButton deleteGenre={deleteGenre} item={item}></GenreButton>
             </div>
           ))}
-        <select
-          name="genres"
-          id="genres"
-          onChange={selectGenres}
-          defaultValue=""
-        >
+        <select name="genre" id="genre" onChange={selectGenres} defaultValue="">
           <option value="" disabled>
             선택
           </option>
@@ -281,4 +275,4 @@ function AuctionEdit({ userObject }: Props): JSX.Element {
   );
 }
 
-export default AuctionEdit;
+export default AuctionCreate;

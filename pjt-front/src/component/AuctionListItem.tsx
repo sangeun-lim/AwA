@@ -12,31 +12,29 @@ const AuctionListItem = ({ item }: Props): JSX.Element => {
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  const imageUrlList = item.mediaList;
-
   return (
     <div>
-      <p>
-        {imageUrlList.length && (
-          <div>
-            {imageUrlList.map((image) => (
-              <span key={image.url}>
-                <img
-                  src={image.url}
-                  alt={`${image.url}-${image.type}`}
-                  width="10%"
-                  height="10%"
-                />
-              </span>
-            ))}
-          </div>
-        )}
-      </p>
+      {item.mediaList && (
+        <div>
+          {item.mediaList.map((image) => (
+            <span key={image.url}>
+              <img
+                src={image.url}
+                alt={`${image.url}-${image.type}`}
+                width="10%"
+                height="10%"
+              />
+            </span>
+          ))}
+        </div>
+      )}
       <b>
-        <NavLink to={`/auction/${item.artwork_id}`}>{item.title}</NavLink>
+        <NavLink to={`/auction/detail/${item.artwork_id}`}>
+          {item.title}
+        </NavLink>
       </b>
       <span>
-        {item.price}원 | {`${year}.${month}.${day}`} | {item.sell_user}
+        {item.price}원 | {`${year}.${month}.${day}`} | {item.sell_user_nickname}
       </span>
     </div>
   );

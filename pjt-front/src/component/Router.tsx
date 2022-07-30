@@ -9,8 +9,8 @@ import Profile from "../pages/profile/Profile";
 import Favorite from "../pages/profile/Favorite";
 import Chatting from "../pages/Chatting/Chatting";
 import Auction from "../pages/auction/Auction";
-import AuctionDetail from "../pages/auction/AuctionDetail";
-import AuctionEdit from "../pages/auction/AuctionEdit";
+import AuctionDetailOrUpdate from "../pages/auction/AuctionDetailOrUpdate";
+import AuctionCreate from "../pages/auction/AuctionCreate";
 import Notice from "../pages/notice/Notice";
 import NoticeDetailAndEdit from "../pages/notice/NoticeDetailAndEdit";
 import NoticeCreate from "../pages/notice/NoticeCreate";
@@ -26,6 +26,7 @@ interface Props {
   userObject: User | null;
   getUserData: Function;
   setIsLoading: Dispatch<React.SetStateAction<boolean>>;
+  setUserObject: Dispatch<React.SetStateAction<User | null>>;
 }
 
 const AppRouter = ({
@@ -33,13 +34,17 @@ const AppRouter = ({
   userObject,
   getUserData,
   setIsLoading,
+  setUserObject,
 }: Props): JSX.Element => {
   const [selectChat, setSelectChat] = useState<string | null>(null); // 채팅 상대유저의 이메일을 저장
 
   return (
     <>
       <Router>
-        <Navigation userEmail={userObject?.email} />
+        <Navigation
+          userEmail={userObject?.email}
+          setUserObject={setUserObject}
+        />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/preview" element={<Preview />} />
@@ -77,15 +82,28 @@ const AppRouter = ({
               }
             />
           )}
-          <Route path="/auction" element={<Auction />} />
           <Route
-            path="/auction/:id"
-            element={<AuctionDetail userObject={userObject} />}
+            path="/auction"
+            element={<Auction setIsLoading={setIsLoading} />}
+          />
+          <Route
+            path="/auction/detail/:id"
+            element={
+              <AuctionDetailOrUpdate
+                userObject={userObject}
+                setIsLoading={setIsLoading}
+              />
+            }
           />
           {userObject && (
             <Route
-              path="/auction/edit"
-              element={<AuctionEdit userObject={userObject} />}
+              path="/auction/create"
+              element={
+                <AuctionCreate
+                  userObject={userObject}
+                  setIsLoading={setIsLoading}
+                />
+              }
             />
           )}
           <Route path="/notice" element={<Notice />} />

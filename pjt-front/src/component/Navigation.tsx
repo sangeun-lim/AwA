@@ -1,29 +1,32 @@
 import React from "react";
-import { useState } from "react";
+import { useState, Dispatch } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import style from "./Navigation.module.css";
-import api from "../api/api";
-import axios from "axios";
+// import api from "../api/api";
+// import axios from "axios";
+import { User } from "./../Interface";
 
 interface Props {
   userEmail: string | null | undefined;
+  setUserObject: Dispatch<React.SetStateAction<User | null>>;
 }
 
-function Navigation({ userEmail }: Props): JSX.Element {
+function Navigation({ userEmail, setUserObject }: Props): JSX.Element {
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // userObject 도 null 값으로 바꿔주기
-
   const logoutRequest = async () => {
-    const response = await axios({
-      url: api.auth.logout(),
-      method: "post",
-      data: localStorage.getItem("token"),
-    });
-    if (response.status === 200) {
-      navigate("/preview");
-    }
+    setUserObject(null);
+    navigate("/preview");
+    localStorage.setItem("token", "");
+    // const response = await axios({
+    //   url: api.auth.logout(),
+    //   method: "post",
+    //   data: localStorage.getItem("token"),
+    // });
+    // if (response.status === 200) {
+    //   navigate("/preview");
+    // }
   };
 
   const Logout = () => {

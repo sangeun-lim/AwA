@@ -1,6 +1,6 @@
-import React, { useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect, useState, ChangeEvent, Dispatch } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Item, User } from "../../Interface";
+import { ArtworkItem, User } from "../../Interface";
 
 import { storageService } from "../../fbase";
 import {
@@ -16,30 +16,29 @@ import api from "../../api/api";
 interface editItem {
   title: string;
   price: number;
-  genres: string[];
   ingredient: string;
   description: string;
 }
 
-const defaultItem: Item = {
+const defaultItem: ArtworkItem = {
   artwork_id: 0,
   mediaList: [],
   genre: [],
-  ingredient: [],
+  ingredient: "",
   like_count: 0,
   price: 0,
-  sell_user: "",
+  sell_user_email: "",
   sell_user_nickname: "",
   title: "",
   profile_picture: "",
   view_count: 0,
   description: "",
   createdDate: "",
-  comments: [],
 };
 
 interface Props {
   userObject: User | null;
+  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ButtonProps {
@@ -68,27 +67,35 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   );
 }
 
-function AuctionDetail({ userObject }: Props): JSX.Element {
+function AuctionDetailOrUpdate({
+  userObject,
+  setIsLoading,
+}: Props): JSX.Element {
   const navigate = useNavigate();
 
   const params = useParams();
   const address = params.id;
-  const [item, setItem] = useState<Item | any>(defaultItem);
 
+  const [item, setItem] = useState<ArtworkItem>(defaultItem);
   const [onEdit, setOnEdit] = useState<boolean>(false);
-  const [genresList, setGenresList] = useState<string[]>();
+
+  // 수정용 상태 선언
+  const [genresList, setGenresList] = useState<string[]>([]);
   const [editItem, setEditItem] = useState<editItem>({
     title: item.title,
     price: item.price,
-    genres: item.genres,
     ingredient: item.ingredient,
     description: item.description,
   });
 
+  // 수정용 이미지
   const [images, setImages] = useState<File[]>([]);
+  // 수정할 때 보여주는 이미지 url
   const [showImages, setShowImages] = useState<string[]>([]);
+  // 삭제할 이미지 url
   const [delImages, setDelImages] = useState<string[]>([]);
 
+  // 수정 상태 변화
   const onChange = (e: any) => {
     const { name, value } = e.target;
 
@@ -103,24 +110,23 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
   // 이미지를 여러개 가져와 보자!!!!!
   const handleAddImages = (e: any) => {
     const imageLists = e.target.files;
-    let imageUrlLists = [...showImages];
 
     for (let i = 0; i < imageLists.length; i++) {
       const file = imageLists[i];
       setImages((prev) => [...prev, file]);
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      imageUrlLists.push(currentImageUrl);
+      setShowImages((prev: string[]) => {
+        return [...prev, currentImageUrl];
+      });
     }
 
-    if (imageUrlLists.length > 10) {
-      imageUrlLists = imageUrlLists.slice(0, 10);
-    }
-
-    setShowImages(imageUrlLists);
+    setShowImages((prev) => {
+      return [...prev.slice(0, 10)];
+    });
   };
 
   // X버튼 클릭 시 이미지 삭제
-  const handleDeleteImage = (id: any) => {
+  const handleDeleteImage = (id: number) => {
     setImages(images.filter((_, index) => index !== id));
     setShowImages(showImages.filter((_, index) => index !== id));
     setDelImages((prev) => {
@@ -130,23 +136,19 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
   };
 
   const selectGenres = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selected: string = e.target.value;
+    const { value } = e.target;
     setGenresList((prev) => {
-      if (prev) {
-        if (!prev.includes(selected)) {
-          return [...prev, selected];
-        } else {
-          return [...prev];
-        }
+      if (!prev.includes(value)) {
+        return [...prev, value];
       } else {
-        return [selected];
+        return [...prev];
       }
     });
   };
 
-  const deleteGenre = (item: any) => {
+  const deleteGenre = (item: string) => {
     setGenresList((prev) => {
-      const newGenreList = prev?.filter((genre) => genre !== item);
+      const newGenreList = prev.filter((genre) => genre !== item);
       return newGenreList;
     });
   };
@@ -161,73 +163,89 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-    if (userObject) {
-      let imageUrlLists: Array<string> = item.imageUrlList;
+    setIsLoading(true);
 
-      for (let i = 0; i < images.length; i++) {
-        let imageUrl: string = "";
-        const imgRef = ref(storageService, `${userObject.email}/${uuidv4()}`);
-        const response = await uploadBytes(imgRef, images[i]);
-        imageUrl = await getDownloadURL(response.ref);
-        imageUrlLists.push(imageUrl);
-      }
+    try {
+      if (userObject) {
+        // 기존 이미지 url들을 imageUrlLists에 담는다.
+        let imageUrlLists: string[] = item.mediaList.map(
+          (media: { type: string; url: string }) => {
+            return media.url;
+          }
+        );
 
-      for (let i = 0; i < delImages.length; i++) {
-        const imgRef = ref(storageService, delImages[i]);
-        await deleteObject(imgRef);
-        imageUrlLists = imageUrlLists.filter((item) => item !== delImages[i]);
-      }
+        // 새로 추가된 이미지들을 클라우드 스토리지에 저장후 url을 받아서 리스트에 추가하자
+        for (let i = 0; i < images.length; i++) {
+          let imageUrl: string = "";
+          const imgRef = ref(storageService, `${userObject.email}/${uuidv4()}`);
+          const response = await uploadBytes(imgRef, images[i]);
+          imageUrl = await getDownloadURL(response.ref);
+          imageUrlLists.push(imageUrl);
+        }
 
-      const response = await axios({
-        url: api.artwork.readDetailOrUpdateOrDelete(address || ""),
-        method: "put",
-        headers: { token: localStorage.getItem("token") || "" },
-        data: {
-          ...item,
-          ...editItem,
-          attachmentList: imageUrlLists.map((item) => {
-            return ["image", item];
-          }),
-        },
-      });
+        // 삭제한 이미지들을 클라우드 스토리지에서 삭제하고 imageUrlLists에서 빼자
+        for (let i = 0; i < delImages.length; i++) {
+          const imgRef = ref(storageService, delImages[i]);
+          await deleteObject(imgRef);
+          imageUrlLists = imageUrlLists.filter((item) => item !== delImages[i]);
+        }
 
-      if (response.status === 200) {
-        const updateData = response.data;
-        const {
-          artwork_id,
-          attachmentRequestDtoList,
-          createdDate,
-          description,
-          genre,
-          ingredient,
-          like_count,
-          price,
-          profile_picture,
-          sell_user,
-          sell_user_nickname,
-          title,
-          view_count,
-        } = updateData;
-
-        setItem({
-          artwork_id,
-          mediaList: attachmentRequestDtoList,
-          genre,
-          createdDate,
-          description,
-          price,
-          title,
-          ingredient,
-          like_count,
-          profile_picture,
-          sell_user,
-          sell_user_nickname,
-          view_count,
+        const response = await axios({
+          url: api.artwork.readDetailOrUpdateOrDelete(address || ""),
+          method: "put",
+          headers: { token: localStorage.getItem("token") || "" },
+          data: {
+            sell_user_nickname: item.sell_user_nickname,
+            ...editItem,
+            genre: genresList,
+            attachmentList: imageUrlLists.map((item) => {
+              return { type: "image", url: item };
+            }),
+          },
         });
-      }
-    }
 
-    setOnEdit(!onEdit);
+        if (response.status === 200) {
+          const updateData = response.data;
+          const {
+            artwork_id,
+            attachmentRequestDtoList,
+            createdDate,
+            description,
+            genre,
+            ingredient,
+            like_count,
+            price,
+            profile_picture,
+            sell_user_email,
+            sell_user_nickname,
+            title,
+            view_count,
+          } = updateData;
+
+          setItem({
+            artwork_id,
+            mediaList: attachmentRequestDtoList,
+            createdDate,
+            description,
+            genre,
+            ingredient,
+            like_count,
+            price,
+            profile_picture,
+            sell_user_email,
+            sell_user_nickname,
+            title,
+            view_count,
+          });
+        }
+      }
+
+      setOnEdit(!onEdit);
+      setIsLoading(false);
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
+    }
   };
 
   const onDeleteClick = async () => {
@@ -239,8 +257,8 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
         headers: { token: localStorage.getItem("token") || "" },
       });
       if (response.status === 200) {
-        for (let i = 0; i < item.imageUrlList.length; i++) {
-          const imgRef = ref(storageService, item.imageUrlList[i]);
+        for (let i = 0; i < item.mediaList.length; i++) {
+          const imgRef = ref(storageService, item.mediaList[i].url);
           await deleteObject(imgRef);
         }
         navigate("/auction");
@@ -259,6 +277,7 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
 
       if (response.status === 200) {
         const auctionItem = response.data;
+        console.log(auctionItem);
 
         const {
           artwork_id,
@@ -271,6 +290,7 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
           price,
           profile_picture,
           sell_user_nickname,
+          sell_user_email,
           title,
           view_count,
         } = auctionItem;
@@ -287,29 +307,40 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
           like_count,
           profile_picture,
           sell_user_nickname,
+          sell_user_email,
           view_count,
         });
       }
     }
 
-    if (address) {
-      loadData();
-    } else {
-      navigate("/notice");
+    try {
+      if (address) {
+        setIsLoading(true);
+        loadData();
+        setIsLoading(false);
+      } else {
+        navigate("/notice");
+      }
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
     }
-  }, [address, navigate]);
+  }, [address, navigate, setIsLoading]);
 
   useEffect(() => {
     setEditItem({
       title: item.title,
       price: item.price,
-      genres: item.genre,
       ingredient: item.ingredient,
       description: item.description,
     });
 
-    setGenresList(item.genres);
-    setShowImages(item.imageUrlList);
+    setGenresList(item.genre);
+    setShowImages(
+      item.mediaList.map((media: { url: string; type: string }) => {
+        return media.url;
+      })
+    );
   }, [onEdit, item]);
 
   return (
@@ -386,11 +417,13 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
               <option value="" disabled>
                 선택
               </option>
-              <option value="빨강">빨강</option>
-              <option value="주황">주황</option>
-              <option value="노랑">노랑</option>
-              <option value="초록">초록</option>
-              <option value="파랑">파랑</option>
+              <option value="회화">회화</option>
+              <option value="조소">조소</option>
+              <option value="건축">건축</option>
+              <option value="공예">공예</option>
+              <option value="서예">서예</option>
+              <option value="디지털">디지털</option>
+              <option value="기타">기타</option>
             </select>
             <br />
             <input
@@ -417,31 +450,28 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
       ) : (
         <div>
           <h1>AuctionDetail</h1>
-          {item.imageUrlList && (
-            <div>
-              {item.imageUrlList.map((image: any, id: any) => (
-                <div key={id}>
-                  <img
-                    src={image}
-                    alt={`${image}-${id}`}
-                    width="30%"
-                    height="30%"
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+          {item.mediaList.length &&
+            item.mediaList.map((image: { type: string; url: string }) => (
+              <div key={image.url}>
+                <img
+                  src={image.url}
+                  alt={`${image.url}`}
+                  width="30%"
+                  height="30%"
+                />
+              </div>
+            ))}
           <h2>{item.title}</h2>
-          <p>작성자 : {item.nickname}</p>
+          <p>작성자 : {item.sell_user_nickname}</p>
           <p>가격 : {item.price}원</p>
-          {/* <p>
+          <p>
             장르 :{" "}
-            {item.genres.map((item: string, i: number) => (
+            {item.genre.map((item: string, i: number) => (
               <span key={i}>{item} </span>
             ))}
-          </p> */}
-          <p>재료 : {item.material}</p>
-          <p>{item.detail}</p>
+          </p>
+          <p>재료 : {item.ingredient}</p>
+          <p>{item.description}</p>
           <button onClick={onEditClick}>수정</button>
           <button onClick={onDeleteClick}>삭제</button>
           <button onClick={onListClick}>목록</button>
@@ -451,4 +481,4 @@ function AuctionDetail({ userObject }: Props): JSX.Element {
   );
 }
 
-export default AuctionDetail;
+export default AuctionDetailOrUpdate;
