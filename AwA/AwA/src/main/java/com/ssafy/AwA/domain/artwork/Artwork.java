@@ -105,12 +105,6 @@ public class Artwork extends BaseTimeEntity {
         attachment.connectArtwork(this.artwork_id);
     }
 
-    public void addReport(Report report)
-    {
-        report_list.add(report);
-        report.createArtwork(this);
-    }
-
 
     //비즈니스 로직
     public void addViewCount() {
