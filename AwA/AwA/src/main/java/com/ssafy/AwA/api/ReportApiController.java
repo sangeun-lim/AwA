@@ -20,4 +20,10 @@ public class ReportApiController {
     public ReportResponseDto saveReport(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid ReportRequestDto reportDto) {
         return reportService.saveReport(artwork_id,reportDto);
     }
+
+    @DeleteMapping("/{report_id}")
+    public int deleteReport(@PathVariable("report_id") Long report_id) {
+        return reportService.deleteReport(report_id);
+    }
+
 }
