@@ -67,15 +67,16 @@ public class ArtworkService {
                     .build());
         }
 
-        User findByEmail = userRepository.findByNickname(artworkRequestDto.getSell_user_nickname());
-        Profile findByNickname = profileRepository.findByNickname(artworkRequestDto.getSell_user_nickname());
+        User findByNickname = userRepository.findByNickname(artworkRequestDto.getSell_user_nickname());
+        Profile findByNicknameProfile = profileRepository.findByNickname(artworkRequestDto.getSell_user_nickname());
         ArtworkResponseDto artworkResponseDto = ArtworkResponseDto.builder()
+                .sell_user_email(findByNickname.getEmail())
                 .createdDate(savedArtwork.getCreatedDate())
-                .profile_picture(findByNickname.getProfile_picture_url())
+                .profile_picture(findByNicknameProfile.getProfile_picture_url())
                 .description(savedArtwork.getDescription())
                 .artwork_id(savedArtwork.getArtwork_id())
                 .attachmentRequestDtoList(artworkRequestDto.getAttachmentList())
-                .sell_user_nickname(findByEmail.getNickname())
+                .sell_user_nickname(findByNickname.getNickname())
                 .title(savedArtwork.getTitle())
                 .genre(savedArtwork.getGenre())
                 .ingredient(savedArtwork.getIngredient())
@@ -106,6 +107,7 @@ public class ArtworkService {
             }
 
             artworkResponseDtoList.add(ArtworkResponseDto.builder()
+                    .sell_user_email(sellUser.getEmail())
                     .profile_picture(sellUserProfile.getProfile_picture_url())
                     .createdDate(targetArtwork.getCreatedDate())
                     .description(targetArtwork.getDescription())
@@ -139,6 +141,7 @@ public class ArtworkService {
         User targetUser = targetArtwork.getSell_user();
         Profile sellUserProfile = profileRepository.findByNickname(targetUser.getNickname());
         return ArtworkResponseDto.builder()
+                .sell_user_email(targetUser.getEmail())
                 .profile_picture(sellUserProfile.getProfile_picture_url())
                 .artwork_id(artwork_id)
                 .createdDate(targetArtwork.getCreatedDate())
@@ -181,7 +184,7 @@ public class ArtworkService {
         targetArtwork.updateGenre(genre);
     }
 
-    public void updateIngredient(Long artwork_id, List<String> ingredient) {
+    public void updateIngredient(Long artwork_id, String ingredient) {
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
 
         targetArtwork.updateIngredient(ingredient);

@@ -52,11 +52,8 @@ public class Artwork extends BaseTimeEntity {
     )
     private List<String> genre = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "ingredient", joinColumns =
-        @JoinColumn(name = "artwork_id")
-    )
-    private List<String> ingredient = new ArrayList<>();
+    private String ingredient;
+
 
     //댓글
     @OneToMany(mappedBy = "parent_artwork", cascade = CascadeType.ALL)
@@ -79,7 +76,7 @@ public class Artwork extends BaseTimeEntity {
 
 
     @Builder
-    public Artwork(User sell_user, String title, int view_count, int price, String description, boolean is_sell, List<String> genre, List<String> ingredient, List<Attachment> attachment_list) {
+    public Artwork(User sell_user, String title, int view_count, int price, String description, boolean is_sell, List<String> genre, String ingredient, List<Attachment> attachment_list) {
         this.sell_user = sell_user;
         this.title = title;
         this.view_count = view_count;
@@ -140,7 +137,7 @@ public class Artwork extends BaseTimeEntity {
         this.genre = genre;
     }
 
-    public void updateIngredient(List<String> ingredient) {
+    public void updateIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
 }

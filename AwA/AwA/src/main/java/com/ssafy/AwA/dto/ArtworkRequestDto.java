@@ -24,7 +24,7 @@ public class ArtworkRequestDto {
 
     private List<String> genre;
 
-    private List<String> ingredient;
+    private String ingredient;
 
     private List<AttachmentRequestDto> attachmentList;
 
