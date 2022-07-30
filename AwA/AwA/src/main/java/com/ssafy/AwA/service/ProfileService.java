@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -50,5 +52,11 @@ public class ProfileService {
         Profile targetProfile = profileRepository.findByProfile_id(profile_id);
 
         targetProfile.updateDescription(newDescription);
+    }
+
+    public void updateFavorite_Field(Long profile_id, List<String> favorite_field) {
+        Profile targetProfile = profileRepository.findByProfile_id(profile_id);
+
+        targetProfile.updateFavorite_field(favorite_field);
     }
 }

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -31,6 +33,11 @@ public class Profile extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User owner_user;
 
+    @ElementCollection
+    @CollectionTable(name = "favorite_field", joinColumns =
+    @JoinColumn(name = "profile_id")
+    )
+    private List<String> favorite_field = new ArrayList<>();
 
     @Builder
     public Profile(String profile_picture_url, String nickname, String description, User owner_user) {
@@ -50,5 +57,9 @@ public class Profile extends BaseTimeEntity {
 
     public void updateDescription(String newDescription) {
         this.description = newDescription;
+    }
+
+    public void updateFavorite_field(List<String> favorite_field) {
+        this.favorite_field = favorite_field;
     }
 }

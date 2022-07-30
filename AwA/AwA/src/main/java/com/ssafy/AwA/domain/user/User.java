@@ -64,10 +64,6 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column
     private boolean is_seller;
 
-    //선호분야리스트
-    @OneToMany(mappedBy = "select_user", cascade = CascadeType.ALL)
-    private List<FavoriteField> favorite_list = new ArrayList<>();
-
     @OneToMany(mappedBy = "create_room_user", cascade = CascadeType.ALL)
     private List<Room> chatrooms = new ArrayList<>();
 

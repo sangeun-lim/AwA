@@ -3,6 +3,7 @@ package com.ssafy.AwA.api;
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.DescriptionDto;
+import com.ssafy.AwA.dto.Favorite_fieldDto;
 import com.ssafy.AwA.dto.ProfileResponseDto;
 import com.ssafy.AwA.service.ProfileService;
 import com.ssafy.AwA.service.UserService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,12 +26,15 @@ public class ProfileApiController {
         String nickname = targetUser.getNickname();
 
         Profile targetProfile = profileService.findByNickname(nickname);
-        System.out.println(targetProfile.getNickname());
-        System.out.println(targetProfile.getDescription());
-        System.out.println(targetProfile.getProfile_picture_url());
-        ProfileResponseDto profileResponseDto = new ProfileResponseDto(
-                targetProfile.getNickname(), targetProfile.getDescription(), targetProfile.getProfile_picture_url()
-        );
+
+        ProfileResponseDto profileResponseDto = ProfileResponseDto.builder()
+                .nickname(targetProfile.getNickname())
+                .owner_user(targetUser.getUser_id())
+                .picture_url(targetProfile.getProfile_picture_url())
+                .description(targetProfile.getDescription())
+                .favorite_field(targetProfile.getFavorite_field())
+                .build();
+
         return profileResponseDto;
 //        return null;
     }
@@ -66,5 +71,19 @@ public class ProfileApiController {
         profileService.updateDescription(targetProfile.getProfile_id(), descriptionDto.getDescription());
 
         return targetProfile.getDescription();
+    }
+
+    @PutMapping("{userEmail}/favorite_field")
+    public Favorite_fieldDto updateDescription(@PathVariable(name = "userEmail") String userEmail, @RequestBody @Valid Favorite_fieldDto favorite_fieldDto) {
+        User targetUser = userService.findByEmail(userEmail);
+        Profile targetProfile = profileService.findByNickname(targetUser.getNickname());
+
+        profileService.updateFavorite_Field(targetProfile.getProfile_id(), favorite_fieldDto.getFavorite_field());
+
+        Favorite_fieldDto responseDto = Favorite_fieldDto.builder()
+                .favorite_field(targetProfile.getFavorite_field())
+                .build();
+
+        return responseDto;
     }
 }
