@@ -17,6 +17,8 @@ public class Attachment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long file_id;
 
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "artwork_id")
     @Column
     private Long artwork_id;
 

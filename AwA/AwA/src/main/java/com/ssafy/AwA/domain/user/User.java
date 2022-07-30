@@ -64,11 +64,11 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column
     private boolean is_seller;
 
-    @OneToMany(mappedBy = "create_room_user", cascade = CascadeType.ALL)
-    private List<Room> chatrooms = new ArrayList<>();
+//    @OneToMany(mappedBy = "create_room_user", cascade = CascadeType.ALL)
+//    private List<Room> chatrooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "purchase_user", cascade = CascadeType.ALL)
-    private List<PurchaseArtwork> purchase_list = new ArrayList<>();
+//    @OneToMany(mappedBy = "purchase_user", cascade = CascadeType.ALL)
+//    private List<PurchaseArtwork> purchase_list = new ArrayList<>();
 
     @OneToMany(mappedBy = "sell_user",cascade = CascadeType.ALL)
     @JsonManagedReference

@@ -12,7 +12,7 @@ public class Follow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long follow_id;
 
     @JoinColumn(name = "from_profile_id")
     @ManyToOne

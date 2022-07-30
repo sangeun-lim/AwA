@@ -25,10 +25,10 @@ public class Room extends BaseTimeEntity {
     @JoinColumn(name = "artwork_id")
     private Artwork related_artwork;
 
-    //채팅방 생성 유저
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User create_room_user;
+//    //채팅방 생성 유저
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name="user_id")
+//    private User create_room_user;
 
     //채팅 상대 유저
     private int chat_partner_id;

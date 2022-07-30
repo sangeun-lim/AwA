@@ -65,14 +65,14 @@ public class Artwork extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY ,mappedBy = "artwork")
     private PurchaseArtwork purchase_artwork;
 
-    @OneToMany(mappedBy = "related_artwork")
-    List<Room> rooms = new ArrayList<>();
+//    @OneToMany(mappedBy = "related_artwork")
+//    List<Room> rooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "artwork_id")
     List<Attachment> attachment_list = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reported_artwork")
-    List<Report> report_list = new ArrayList<>();
+//    @OneToMany(mappedBy = "reported_artwork")
+//    List<Report> report_list = new ArrayList<>();
 
 
     @Builder
@@ -94,11 +94,11 @@ public class Artwork extends BaseTimeEntity {
         user.getSell_list().add(this);
     }
 
-    public void addChatRoom(Room room)
-    {
-        rooms.add(room);
-        room.connectArtwork(this);
-    }
+//    public void addChatRoom(Room room)
+//    {
+//        rooms.add(room);
+//        room.connectArtwork(this);
+//    }
 
     public void addAttachement(Attachment attachment) {
         attachment_list.add(attachment);

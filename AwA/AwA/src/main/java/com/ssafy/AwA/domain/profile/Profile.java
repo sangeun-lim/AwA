@@ -34,14 +34,17 @@ public class Profile extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User owner_user;
 
-    @OneToOne(mappedBy = "report_profile")
-    private Report report;
+//    @OneToOne(mappedBy = "report_profile")
+//    private Report report;
 
     @ElementCollection
     @CollectionTable(name = "favorite_field", joinColumns =
     @JoinColumn(name = "profile_id")
     )
     private List<String> favorite_field = new ArrayList<>();
+
+
+    //판매목록
 
     @Builder
     public Profile(String profile_picture_url, String nickname, String description, User owner_user) {
