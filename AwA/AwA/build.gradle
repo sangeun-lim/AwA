@@ -51,7 +51,7 @@ dependencies {
 
 }
 
-tasks.named('test') {
+#tasks.named('test') {
 #useJUnitPlatform()
 #}
 #
