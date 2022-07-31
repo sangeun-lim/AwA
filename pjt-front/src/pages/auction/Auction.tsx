@@ -1,63 +1,77 @@
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/api";
 import AuctionListItem from "../../component/AuctionListItem";
-import { Item } from "./../../Interface";
+import { ArtworkItem } from "./../../Interface";
 
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { dbService } from "../../fbase";
+interface Props {
+  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
+}
 
-function Auction(): JSX.Element {
+function Auction({ setIsLoading }: Props): JSX.Element {
   const navigate = useNavigate();
-  const [itemList, setItemList] = useState<Array<Item>>([]);
+  const [itemList, setItemList] = useState<Array<ArtworkItem>>([]);
 
   const onClick = () => {
-    navigate("/auction/edit");
-  };
-
-  const callAuction = async () => {
-    const q = query(
-      collection(dbService, "auction"),
-      orderBy("createdAt", "desc")
-    );
-
-    const auctions = (await getDocs(q)).docs;
-
-    const newAuctions: Array<Item> = auctions.map((auction) => {
-      const {
-        imageUrlList,
-        title,
-        price,
-        nickname,
-        genres,
-        material,
-        detail,
-        createdAt,
-        like,
-        viewCount,
-        comments,
-      } = auction.data();
-      const newAuction: Item = {
-        imageUrlList,
-        title,
-        price,
-        nickname,
-        genres,
-        material,
-        detail,
-        createdAt,
-        like,
-        viewCount,
-        comments,
-        id: auction.id,
-      };
-      return newAuction;
-    });
-    setItemList(newAuctions);
+    navigate("/auction/create");
   };
 
   useEffect(() => {
+    const callAuction = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios({
+          url: api.artwork.readAllOrPost(),
+          method: "get",
+        });
+
+        if (response.status === 200) {
+          const items = response.data;
+
+          const newAuctions: Array<ArtworkItem> = items.map((auction: any) => {
+            const {
+              artwork_id,
+              attachmentRequestDtoList,
+              genre,
+              ingredient,
+              like_count,
+              price,
+              sell_user_email,
+              sell_user_nickname,
+              title,
+              view_count,
+              createdDate,
+              profile_picture,
+              description,
+            } = auction;
+            const newAuction: ArtworkItem = {
+              artwork_id,
+              mediaList: attachmentRequestDtoList,
+              genre,
+              ingredient,
+              like_count,
+              price,
+              sell_user_email,
+              sell_user_nickname,
+              title,
+              view_count,
+              createdDate,
+              profile_picture,
+              description,
+            };
+            return newAuction;
+          });
+          setItemList(newAuctions);
+        }
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false);
+      }
+    };
     callAuction();
-  }, []);
+  }, [setIsLoading]);
 
   return (
     <>
@@ -65,7 +79,7 @@ function Auction(): JSX.Element {
       <button onClick={onClick}>상품등록</button>
       {itemList.map((item) => {
         return (
-          <div key={item.id}>
+          <div key={item.artwork_id}>
             <AuctionListItem item={item}></AuctionListItem>
           </div>
         );

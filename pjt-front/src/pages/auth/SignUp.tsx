@@ -63,37 +63,47 @@ function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
 
   const checkEmailButton = async () => {
     setIsLoading(true);
-    const emailCheck = await axios({
-      url: api.auth.signup() + `/email/${signUpForm.id}`,
-      method: "get",
-    });
-    setIsLoading(false);
-    // 중복 이메일일때
-    if (!emailCheck.data) {
-      alert("이미 사용중인 이메일입니다.");
-      setCheckEmail(false);
-    }
-    // 중복 이메일이 아닐 때
-    else {
-      setCheckEmail(signUpForm.id);
+    try {
+      const emailCheck = await axios({
+        url: api.auth.signup() + `/email/${signUpForm.id}`,
+        method: "get",
+      });
+      setIsLoading(false);
+      // 중복 이메일일때
+      if (!emailCheck.data) {
+        alert("이미 사용중인 이메일입니다.");
+        setCheckEmail(false);
+      }
+      // 중복 이메일이 아닐 때
+      else {
+        setCheckEmail(signUpForm.id);
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.error(err);
     }
   };
 
   const checkNicknameButton = async () => {
     setIsLoading(true);
-    const nicknameCheck = await axios({
-      url: api.auth.signup() + `/nickname/${signUpForm.nickname}`,
-      method: "get",
-    });
-    setIsLoading(false);
-    // 중복 닉네임일때
-    if (!nicknameCheck.data) {
-      alert("중복 닉네임입니다.");
-      setCheckNickname(false);
-    }
-    // 중복 닉네임이 아닐 때
-    else {
-      setCheckNickname(signUpForm.nickname);
+    try {
+      const nicknameCheck = await axios({
+        url: api.auth.signup() + `/nickname/${signUpForm.nickname}`,
+        method: "get",
+      });
+      setIsLoading(false);
+      // 중복 닉네임일때
+      if (!nicknameCheck.data) {
+        alert("중복 닉네임입니다.");
+        setCheckNickname(false);
+      }
+      // 중복 닉네임이 아닐 때
+      else {
+        setCheckNickname(signUpForm.nickname);
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.error(err);
     }
   };
 

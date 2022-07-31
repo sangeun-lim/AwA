@@ -52,6 +52,7 @@ function App(): JSX.Element {
         userObject={userObject}
         getUserData={getUserData}
         setIsLoading={setIsLoading}
+        setUserObject={setUserObject}
       />
     </div>
   );
