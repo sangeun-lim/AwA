@@ -3,10 +3,8 @@ package com.ssafy.AwA.domain.artwork;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.attachment.Attachment;
-import com.ssafy.AwA.domain.chat.Room;
 import com.ssafy.AwA.domain.comment.Comment;
 import com.ssafy.AwA.domain.like.Likes;
-import com.ssafy.AwA.domain.report.Report;
 import com.ssafy.AwA.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -133,5 +131,9 @@ public class Artwork extends BaseTimeEntity {
 
     public void updateIngredient(String ingredient) {
         this.ingredient = ingredient;
+    }
+
+    public void updateAttachment(List<Attachment> attachmentList) {
+        this.attachment_list = attachmentList;
     }
 }

@@ -131,13 +131,17 @@ public class ArtworkService {
         targetArtwork.addViewCount(); //조회수 증가
 
         List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
+
         for(int i=0;i<targetArtwork.getAttachment_list().size();i++) {
             attachmentRequestDtoList.add(AttachmentRequestDto.builder()
-                    .type(targetArtwork.getAttachment_list().get(0).getType())
-                    .url(targetArtwork.getAttachment_list().get(0).getUrl())
+                    .type(targetArtwork.getAttachment_list().get(i).getType())
+                    .url(targetArtwork.getAttachment_list().get(i).getUrl())
                     .build()
             );
         }
+        for(int i=0;i<targetArtwork.getAttachment_list().size();i++)
+            System.out.println(targetArtwork.getAttachment_list().get(i).getUrl() +" here");
+
         User targetUser = targetArtwork.getSell_user();
         Profile sellUserProfile = profileRepository.findByNickname(targetUser.getNickname());
         return ArtworkResponseDto.builder()
@@ -193,12 +197,33 @@ public class ArtworkService {
     public ArtworkResponseDto updateArtwork(Long artwork_id, ArtworkRequestDto artworkRequestDto) {
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
         User targetUser = userRepository.findByNickname(artworkRequestDto.getSell_user_nickname());
+        List<Attachment> attachmentInArtwork = attachmentRepositroy.findAllByArtwork_id(targetArtwork.getArtwork_id());
+
+        for(int i=0;i<attachmentInArtwork.size();i++)
+            attachmentRepositroy.delete(attachmentInArtwork.get(i));
+
 
         targetArtwork.updateDescription(artworkRequestDto.getDescription());
         targetArtwork.updateGenre(artworkRequestDto.getGenre());
         targetArtwork.updateIngredient(artworkRequestDto.getIngredient());
         targetArtwork.updateTitle(artworkRequestDto.getTitle());
         targetArtwork.updatePrice(artworkRequestDto.getPrice());
+
+
+        List<Attachment> newAttachmentlist = new ArrayList<>();
+        for(int i=0;i<artworkRequestDto.getAttachmentList().size();i++)
+        {
+            Attachment newAttachment = Attachment.builder()
+                    .artwork_id(targetArtwork.getArtwork_id())
+                    .type(artworkRequestDto.getAttachmentList().get(i).getType())
+                    .url(artworkRequestDto.getAttachmentList().get(i).getUrl())
+                    .build();
+            attachmentRepositroy.save(newAttachment);
+            newAttachmentlist.add(newAttachment);
+        }
+
+        targetArtwork.updateAttachment(newAttachmentlist);
+
 
         ArtworkResponseDto artworkResponseDto = ArtworkResponseDto.builder()
                 .view_count(targetArtwork.getView_count())
