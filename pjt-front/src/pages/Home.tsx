@@ -1,5 +1,4 @@
 import React from "react";
-import AuctionCard from "../component/AuctionCard";
 // import ReportModal from "./ReportModal";
 
 function Home(): JSX.Element {
@@ -7,7 +6,6 @@ function Home(): JSX.Element {
     <div className="container">
       <h1>home</h1>
       {/* <ReportModal></ReportModal> */}
-      <AuctionCard></AuctionCard>
     </div>
   );
 }

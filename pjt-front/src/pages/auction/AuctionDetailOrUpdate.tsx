@@ -277,7 +277,6 @@ function AuctionDetailOrUpdate({
 
       if (response.status === 200) {
         const auctionItem = response.data;
-        console.log(auctionItem);
 
         const {
           artwork_id,
