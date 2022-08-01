@@ -144,9 +144,4 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     public void createProfile(Profile profile) {this.profile = profile;}
 
-
-    public void changeRefreshToken(String newRefreshToken) {
-        System.out.println("리프레시 토큰 교체 !! " + newRefreshToken);
-        this.refreshToken = newRefreshToken;
-    }
 }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class JwtTokenProvider {
 
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
@@ -28,7 +30,7 @@ public class JwtTokenProvider {
 
 //    @Value("${springboot.jwt.secret}")
     private String secretKey = "secretKeyforAwAProject_The signing key's size is 176 bits which is not secure enough for the HS256 algorithm.";
-    private final long tokenValidMillisecond = 1000L*60; // 1시간
+    private final long tokenValidMillisecond = 1000L*60*60; // 1시간
     private final long refreshTokenValidMillisecond = 1000L*60*60*24*14; //2주
 
     @PostConstruct
@@ -66,10 +68,7 @@ public class JwtTokenProvider {
         //front refreshToken안에 있는 이메일과 DB refreshtoken에 있는 이메일이 같을 때
         if(FrontAuthentication.getName().equals(DBAuthentication.getName())) {
             String newRefreshToken = createRefreshToken(targetUser.getEmail(), targetUser.getRoles());
-//            userRepository.updateRefreshToken(newRefreshToken,userEmail);
-            targetUser.changeRefreshToken(newRefreshToken);
-            System.out.println(targetUser.getEmail() + "의 리프레시 토큰은 " + targetUser.getRefreshToken());
-
+            targetUser.giveToken(newRefreshToken);
             return newRefreshToken;
         }
         else {
