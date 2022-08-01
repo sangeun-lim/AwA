@@ -31,7 +31,8 @@ public class JwtTokenProvider {
 
 //    @Value("${springboot.jwt.secret}")
     private String secretKey = "secretKeyasdfasdfasdfasdfasdfdsafsadfasdfsadfasdfsadfsdafsdafsdafsadfasdfsadfsadfsadhgfkjsdahfkjsadhfkjh";
-    private final long tokenValidMillisecond = 1000L*60*60;
+    private final long tokenValidMillisecond = 1000L*60; //*60해야 1시간
+    private final long refreshTokenValidMillisecond = 1000L*60*60*24*14;
 
     @PostConstruct
     protected void init() {
@@ -57,12 +58,29 @@ public class JwtTokenProvider {
         return token;
     }
 
+    public String createRefreshToken(String userEmail, List<String> roles) {
+        logger.info("[createRefreshToken] 리프레시 토큰 생성 시작");
+        Claims claims = Jwts.claims().setSubject(userEmail); //이메일
+        claims.put("roles",roles); //권한
+        Date now = new Date(); //날짜
+
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + refreshTokenValidMillisecond))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+
+        logger.info("[createRefreshToken] 리프레시 토큰생성완료");
+        return token;
+    }
+
     public Authentication getAuthentication(String token) {
         logger.info("[getAuthentication] 토큰 인증 정보 조회 시작");
         User user = userRepository.findByEmail(this.getUserEmail(token));
         //이메일로만 얘가 맞다고 판단하는게 맞는건가????
-        logger.info("[getAuthentication] 토큰 인증 정보 조회 완료, User UserEmail : {}", user.getEmail());
-
+        logger.info("[getAuthentication] 토큰 인증 정보 조회 완료, User UserEmail : {}, User Role : {}", user.getEmail(),user.getRoles().get(0));
+        System.out.println(user.getAuthorities() + "here");
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
 

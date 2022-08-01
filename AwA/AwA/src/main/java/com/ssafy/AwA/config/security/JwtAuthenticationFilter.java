@@ -27,11 +27,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         logger.info("[doFilterInternal] header에 있는 token 값 추출 완료. token : {}", token);
 
         logger.info("[doFilterInternal] token값 유효성 체크 시작");
+        //토큰 만료 안된경우
         if(token != null && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             logger.info("[doFilterInternal] token 값 유효성 체크 완료");
         }
+        else {
+
+        }
+
 
         filterChain.doFilter(request,response);
     }

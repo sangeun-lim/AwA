@@ -5,6 +5,8 @@ import com.ssafy.AwA.dto.*;
 import com.ssafy.AwA.repository.ArtworkRepository;
 import com.ssafy.AwA.repository.ProfileRepository;
 import com.ssafy.AwA.service.ArtworkService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ public class ArtworkApiController {
     private final ArtworkRepository artworkRepository;
 
     private final ProfileRepository profileRepository;
+
 
     @PostMapping
     public ResponseEntity<ArtworkResponseDto> createArtwork(@RequestBody @Valid ArtworkRequestDto artworkRequestDto) {

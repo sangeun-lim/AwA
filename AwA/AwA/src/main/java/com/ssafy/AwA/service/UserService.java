@@ -78,6 +78,11 @@ public class UserService {
        return responseUserDto;
     }
 
+    public String updateAccessToken(Long user_id, String refreshToken) {
+        String targetUserRefreshToken = userRepository.getRefreshToken(user_id);
+
+    }
+
 
     //회원 팔로워 조회
 

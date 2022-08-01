@@ -56,7 +56,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     @OneToOne(mappedBy = "owner_user",cascade = CascadeType.ALL)
     private Profile profile;
     @Column
-    private String accessToken;
+    private String refreshToken;
 
     @Column
     private boolean is_manager;
@@ -140,7 +140,7 @@ public class User extends BaseTimeEntity implements UserDetails {
     }
 
     //토큰 발급
-    public void giveToken(String accessToken) {this.accessToken = accessToken; }
+    public void giveToken(String refreshToken) {this.refreshToken = refreshToken; }
 
     public void createProfile(Profile profile) {this.profile = profile;}
 

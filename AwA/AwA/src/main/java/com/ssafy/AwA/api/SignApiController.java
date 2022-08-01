@@ -7,6 +7,8 @@ import com.ssafy.AwA.dto.UserDto;
 import com.ssafy.AwA.service.ProfileService;
 import com.ssafy.AwA.service.SignService;
 import com.ssafy.AwA.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -31,6 +33,8 @@ public class SignApiController {
     private final SignService signService;
     private final UserService userService;
     private final ProfileService profileService;
+
+
     private Logger logger = LoggerFactory.getLogger(SignApiController.class);
 
     @Data
@@ -54,9 +58,11 @@ public class SignApiController {
         @DateTimeFormat(pattern = "yyyy-mm-dd")
         private LocalDate birth;
     }
-
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+//    })
     @GetMapping("/userinfo")
-    public UserDto userInfo(@RequestHeader(value = "token") String token)
+    public UserDto userInfo(@RequestHeader(value="X-AUTH-TOKEN") String token)
     {
         return userService.findByToken(token);
     }
@@ -84,6 +90,11 @@ public class SignApiController {
         return signUpResultDto;
     }
 
+    //리프레시 토큰 이용한 access token 재발급
+    @PostMapping("/refresh/{user_id}/{refreshToken}")
+    public String updateAccessToken(@PathVariable(name = "user_id") Long user_id, @PathVariable(name = "refreshToken") String refreshToken) {
+        return userService.updateAccessToken(user_id, refreshToken);
+    }
     @GetMapping(value = "/exception")
     public void exceptionTest() throws RuntimeException {
         throw new RuntimeException("접근이 금지되었습니다.");

@@ -95,11 +95,20 @@ public class SignService {
         logger.info("[getSignInResult] 패스워드 일치");
 
         logger.info("[getSignInResult] SignInResultDto 생성");
+        String accessToken = jwtTokenProvider.createToken(String.valueOf(user.getEmail()), user.getRoles());
+        String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(user.getEmail()), user.getRoles());
+
+        //반환값은 액세스토큰
         SignInResultDto signInResultDto = SignInResultDto.builder()
-                .token(jwtTokenProvider.createToken(String.valueOf(user.getEmail()), user.getRoles()))
+                .token(accessToken)
                 .build();
 
-        user.giveToken(signInResultDto.getToken());
+        //리프레시 토큰은 테이블에 저장
+        user.giveToken(jwtTokenProvider.createRefreshToken(String.valueOf(user.getEmail()),user.getRoles()));
+
+        logger.info("[refreshToken 값] "+refreshToken);
+        logger.info("[accessToken 값] "+accessToken);
+        //user.giveToken(signInResultDto.getToken());
         logger.info("[getSignInResult] SignInResultDto 객체에 값 주입");
         setSuccessResult(signInResultDto);
 
