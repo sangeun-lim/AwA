@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import style from "./Login.module.css";
 import api from "../../api/api";
 import axios from "axios";
+import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
 
 interface Props {
   isLoggedIn: boolean;
@@ -90,6 +91,8 @@ function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
               className={style.loginInput}
               required
             />
+            <label htmlFor="">아이디</label>
+            <div className={style.bar}></div>
           </div>
           <div className={style.inputContainer}>
             <input
