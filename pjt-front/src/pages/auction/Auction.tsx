@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
-import AuctionListItem from "../../component/AuctionListItem";
+import AuctionCard from "../../component/AuctionCard";
 import { ArtworkItem } from "./../../Interface";
 
 interface Props {
@@ -80,7 +80,7 @@ function Auction({ setIsLoading }: Props): JSX.Element {
       {itemList.map((item) => {
         return (
           <div key={item.artwork_id}>
-            <AuctionListItem item={item}></AuctionListItem>
+            <AuctionCard item={item}></AuctionCard>
           </div>
         );
       })}
