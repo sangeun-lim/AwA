@@ -100,11 +100,12 @@ public class SignService {
 
         //반환값은 액세스토큰
         SignInResultDto signInResultDto = SignInResultDto.builder()
-                .token(accessToken)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
 
         //리프레시 토큰은 테이블에 저장
-        user.giveToken(jwtTokenProvider.createRefreshToken(String.valueOf(user.getEmail()),user.getRoles()));
+        user.giveToken(refreshToken);
 
         logger.info("[refreshToken 값] "+refreshToken);
         logger.info("[accessToken 값] "+accessToken);

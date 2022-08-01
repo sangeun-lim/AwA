@@ -31,7 +31,7 @@ public class ArtworkApiController {
 
 
     @PostMapping
-    public ResponseEntity<ArtworkResponseDto> createArtwork(@RequestBody @Valid ArtworkRequestDto artworkRequestDto) {
+    public ResponseEntity<ArtworkResponseDto> createArtwork(@RequestBody @Valid ArtworkRequestDto artworkRequestDto, @RequestHeader(value="X-AUTH-TOKEN") String token, @RequestHeader(value="RefreshToken") String refreshToken ) {
         ArtworkResponseDto artworkResponseDto = artworkService.saveArtwork(artworkRequestDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(artworkResponseDto);
@@ -51,13 +51,13 @@ public class ArtworkApiController {
     }
 
     @PutMapping("/{artwork_id}")
-    public ArtworkResponseDto updateArtwork(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid ArtworkRequestDto artworkRequestDto) {
+    public ArtworkResponseDto updateArtwork(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid ArtworkRequestDto artworkRequestDto, @RequestHeader(value="X-AUTH-TOKEN") String token, @RequestHeader(value="RefreshToken") String refreshToken) {
         ArtworkResponseDto artworkResponseDto = artworkService.updateArtwork(artwork_id, artworkRequestDto);
         return artworkResponseDto;
     }
 
     @DeleteMapping("{artwork_id}")
-    public int deleteArtwork(@PathVariable("artwork_id") Long artwork_id) {
+    public int deleteArtwork(@PathVariable("artwork_id") Long artwork_id, @RequestHeader(value="X-AUTH-TOKEN") String token, @RequestHeader(value="RefreshToken") String refreshToken) {
         return artworkService.deleteArtwork(artwork_id);
     }
 //    @PutMapping("/{artwork_id}/title/{newTitle}")

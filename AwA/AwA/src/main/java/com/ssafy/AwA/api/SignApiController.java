@@ -73,7 +73,7 @@ public class SignApiController {
         SignInResultDto signInResultDto = signService.signIn(request.email, request.password);
 
         if(signInResultDto.getCode() == 0) {
-            logger.info("[signIn] 정상적으로 로그인 되었습니다. id {} , token : {}", request.email, signInResultDto.getToken());
+            logger.info("[signIn] 정상적으로 로그인 되었습니다. id {} , AccessToken : {}, RefreshToken : {}", request.email, signInResultDto.getAccessToken(),signInResultDto.getRefreshToken());
         }
 
         return signInResultDto;

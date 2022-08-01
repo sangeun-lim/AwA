@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -80,7 +81,14 @@ public class UserService {
 
     public String updateAccessToken(Long user_id, String refreshToken) {
         String targetUserRefreshToken = userRepository.getRefreshToken(user_id);
-
+        User targetUser = userRepository.findByUser_id(user_id);
+        if(refreshToken.equals(targetUserRefreshToken)) {
+            String newAccessToken = jwtTokenProvider.createToken(targetUser.getEmail(),targetUser.getRoles());
+            return newAccessToken;
+        }
+        else {
+            return "리프레시 토큰이 맞지 않습니다.";
+        }
     }
 
 

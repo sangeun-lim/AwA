@@ -2,10 +2,7 @@ package com.ssafy.AwA.config.security;
 
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.repository.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +27,9 @@ public class JwtTokenProvider {
 
 
 //    @Value("${springboot.jwt.secret}")
-    private String secretKey = "secretKeyasdfasdfasdfasdfasdfdsafsadfasdfsadfasdfsadfsdafsdafsdafsadfasdfsadfsadfsadhgfkjsdahfkjsadhfkjh";
-    private final long tokenValidMillisecond = 1000L*60; //*60해야 1시간
-    private final long refreshTokenValidMillisecond = 1000L*60*60*24*14;
+    private String secretKey = "secretKeyforAwAProject_The signing key's size is 176 bits which is not secure enough for the HS256 algorithm.";
+    private final long tokenValidMillisecond = 1000L*60; // 1시간
+    private final long refreshTokenValidMillisecond = 1000L*60*60*24*14; //2주
 
     @PostConstruct
     protected void init() {
@@ -58,6 +55,29 @@ public class JwtTokenProvider {
         return token;
     }
 
+    public String reissueRefreshToken(String refreshToken) throws RuntimeException {
+        //refresh토큰을 DB의 refreshtoken과 비교
+        String userEmail = getUserEmail(refreshToken);
+        User targetUser = userRepository.findByEmail(userEmail);
+
+        Authentication FrontAuthentication = getAuthentication(refreshToken);
+        Authentication DBAuthentication = getAuthentication(targetUser.getRefreshToken());
+
+        //front refreshToken안에 있는 이메일과 DB refreshtoken에 있는 이메일이 같을 때
+        if(FrontAuthentication.getName().equals(DBAuthentication.getName())) {
+            String newRefreshToken = createRefreshToken(targetUser.getEmail(), targetUser.getRoles());
+//            userRepository.updateRefreshToken(newRefreshToken,userEmail);
+            targetUser.changeRefreshToken(newRefreshToken);
+            System.out.println(targetUser.getEmail() + "의 리프레시 토큰은 " + targetUser.getRefreshToken());
+
+            return newRefreshToken;
+        }
+        else {
+            logger.info("refreshToken이 일치하지 않습니다.");
+            return null;
+        }
+    }
+
     public String createRefreshToken(String userEmail, List<String> roles) {
         logger.info("[createRefreshToken] 리프레시 토큰 생성 시작");
         Claims claims = Jwts.claims().setSubject(userEmail); //이메일
@@ -80,7 +100,6 @@ public class JwtTokenProvider {
         User user = userRepository.findByEmail(this.getUserEmail(token));
         //이메일로만 얘가 맞다고 판단하는게 맞는건가????
         logger.info("[getAuthentication] 토큰 인증 정보 조회 완료, User UserEmail : {}, User Role : {}", user.getEmail(),user.getRoles().get(0));
-        System.out.println(user.getAuthorities() + "here");
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
 
@@ -96,15 +115,24 @@ public class JwtTokenProvider {
         return request.getHeader("X-AUTH-TOKEN");
     }
 
-    public boolean validateToken(String token) {
+    public String resolveRefreshToken(HttpServletRequest request) {
+        logger.info("[resolveRefreshToken] HTTP 헤더에서 RefreshToken값 추출");
+        return request.getHeader("RefreshToken");
+    }
+
+    public String validateToken(String token) {
         logger.info("[validateToken] 토큰 유효 체크 시작");
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            logger.info("[validateToken] 토큰 유효 체크 예외 발생");
-            return false;
+            return "ACCESS";
+        } catch (ExpiredJwtException e) {
+            //토큰이 만료된 경우 refreshtoken 확인 해야함
+            logger.info("[validateToken] Accesstoken 만료");
+            return "EXPIRED";
+        } catch (JwtException | IllegalArgumentException e) {
+            logger.info("jwtException : {}",e);
         }
+        return "DENIDE";
     }
 }

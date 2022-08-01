@@ -23,7 +23,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         logger.info("[commence] 인증 실패로 response.serdError 발생");
 
         EntryPointErrorResponse entryPointErrorResponse = new EntryPointErrorResponse();
-        entryPointErrorResponse.setMsg("인증이 실패하였습니다.");
+        entryPointErrorResponse.setMsg("액세스 토큰 유효기간이 만료되었습니다. refreshToken을 이용해 새로운 accesstoken을 발급받으세요.");
 
         response.setStatus(401);
         response.setContentType("application/json");
