@@ -3,6 +3,7 @@ const HOST = "http://i7c101.p.ssafy.io:8080/";
 const AUTH = "auth/";
 const NOTICE = "notice/";
 const ARTWORK = "artwork/";
+const PROFILE = "profile/";
 
 const api = {
   auth: {
@@ -22,6 +23,10 @@ const api = {
     readAllOrPost: () => HOST + ARTWORK,
     readDetailOrUpdateOrDelete: (artwork_id: string) =>
       HOST + ARTWORK + `${artwork_id}`,
+  },
+
+  profile: {
+    getProfile: (userEmail: string) => HOST + PROFILE + `${userEmail}`,
   },
 };
 

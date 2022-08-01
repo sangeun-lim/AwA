@@ -67,7 +67,9 @@ const AppRouter = ({
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route
             path="/profile/:nickname"
-            element={<Profile isLoggedIn={isLoggedIn} />}
+            element={
+              <Profile isLoggedIn={isLoggedIn} setIsLoading={setIsLoading} />
+            }
           />
           <Route path="/profile/favorite" element={<Favorite />} />
           {userObject && (
