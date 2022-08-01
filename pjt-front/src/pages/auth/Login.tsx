@@ -76,9 +76,9 @@ function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="container d-flex justify-content-center">
+    <div className="d-flex justify-content-center">
       <div className={style.container}>
-        <div className={style.title}>LogIn</div>
+        <div className={style.title}>로그인</div>
         <form onSubmit={onSubmit} className={style.login}>
           <div className={style.inputContainer}>
             <input
