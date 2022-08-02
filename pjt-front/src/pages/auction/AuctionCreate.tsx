@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, Dispatch } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { storageService } from "../../fbase";
@@ -9,10 +9,11 @@ import { User } from "../../Interface";
 import { NewItemData } from "../../api/apiInterface";
 import { newItemDefaultData } from "../../defaultData";
 import api from "../../api/api";
+import { useDispatch } from "react-redux";
+import { loadingActions } from "../../store";
 
 interface Props {
   userObject: User;
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ButtonProps {
@@ -41,8 +42,9 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   );
 }
 
-function AuctionCreate({ userObject, setIsLoading }: Props): JSX.Element {
+function AuctionCreate({ userObject }: Props): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [genresList, setGenresList] = useState<string[]>([]);
   const [newItem, setNewItem] = useState<NewItemData>(newItemDefaultData);
@@ -111,7 +113,7 @@ function AuctionCreate({ userObject, setIsLoading }: Props): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    setIsLoading(true);
+    dispatch(loadingActions.toggle());
     try {
       let imageUrlList: Array<string> = [];
 
@@ -129,7 +131,7 @@ function AuctionCreate({ userObject, setIsLoading }: Props): JSX.Element {
         imageUrlList
       );
 
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
       if (response.status === 200) {
         const data = response.data;
         const next_url = data.artwork_id;
@@ -140,7 +142,7 @@ function AuctionCreate({ userObject, setIsLoading }: Props): JSX.Element {
         alert("작성 실패");
       }
     } catch (err) {
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
       console.error(err);
     }
   };

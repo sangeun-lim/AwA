@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../api/api";
 import NoticeListItem from "../../component/NoticeListItem";
+import { loadingActions } from "../../store";
 import { NoticeItem } from "./../../Interface";
 import style from "./Notice.module.css";
 
 function Notice(): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [noticeList, setNoticeList] = useState<NoticeItem[]>([]);
 
   const onClick = () => {
@@ -16,9 +20,10 @@ function Notice(): JSX.Element {
 
   useEffect(() => {
     const callNotice = async () => {
+      dispatch(loadingActions.toggle());
       try {
         const response = await api.notice.readAll();
-
+        dispatch(loadingActions.toggle());
         if (response.status === 200) {
           const notices = response.data;
           const newNotices: NoticeItem[] = notices.map((notice: NoticeItem) => {
@@ -39,12 +44,13 @@ function Notice(): JSX.Element {
           navigate("/");
         }
       } catch (err) {
+        dispatch(loadingActions.toggle());
         console.error(err);
       }
     };
 
     callNotice();
-  }, [navigate]);
+  }, [navigate, dispatch]);
 
   return (
     <div className={`${style.notice} container`}>

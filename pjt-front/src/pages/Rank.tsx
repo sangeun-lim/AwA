@@ -1,10 +1,7 @@
 import axios from "axios";
-import React, { Dispatch, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../api/api";
 import { ArtworkItem } from "../Interface";
-interface Props {
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
-}
 
 interface AuctionRank {
   title: string;
@@ -16,73 +13,73 @@ const defaultAuctionRank: AuctionRank = {
   artwork_id: 0,
 };
 
-function Rank({ setIsLoading }: Props): JSX.Element {
+function Rank(): JSX.Element {
   // const [itemList, setItemList] = useState<Array<ArtworkItem>>([]);
   const [itemList, setItemList] = useState<Array<AuctionRank>>([]);
   // const [followRank, setFollowRank] = useState<Array<>>([]);
   // const [판매자랭킹?, set판매자랭킹?] = useState<Array<>>([]);
 
-  useEffect(() => {
-    const callAuctionRank = async () => {
-      setIsLoading(true);
-      try {
-        const response = await axios({
-          url: api.artwork.readAllOrPost(),
-          method: "get",
-        });
-        if (response.status === 200) {
-          const items = response.data;
+  // useEffect(() => {
+  //   const callAuctionRank = async () => {
+  //     setIsLoading(true);
+  //     try {
+  // const response = await axios({
+  //   url: api.artwork.readAllOrPost(),
+  //   method: "get",
+  // });
+  // if (response.status === 200) {
+  //   const items = response.data;
 
-          const auctionsRank: Array<AuctionRank> = items.map((auction: any) => {
-            const { artwork_id, title } = auction;
-            const auctionR: AuctionRank = { artwork_id, title };
-            return auctionR;
-          });
-          setItemList(auctionsRank);
+  //   const auctionsRank: Array<AuctionRank> = items.map((auction: any) => {
+  //     const { artwork_id, title } = auction;
+  //     const auctionR: AuctionRank = { artwork_id, title };
+  //     return auctionR;
+  //   });
+  //   setItemList(auctionsRank);
 
-          // const newAuctions: Array<ArtworkItem> = items.map((auction: any) => {
-          //   const {
-          //     artwork_id,
-          //     attachmentRequestDtoList,
-          //     genre,
-          //     ingredient,
-          //     like_count,
-          //     price,
-          //     sell_user_email,
-          //     sell_user_nickname,
-          //     title,
-          //     view_count,
-          //     createdDate,
-          //     profile_picture,
-          //     description,
-          //   } = auction;
-          //   const newAuction: ArtworkItem = {
-          //     artwork_id,
-          //     mediaList: attachmentRequestDtoList,
-          //     genre,
-          //     ingredient,
-          //     like_count,
-          //     price,
-          //     sell_user_email,
-          //     sell_user_nickname,
-          //     title,
-          //     view_count,
-          //     createdDate,
-          //     profile_picture,
-          //     description,
-          //   };
-          //   return newAuction;
-          // });
-          // setItemList(newAuctions);
-        }
-        setIsLoading(false);
-      } catch (err) {
-        console.log(err);
-        setIsLoading(false);
-      }
-    };
-    callAuctionRank();
-  }, [setIsLoading]);
+  // const newAuctions: Array<ArtworkItem> = items.map((auction: any) => {
+  //   const {
+  //     artwork_id,
+  //     attachmentRequestDtoList,
+  //     genre,
+  //     ingredient,
+  //     like_count,
+  //     price,
+  //     sell_user_email,
+  //     sell_user_nickname,
+  //     title,
+  //     view_count,
+  //     createdDate,
+  //     profile_picture,
+  //     description,
+  //   } = auction;
+  //   const newAuction: ArtworkItem = {
+  //     artwork_id,
+  //     mediaList: attachmentRequestDtoList,
+  //     genre,
+  //     ingredient,
+  //     like_count,
+  //     price,
+  //     sell_user_email,
+  //     sell_user_nickname,
+  //     title,
+  //     view_count,
+  //     createdDate,
+  //     profile_picture,
+  //     description,
+  //   };
+  //   return newAuction;
+  // });
+  // setItemList(newAuctions);
+  //       }
+  //       setIsLoading(false);
+  //     } catch (err) {
+  //       console.log(err);
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   callAuctionRank();
+  // }, [setIsLoading]);
 
   // function bestRank() {
   //   let bestArray: any = [];

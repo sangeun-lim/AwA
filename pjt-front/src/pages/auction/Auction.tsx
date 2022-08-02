@@ -1,16 +1,15 @@
-import React, { useEffect, useState, Dispatch } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../api/api";
 import AuctionCard from "../../component/AuctionCard";
+import { loadingActions } from "../../store";
 import { ArtworkItem } from "./../../Interface";
 
-interface Props {
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Auction({ setIsLoading }: Props): JSX.Element {
+function Auction(): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [itemList, setItemList] = useState<ArtworkItem[]>([]);
 
@@ -20,7 +19,7 @@ function Auction({ setIsLoading }: Props): JSX.Element {
 
   useEffect(() => {
     const callAuction = async () => {
-      setIsLoading(true);
+      dispatch(loadingActions.toggle());
       try {
         const response = await api.artwork.readAll();
 
@@ -65,15 +64,15 @@ function Auction({ setIsLoading }: Props): JSX.Element {
 
           setItemList(newAuctions);
         }
-        setIsLoading(false);
+        dispatch(loadingActions.toggle());
       } catch (err) {
         console.log(err);
-        setIsLoading(false);
+        dispatch(loadingActions.toggle());
       }
     };
 
     callAuction();
-  }, [setIsLoading]);
+  }, [dispatch]);
 
   return (
     <>

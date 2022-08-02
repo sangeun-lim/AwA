@@ -56,6 +56,18 @@ const api = {
 
       return response;
     },
+
+    getUserObject: async (token: string) => {
+      const response = await axios({
+        url: rf.auth.userinfo(),
+        method: "get",
+        headers: {
+          token: token,
+        },
+      });
+
+      return response;
+    },
   },
 
   notice: {

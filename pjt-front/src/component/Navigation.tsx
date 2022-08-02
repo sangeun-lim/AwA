@@ -2,8 +2,6 @@ import React from "react";
 import { useState, Dispatch } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import style from "./Navigation.module.css";
-// import api from "../api/api";
-// import axios from "axios";
 import { User } from "./../Interface";
 
 interface Props {
@@ -82,7 +80,7 @@ function Navigation({ userEmail, setUserObject }: Props): JSX.Element {
                 menuToggle ? setMenuToggle(false) : setMenuToggle(true)
               }
             >
-              AwA 이미지
+              <img src="./img/logo.png" alt="로고" className={style.logoImg} />
             </NavLink>
           </div>
           {userEmail ? (
