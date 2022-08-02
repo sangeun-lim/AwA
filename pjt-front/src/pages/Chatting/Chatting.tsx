@@ -1,8 +1,9 @@
 import { User } from "./../../Interface";
 import React, { Dispatch, useEffect, useState } from "react";
+
 import ChatList from "./ChatList";
 import ChatBoard from "./ChatBoard";
-import "./Chatting.css";
+
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 

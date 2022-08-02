@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useEffect, useState, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
+
 import api from "../../api/api";
 import AuctionCard from "../../component/AuctionCard";
 import { ArtworkItem } from "./../../Interface";
@@ -11,7 +11,8 @@ interface Props {
 
 function Auction({ setIsLoading }: Props): JSX.Element {
   const navigate = useNavigate();
-  const [itemList, setItemList] = useState<Array<ArtworkItem>>([]);
+
+  const [itemList, setItemList] = useState<ArtworkItem[]>([]);
 
   const onClick = () => {
     navigate("/auction/create");
@@ -21,10 +22,7 @@ function Auction({ setIsLoading }: Props): JSX.Element {
     const callAuction = async () => {
       setIsLoading(true);
       try {
-        const response = await axios({
-          url: api.artwork.readAllOrPost(),
-          method: "get",
-        });
+        const response = await api.artwork.readAll();
 
         if (response.status === 200) {
           const items = response.data;
@@ -45,6 +43,7 @@ function Auction({ setIsLoading }: Props): JSX.Element {
               profile_picture,
               description,
             } = auction;
+
             const newAuction: ArtworkItem = {
               artwork_id,
               mediaList: attachmentRequestDtoList,
@@ -60,8 +59,10 @@ function Auction({ setIsLoading }: Props): JSX.Element {
               profile_picture,
               description,
             };
+
             return newAuction;
           });
+
           setItemList(newAuctions);
         }
         setIsLoading(false);
@@ -70,6 +71,7 @@ function Auction({ setIsLoading }: Props): JSX.Element {
         setIsLoading(false);
       }
     };
+
     callAuction();
   }, [setIsLoading]);
 

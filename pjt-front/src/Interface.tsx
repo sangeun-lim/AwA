@@ -58,6 +58,11 @@ export interface NoticeItem {
   modifiedDate: string;
 }
 
+export interface NoticeEditing {
+  title: string;
+  content: string;
+}
+
 // 채팅방 Object
 export interface ChattingRoom {
   id: string;
@@ -80,4 +85,11 @@ export interface ReportObject {
   itemId: number;
   category: string;
   content: string;
+}
+
+export interface editItem {
+  title: string;
+  price: number;
+  ingredient: string;
+  description: string;
 }

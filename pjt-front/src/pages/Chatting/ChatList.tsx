@@ -4,8 +4,6 @@ import { ChattingRoom } from "../../Interface";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
 
-import "./ChatList.css";
-
 interface Props {
   userObject: User;
   setSelectChat: Dispatch<React.SetStateAction<string | null>>;

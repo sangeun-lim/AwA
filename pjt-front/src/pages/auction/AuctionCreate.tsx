@@ -1,11 +1,13 @@
 import React, { useState, useEffect, ChangeEvent, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../Interface";
 
 import { storageService } from "../../fbase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
+
+import { User } from "../../Interface";
+import { NewItemData } from "../../api/apiInterface";
+import { newItemDefaultData } from "../../defaultData";
 import api from "../../api/api";
 
 interface Props {
@@ -17,24 +19,6 @@ interface ButtonProps {
   item: string;
   deleteGenre(item: string): void;
 }
-
-interface newItem {
-  description: string;
-  genre: string[];
-  ingredient: string;
-  price: number;
-  sell_user_nickname: string;
-  title: string;
-}
-
-const defaultItem: newItem = {
-  title: "",
-  price: 0,
-  sell_user_nickname: "",
-  genre: [],
-  ingredient: "",
-  description: "",
-};
 
 // Button Component
 function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
@@ -60,8 +44,8 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
 function AuctionCreate({ userObject, setIsLoading }: Props): JSX.Element {
   const navigate = useNavigate();
 
-  const [genresList, setGenresList] = useState<string[] | undefined>([]);
-  const [newItem, setNewItem] = useState<newItem>(defaultItem);
+  const [genresList, setGenresList] = useState<string[]>([]);
+  const [newItem, setNewItem] = useState<NewItemData>(newItemDefaultData);
 
   const [images, setImages] = useState<File[]>([]);
   const [showImages, setShowImages] = useState<string[]>([]);
@@ -139,29 +123,20 @@ function AuctionCreate({ userObject, setIsLoading }: Props): JSX.Element {
         imageUrlList.push(imageUrl);
       }
 
-      const response = await axios({
-        url: api.artwork.readAllOrPost(),
-        method: "post",
-        headers: { token: localStorage.getItem("token") || "" },
-        data: {
-          ...newItem,
-          genre: genresList,
-          attachmentList: imageUrlList.map((item) => {
-            return { type: "image", url: item };
-          }),
-        },
-      });
+      const response = await api.artwork.post(
+        newItem,
+        genresList,
+        imageUrlList
+      );
 
+      setIsLoading(false);
       if (response.status === 200) {
         const data = response.data;
         const next_url = data.artwork_id;
-        setNewItem(defaultItem);
-        setShowImages([]);
-        setIsLoading(false);
+
         alert("작성 완료");
         navigate(`/auction/detail/${next_url}`);
       } else {
-        setIsLoading(false);
         alert("작성 실패");
       }
     } catch (err) {
