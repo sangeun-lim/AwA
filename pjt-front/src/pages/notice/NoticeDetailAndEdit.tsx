@@ -1,34 +1,23 @@
-import axios from "axios";
 import React, { useEffect, useState, Dispatch } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../api/api";
-import { NoticeItem } from "../../Interface";
+
+import { NoticeItem, NoticeEditing } from "../../Interface";
 import style from "./Notice.module.css";
+import { noticeDefaultData } from "./../../defaultData";
+import api from "../../api/api";
 
 interface Props {
   setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface Editing {
-  title: string;
-  content: string;
-}
-
-const defaultNotice: NoticeItem = {
-  title: "",
-  content: "",
-  notice_id: 0,
-  createdDate: "",
-  modifiedDate: "",
-};
-
 function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
   const params = useParams();
   const address = params.id || "";
   const navigate = useNavigate();
-  const [notice, setNotice] = useState<NoticeItem | any>(defaultNotice);
+
+  const [notice, setNotice] = useState<NoticeItem>(noticeDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
-  const [editNotice, setEditNotice] = useState<Editing>({
+  const [editNotice, setEditNotice] = useState<NoticeEditing>({
     title: notice.title,
     content: notice.content,
   });
@@ -61,57 +50,73 @@ function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
     e.preventDefault();
 
     setIsLoading(true);
-    const response = await axios({
-      url: api.notice.readOrUpdateOrDelete(address),
-      method: "put",
-      headers: {
-        token: localStorage.getItem("token") || "",
-      },
-      data: {
-        title: editNotice.title,
-        content: editNotice.content,
-      },
-    });
-    setIsLoading(false);
-    if (response.status === 200) {
-      const updateValue = await axios({
-        url: api.notice.readOrUpdateOrDelete(address),
-        method: "GET",
-      });
-      const newData = updateValue.data;
 
-      setNotice({
-        ...newData,
-      });
+    try {
+      const response = await api.notice.readOrUpdateOrDelete(
+        address,
+        {
+          title: editNotice.title,
+          content: editNotice.content,
+        },
+        "put"
+      );
+
+      setIsLoading(false);
+
+      if (response.status === 200) {
+        const updateValue = await api.notice.readOrUpdateOrDelete(
+          address,
+          null,
+          "get"
+        );
+
+        const newData = updateValue.data;
+
+        setNotice({
+          ...newData,
+        });
+      }
+
+      setOnEdit(!onEdit);
+    } catch (err) {
+      setOnEdit(!onEdit);
+      setIsLoading(false);
+      console.error(err);
     }
-
-    setOnEdit(!onEdit);
   };
 
   const onDeleteClick = async () => {
     const del: boolean = window.confirm("삭제하시겠습니까?");
     if (del) {
-      const response = await axios({
-        url: api.notice.readOrUpdateOrDelete(address),
-        method: "delete",
-        headers: {
-          token: localStorage.getItem("token") || "",
-        },
-      });
+      setIsLoading(true);
 
-      if (response.status === 200) {
-        alert("삭제되었습니다");
-        navigate("/notice");
+      try {
+        const response = await api.notice.readOrUpdateOrDelete(
+          address,
+          null,
+          "delete"
+        );
+
+        setIsLoading(false);
+
+        if (response.status === 200) {
+          alert("삭제되었습니다");
+          navigate("/notice");
+        }
+      } catch (err) {
+        setIsLoading(false);
+        console.error(err);
       }
     }
   };
 
   useEffect(() => {
     async function loadData() {
-      const response = await axios({
-        url: api.notice.readOrUpdateOrDelete(address),
-        method: "get",
-      });
+      const response = await api.notice.readOrUpdateOrDelete(
+        address,
+        null,
+        "get"
+      );
 
       const newData = response.data;
 
@@ -121,7 +126,12 @@ function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
     }
 
     if (address !== "") {
-      loadData();
+      try {
+        loadData();
+      } catch (err) {
+        console.error(err);
+        navigate("/notice");
+      }
     } else {
       navigate("/notice");
     }

@@ -1,53 +1,31 @@
 import React, { useEffect } from "react";
 import { useState, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
-import style from "./SignUp.module.css";
+
 import api from "../../api/api";
-import axios from "axios";
+import { SignUpData } from "../../api/apiInterface";
+import { signupDefaultData } from "../../defaultData";
+
+import style from "./SignUp.module.css";
 
 interface Props {
   isLoggedIn: boolean;
   setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface SignUpData {
-  id: string;
-  pw1: string;
-  pw2: string;
-  nickname: string;
-  birth: string;
-  gender: boolean | null;
-}
-
-const defaultData = {
-  id: "",
-  pw1: "",
-  pw2: "",
-  nickname: "",
-  birth: "",
-  gender: null,
-};
-
 function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
-  const [signUpForm, setSignUpForm] = useState<SignUpData>(defaultData);
   const navigate = useNavigate();
+
+  const [signUpForm, setSignUpForm] = useState<SignUpData>(signupDefaultData);
   const [checkEmail, setCheckEmail] = useState<boolean | string>(false);
   const [checkNickname, setCheckNickname] = useState<boolean | string>(false);
 
   const signupRequest = async () => {
     try {
       setIsLoading(true);
-      const response = await axios({
-        url: api.auth.signup(),
-        method: "post",
-        data: {
-          birth: signUpForm.birth,
-          email: signUpForm.id,
-          gender: signUpForm.gender,
-          nickname: signUpForm.nickname,
-          password: signUpForm.pw1,
-        },
-      });
+
+      const response = await api.auth.signup(signUpForm);
+
       setIsLoading(false);
       if (response.status === 200) {
         alert("회원가입이 완료되었습니다.");
@@ -64,18 +42,14 @@ function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
   const checkEmailButton = async () => {
     setIsLoading(true);
     try {
-      const emailCheck = await axios({
-        url: api.auth.signup() + `/email/${signUpForm.id}`,
-        method: "get",
-      });
+      const emailCheck = await api.auth.checkEmail(signUpForm.id);
+
       setIsLoading(false);
-      // 중복 이메일일때
+
       if (!emailCheck.data) {
         alert("이미 사용중인 이메일입니다.");
         setCheckEmail(false);
-      }
-      // 중복 이메일이 아닐 때
-      else {
+      } else {
         setCheckEmail(signUpForm.id);
       }
     } catch (err) {
@@ -87,18 +61,13 @@ function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
   const checkNicknameButton = async () => {
     setIsLoading(true);
     try {
-      const nicknameCheck = await axios({
-        url: api.auth.signup() + `/nickname/${signUpForm.nickname}`,
-        method: "get",
-      });
+      const nicknameCheck = await api.auth.checkNickname(signUpForm.nickname);
       setIsLoading(false);
-      // 중복 닉네임일때
+
       if (!nicknameCheck.data) {
         alert("중복 닉네임입니다.");
         setCheckNickname(false);
-      }
-      // 중복 닉네임이 아닐 때
-      else {
+      } else {
         setCheckNickname(signUpForm.nickname);
       }
     } catch (err) {

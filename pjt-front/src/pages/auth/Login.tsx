@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { useState, Dispatch } from "react";
 import { useNavigate } from "react-router-dom";
+
 import style from "./Login.module.css";
+import { LoginData } from "./../../api/apiInterface";
+import { loginDefaultData } from "./../../defaultData";
 import api from "../../api/api";
-import axios from "axios";
 
 interface Props {
   isLoggedIn: boolean;
@@ -11,32 +13,18 @@ interface Props {
   setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface LoginData {
-  id: string;
-  pw: string;
-}
-
-const defaultData = {
-  id: "",
-  pw: "",
-};
-
 function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
-  const [loginForm, setLoginForm] = useState<LoginData>(defaultData);
   const navigate = useNavigate();
 
+  const [loginForm, setLoginForm] = useState<LoginData>(loginDefaultData);
+
   const loginRequest = async () => {
+    setIsLoading(true);
+
     try {
-      setIsLoading(true);
-      const response = await axios({
-        url: api.auth.login(),
-        method: "post",
-        data: {
-          email: loginForm.id,
-          password: loginForm.pw,
-        },
-      });
+      const response = await api.auth.login(loginForm);
       setIsLoading(false);
+
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         getUserData();
@@ -44,7 +32,7 @@ function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
       }
     } catch (err) {
       setIsLoading(false);
-      alert(err);
+      console.error(err);
     }
   };
 
