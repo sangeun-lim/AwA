@@ -7,7 +7,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
 
 
-  #spring:
+#spring:
 #  datasource:
 #    url: jdbc:mariadb://awa.cwesz7tzcefm.ap-northeast-2.rds.amazonaws.com/AwA
 #    username: ssafy
@@ -45,6 +45,17 @@ logging:
   level:
     org.hibernate.sql: debug
     org.hibernate.type: trace
+
+#server :
+#  port : 8080
+#  ssl :
+#    enabled : true
+#    key-alias: AwAKey
+#    key-store: AwAKey.pkcs12
+#    key-store-password: tpwlslrnldudnj!#%
+#    key-password: tpwlslrnldudnj!#%
+#    trust-store: AwAstroe.pkcs12
+#    trust-store-password: tpwlslrnldudnj!#%
 
 
 

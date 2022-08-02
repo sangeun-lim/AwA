@@ -24,13 +24,13 @@ import java.util.List;
 public class JwtTokenProvider {
 
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
-//    private final UserService userService;
+
     private final UserRepository userRepository;
 
 
 //    @Value("${springboot.jwt.secret}")
     private String secretKey = "secretKeyforAwAProject_The signing key's size is 176 bits which is not secure enough for the HS256 algorithm.";
-    private final long tokenValidMillisecond = 1000L*60*60; // 1시간
+    private final long tokenValidMillisecond = 1000L*30; // 1시간
     private final long refreshTokenValidMillisecond = 1000L*60*60*24*14; //2주
 
     @PostConstruct
@@ -119,19 +119,36 @@ public class JwtTokenProvider {
         return request.getHeader("RefreshToken");
     }
 
-    public String validateToken(String token) {
+//    public String validateToken(String token) {
+//        logger.info("[validateToken] 토큰 유효 체크 시작");
+//        try {
+//            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+//
+//            return "ACCESS";
+//        } catch (ExpiredJwtException e) {
+//            //토큰이 만료된 경우 refreshtoken 확인 해야함
+//            logger.info("[validateToken] Accesstoken 만료");
+//            return "EXPIRED";
+//        } catch (JwtException | IllegalArgumentException e) {
+//            logger.info("jwtException : {}",e);
+//        }
+//        return "DENIDE";
+//    }
+
+    public boolean validateToken(String token) {
         logger.info("[validateToken] 토큰 유효 체크 시작");
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-
-            return "ACCESS";
-        } catch (ExpiredJwtException e) {
-            //토큰이 만료된 경우 refreshtoken 확인 해야함
-            logger.info("[validateToken] Accesstoken 만료");
-            return "EXPIRED";
-        } catch (JwtException | IllegalArgumentException e) {
-            logger.info("jwtException : {}",e);
+            logger.info("[validateToken] 토큰 유효 체크 완료");
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (ExpiredJwtException e)
+        {
+            logger.info("[validateToken] access토큰 기간 만료");
+            return false;
         }
-        return "DENIDE";
+        catch (Exception e) {
+            logger.info("[validateToken] 토큰 유효 체크 예외 발생");
+            return false;
+        }
     }
 }

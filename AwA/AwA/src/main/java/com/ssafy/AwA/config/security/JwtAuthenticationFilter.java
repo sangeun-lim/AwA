@@ -37,12 +37,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         logger.info("[doFilterInternal] token값 유효성 체크 시작");
         //토큰 만료 안된경우
-        if(token != null && jwtTokenProvider.validateToken(token).equals("ACCESS")) {
+        if(token != null && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             logger.info("[doFilterInternal] token 값 유효성 체크 완료");
         }
-        else if(token != null && jwtTokenProvider.validateToken(token).equals("EXPIRED")){
+        else if(token != null && !jwtTokenProvider.validateToken(token)){
             logger.info("[doFilterInternal] accesstoken 만료 됨 -> refreshToken값 요구해야함.");
             String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
             Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
@@ -51,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             roles.add(authentication.getAuthorities().toString());
 
             //헤더로 통해서 같이 넘어온 리프레시 토큰이 만료되지 않았을 때
-            if(refreshToken != null && jwtTokenProvider.validateToken(refreshToken).equals("ACCESS")) {
+            if(refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
                 //refreshToken 확인해서 재발급하기
                 String newRefreshToken = jwtTokenProvider.reissueRefreshToken(refreshToken);
                 if(newRefreshToken != null) {
