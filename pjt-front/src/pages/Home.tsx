@@ -1,5 +1,5 @@
 import React from "react";
-import ReportModal from "./ReportModal";
+import ReportModal from "./auction/ReportModal";
 
 function Home(): JSX.Element {
   return (
