@@ -7,6 +7,7 @@ import style from "./Login.module.css";
 import { LoginData } from "./../../api/apiInterface";
 import { loginDefaultData } from "./../../defaultData";
 import api from "../../api/api";
+import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
 import { loadingActions } from "../../store";
 
 interface Props {
@@ -74,26 +75,41 @@ function Login({ isLoggedIn, getUserData }: Props): JSX.Element {
             <input
               name="id"
               type="email"
+              id="id"
               value={loginForm.id}
-              placeholder="ID"
               onChange={onChange}
               className={style.loginInput}
               required
             />
+            <label htmlFor="id" className={style.label}>
+              아이디
+            </label>
+            <div className={style.bar}></div>
           </div>
           <div className={style.inputContainer}>
             <input
               name="pw"
               type="password"
+              id="password"
               value={loginForm.pw}
-              placeholder="Password"
               onChange={onChange}
               className={style.loginInput}
               required
             />
+            <label htmlFor="password" className={style.label}>
+              비밀번호
+            </label>
+            <div className={style.bar}></div>
           </div>
-          <br />
-          <input type="submit" value="로그인" className={style.loginSubmit} />
+          <div className={style.buttonContainer}>
+            <button>
+              <input
+                type="submit"
+                value="로그인"
+                className={style.loginSubmit}
+              />
+            </button>
+          </div>
         </form>
       </div>
     </div>
