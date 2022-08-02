@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Dispatch } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 // import { Profile } from "../../Interface";
 import Followers from "./Followers";
@@ -6,7 +6,6 @@ import api from "../../api/api";
 
 interface Props {
   isLoggedIn: boolean;
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface profile {
@@ -46,7 +45,7 @@ const defaultProfile: profile = {
   purchaseItems: [],
 };
 
-const ProfilePage = ({ isLoggedIn, setIsLoading }: Props): JSX.Element => {
+const ProfilePage = ({ isLoggedIn }: Props): JSX.Element => {
   const params = useParams();
   const userEmail = params.nickname;
 

@@ -25,7 +25,6 @@ interface Props {
   isLoggedIn: boolean;
   userObject: User | null;
   getUserData: Function;
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
   setUserObject: Dispatch<React.SetStateAction<User | null>>;
 }
 
@@ -33,7 +32,6 @@ const AppRouter = ({
   isLoggedIn,
   userObject,
   getUserData,
-  setIsLoading,
   setUserObject,
 }: Props): JSX.Element => {
   const [selectChat, setSelectChat] = useState<string | null>(null); // 채팅 상대유저의 이메일을 저장
@@ -51,25 +49,17 @@ const AppRouter = ({
           <Route
             path="/auth/login"
             element={
-              <Login
-                isLoggedIn={isLoggedIn}
-                getUserData={getUserData}
-                setIsLoading={setIsLoading}
-              />
+              <Login isLoggedIn={isLoggedIn} getUserData={getUserData} />
             }
           />
           <Route
             path="/auth/signup"
-            element={
-              <SignUp isLoggedIn={isLoggedIn} setIsLoading={setIsLoading} />
-            }
+            element={<SignUp isLoggedIn={isLoggedIn} />}
           />
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route
             path="/profile/:nickname"
-            element={
-              <Profile isLoggedIn={isLoggedIn} setIsLoading={setIsLoading} />
-            }
+            element={<Profile isLoggedIn={isLoggedIn} />}
           />
           <Route path="/profile/favorite" element={<Favorite />} />
           {userObject && (
@@ -84,41 +74,22 @@ const AppRouter = ({
               }
             />
           )}
-          <Route
-            path="/auction"
-            element={<Auction setIsLoading={setIsLoading} />}
-          />
+          <Route path="/auction" element={<Auction />} />
           <Route
             path="/auction/detail/:id"
-            element={
-              <AuctionDetailOrUpdate
-                userObject={userObject}
-                setIsLoading={setIsLoading}
-              />
-            }
+            element={<AuctionDetailOrUpdate userObject={userObject} />}
           />
           {userObject && (
             <Route
               path="/auction/create"
-              element={
-                <AuctionCreate
-                  userObject={userObject}
-                  setIsLoading={setIsLoading}
-                />
-              }
+              element={<AuctionCreate userObject={userObject} />}
             />
           )}
           <Route path="/notice" element={<Notice />} />
-          <Route
-            path="/notice/:id"
-            element={<NoticeDetailAndEdit setIsLoading={setIsLoading} />}
-          />
-          <Route
-            path="/notice/create"
-            element={<NoticeCreate setIsLoading={setIsLoading} />}
-          />
+          <Route path="/notice/:id" element={<NoticeDetailAndEdit />} />
+          <Route path="/notice/create" element={<NoticeCreate />} />
           <Route path="/searchresult" element={<SearchResult />} />
-          <Route path="/rank" element={<Rank setIsLoading={setIsLoading} />} />
+          <Route path="/rank" element={<Rank />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </Router>

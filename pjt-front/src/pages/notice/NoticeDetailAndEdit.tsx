@@ -1,19 +1,18 @@
-import React, { useEffect, useState, Dispatch } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { NoticeItem, NoticeEditing } from "../../Interface";
 import style from "./Notice.module.css";
 import { noticeDefaultData } from "./../../defaultData";
 import api from "../../api/api";
+import { useDispatch } from "react-redux";
+import { loadingActions } from "../../store";
 
-interface Props {
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
-}
-
-function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
+function NoticeDetailAndEdit(): JSX.Element {
   const params = useParams();
   const address = params.id || "";
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [notice, setNotice] = useState<NoticeItem>(noticeDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
@@ -49,7 +48,7 @@ function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    setIsLoading(true);
+    dispatch(loadingActions.toggle());
 
     try {
       const response = await api.notice.readOrUpdateOrDelete(
@@ -61,7 +60,7 @@ function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
         "put"
       );
 
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
 
       if (response.status === 200) {
         const updateValue = await api.notice.readOrUpdateOrDelete(
@@ -80,7 +79,7 @@ function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
       setOnEdit(!onEdit);
     } catch (err) {
       setOnEdit(!onEdit);
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
       console.error(err);
     }
   };
@@ -88,7 +87,7 @@ function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
   const onDeleteClick = async () => {
     const del: boolean = window.confirm("삭제하시겠습니까?");
     if (del) {
-      setIsLoading(true);
+      dispatch(loadingActions.toggle());
 
       try {
         const response = await api.notice.readOrUpdateOrDelete(
@@ -97,14 +96,14 @@ function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
           "delete"
         );
 
-        setIsLoading(false);
+        dispatch(loadingActions.toggle());
 
         if (response.status === 200) {
           alert("삭제되었습니다");
           navigate("/notice");
         }
       } catch (err) {
-        setIsLoading(false);
+        dispatch(loadingActions.toggle());
         console.error(err);
       }
     }

@@ -1,29 +1,31 @@
 import React, { useEffect } from "react";
-import { useState, Dispatch } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import style from "./Login.module.css";
 import { LoginData } from "./../../api/apiInterface";
 import { loginDefaultData } from "./../../defaultData";
 import api from "../../api/api";
+import { loadingActions } from "../../store";
 
 interface Props {
   isLoggedIn: boolean;
   getUserData: Function;
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
+function Login({ isLoggedIn, getUserData }: Props): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [loginForm, setLoginForm] = useState<LoginData>(loginDefaultData);
 
   const loginRequest = async () => {
-    setIsLoading(true);
+    dispatch(loadingActions.toggle());
 
     try {
       const response = await api.auth.login(loginForm);
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
 
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
@@ -31,7 +33,7 @@ function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
         navigate("/");
       }
     } catch (err) {
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
       console.error(err);
     }
   };

@@ -1,17 +1,16 @@
-import React, { useState, Dispatch, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../api/api";
 import style from "./Notice.module.css";
 import { noticeCreateDefaultData } from "./../../defaultData";
 import { NewNoticeData } from "./../../api/apiInterface";
+import { useDispatch } from "react-redux";
+import { loadingActions } from "../../store";
 
-interface Props {
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
-}
-
-function NoticeCreate({ setIsLoading }: Props): JSX.Element {
+function NoticeCreate(): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [newNotice, setNewNotice] = useState<NewNoticeData>(
     noticeCreateDefaultData
@@ -35,11 +34,11 @@ function NoticeCreate({ setIsLoading }: Props): JSX.Element {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setIsLoading(true);
+    dispatch(loadingActions.toggle());
     try {
       const response = await api.notice.post(newNotice);
 
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
       if (response.status === 200) {
         const note = response.data;
         navigate(`/notice/${note.notice_id}`);
@@ -48,7 +47,7 @@ function NoticeCreate({ setIsLoading }: Props): JSX.Element {
       }
     } catch (err) {
       console.error(err);
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
     }
   };
 

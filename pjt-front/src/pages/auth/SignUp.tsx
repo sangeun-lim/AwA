@@ -1,20 +1,22 @@
 import React, { useEffect } from "react";
-import { useState, Dispatch } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../api/api";
 import { SignUpData } from "../../api/apiInterface";
 import { signupDefaultData } from "../../defaultData";
+import { loadingActions } from "../../store";
 
 import style from "./SignUp.module.css";
 
 interface Props {
   isLoggedIn: boolean;
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
-function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
+function SignUp({ isLoggedIn }: Props): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [signUpForm, setSignUpForm] = useState<SignUpData>(signupDefaultData);
   const [checkEmail, setCheckEmail] = useState<boolean | string>(false);
@@ -22,11 +24,11 @@ function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
 
   const signupRequest = async () => {
     try {
-      setIsLoading(true);
+      dispatch(loadingActions.toggle());
 
       const response = await api.auth.signup(signUpForm);
 
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
       if (response.status === 200) {
         alert("회원가입이 완료되었습니다.");
         navigate("/auth/login");
@@ -34,17 +36,17 @@ function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
         alert("회원가입에 실패했습니다.");
       }
     } catch (err) {
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
       console.error(err);
     }
   };
 
   const checkEmailButton = async () => {
-    setIsLoading(true);
+    dispatch(loadingActions.toggle());
     try {
       const emailCheck = await api.auth.checkEmail(signUpForm.id);
 
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
 
       if (!emailCheck.data) {
         alert("이미 사용중인 이메일입니다.");
@@ -53,16 +55,16 @@ function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
         setCheckEmail(signUpForm.id);
       }
     } catch (err) {
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
       console.error(err);
     }
   };
 
   const checkNicknameButton = async () => {
-    setIsLoading(true);
+    dispatch(loadingActions.toggle());
     try {
       const nicknameCheck = await api.auth.checkNickname(signUpForm.nickname);
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
 
       if (!nicknameCheck.data) {
         alert("중복 닉네임입니다.");
@@ -71,7 +73,7 @@ function SignUp({ isLoggedIn, setIsLoading }: Props): JSX.Element {
         setCheckNickname(signUpForm.nickname);
       }
     } catch (err) {
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
       console.error(err);
     }
   };
