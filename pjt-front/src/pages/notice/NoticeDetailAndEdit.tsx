@@ -1,34 +1,22 @@
-import axios from "axios";
-import React, { useEffect, useState, Dispatch } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../api/api";
-import { NoticeItem } from "../../Interface";
+
+import { NoticeItem, NoticeEditing } from "../../Interface";
 import style from "./Notice.module.css";
+import { noticeDefaultData } from "./../../defaultData";
+import api from "../../api/api";
+import { useDispatch } from "react-redux";
+import { loadingActions } from "../../store";
 
-interface Props {
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface Editing {
-  title: string;
-  content: string;
-}
-
-const defaultNotice: NoticeItem = {
-  title: "",
-  content: "",
-  notice_id: 0,
-  createdDate: "",
-  modifiedDate: "",
-};
-
-function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
+function NoticeDetailAndEdit(): JSX.Element {
   const params = useParams();
   const address = params.id || "";
   const navigate = useNavigate();
-  const [notice, setNotice] = useState<NoticeItem | any>(defaultNotice);
+  const dispatch = useDispatch();
+
+  const [notice, setNotice] = useState<NoticeItem>(noticeDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
-  const [editNotice, setEditNotice] = useState<Editing>({
+  const [editNotice, setEditNotice] = useState<NoticeEditing>({
     title: notice.title,
     content: notice.content,
   });
@@ -60,58 +48,74 @@ function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    setIsLoading(true);
-    const response = await axios({
-      url: api.notice.readOrUpdateOrDelete(address),
-      method: "put",
-      headers: {
-        token: localStorage.getItem("token") || "",
-      },
-      data: {
-        title: editNotice.title,
-        content: editNotice.content,
-      },
-    });
-    setIsLoading(false);
-    if (response.status === 200) {
-      const updateValue = await axios({
-        url: api.notice.readOrUpdateOrDelete(address),
-        method: "GET",
-      });
-      const newData = updateValue.data;
+    dispatch(loadingActions.toggle());
 
-      setNotice({
-        ...newData,
-      });
+    try {
+      const response = await api.notice.readOrUpdateOrDelete(
+        address,
+        {
+          title: editNotice.title,
+          content: editNotice.content,
+        },
+        "put"
+      );
+
+      dispatch(loadingActions.toggle());
+
+      if (response.status === 200) {
+        const updateValue = await api.notice.readOrUpdateOrDelete(
+          address,
+          null,
+          "get"
+        );
+
+        const newData = updateValue.data;
+
+        setNotice({
+          ...newData,
+        });
+      }
+
+      setOnEdit(!onEdit);
+    } catch (err) {
+      setOnEdit(!onEdit);
+      dispatch(loadingActions.toggle());
+      console.error(err);
     }
-
-    setOnEdit(!onEdit);
   };
 
   const onDeleteClick = async () => {
     const del: boolean = window.confirm("삭제하시겠습니까?");
     if (del) {
-      const response = await axios({
-        url: api.notice.readOrUpdateOrDelete(address),
-        method: "delete",
-        headers: {
-          token: localStorage.getItem("token") || "",
-        },
-      });
+      dispatch(loadingActions.toggle());
 
-      if (response.status === 200) {
-        alert("삭제되었습니다");
-        navigate("/notice");
+      try {
+        const response = await api.notice.readOrUpdateOrDelete(
+          address,
+          null,
+          "delete"
+        );
+
+        dispatch(loadingActions.toggle());
+
+        if (response.status === 200) {
+          alert("삭제되었습니다");
+          navigate("/notice");
+        }
+      } catch (err) {
+        dispatch(loadingActions.toggle());
+        console.error(err);
       }
     }
   };
 
   useEffect(() => {
     async function loadData() {
-      const response = await axios({
-        url: api.notice.readOrUpdateOrDelete(address),
-        method: "get",
-      });
+      const response = await api.notice.readOrUpdateOrDelete(
+        address,
+        null,
+        "get"
+      );
 
       const newData = response.data;
 
@@ -121,7 +125,12 @@ function NoticeDetailAndEdit({ setIsLoading }: Props): JSX.Element {
     }
 
     if (address !== "") {
-      loadData();
+      try {
+        loadData();
+      } catch (err) {
+        console.error(err);
+        navigate("/notice");
+      }
     } else {
       navigate("/notice");
     }

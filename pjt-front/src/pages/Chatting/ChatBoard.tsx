@@ -1,5 +1,5 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { User } from "./../../Interface";
+import { User } from "../../Interface";
 import React, {
   Dispatch,
   useEffect,
@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import { MessageObject } from "../../Interface";
 // import socketIOClient from "socket.io-client";
-import "./ChatBoard.css";
 import { dbService } from "../../fbase";
 
 interface Props {

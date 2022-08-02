@@ -3,34 +3,43 @@ import { NavLink } from "react-router-dom";
 import { ArtworkItem } from "../Interface";
 import style from "./AuctionCard.module.css";
 
-const AuctionCard = (): JSX.Element => {
+function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
+  const date = new Date(item.createdDate);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
   return (
     <div>
       <div className={style.container}>
-        <img
-          src="https://placeimg.com/300/400/any"
-          alt="AuctionImg"
-          className={style.auctionImg}
-        />
+        {item.mediaList.length && (
+          <img
+            src={item.mediaList[0].url}
+            alt="AuctionImg"
+            className={style.auctionImg}
+          />
+        )}
         <div className={style.profile}>
           <img
-            src="https://placeimg.com/30/30/any"
+            src={item.profile_picture}
             alt="profileImg"
             className={style.profileImg}
           />
-          <span className={style.profileName}>React</span>
+          <span className={style.profileName}>{item.sell_user_nickname}</span>
         </div>
         <div className={style.overlay}></div>
         <div className={style.content}>
           <h1>
-            <NavLink to={`/auction`}>Title</NavLink>
+            <NavLink to={`/auction/detail/${item.artwork_id}`}>
+              {item.title}
+            </NavLink>
           </h1>
-          <div>조소</div>
-          <div>3시간 전</div>
+          <div>{item.genre[0]}</div>
+          <div>{`${year}.${month}.${day}`}</div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default AuctionCard;

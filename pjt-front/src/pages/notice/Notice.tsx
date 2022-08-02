@@ -1,14 +1,18 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import api from "../../api/api";
 import NoticeListItem from "../../component/NoticeListItem";
+import { loadingActions } from "../../store";
 import { NoticeItem } from "./../../Interface";
 import style from "./Notice.module.css";
 
 function Notice(): JSX.Element {
   const navigate = useNavigate();
-  const [noticeList, setNoticeList] = useState<Array<NoticeItem>>([]);
+  const dispatch = useDispatch();
+
+  const [noticeList, setNoticeList] = useState<NoticeItem[]>([]);
 
   const onClick = () => {
     navigate("/notice/create");
@@ -16,15 +20,13 @@ function Notice(): JSX.Element {
 
   useEffect(() => {
     const callNotice = async () => {
-      const response = await axios({
-        url: api.notice.readAll(),
-        method: "get",
-      });
-
-      if (response.status === 200) {
-        const notices = response.data;
-        const newNotices: Array<NoticeItem> = notices.map(
-          (notice: NoticeItem) => {
+      dispatch(loadingActions.toggle());
+      try {
+        const response = await api.notice.readAll();
+        dispatch(loadingActions.toggle());
+        if (response.status === 200) {
+          const notices = response.data;
+          const newNotices: NoticeItem[] = notices.map((notice: NoticeItem) => {
             const { notice_id, title, content, createdDate, modifiedDate } =
               notice;
             const newNotice: NoticeItem = {
@@ -35,17 +37,20 @@ function Notice(): JSX.Element {
               modifiedDate,
             };
             return newNotice;
-          }
-        );
-        setNoticeList(newNotices);
-      } else {
-        alert("정보 조회에 실패했습니다.");
-        navigate("/");
+          });
+          setNoticeList(newNotices);
+        } else {
+          alert("정보 조회에 실패했습니다.");
+          navigate("/");
+        }
+      } catch (err) {
+        dispatch(loadingActions.toggle());
+        console.error(err);
       }
     };
 
     callNotice();
-  }, [navigate]);
+  }, [navigate, dispatch]);
 
   return (
     <div className={`${style.notice} container`}>

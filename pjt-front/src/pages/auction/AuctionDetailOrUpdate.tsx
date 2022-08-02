@@ -1,6 +1,5 @@
-import React, { useEffect, useState, ChangeEvent, Dispatch } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArtworkItem, User } from "../../Interface";
 
 import { storageService } from "../../fbase";
 import {
@@ -10,35 +9,16 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
+
+import { ArtworkItem, User, editItem } from "../../Interface";
+import { itemDefaultData } from "../../defaultData";
 import api from "../../api/api";
-
-interface editItem {
-  title: string;
-  price: number;
-  ingredient: string;
-  description: string;
-}
-
-const defaultItem: ArtworkItem = {
-  artwork_id: 0,
-  mediaList: [],
-  genre: [],
-  ingredient: "",
-  like_count: 0,
-  price: 0,
-  sell_user_email: "",
-  sell_user_nickname: "",
-  title: "",
-  profile_picture: "",
-  view_count: 0,
-  description: "",
-  createdDate: "",
-};
+import { useDispatch } from "react-redux";
+import { loadingActions } from "../../store";
+import ReportModal from "./ReportModal";
 
 interface Props {
   userObject: User | null;
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ButtonProps {
@@ -67,16 +47,14 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   );
 }
 
-function AuctionDetailOrUpdate({
-  userObject,
-  setIsLoading,
-}: Props): JSX.Element {
+function AuctionDetailOrUpdate({ userObject }: Props): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const params = useParams();
-  const address = params.id;
+  const address = params.id || "";
 
-  const [item, setItem] = useState<ArtworkItem>(defaultItem);
+  const [item, setItem] = useState<ArtworkItem>(itemDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
 
   // 수정용 상태 선언
@@ -163,7 +141,7 @@ function AuctionDetailOrUpdate({
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-    setIsLoading(true);
+    dispatch(loadingActions.toggle());
 
     try {
       if (userObject) {
@@ -190,19 +168,20 @@ function AuctionDetailOrUpdate({
           imageUrlLists = imageUrlLists.filter((item) => item !== delImages[i]);
         }
 
-        const response = await axios({
-          url: api.artwork.readDetailOrUpdateOrDelete(address || ""),
-          method: "put",
-          headers: { token: localStorage.getItem("token") || "" },
-          data: {
-            sell_user_nickname: item.sell_user_nickname,
-            ...editItem,
-            genre: genresList,
-            attachmentList: imageUrlLists.map((item) => {
-              return { type: "image", url: item };
-            }),
-          },
-        });
+        const data = {
+          sell_user_nickname: item.sell_user_nickname,
+          ...editItem,
+          genre: genresList,
+          attachmentList: imageUrlLists.map((item) => {
+            return { type: "image", url: item };
+          }),
+        };
+
+        const response = await api.artwork.readOrUpdateOrDelete(
+          address,
+          data,
+          "put"
+        );
 
         if (response.status === 200) {
           const updateData = response.data;
@@ -241,43 +220,52 @@ function AuctionDetailOrUpdate({
       }
 
       setOnEdit(!onEdit);
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
     }
   };
 
   const onDeleteClick = async () => {
     const del: boolean = window.confirm("삭제하시겠습니까?");
     if (del) {
-      const response = await axios({
-        url: api.artwork.readDetailOrUpdateOrDelete(address || ""),
-        method: "delete",
-        headers: { token: localStorage.getItem("token") || "" },
-      });
-      if (response.status === 200) {
-        for (let i = 0; i < item.mediaList.length; i++) {
-          const imgRef = ref(storageService, item.mediaList[i].url);
-          await deleteObject(imgRef);
+      dispatch(loadingActions.toggle());
+
+      try {
+        const response = await api.artwork.readOrUpdateOrDelete(
+          address,
+          null,
+          "delete"
+        );
+
+        dispatch(loadingActions.toggle());
+        if (response.status === 200) {
+          for (let i = 0; i < item.mediaList.length; i++) {
+            const imgRef = ref(storageService, item.mediaList[i].url);
+            await deleteObject(imgRef);
+          }
+          navigate("/auction");
+        } else {
+          alert("실패했습니다.");
         }
-        navigate("/auction");
-      } else {
-        alert("실패했습니다.");
+      } catch (err) {
+        dispatch(loadingActions.toggle());
+        console.error(err);
       }
     }
   };
 
   useEffect(() => {
     async function loadData() {
-      const response = await axios({
-        url: api.artwork.readDetailOrUpdateOrDelete(address || ""),
-        method: "get",
-      });
+      const response = await api.artwork.readOrUpdateOrDelete(
+        address,
+        null,
+        "get"
+      );
 
       if (response.status === 200) {
         const auctionItem = response.data;
-        console.log(auctionItem);
 
         const {
           artwork_id,
@@ -315,17 +303,17 @@ function AuctionDetailOrUpdate({
 
     try {
       if (address) {
-        setIsLoading(true);
+        dispatch(loadingActions.toggle());
         loadData();
-        setIsLoading(false);
+        dispatch(loadingActions.toggle());
       } else {
         navigate("/notice");
       }
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
+      dispatch(loadingActions.toggle());
     }
-  }, [address, navigate, setIsLoading]);
+  }, [address, navigate, dispatch]);
 
   useEffect(() => {
     setEditItem({
@@ -450,6 +438,7 @@ function AuctionDetailOrUpdate({
       ) : (
         <div>
           <h1>AuctionDetail</h1>
+          <ReportModal artworkId={item.artwork_id} />
           {item.mediaList.length &&
             item.mediaList.map((image: { type: string; url: string }) => (
               <div key={image.url}>

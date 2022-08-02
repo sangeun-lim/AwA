@@ -1,17 +1,17 @@
-import axios from "axios";
-import React, { useEffect, useState, Dispatch } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import api from "../../api/api";
-import AuctionListItem from "../../component/AuctionListItem";
+import AuctionCard from "../../component/AuctionCard";
+import { loadingActions } from "../../store";
 import { ArtworkItem } from "./../../Interface";
 
-interface Props {
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
-}
-
-function Auction({ setIsLoading }: Props): JSX.Element {
+function Auction(): JSX.Element {
   const navigate = useNavigate();
-  const [itemList, setItemList] = useState<Array<ArtworkItem>>([]);
+  const dispatch = useDispatch();
+
+  const [itemList, setItemList] = useState<ArtworkItem[]>([]);
 
   const onClick = () => {
     navigate("/auction/create");
@@ -19,12 +19,9 @@ function Auction({ setIsLoading }: Props): JSX.Element {
 
   useEffect(() => {
     const callAuction = async () => {
-      setIsLoading(true);
+      dispatch(loadingActions.toggle());
       try {
-        const response = await axios({
-          url: api.artwork.readAllOrPost(),
-          method: "get",
-        });
+        const response = await api.artwork.readAll();
 
         if (response.status === 200) {
           const items = response.data;
@@ -45,6 +42,7 @@ function Auction({ setIsLoading }: Props): JSX.Element {
               profile_picture,
               description,
             } = auction;
+
             const newAuction: ArtworkItem = {
               artwork_id,
               mediaList: attachmentRequestDtoList,
@@ -60,18 +58,21 @@ function Auction({ setIsLoading }: Props): JSX.Element {
               profile_picture,
               description,
             };
+
             return newAuction;
           });
+
           setItemList(newAuctions);
         }
-        setIsLoading(false);
+        dispatch(loadingActions.toggle());
       } catch (err) {
         console.log(err);
-        setIsLoading(false);
+        dispatch(loadingActions.toggle());
       }
     };
+
     callAuction();
-  }, [setIsLoading]);
+  }, [dispatch]);
 
   return (
     <>
@@ -80,7 +81,7 @@ function Auction({ setIsLoading }: Props): JSX.Element {
       {itemList.map((item) => {
         return (
           <div key={item.artwork_id}>
-            <AuctionListItem item={item}></AuctionListItem>
+            <AuctionCard item={item}></AuctionCard>
           </div>
         );
       })}

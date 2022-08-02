@@ -1,51 +1,41 @@
 import React, { useEffect } from "react";
-import { useState, Dispatch } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import style from "./Login.module.css";
+import { LoginData } from "./../../api/apiInterface";
+import { loginDefaultData } from "./../../defaultData";
 import api from "../../api/api";
-import axios from "axios";
 import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
+import { loadingActions } from "../../store";
 
 interface Props {
   isLoggedIn: boolean;
   getUserData: Function;
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface LoginData {
-  id: string;
-  pw: string;
-}
-
-const defaultData = {
-  id: "",
-  pw: "",
-};
-
-function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
-  const [loginForm, setLoginForm] = useState<LoginData>(defaultData);
+function Login({ isLoggedIn, getUserData }: Props): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [loginForm, setLoginForm] = useState<LoginData>(loginDefaultData);
 
   const loginRequest = async () => {
+    dispatch(loadingActions.toggle());
+
     try {
-      setIsLoading(true);
-      const response = await axios({
-        url: api.auth.login(),
-        method: "post",
-        data: {
-          email: loginForm.id,
-          password: loginForm.pw,
-        },
-      });
-      setIsLoading(false);
+      const response = await api.auth.login(loginForm);
+      dispatch(loadingActions.toggle());
+
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
         getUserData();
         navigate("/");
       }
     } catch (err) {
-      setIsLoading(false);
-      alert(err);
+      dispatch(loadingActions.toggle());
+      console.error(err);
     }
   };
 
