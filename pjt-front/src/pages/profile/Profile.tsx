@@ -4,10 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import Followers from "./Followers";
 import api from "../../api/api";
 
-interface Props {
-  isLoggedIn: boolean;
-}
-
 interface profile {
   id?: string;
   description: string;
@@ -45,7 +41,7 @@ const defaultProfile: profile = {
   purchaseItems: [],
 };
 
-const ProfilePage = ({ isLoggedIn }: Props): JSX.Element => {
+const ProfilePage = (): JSX.Element => {
   const params = useParams();
   const userEmail = params.nickname;
 

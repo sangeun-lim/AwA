@@ -6,20 +6,19 @@ import ChatBoard from "./ChatBoard";
 
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { dbService } from "../../fbase";
+import { useSelector } from "react-redux";
 
 interface MainProps {
-  userObject: User;
   selectChat: string | null;
   setSelectChat: Dispatch<React.SetStateAction<string | null>>;
 }
 
 // 채팅 페이지
-function Chatting({
-  userObject,
-  selectChat,
-  setSelectChat,
-}: MainProps): JSX.Element {
+function Chatting({ selectChat, setSelectChat }: MainProps): JSX.Element {
   const [roomName, setRoomName] = useState<string | null>(null);
+  const userObject = useSelector(
+    (state: { userObject: User }) => state.userObject
+  );
 
   useEffect(() => {
     // 현재 있는 채팅방인지 확인하고 없으면 그 유저와의 채팅방을 추가한다.
