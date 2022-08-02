@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState, ChangeEvent, Dispatch } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import HOST from "../../api/rf";
 // import { User } from "../../Interface";
 

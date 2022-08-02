@@ -1,12 +1,11 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import api from "../api/api";
 import { ArtworkItem } from "../Interface";
+import { loadingActions } from "../store";
 
 // import { ArtworkItem } from "../Interface";
-interface Props {
-  setIsLoading: Dispatch<React.SetStateAction<boolean>>;
-}
 
 interface AuctionRank {
   title: string;
@@ -19,19 +18,23 @@ const defaultAuctionRank: AuctionRank = {
 };
 
 function Rank(): JSX.Element {
+  const dispatch = useDispatch();
   // const [itemList, setItemList] = useState<Array<ArtworkItem>>([]);
   const [itemList, setItemList] = useState<Array<AuctionRank>>([]);
   // const [followRank, setFollowRank] = useState<Array<>>([]);
   // const [판매자랭킹?, set판매자랭킹?] = useState<Array<>>([]);
 
-  useEffect(() => {
-    const callAuctionRank = async () => {
-      setIsLoading(true);
-      try {
-        const response = await api.artwork.readAll();
-        if (response.status === 200) {
-          const items = response.data;
-
+  // useEffect(() => {
+  //   const callAuctionRank = async () => {
+  //     dispatch(loadingActions.toggle())
+  //     try {
+  //       const response = await api.artwork.readAll();
+  //       if (response.status === 200) {
+  //         const items = response.data;
+  //       }
+  //     } catch (err) {
+  //       console.error(err)
+  //     }
 
   //   const auctionsRank: Array<AuctionRank> = items.map((auction: any) => {
   //     const { artwork_id, title } = auction;
