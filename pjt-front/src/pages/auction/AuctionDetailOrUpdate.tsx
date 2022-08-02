@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ArtworkItem, User, editItem } from "../../Interface";
 import { itemDefaultData } from "../../defaultData";
 import api from "../../api/api";
+import ReportModal from "./ReportModal";
 
 interface Props {
   userObject: User | null;
@@ -430,6 +431,7 @@ function AuctionDetailOrUpdate({
       ) : (
         <div>
           <h1>AuctionDetail</h1>
+          <ReportModal artworkId={item.artwork_id} />
           {item.mediaList.length &&
             item.mediaList.map((image: { type: string; url: string }) => (
               <div key={image.url}>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Dispatch, useState, useEffect } from "react";
 import api from "../api/api";
-import { ArtworkItem } from "../Interface";
+// import { ArtworkItem } from "../Interface";
 interface Props {
   setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
@@ -26,10 +26,7 @@ function Rank({ setIsLoading }: Props): JSX.Element {
     const callAuctionRank = async () => {
       setIsLoading(true);
       try {
-        const response = await axios({
-          url: api.artwork.readAllOrPost(),
-          method: "get",
-        });
+        const response = await api.artwork.readAll();
         if (response.status === 200) {
           const items = response.data;
 

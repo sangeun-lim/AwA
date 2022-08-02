@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Report from "./Report";
+import { User } from "../../Interface";
 
-const ReportModal = (): JSX.Element => {
+const ReportModal = (artworkId: any, user: User): JSX.Element => {
   const [showReport, setShowReport] = useState<boolean>(false);
 
   function openReport() {
@@ -15,7 +16,12 @@ const ReportModal = (): JSX.Element => {
   return (
     <div>
       <button onClick={openReport}>신고</button>
-      <Report open={showReport} close={closeReport}></Report>
+      <Report
+        open={showReport}
+        close={closeReport}
+        artworkId={artworkId}
+        nickname={user.nickname}
+      ></Report>
     </div>
   );
 };
