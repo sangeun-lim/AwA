@@ -1,29 +1,23 @@
-import axios from "axios";
-import React, { useState, Dispatch } from "react";
+import React, { useState, Dispatch, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+
 import api from "../../api/api";
 import style from "./Notice.module.css";
+import { noticeCreateDefaultData } from "./../../defaultData";
+import { NewNoticeData } from "./../../api/apiInterface";
 
 interface Props {
   setIsLoading: Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface newNote {
-  title: string;
-  content: string;
-  id?: string;
-}
-
-const defaultNotice: newNote = {
-  title: "",
-  content: "",
-};
-
 function NoticeCreate({ setIsLoading }: Props): JSX.Element {
   const navigate = useNavigate();
-  const [newNotice, setNewNotice] = useState<newNote>(defaultNotice);
 
-  const onChange = (e: any) => {
+  const [newNotice, setNewNotice] = useState<NewNoticeData>(
+    noticeCreateDefaultData
+  );
+
+  const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
     setNewNotice((prev) => {
@@ -38,25 +32,23 @@ function NoticeCreate({ setIsLoading }: Props): JSX.Element {
     navigate("/notice");
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setIsLoading(true);
-    const response = await axios({
-      url: api.notice.create(),
-      method: "post",
-      headers: {
-        token: localStorage.getItem("token") || "",
-      },
-      data: {
-        title: newNotice.title,
-        content: newNotice.content,
-      },
-    });
-    setIsLoading(false);
-    if (response.status === 200) {
-      const note = response.data;
-      navigate(`/notice/${note.notice_id}`);
+    try {
+      const response = await api.notice.post(newNotice);
+
+      setIsLoading(false);
+      if (response.status === 200) {
+        const note = response.data;
+        navigate(`/notice/${note.notice_id}`);
+      } else {
+        alert("작성에 실패했습니다.");
+      }
+    } catch (err) {
+      console.error(err);
+      setIsLoading(false);
     }
   };
 
