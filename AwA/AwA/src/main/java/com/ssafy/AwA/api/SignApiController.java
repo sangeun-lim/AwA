@@ -79,6 +79,18 @@ public class SignApiController {
         return signInResultDto;
     }
 
+//    @PostMapping("/sns-sign-in")
+//    public SignInResultDto signIn(@RequestBody @Valid CreateUserRequest request) {
+//        SignInResultDto signInResultDto = signService.signIn(request.email, request.password);
+//
+//        if(signInResultDto.getCode() == 0) {
+//            logger.info("[signIn] 정상적으로 로그인 되었습니다. id {} , AccessToken : {}, RefreshToken : {}", request.email, signInResultDto.getAccessToken(),signInResultDto.getRefreshToken());
+//        }
+//
+//        return signInResultDto;
+//    }
+
+
     //반환하는 객체 boolean success, int code, String msg
     @PostMapping("/sign-up")
     public SignUpResultDto signUp(@RequestBody @Valid CreateUserRequest request) {
