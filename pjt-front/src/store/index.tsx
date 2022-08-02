@@ -1,4 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { User } from "../Interface";
 
 const loadingSlice = createSlice({
   name: "isLoading",
@@ -10,9 +11,29 @@ const loadingSlice = createSlice({
   },
 });
 
+const authInitialState: null | User = null;
+
+const userObjectSlice = createSlice({
+  name: "userObject",
+  initialState: authInitialState,
+  reducers: {
+    login(state: null | User, actions: { type: string; payload: any }) {
+      return actions.payload;
+    },
+    logout(state: null | User) {
+      return null;
+    },
+  },
+});
+
 const store = configureStore({
-  reducer: { loading: loadingSlice.reducer },
+  reducer: {
+    loading: loadingSlice.reducer,
+    userObject: userObjectSlice.reducer,
+  },
 });
 
 export const loadingActions = loadingSlice.actions;
+export const userObjectActions = userObjectSlice.actions;
+
 export default store;

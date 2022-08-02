@@ -1,20 +1,22 @@
 import React from "react";
-import { useState, Dispatch } from "react";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import style from "./Navigation.module.css";
 import { User } from "./../Interface";
+import { useDispatch, useSelector } from "react-redux";
+import { userObjectActions } from "../store";
 
-interface Props {
-  userEmail: string | null | undefined;
-  setUserObject: Dispatch<React.SetStateAction<User | null>>;
-}
-
-function Navigation({ userEmail, setUserObject }: Props): JSX.Element {
-  const [menuToggle, setMenuToggle] = useState<boolean>(false);
+function Navigation(): JSX.Element {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userObject = useSelector(
+    (state: { userObject: User | null }) => state.userObject
+  );
+
+  const [menuToggle, setMenuToggle] = useState<boolean>(false);
 
   const logoutRequest = async () => {
-    setUserObject(null);
+    dispatch(userObjectActions.logout());
     navigate("/preview");
     localStorage.setItem("token", "");
     // const response = await axios({
@@ -83,18 +85,18 @@ function Navigation({ userEmail, setUserObject }: Props): JSX.Element {
               <img src="./img/logo.png" alt="로고" className={style.logoImg} />
             </NavLink>
           </div>
-          {userEmail ? (
+          {userObject ? (
             // 로그인 했을 때
             <div className={style.right}>
               <div className={style.profile}>
                 <NavLink
-                  to={`/profile/${userEmail}`}
+                  to={`/profile/${userObject.email}`}
                   className={({ isActive }) => (isActive ? style.active : "")}
                   onClick={() =>
                     menuToggle ? setMenuToggle(false) : setMenuToggle(true)
                   }
                 >
-                  {userEmail}
+                  {userObject.nickname}
                 </NavLink>
                 <p>님 환영합니다!</p>
               </div>
@@ -155,11 +157,11 @@ function Navigation({ userEmail, setUserObject }: Props): JSX.Element {
               Notice
             </NavLink>
           </div>
-          {userEmail ? (
+          {userObject ? (
             // 로그인 했을 때
             <div className={style.bugerList}>
               <NavLink
-                to={`/profile/${userEmail}`}
+                to={`/profile/${userObject.email}`}
                 className={({ isActive }) => (isActive ? style.active : "")}
                 onClick={() =>
                   menuToggle ? setMenuToggle(false) : setMenuToggle(true)

@@ -9,12 +9,8 @@ import { User } from "../../Interface";
 import { NewItemData } from "../../api/apiInterface";
 import { newItemDefaultData } from "../../defaultData";
 import api from "../../api/api";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
-
-interface Props {
-  userObject: User;
-}
 
 interface ButtonProps {
   item: string;
@@ -42,7 +38,7 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   );
 }
 
-function AuctionCreate({ userObject }: Props): JSX.Element {
+function AuctionCreate(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -51,6 +47,9 @@ function AuctionCreate({ userObject }: Props): JSX.Element {
 
   const [images, setImages] = useState<File[]>([]);
   const [showImages, setShowImages] = useState<string[]>([]);
+  const userObject = useSelector(
+    (state: { userObject: User }) => state.userObject
+  );
 
   const onChange = (e: any) => {
     const { name, value } = e.target;

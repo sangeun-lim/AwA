@@ -19,55 +19,40 @@ import Rank from "../pages/Rank";
 import Error from "../pages/Error";
 import Navigation from "./Navigation";
 import { User } from "./../Interface";
-import { useState, Dispatch } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 interface Props {
-  isLoggedIn: boolean;
-  userObject: User | null;
   getUserData: Function;
-  setUserObject: Dispatch<React.SetStateAction<User | null>>;
 }
 
-const AppRouter = ({
-  isLoggedIn,
-  userObject,
-  getUserData,
-  setUserObject,
-}: Props): JSX.Element => {
+const AppRouter = ({ getUserData }: Props): JSX.Element => {
+  const userObject = useSelector(
+    (state: { userObject: User | null }) => state.userObject
+  );
+
   const [selectChat, setSelectChat] = useState<string | null>(null); // 채팅 상대유저의 이메일을 저장
 
   return (
     <>
       <Router>
-        <Navigation
-          userEmail={userObject?.email}
-          setUserObject={setUserObject}
-        />
+        <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/preview" element={<Preview />} />
           <Route
             path="/auth/login"
-            element={
-              <Login isLoggedIn={isLoggedIn} getUserData={getUserData} />
-            }
+            element={<Login getUserData={getUserData} />}
           />
-          <Route
-            path="/auth/signup"
-            element={<SignUp isLoggedIn={isLoggedIn} />}
-          />
+          <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/findpw" element={<FindPw />} />
-          <Route
-            path="/profile/:nickname"
-            element={<Profile isLoggedIn={isLoggedIn} />}
-          />
+          <Route path="/profile/:nickname" element={<Profile />} />
           <Route path="/profile/favorite" element={<Favorite />} />
           {userObject && (
             <Route
               path="/chatting"
               element={
                 <Chatting
-                  userObject={userObject}
                   selectChat={selectChat}
                   setSelectChat={setSelectChat}
                 />
@@ -77,13 +62,10 @@ const AppRouter = ({
           <Route path="/auction" element={<Auction />} />
           <Route
             path="/auction/detail/:id"
-            element={<AuctionDetailOrUpdate userObject={userObject} />}
+            element={<AuctionDetailOrUpdate />}
           />
           {userObject && (
-            <Route
-              path="/auction/create"
-              element={<AuctionCreate userObject={userObject} />}
-            />
+            <Route path="/auction/create" element={<AuctionCreate />} />
           )}
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/:id" element={<NoticeDetailAndEdit />} />

@@ -1,24 +1,26 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import style from "./Login.module.css";
 import { LoginData } from "./../../api/apiInterface";
 import { loginDefaultData } from "./../../defaultData";
 import api from "../../api/api";
-import { isLabelWithInternallyDisabledControl } from "@testing-library/user-event/dist/utils";
 import { loadingActions } from "../../store";
+import { User } from "../../Interface";
 
 interface Props {
-  isLoggedIn: boolean;
   getUserData: Function;
 }
 
-function Login({ isLoggedIn, getUserData }: Props): JSX.Element {
+function Login({ getUserData }: Props): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const userObject = useSelector(
+    (state: { userObject: User | null }) => state.userObject
+  );
   const [loginForm, setLoginForm] = useState<LoginData>(loginDefaultData);
 
   const loginRequest = async () => {
@@ -61,10 +63,10 @@ function Login({ isLoggedIn, getUserData }: Props): JSX.Element {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (!!userObject) {
       navigate("/");
     }
-  }, [isLoggedIn, navigate]);
+  }, [navigate, userObject]);
 
   return (
     <div className="d-flex justify-content-center">

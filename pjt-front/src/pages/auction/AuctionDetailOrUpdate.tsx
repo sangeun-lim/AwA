@@ -13,13 +13,9 @@ import { v4 as uuidv4 } from "uuid";
 import { ArtworkItem, User, editItem } from "../../Interface";
 import { itemDefaultData } from "../../defaultData";
 import api from "../../api/api";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 import ReportModal from "./ReportModal";
-
-interface Props {
-  userObject: User | null;
-}
 
 interface ButtonProps {
   item: string;
@@ -47,7 +43,7 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   );
 }
 
-function AuctionDetailOrUpdate({ userObject }: Props): JSX.Element {
+function AuctionDetailOrUpdate(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -56,6 +52,9 @@ function AuctionDetailOrUpdate({ userObject }: Props): JSX.Element {
 
   const [item, setItem] = useState<ArtworkItem>(itemDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
+  const userObject = useSelector(
+    (state: { userObject: User | null }) => state.userObject
+  );
 
   // 수정용 상태 선언
   const [genresList, setGenresList] = useState<string[]>([]);
