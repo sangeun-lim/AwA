@@ -30,6 +30,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()//애플리케이션에 들어오는 요청에 대한 사용권한 체크
                 .antMatchers(HttpMethod.POST, "/artwork").authenticated()
+                .antMatchers(HttpMethod.PUT,"/artwork").authenticated()
+                .antMatchers(HttpMethod.DELETE,"/artwork").authenticated()
                 .antMatchers("/auth/userinfo").hasRole("ADMIN")
 //                .antMatchers("/auth/sign-in", "/auth/sign-up").permitAll() //antPattern을 통해 권한 설정 특정 경로에 모두 허용
 //                .antMatchers(HttpMethod.GET, "/artwork").permitAll() //artwork로 시작하는 경로의 GET요청은 모두 허용
@@ -41,7 +43,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())//권한을 확인하는 과정에서 통과하지 못하는 예외가 발생하면 예외 전달 (ex 로그인 안했을 때 들어갈 수 없는곳 들어가면 로그인페이지로)
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //인증 과정에서 예외가 발생할 경우 예외 전달. (Response로 클라이언트에게 전달) 책 403쪽
-
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); //어느 필터앞에 설정할 것인지.
     }
