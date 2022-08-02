@@ -15,6 +15,7 @@ import { itemDefaultData } from "../../defaultData";
 import api from "../../api/api";
 import { useDispatch } from "react-redux";
 import { loadingActions } from "../../store";
+import ReportModal from "./ReportModal";
 
 interface Props {
   userObject: User | null;
@@ -437,6 +438,7 @@ function AuctionDetailOrUpdate({ userObject }: Props): JSX.Element {
       ) : (
         <div>
           <h1>AuctionDetail</h1>
+          <ReportModal artworkId={item.artwork_id} />
           {item.mediaList.length &&
             item.mediaList.map((image: { type: string; url: string }) => (
               <div key={image.url}>

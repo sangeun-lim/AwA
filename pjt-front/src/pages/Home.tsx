@@ -1,7 +1,9 @@
 import React from "react";
+<<<<<<< pjt-front/src/pages/Home.tsx
 import { useDispatch } from "react-redux";
 import ReportModal from "./ReportModal";
 import { loadingActions } from "../store";
+import ReportModal from "./auction/ReportModal";
 
 function Home(): JSX.Element {
   const dispatch = useDispatch();
