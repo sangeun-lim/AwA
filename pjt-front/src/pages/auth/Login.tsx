@@ -85,28 +85,41 @@ function Login({ isLoggedIn, getUserData, setIsLoading }: Props): JSX.Element {
             <input
               name="id"
               type="email"
+              id="id"
               value={loginForm.id}
-              placeholder="ID"
               onChange={onChange}
               className={style.loginInput}
               required
             />
-            <label htmlFor="">아이디</label>
+            <label htmlFor="id" className={style.label}>
+              아이디
+            </label>
             <div className={style.bar}></div>
           </div>
           <div className={style.inputContainer}>
             <input
               name="pw"
               type="password"
+              id="password"
               value={loginForm.pw}
-              placeholder="Password"
               onChange={onChange}
               className={style.loginInput}
               required
             />
+            <label htmlFor="password" className={style.label}>
+              비밀번호
+            </label>
+            <div className={style.bar}></div>
           </div>
-          <br />
-          <input type="submit" value="로그인" className={style.loginSubmit} />
+          <div className={style.buttonContainer}>
+            <button>
+              <input
+                type="submit"
+                value="로그인"
+                className={style.loginSubmit}
+              />
+            </button>
+          </div>
         </form>
       </div>
     </div>
