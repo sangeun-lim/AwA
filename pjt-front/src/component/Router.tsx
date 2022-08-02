@@ -67,7 +67,9 @@ const AppRouter = ({
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route
             path="/profile/:nickname"
-            element={<Profile isLoggedIn={isLoggedIn} />}
+            element={
+              <Profile isLoggedIn={isLoggedIn} setIsLoading={setIsLoading} />
+            }
           />
           <Route path="/profile/favorite" element={<Favorite />} />
           {userObject && (
@@ -116,7 +118,7 @@ const AppRouter = ({
             element={<NoticeCreate setIsLoading={setIsLoading} />}
           />
           <Route path="/searchresult" element={<SearchResult />} />
-          <Route path="/rank" element={<Rank />} />
+          <Route path="/rank" element={<Rank setIsLoading={setIsLoading} />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </Router>

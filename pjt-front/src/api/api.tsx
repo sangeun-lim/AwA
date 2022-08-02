@@ -1,12 +1,9 @@
-import axios from "axios";
-import rf from "./rf";
-import {
-  LoginData,
-  SignUpData,
-  NewNoticeData,
-  NewItemData,
-  UpdateItemData,
-} from "./apiInterface";
+const HOST = "http://i7c101.p.ssafy.io:8080/";
+
+const AUTH = "auth/";
+const NOTICE = "notice/";
+const ARTWORK = "artwork/";
+const PROFILE = "profile/";
 
 const api = {
   auth: {
@@ -146,6 +143,10 @@ const api = {
 
       return response;
     },
+  },
+
+  profile: {
+    getProfile: (userEmail: string) => HOST + PROFILE + `${userEmail}`,
   },
 };
 
