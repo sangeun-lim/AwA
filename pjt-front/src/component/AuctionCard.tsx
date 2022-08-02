@@ -12,11 +12,13 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
   return (
     <div>
       <div className={style.container}>
-        <img
-          src={item.mediaList[0].url}
-          alt="AuctionImg"
-          className={style.auctionImg}
-        />
+        {item.mediaList.length && (
+          <img
+            src={item.mediaList[0].url}
+            alt="AuctionImg"
+            className={style.auctionImg}
+          />
+        )}
         <div className={style.profile}>
           <img
             src={item.profile_picture}

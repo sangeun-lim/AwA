@@ -118,7 +118,7 @@ const AppRouter = ({
             element={<NoticeCreate setIsLoading={setIsLoading} />}
           />
           <Route path="/searchresult" element={<SearchResult />} />
-          <Route path="/rank" element={<Rank />} />
+          <Route path="/rank" element={<Rank setIsLoading={setIsLoading} />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </Router>
