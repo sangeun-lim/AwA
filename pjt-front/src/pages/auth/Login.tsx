@@ -31,7 +31,6 @@ function Login({ getUserData }: Props): JSX.Element {
       dispatch(loadingActions.toggle());
 
       if (response.status === 200) {
-        console.log(response);
         localStorage.setItem("token", response.data.accessToken);
         localStorage.setItem("refresh_token", response.data.refreshToken);
         getUserData();

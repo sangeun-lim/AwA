@@ -1,6 +1,6 @@
 import { uuidv4 } from "@firebase/util";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import React, { ChangeEvent, Dispatch, FormEvent, useState } from "react";
+import React, { ChangeEvent, Dispatch, useEffect, useState } from "react";
 import api from "../../api/api";
 import { UpdateProfileObject } from "../../api/apiInterface";
 import { storageService } from "../../fbase";
@@ -10,22 +10,26 @@ interface Props {
   profileObject: Profile;
   userEmail: string;
   setProfileObject: Dispatch<React.SetStateAction<Profile>>;
+  setEditProfile: Dispatch<React.SetStateAction<boolean>>;
 }
+
+const FAVORITE = ["회화", "조소", "건축", "공예", "서예", "디지털", "기타"];
 
 function ProfileUpdate({
   profileObject,
   userEmail,
   setProfileObject,
+  setEditProfile,
 }: Props): JSX.Element {
   const [editForm, setEditForm] = useState<UpdateProfileObject>({
     description: profileObject.description,
     nickname: profileObject.nickname,
     profile_picture_url: profileObject.picture_url,
-    favorite_fields: profileObject.favorite_field,
+    favorite_field: profileObject.favorite_field,
   });
   const [showImage, setShowImage] = useState<string>(profileObject.picture_url);
   const [newImage, setNewImage] = useState<File | null>(null);
-  const [isPossible, setIsPossible] = useState<boolean>(false);
+  const [isPossible, setIsPossible] = useState<string | boolean>(false);
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -47,13 +51,34 @@ function ProfileUpdate({
     const response = await api.auth.checkNickname(editForm.nickname);
 
     if (response.status === 200 && response.data === 1) {
-      setIsPossible(true);
+      setIsPossible(editForm.nickname);
     }
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onFavoriteChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
 
+    const here = !!editForm.favorite_field.filter((item) => item === value)
+      .length;
+
+    if (here) {
+      setEditForm((prev) => {
+        return {
+          ...prev,
+          favorite_field: prev.favorite_field.filter((item) => item !== value),
+        };
+      });
+    } else {
+      setEditForm((prev) => {
+        return {
+          ...prev,
+          favorite_field: prev.favorite_field.concat(value),
+        };
+      });
+    }
+  };
+
+  const onSubmit = async () => {
     let imageUrl: string = "";
     if (newImage) {
       const imgRef = ref(storageService, `${userEmail}/${uuidv4()}`);
@@ -84,6 +109,8 @@ function ProfileUpdate({
         };
       });
     }
+
+    setEditProfile(false);
   };
 
   const onImgChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -96,65 +123,61 @@ function ProfileUpdate({
     }
   };
 
+  useEffect(() => {
+    if (editForm.nickname !== isPossible) {
+      setIsPossible(false);
+    }
+  }, [editForm.nickname, isPossible]);
+
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        {showImage ? (
-          <img src={showImage} alt="프로필이미지" />
-        ) : (
-          <img
-            src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
-            alt="프로필이미지"
-          />
-        )}
-        <input type="file" accept="image/*" onChange={onImgChange} />
-        <button onClick={onBaseClick}>기본 이미지로</button>
-        <input
-          type="text"
-          name="nickname"
-          value={editForm.nickname}
-          onChange={onChange}
-          required
+      {showImage ? (
+        <img src={showImage} alt="프로필이미지" />
+      ) : (
+        <img
+          src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+          alt="프로필이미지"
         />
-        <button onClick={checkNickname}>중복확인</button>
-        <textarea
-          name="description"
-          value={editForm.description}
-          onChange={onChange}
-          required
-        />
-        <div>
-          <label>
-            <input type="checkbox" name="favorite_fields" value="회화" />
-            회화
-          </label>
-          <label>
-            <input type="checkbox" name="favorite_fields" value="조소" />
-            조소
-          </label>
-          <label>
-            <input type="checkbox" name="favorite_fields" value="건축" />
-            건축
-          </label>
-          <label>
-            <input type="checkbox" name="favorite_fields" value="공예" />
-            공예
-          </label>
-          <label>
-            <input type="checkbox" name="favorite_fields" value="서예" />
-            서예
-          </label>
-          <label>
-            <input type="checkbox" name="favorite_fields" value="디지털" />
-            디지털
-          </label>
-          <label>
-            <input type="checkbox" name="favorite_fields" value="기타" />
-            기타
-          </label>
-        </div>
-        <input disabled={!isPossible} type="submit" value="제출" />
-      </form>
+      )}
+      <input type="file" accept="image/*" onChange={onImgChange} />
+      <button onClick={onBaseClick}>기본 이미지로</button>
+      <input
+        type="text"
+        name="nickname"
+        value={editForm.nickname}
+        onChange={onChange}
+        required
+      />
+      <button onClick={checkNickname}>중복확인</button>
+      {isPossible && <p>사용 가능한 닉네임입니다.</p>}
+      <textarea
+        name="description"
+        value={editForm.description || ""}
+        onChange={onChange}
+        cols={30}
+        rows={5}
+      ></textarea>
+      <div>
+        {FAVORITE.map((item) => {
+          return (
+            <label key={item}>
+              <input
+                type="checkbox"
+                name="favorite_field"
+                value={item}
+                onChange={onFavoriteChange}
+                checked={
+                  !!editForm.favorite_field.filter(
+                    (favorite) => favorite === item
+                  ).length
+                }
+              />
+              {item}
+            </label>
+          );
+        })}
+      </div>
+      <button onClick={onSubmit}>제출</button>
     </div>
   );
 }
