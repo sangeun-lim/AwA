@@ -11,15 +11,10 @@ interface profile {
   nickname: string;
   owner_user: number;
   picture_url: string;
-  // 내 팔로워들
   followers: Array<string>;
-  // 내가 팔로우 하는 사람들
   followings: Array<string>;
-  // 내가 올린 작품
   myItems: Array<string>;
-  // 내가 찜한 작품
   likeItems: Array<string>;
-  // 내가 구매한 작품
   purchaseItems: Array<string>;
 }
 
@@ -29,15 +24,10 @@ const defaultProfile: profile = {
   nickname: "",
   owner_user: 0,
   picture_url: "",
-  // 내 팔로워들
   followers: [],
-  // 내가 팔로우 하는 사람들
   followings: [],
-  // 내가 올린 작품
   myItems: [],
-  // 내가 찜한 작품
   likeItems: [],
-  // 내가 구매한 작품
   purchaseItems: [],
 };
 
@@ -60,20 +50,16 @@ const ProfilePage = (): JSX.Element => {
     navigate("/profile/favorite");
   };
 
-  // 전해줄 매개변수가 필요할거 같은데???
   const moveChat = () => {
     navigate("/chatting");
   };
 
   useEffect(() => {
     const getProfile = async () => {
-      // 유저 프로필 정보 받아오기
       setProfileObject(defaultProfile);
     };
     getProfile();
   }, []);
-
-  // 프로필 사진 등록 / 프로필 정보 변경
 
   return (
     <div>

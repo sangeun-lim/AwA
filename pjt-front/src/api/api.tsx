@@ -62,7 +62,7 @@ const api = {
         url: rf.auth.userinfo(),
         method: "get",
         headers: {
-          token: token,
+          RefreshToken: token,
         },
       });
 
@@ -131,7 +131,10 @@ const api = {
       const response = await axios({
         url: rf.artwork.readAllOrPost(),
         method: "post",
-        headers: { token: localStorage.getItem("token") || "" },
+        headers: {
+          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
+        },
         data: {
           ...formData,
           genre: genresList,
