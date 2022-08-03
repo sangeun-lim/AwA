@@ -20,4 +20,7 @@ public class RankApiController {
     public List<ArtworkResponseDto> likeTop10ArtworkList() {
         return rankService.getLikeTop10ArtworkList();
     }
+
+    //@GetMapping("/follow")
+
 }

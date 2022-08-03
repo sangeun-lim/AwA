@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,21 +23,7 @@ public class ProfileApiController {
     private final UserService userService;
     @GetMapping("/{userEmail}")
     public ProfileResponseDto getProfile(@PathVariable(name = "userEmail") String userEmail) {
-        User targetUser = userService.findByEmail(userEmail);
-        String nickname = targetUser.getNickname();
-
-        Profile targetProfile = profileService.findByNickname(nickname);
-
-        ProfileResponseDto profileResponseDto = ProfileResponseDto.builder()
-                .nickname(targetProfile.getNickname())
-                .owner_user(targetUser.getUser_id())
-                .picture_url(targetProfile.getProfile_picture_url())
-                .description(targetProfile.getDescription())
-                .favorite_field(targetProfile.getFavorite_field())
-                .build();
-
-        return profileResponseDto;
-//        return null;
+        return profileService.getProfile(userEmail);
     }
 
     @PutMapping("{userEmail}/nickname/{newNickname}")

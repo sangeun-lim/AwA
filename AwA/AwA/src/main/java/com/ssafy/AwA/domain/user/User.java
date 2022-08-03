@@ -53,7 +53,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate birth;
 
+
     @OneToOne(mappedBy = "owner_user",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Profile profile;
     @Column
     private String refreshToken;

@@ -19,7 +19,7 @@ public class FollowApiController {
 
 
     @PostMapping("/{fromUserEmail}/{toUserEmail}")
-    public Follow followUser(@PathVariable String fromUserEmail, @PathVariable String toUserEmail) {
+    public Follow followUser(@PathVariable(name = "fromUserEmail") String fromUserEmail, @PathVariable(name = "toUserEmail") String toUserEmail) {
         return followService.save(fromUserEmail, toUserEmail);
     }
 

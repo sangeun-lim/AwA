@@ -6,7 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface FollowRepository extends JpaRepository<Follow, Long> {
    @Query("select f from Follow f where f.fromProfile =:fromProfile and f.toProfile =:toProfile")
     Follow findByFromUserAndToUser(@Param("fromProfile") Profile fromProfile, @Param("toProfile") Profile toProfile);
+
+   @Query("select f.toProfile from Follow f where f.fromProfile=:fromProfile")
+    List<Profile> getFollowingList(@Param("fromProfile") Profile fromProfile);
+
+    @Query("select f.fromProfile from Follow f where f.toProfile=:toProfile")
+    List<Profile> getFollwerList(@Param("toProfile") Profile toProfile);
 }
