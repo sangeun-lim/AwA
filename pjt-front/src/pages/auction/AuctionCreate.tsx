@@ -136,7 +136,7 @@ function AuctionCreate(): JSX.Element {
           localStorage.setItem("token", response.headers["x-auth-token"]);
           localStorage.setItem(
             "refresh_token",
-            response.headers["refresh_token"] || ""
+            response.headers["refreshtoken"] || ""
           );
         }
 

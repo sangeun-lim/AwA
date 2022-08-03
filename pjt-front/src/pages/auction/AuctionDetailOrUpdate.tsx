@@ -437,7 +437,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
       ) : (
         <div>
           <h1>AuctionDetail</h1>
-          <ReportModal artworkId={item.artwork_id} />
+          <ReportModal artworkId={address} />
           {item.mediaList.length &&
             item.mediaList.map((image: { type: string; url: string }) => (
               <div key={image.url}>

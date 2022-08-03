@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { loadingActions } from "../store";
-import ReportModal from "./auction/ReportModal";
 
 function Home(): JSX.Element {
   const dispatch = useDispatch();
@@ -14,7 +13,6 @@ function Home(): JSX.Element {
     <div className="container">
       <h1>home</h1>
       <button onClick={onClick}>안녕</button>
-      <ReportModal></ReportModal>
     </div>
   );
 }

@@ -1,0 +1,21 @@
+.rank {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.rank > div {
+  border-style: ridge;
+  border-color: rgb(231, 115, 92, 1);
+}
+
+li {
+  list-style: none;
+  width: 150px;
+  height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+p {
+  text-align: center;
+}

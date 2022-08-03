@@ -1,144 +1,68 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import api from "../api/api";
-import { ArtworkItem } from "../Interface";
-import { loadingActions } from "../store";
+import React, { useEffect, useState } from "react";
+import rf from "../api/rf";
+import style from "./Rank.module.css";
 
-// import { ArtworkItem } from "../Interface";
-
-interface AuctionRank {
+interface Like {
   title: string;
-  artwork_id: number;
 }
 
-const defaultAuctionRank: AuctionRank = {
+const defaultLike: Like = {
   title: "",
-  artwork_id: 0,
 };
 
 function Rank(): JSX.Element {
-  const dispatch = useDispatch();
-  // const [itemList, setItemList] = useState<Array<ArtworkItem>>([]);
-  const [itemList, setItemList] = useState<Array<AuctionRank>>([]);
   // const [followRank, setFollowRank] = useState<Array<>>([]);
-  // const [판매자랭킹?, set판매자랭킹?] = useState<Array<>>([]);
+  const [likeRank, setLikeRank] = useState<Array<Like>>([]);
 
-  // useEffect(() => {
-  //   const callAuctionRank = async () => {
-  //     dispatch(loadingActions.toggle())
-  //     try {
-  //       const response = await api.artwork.readAll();
-  //       if (response.status === 200) {
-  //         const items = response.data;
-  //       }
-  //     } catch (err) {
-  //       console.error(err)
-  //     }
+  const likeRankRequest = async () => {
+    const response = await axios({
+      url: rf.rank.getLikeRank(),
+      method: "get",
+    });
 
-  //   const auctionsRank: Array<AuctionRank> = items.map((auction: any) => {
-  //     const { artwork_id, title } = auction;
-  //     const auctionR: AuctionRank = { artwork_id, title };
-  //     return auctionR;
-  //   });
-  //   setItemList(auctionsRank);
+    if (response.status === 200) {
+      const likeList = response.data;
+      setLikeRank(likeList);
+    }
+  };
 
-  // const newAuctions: Array<ArtworkItem> = items.map((auction: any) => {
-  //   const {
-  //     artwork_id,
-  //     attachmentRequestDtoList,
-  //     genre,
-  //     ingredient,
-  //     like_count,
-  //     price,
-  //     sell_user_email,
-  //     sell_user_nickname,
-  //     title,
-  //     view_count,
-  //     createdDate,
-  //     profile_picture,
-  //     description,
-  //   } = auction;
-  //   const newAuction: ArtworkItem = {
-  //     artwork_id,
-  //     mediaList: attachmentRequestDtoList,
-  //     genre,
-  //     ingredient,
-  //     like_count,
-  //     price,
-  //     sell_user_email,
-  //     sell_user_nickname,
-  //     title,
-  //     view_count,
-  //     createdDate,
-  //     profile_picture,
-  //     description,
-  //   };
-  //   return newAuction;
-  // });
-  // setItemList(newAuctions);
-  //       }
-  //       setIsLoading(false);
-  //     } catch (err) {
-  //       console.log(err);
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   callAuctionRank();
-  // }, [setIsLoading]);
-
-  // function bestRank() {
-  //   let bestArray: any = [];
-  //   {
-  //     itemList.map((item) => {
-  //       for (let i = 0; i < itemList.length; i++) {
-  //         bestArray.push(
-  //           <div key={item.artwork_id}>
-  //             {i + 1} {item.title}
-  //           </div>
-  //         );
-  //       }
-  //     });
-  //   }
-  //   return bestArray;
-  // }
+  useEffect(() => {
+    likeRankRequest();
+  }, []);
 
   return (
-    <div className="d-flex flex-row justify-content-around">
+    <div className={style.rank}>
       <div>
-        <p>주간 베스트 랭킹</p>
-        {itemList.map((item, index) => {
+        <p className="">주간 베스트 랭킹</p>
+        {likeRank.map((item, index) => {
           return (
-            // 여기에 index 수가 10 이하 까지만 이라는 조건 if문 줄수있나?
-            <div key={item.artwork_id}>
-              {index + 1}
-              {item.title}
-            </div>
+            <li key={item.title}>
+              {index + 1} | {item.title}
+            </li>
           );
         })}
       </div>
       <div>
         <p>팔로우 랭킹</p>
-        {itemList.map((item, index) => {
+        {likeRank.map((item, index) => {
           return (
-            <div key={item.artwork_id}>
-              {index + 1}
-              {item.title}
-            </div>
+            <li key={item.title}>
+              {index + 1} | {item.title}
+            </li>
           );
         })}
       </div>
-      <div>
-        <p>판매자 랭킹</p>
-        {itemList.map((item, index) => {
+      {/* <div>
+        <p>판매 랭킹</p>
+        {likeRank.map((item, index) => {
           return (
-            <div key={item.artwork_id}>
-              {index + 1}
-              {item.title}
+            <div key={item.title}>
+              {index + 1} | {item.title}
             </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 }

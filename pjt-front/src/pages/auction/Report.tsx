@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState, ChangeEvent } from "react";
 import HOST from "../../api/rf";
-// import { User } from "../../Interface";
+import { User } from "../../Interface";
+import { useSelector } from "react-redux";
 
-interface props {
+interface Props {
   open: boolean;
   close: () => void;
-  artworkId: number;
-  nickname: string;
+  artworkId: string;
   // setUserObject: Dispatch<React.SetStateAction<User | null>>;
 }
 
@@ -33,12 +33,16 @@ const defaultData = {
   // file: [],
 };
 
-function Report(props: props): JSX.Element {
+function Report(props: Props): JSX.Element {
   // const [reportImg, setReportImg] = useState<File>();
-  const { open, close } = props;
+  const { open, close, artworkId } = props;
   const [reportForm, setReportForm] = useState<ReportData>(defaultData);
   const categoryList = ["A", "B", "C", "D", "E", "기타"];
   const [category, setCategory] = useState<string>("");
+
+  const userObject = useSelector(
+    (state: { userObject: User }) => state.userObject
+  );
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -68,19 +72,19 @@ function Report(props: props): JSX.Element {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(category);
-    console.log(reportForm.content);
-    console.log(props.nickname);
-    console.log(props.artworkId);
+    // console.log(category);
+    // console.log(reportForm.content);
+    // console.log(userObject.nickname);
+    // console.log(artworkId);
 
     const response = await axios({
-      url: HOST + "/report/" + `${props.artworkId}`,
+      url: `http://i7c101.p.ssafy.io:8080/report/${artworkId}`,
       method: "post",
       data: {
         category: category,
         content: reportForm.content,
-        report_profile_nickname: props.nickname,
-        reported_artwork_id: props.artworkId,
+        report_profile_nickname: userObject.nickname,
+        reported_artwork_id: artworkId,
       },
     });
 

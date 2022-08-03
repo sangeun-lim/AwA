@@ -4,6 +4,7 @@ const AUTH = "auth/";
 const NOTICE = "notice/";
 const ARTWORK = "artwork/";
 const PROFILE = "profile/";
+const RANK = "rank/";
 
 const rf = {
   auth: {
@@ -27,6 +28,10 @@ const rf = {
 
   profile: {
     getProfile: (userEmail: string) => HOST + PROFILE + `${userEmail}`,
+  },
+
+  rank: {
+    getLikeRank: () => HOST + RANK + "like",
   },
 };
 
