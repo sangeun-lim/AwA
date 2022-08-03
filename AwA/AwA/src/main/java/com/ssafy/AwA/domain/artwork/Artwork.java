@@ -1,6 +1,7 @@
 package com.ssafy.AwA.domain.artwork;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.attachment.Attachment;
 import com.ssafy.AwA.domain.comment.Comment;
@@ -42,6 +43,7 @@ public class Artwork extends BaseTimeEntity {
     private String description;
 
     @OneToMany(mappedBy = "artwork")
+    @JsonManagedReference
     List<Likes> like_count;
 
     @ElementCollection

@@ -1,11 +1,10 @@
 package com.ssafy.AwA.service;
 
+import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.ProfileResponseDto;
-import com.ssafy.AwA.repository.FollowRepository;
-import com.ssafy.AwA.repository.ProfileRepository;
-import com.ssafy.AwA.repository.UserRepository;
+import com.ssafy.AwA.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +20,8 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final ArtworkRepository artworkRepository;
+    private final LikeRepository likeRepository;
 
     public Profile findByNickname(String nickname) {
         return profileRepository.findByNickname(nickname);
@@ -31,13 +32,15 @@ public class ProfileService {
         String nickname = targetUser.getNickname();
 
         Profile targetProfile = profileRepository.findByNickname(nickname);
-        System.out.println(targetProfile.getNickname());
+
 
         List<Profile> followingList = followRepository.getFollowingList(targetProfile);
         List<Profile> followerList = followRepository.getFollwerList(targetProfile);
 
-        System.out.println("나를 팔로우 하는 사람들" + followerList.get(0).getNickname());
-        System.out.println("내가 팔로우 하는 사람들" + followingList.get(0).getNickname());
+        List<Artwork> sellArtworkList = artworkRepository.findAllBySell_user(targetUser);
+        System.out.println(sellArtworkList.size() + "here");
+
+        List<Artwork> likeArtworkList = likeRepository.findAllByProfile(targetProfile);
 
         ProfileResponseDto profileResponseDto = ProfileResponseDto.builder()
                 .nickname(targetProfile.getNickname())
@@ -47,6 +50,8 @@ public class ProfileService {
                 .favorite_field(targetProfile.getFavorite_field())
                 .follower_list(followerList)
                 .following_list(followingList)
+                .artwork_list(sellArtworkList)
+                .liked_artwork_list(likeArtworkList)
                 .build();
 
         return profileResponseDto;

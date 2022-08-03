@@ -1,6 +1,7 @@
 package com.ssafy.AwA.repository;
 
 import com.ssafy.AwA.domain.artwork.Artwork;
+import com.ssafy.AwA.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,6 @@ public interface ArtworkRepository extends JpaRepository<Artwork, Long> {
     @Query("select a from Artwork a ORDER BY a.artwork_id DESC")
     List<Artwork> findAllByOrderByArtwork_idDesc();
 
+    @Query("select a from Artwork a where a.sell_user=:sell_user")
+    List<Artwork> findAllBySell_user(@Param("sell_user") User sell_user);
 }
