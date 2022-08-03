@@ -53,14 +53,25 @@ function Notice(): JSX.Element {
   }, [navigate, dispatch]);
 
   return (
-    <div className={`${style.notice} container`}>
-      <h1 className={style.title}>Notice</h1>
+    <div className={style.notice}>
+      <section className={style.noticeTop}>
+        <div>
+          <div className={style.title}>공지사항</div>
+          <div className={style.content}>
+            Artwork Auction의 공지사항을 확인해보세요!
+          </div>
+        </div>
+      </section>
       <ul>
+        <div className={style.ulTop}>
+          <div>제목</div>
+          <div>작성일</div>
+        </div>
         {noticeList.map((notice) => {
           return (
-            <div key={notice.notice_id}>
+            <li key={notice.notice_id}>
               <NoticeListItem notice={notice}></NoticeListItem>
-            </div>
+            </li>
           );
         })}
       </ul>
