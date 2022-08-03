@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Preview.css";
+import "./Preview.module.css";
 
 function Preview(): JSX.Element {
   return (

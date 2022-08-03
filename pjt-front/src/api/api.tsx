@@ -104,7 +104,8 @@ const api = {
         url: rf.notice.readOrUpdateOrDelete(id),
         method: method,
         headers: {
-          token: localStorage.getItem("token") || "",
+          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
         },
         data: formData,
       });
@@ -155,7 +156,10 @@ const api = {
       const response = await axios({
         url: rf.artwork.readDetailOrUpdateOrDelete(id),
         method: method,
-        headers: { token: localStorage.getItem("token") || "" },
+        headers: {
+          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
+        },
         data: formData,
       });
 
