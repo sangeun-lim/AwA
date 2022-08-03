@@ -5,6 +5,8 @@ import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.ArtworkResponseDto;
 import com.ssafy.AwA.dto.AttachmentRequestDto;
+import com.ssafy.AwA.dto.ProfileRankResponseDto;
+import com.ssafy.AwA.dto.ProfileResponseDto;
 import com.ssafy.AwA.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ public class RankService {
     private final LikeRepository likeRepository;
     private final ArtworkRepository artworkRepository;
 
+    private final FollowRepository followRepository;
+
+    private final UserRepository userRepository;
 
     public List<ArtworkResponseDto> getLikeTop10ArtworkList() {
           List<Long> topLikeArtworkList = likeRepository.getTopLikeArtwork();
@@ -62,5 +67,28 @@ public class RankService {
         }
 
         return artworkResponseDtoList;
+    }
+
+    public List<ProfileRankResponseDto> getFollowTop10ProfileList() {
+        List<Long> top10ByFollowing = followRepository.findTop10ByFollowing();
+
+        List<ProfileRankResponseDto> profileRankResponseDto = new ArrayList<>();
+        for(int i=0;i<top10ByFollowing.size();i++) {
+            if(i==10)
+                break;
+
+            Long topProfileId = top10ByFollowing.get(i);
+            Profile targetProfile = profileRepository.findByProfile_id(topProfileId);
+            User targetUser = userRepository.findByNickname(targetProfile.getNickname());
+            ProfileRankResponseDto responseDto = ProfileRankResponseDto.builder()
+                    .nickname(targetProfile.getNickname())
+                    .profile_picture_url(targetProfile.getProfile_picture_url())
+                    .email(targetUser.getEmail())
+                    .build();
+
+            profileRankResponseDto.add(responseDto);
+        }
+
+        return profileRankResponseDto;
     }
 }

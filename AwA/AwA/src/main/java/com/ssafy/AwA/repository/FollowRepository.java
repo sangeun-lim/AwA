@@ -17,4 +17,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     @Query("select f.fromProfile from Follow f where f.toProfile=:toProfile")
     List<Profile> getFollwerList(@Param("toProfile") Profile toProfile);
+
+    @Query(value = "SELECT to_profile_id FROM follow GROUP BY to_profile_id ORDER BY COUNT(*) DESC",nativeQuery = true)
+    List<Long> findTop10ByFollowing();
 }
