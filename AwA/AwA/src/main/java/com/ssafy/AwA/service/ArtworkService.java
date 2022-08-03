@@ -86,7 +86,7 @@ public class ArtworkService {
     }
 
     public List<ArtworkResponseDto> getAllArtwork() {
-        List<Artwork> allArtworks = artworkRepository.findAll();
+        List<Artwork> allArtworks = artworkRepository.findAllByOrderByArtwork_idDesc();
 
 
         List<ArtworkResponseDto> artworkResponseDtoList = new ArrayList<>();

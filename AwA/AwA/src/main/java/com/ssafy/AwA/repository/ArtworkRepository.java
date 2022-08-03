@@ -12,5 +12,7 @@ public interface ArtworkRepository extends JpaRepository<Artwork, Long> {
     @Query("select a from Artwork  a where a.artwork_id=:artwork_id")
     Artwork findByArtwork_id(@Param("artwork_id") Long artwork_id);
 
+    @Query("select a from Artwork a ORDER BY a.artwork_id DESC")
+    List<Artwork> findAllByOrderByArtwork_idDesc();
 
 }
