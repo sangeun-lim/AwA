@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/artwork").authenticated()
                 .antMatchers(HttpMethod.PUT,"/artwork").authenticated()
                 .antMatchers(HttpMethod.DELETE,"/artwork").authenticated()
-                .antMatchers("/auth/userinfo").hasRole("ADMIN")
+                //.antMatchers("/auth/userinfo").hasRole("ADMIN")
 //                .antMatchers("/auth/sign-in", "/auth/sign-up").permitAll() //antPattern을 통해 권한 설정 특정 경로에 모두 허용
 //                .antMatchers(HttpMethod.GET, "/artwork").permitAll() //artwork로 시작하는 경로의 GET요청은 모두 허용
 //                .antMatchers(HttpMethod.GET, "/profile").permitAll()
