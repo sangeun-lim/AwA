@@ -37,6 +37,7 @@ public class ArtworkApiController {
         return ResponseEntity.status(HttpStatus.OK).body(artworkResponseDto);
     }
 
+    //로그인 오류해결 위한 커밋
     @GetMapping
     public List<ArtworkResponseDto> getAllArtwork() {
         List<ArtworkResponseDto> artworkResponseDto = artworkService.getAllArtwork();
