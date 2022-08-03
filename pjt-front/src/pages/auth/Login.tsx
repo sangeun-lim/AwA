@@ -111,6 +111,7 @@ function Login({ getUserData }: Props): JSX.Element {
                 type="submit"
                 value="로그인"
                 className={style.loginSubmit}
+                tabIndex={-1}
               />
             </button>
           </div>

@@ -1,4 +1,4 @@
-import { User } from "./../../Interface";
+import { User } from "../../Interface";
 import React, { Dispatch, useEffect, useState } from "react";
 import { ChattingRoom } from "../../Interface";
 import { collection, getDocs, query, where } from "firebase/firestore";
