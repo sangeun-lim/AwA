@@ -1,4 +1,4 @@
-import { User } from "./../../Interface";
+import { User } from "../../Interface";
 import React, { Dispatch, useEffect, useState } from "react";
 
 import ChatList from "./ChatList";
