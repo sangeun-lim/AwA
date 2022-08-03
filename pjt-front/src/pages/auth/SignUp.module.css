@@ -67,7 +67,7 @@ a {
   right: 30px;
   margin-top: -12px;
 }
-.checkBox textarea {
+.checkBox div {
   width: 80%;
   height: 150px;
   margin: 0 10%;
@@ -75,6 +75,7 @@ a {
   color: rgb(150, 150, 150);
   border: none;
   resize: none;
+  overflow: scroll;
 }
 
 /* 회원가입 폼 */

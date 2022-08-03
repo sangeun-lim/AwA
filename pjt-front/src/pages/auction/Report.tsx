@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useState, ChangeEvent } from "react";
-import HOST from "../../api/rf";
 import { User } from "../../Interface";
 import { useSelector } from "react-redux";
 

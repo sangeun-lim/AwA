@@ -48,7 +48,12 @@ const ProfilePage = (): JSX.Element => {
     <div>
       <button onClick={onEditClick}>수정</button>
       {editProfile && (
-        <ProfileUpdate profileObject={profileObject} userEmail={userEmail} setProfileObject={setProfileObject} />
+        <ProfileUpdate
+          profileObject={profileObject}
+          userEmail={userEmail}
+          setProfileObject={setProfileObject}
+          setEditProfile={setEditProfile}
+        />
       )}
       {profileObject.picture_url ? (
         <img src={profileObject.picture_url} alt="프로필사진" />
@@ -62,7 +67,9 @@ const ProfilePage = (): JSX.Element => {
       <h3>팔로워 수 : </h3>
       <h3>팔로잉 수 : </h3>
       <p>{profileObject.description}</p>
-      <div></div>
+      <div>
+        <p>{profileObject.favorite_field}</p>
+      </div>
     </div>
   );
 };
