@@ -6,6 +6,7 @@ import {
   NewNoticeData,
   NewItemData,
   UpdateItemData,
+  UpdateProfileObject,
 } from "./apiInterface";
 
 const api = {
@@ -160,6 +161,31 @@ const api = {
           "X-AUTH-TOKEN": localStorage.getItem("token") || "",
           RefreshToken: localStorage.getItem("refresh_token") || "",
         },
+        data: formData,
+      });
+
+      return response;
+    },
+  },
+
+  profile: {
+    getProfile: async (email: string) => {
+      const response = await axios({
+        url: rf.profile.getOrUpdateProfile(email),
+        method: "get",
+      });
+
+      return response;
+    },
+
+    updateProfile: async (email: string, formData: UpdateProfileObject) => {
+      const response = await axios({
+        url: rf.profile.getOrUpdateProfile(email),
+        headers: {
+          "x-auth-token": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
+        },
+        method: "put",
         data: formData,
       });
 

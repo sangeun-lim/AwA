@@ -49,3 +49,11 @@ export const itemDefaultData = {
   description: "",
   createdDate: "",
 };
+
+export const profileDefaultData = {
+  description: "",
+  favorite_field: [],
+  nickname: "",
+  owner_user: 0,
+  picture_url: "",
+};

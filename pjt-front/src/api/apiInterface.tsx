@@ -40,3 +40,10 @@ export interface UpdateItemData {
   genre: string[];
   attachmentList: Media[];
 }
+
+export interface UpdateProfileObject {
+  description: string;
+  nickname: string;
+  profile_picture_url: string;
+  favorite_fields: string[];
+}

@@ -27,7 +27,7 @@ const rf = {
   },
 
   profile: {
-    getProfile: (userEmail: string) => HOST + PROFILE + `${userEmail}`,
+    getOrUpdateProfile: (userEmail: string) => HOST + PROFILE + `${userEmail}`,
   },
 
   rank: {

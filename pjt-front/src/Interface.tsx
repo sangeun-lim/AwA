@@ -9,13 +9,11 @@ export interface User {
 
 // 프로필 Object
 export interface Profile {
-  id: string;
-  nickname: string;
   description: string;
-  followers: Array<string>;
-  followings: Array<string>;
-  likeGenres: Array<string>;
-  profileImage: string;
+  favorite_field: string[];
+  nickname: string;
+  owner_user: number;
+  picture_url: string;
 }
 
 // 댓글 Object
