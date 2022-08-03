@@ -3,7 +3,9 @@ package com.ssafy.AwA.service;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
+import com.ssafy.AwA.dto.ProfileRequestDto;
 import com.ssafy.AwA.dto.ProfileResponseDto;
+import com.ssafy.AwA.dto.ProfileUpdateResponse;
 import com.ssafy.AwA.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -93,5 +95,29 @@ public class ProfileService {
         Profile targetProfile = profileRepository.findByProfile_id(profile_id);
 
         targetProfile.updateFavorite_field(favorite_field);
+    }
+
+    public ProfileUpdateResponse updateProfile(String userEmail, ProfileRequestDto profileRequestDto) {
+        System.out.println(profileRequestDto.getNickname() + " here");
+        User targetUser = userRepository.findByEmail(userEmail);
+        Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
+
+
+        targetProfile.updateFavorite_field(profileRequestDto.getFavorite_field());
+        //닉네임 변경은 유저까지 같이
+        targetProfile.updateNickname(profileRequestDto.getNickname());
+        targetUser.changeNickname(profileRequestDto.getNickname());
+
+        targetProfile.updateDescription(profileRequestDto.getDescription());
+        targetProfile.updatePictureURL(profileRequestDto.getProfile_picture_url());
+
+        ProfileUpdateResponse profileUpdateResponse = ProfileUpdateResponse.builder()
+                .nickname(targetProfile.getNickname())
+                .description(targetProfile.getDescription())
+                .favorite_field(targetProfile.getFavorite_field())
+                .picture_url(targetProfile.getProfile_picture_url())
+                .build();
+
+         return profileUpdateResponse;
     }
 }

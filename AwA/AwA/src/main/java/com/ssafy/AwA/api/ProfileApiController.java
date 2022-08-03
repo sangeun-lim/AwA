@@ -2,9 +2,7 @@ package com.ssafy.AwA.api;
 
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
-import com.ssafy.AwA.dto.DescriptionDto;
-import com.ssafy.AwA.dto.Favorite_fieldDto;
-import com.ssafy.AwA.dto.ProfileResponseDto;
+import com.ssafy.AwA.dto.*;
 import com.ssafy.AwA.service.ProfileService;
 import com.ssafy.AwA.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +24,10 @@ public class ProfileApiController {
         return profileService.getProfile(userEmail);
     }
 
+    @PutMapping("/{userEmail}")
+    public ProfileUpdateResponse updateProfile(@PathVariable(name = "userEmail") String userEmail, @RequestBody @Valid ProfileRequestDto profileRequestDto) {
+        return profileService.updateProfile(userEmail, profileRequestDto);
+    }
     @PutMapping("{userEmail}/nickname/{newNickname}")
     public String updateProfileNickname(@PathVariable(name = "userEmail")String userEmail, @PathVariable(name = "newNickname") String newNickname) {
         User targetUser = userService.findByEmail(userEmail);
@@ -61,7 +63,7 @@ public class ProfileApiController {
     }
 
     @PutMapping("{userEmail}/favorite_field")
-    public Favorite_fieldDto updateDescription(@PathVariable(name = "userEmail") String userEmail, @RequestBody @Valid Favorite_fieldDto favorite_fieldDto) {
+    public Favorite_fieldDto updateFavorite_field(@PathVariable(name = "userEmail") String userEmail, @RequestBody @Valid Favorite_fieldDto favorite_fieldDto) {
         User targetUser = userService.findByEmail(userEmail);
         Profile targetProfile = profileService.findByNickname(targetUser.getNickname());
 

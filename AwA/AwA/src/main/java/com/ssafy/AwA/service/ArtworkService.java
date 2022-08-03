@@ -236,12 +236,16 @@ public class ArtworkService {
                 .genre(artworkRequestDto.getGenre())
                 .price(artworkRequestDto.getPrice())
                 .sell_user_nickname(targetUser.getNickname())
+                .title(targetArtwork.getTitle())
                 .build();
         return artworkResponseDto;
     }
 
     public int deleteArtwork(Long artwork_id) {
+        System.out.println(artwork_id + " !!!!");
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+        System.out.println(targetArtwork+"!!!!!!!");
+        System.out.println(targetArtwork.getArtwork_id() + " here");
         artworkRepository.delete(targetArtwork);
         return 1;
     }

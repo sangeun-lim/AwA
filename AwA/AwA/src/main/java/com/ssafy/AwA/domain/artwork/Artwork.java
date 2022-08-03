@@ -6,6 +6,7 @@ import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.attachment.Attachment;
 import com.ssafy.AwA.domain.comment.Comment;
 import com.ssafy.AwA.domain.like.Likes;
+import com.ssafy.AwA.domain.report.Report;
 import com.ssafy.AwA.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,7 +43,7 @@ public class Artwork extends BaseTimeEntity {
     @Column
     private String description;
 
-    @OneToMany(mappedBy = "artwork")
+    @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL)
     @JsonManagedReference
     List<Likes> like_count;
 
@@ -71,8 +72,8 @@ public class Artwork extends BaseTimeEntity {
     @OneToMany(mappedBy = "artwork_id")
     List<Attachment> attachment_list = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "reported_artwork")
-//    List<Report> report_list = new ArrayList<>();
+    @OneToMany(mappedBy = "reported_artwork",cascade = CascadeType.ALL)
+    List<Report> report_list = new ArrayList<>();
 
 
     @Builder

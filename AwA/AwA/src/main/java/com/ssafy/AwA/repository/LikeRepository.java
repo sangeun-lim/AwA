@@ -13,7 +13,7 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
     @Query("select l from Likes l where l.artwork=:artwork and l.profile=:profile")
     Likes findByArtworkAndProfile(@Param("artwork") Artwork targetArtwork,@Param("profile") Profile targetProfile);
 
-    @Query(value = "SELECT artwork_id FROM likes GROUP BY artwork_id ORDER BY COUNT(artwork_id) desc",nativeQuery = true)
+    @Query(value = "SELECT artwork_id FROM likes GROUP BY artwork_id ORDER BY COUNT(*) desc",nativeQuery = true)
     List<Long> getTopLikeArtwork();
 
 

@@ -26,7 +26,7 @@ public class Report extends BaseTimeEntity {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "reported_artwork")
     private Artwork reported_artwork;
 
