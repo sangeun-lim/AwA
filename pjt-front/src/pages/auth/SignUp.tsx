@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { Prev } from "react-bootstrap/esm/PageItem";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -104,6 +105,47 @@ function SignUp(): JSX.Element {
     }
   };
 
+  // checkBox
+  const [allCheck, setAllCheck] = useState(false);
+  const [useCheck, setUseCheck] = useState(false);
+  const [infoCheck, setInfoCheck] = useState(false);
+
+  const allCheckEvent = () => {
+    if (allCheck === false) {
+      setAllCheck(true);
+      setUseCheck(true);
+      setInfoCheck(true);
+    } else {
+      setAllCheck(false);
+      setUseCheck(false);
+      setInfoCheck(false);
+    }
+  };
+
+  const useCheckEvent = () => {
+    if (useCheck === false) {
+      setUseCheck(true);
+    } else {
+      setUseCheck(false);
+    }
+  };
+
+  const infoCheckEvent = () => {
+    if (infoCheck === false) {
+      setInfoCheck(true);
+    } else {
+      setInfoCheck(false);
+    }
+  };
+
+  useEffect(() => {
+    if (useCheck === true && infoCheck === true) {
+      setAllCheck(true);
+    } else {
+      setAllCheck(false);
+    }
+  }, [useCheck, infoCheck]);
+
   useEffect(() => {
     if (checkEmail && signUpForm.id !== checkEmail) {
       setCheckEmail(false);
@@ -123,7 +165,7 @@ function SignUp(): JSX.Element {
   }, [navigate, userObject]);
 
   return (
-    <div className="d-flex justify-content-center">
+    <div className={style.signUp}>
       <div className={style.container}>
         <div className={style.title}>약관 동의</div>
 
@@ -137,6 +179,8 @@ function SignUp(): JSX.Element {
                   name="chkAll"
                   id="chk"
                   className={style.chkAll}
+                  checked={allCheck}
+                  onChange={allCheckEvent}
                 />
               </li>
             </ul>
@@ -145,7 +189,12 @@ function SignUp(): JSX.Element {
             <ul className={style.clearfix}>
               <li>이용약관 동의(필수)</li>
               <li className={style.checkBtn}>
-                <input type="checkbox" name="chk" />
+                <input
+                  type="checkbox"
+                  name="chk"
+                  checked={useCheck}
+                  onChange={useCheckEvent}
+                />
               </li>
             </ul>
             <Term1 />
@@ -154,12 +203,18 @@ function SignUp(): JSX.Element {
             <ul className={style.clearfix}>
               <li>개인정보 수집 및 이용에 대한 안내(필수)</li>
               <li className={style.checkAllBtn}>
-                <input type="checkbox" name="chk" />
+                <input
+                  type="checkbox"
+                  name="chk"
+                  checked={infoCheck}
+                  onChange={infoCheckEvent}
+                />
               </li>
             </ul>
             <Term2 />
           </li>
         </ul>
+        {}
       </div>
       <div className={style.container}>
         <div className={style.title}>회원가입</div>
@@ -282,10 +337,13 @@ function SignUp(): JSX.Element {
               checkEmail &&
               checkNickname &&
               !!signUpForm.pw1 &&
-              signUpForm.pw1 === signUpForm.pw2
-                ? ""
-                : style.signSubmitDisabled
+              signUpForm.pw1 === signUpForm.pw2 &&
+              useCheck === true &&
+              infoCheck === true
+                ? style.buttonActive
+                : style.buttonDisabled
             }
+            // tabIndex={-1}
           >
             <input
               disabled={
@@ -297,6 +355,7 @@ function SignUp(): JSX.Element {
               value="회원가입"
               onClick={onSubmit}
               className={style.signSubmit}
+              tabIndex={-1}
             />
           </button>
         </div>
