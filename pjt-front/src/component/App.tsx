@@ -11,7 +11,7 @@ function App(): JSX.Element {
 
   const getUserData = async () => {
     dispatch(loadingActions.toggle());
-    const token = localStorage.getItem("token") || "";
+    const token = localStorage.getItem("refresh_token") || "";
     try {
       const response = await api.auth.getUserObject(token);
       dispatch(loadingActions.toggle());
@@ -27,7 +27,7 @@ function App(): JSX.Element {
   useEffect(() => {
     const getUserData = async () => {
       dispatch(loadingActions.toggle());
-      const token = localStorage.getItem("token") || "";
+      const token = localStorage.getItem("refresh_token") || "";
       try {
         const response = await api.auth.getUserObject(token);
 

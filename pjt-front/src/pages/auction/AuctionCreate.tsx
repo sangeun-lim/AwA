@@ -132,6 +132,14 @@ function AuctionCreate(): JSX.Element {
 
       dispatch(loadingActions.toggle());
       if (response.status === 200) {
+        if (response.headers["x-auth-token"]) {
+          localStorage.setItem("token", response.headers["x-auth-token"]);
+          localStorage.setItem(
+            "refresh_token",
+            response.headers["refresh_token"] || ""
+          );
+        }
+
         const data = response.data;
         const next_url = data.artwork_id;
 

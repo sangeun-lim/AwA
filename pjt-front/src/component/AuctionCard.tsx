@@ -20,11 +20,15 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
           />
         )}
         <div className={style.profile}>
-          <img
+          {item.profile_picture ? (<img
             src={item.profile_picture}
             alt="profileImg"
             className={style.profileImg}
-          />
+          />) : (<img
+            src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+            alt="profileImg"
+            className={style.profileImg}
+          />)}
           <span className={style.profileName}>{item.sell_user_nickname}</span>
         </div>
         <div className={style.overlay}></div>
