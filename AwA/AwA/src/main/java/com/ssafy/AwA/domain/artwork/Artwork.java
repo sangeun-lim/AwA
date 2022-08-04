@@ -31,7 +31,7 @@ public class Artwork extends BaseTimeEntity {
     @JsonBackReference
     private User sell_user;
 
-    @Column(length = 200, nullable = false)
+    @Column
     private String title;
 
     @Column
@@ -154,5 +154,9 @@ public class Artwork extends BaseTimeEntity {
 
     public void addLikeCount() {
         this.like_count++;
+    }
+
+    public void minusArtwork() {
+        this.like_count--;
     }
 }

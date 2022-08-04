@@ -38,6 +38,7 @@ public class LikeService {
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
         Profile targetProfile = profileRepository.findByNickname(nickname);
 
+        targetArtwork.minusArtwork();
         Likes targetLike = likeRepository.findByArtworkAndProfile(targetArtwork,targetProfile);
         likeRepository.delete(targetLike);
     }

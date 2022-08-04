@@ -180,6 +180,7 @@ public class ArtworkService {
                 .view_count(targetArtwork.getView_count())
                 .description(targetArtwork.getDescription())
                 .comments(commentResponseDtos)
+                .like_count(targetArtwork.getLike_count())
                 .build();
     }
 
