@@ -29,4 +29,9 @@ public class FollowApiController {
         followRepository.deleteById(follow.getFollow_id());
         return 1;
     }
+
+    @GetMapping("/have/{fromUserEmail}/{toUserEmail}")
+    public int haveFollow(@PathVariable(name = "fromUserEmail") String fromUserEmail, @PathVariable(name = "toUserEmail") String toUserEmail) {
+        return followService.haveFollow(fromUserEmail, toUserEmail);
+    }
 }
