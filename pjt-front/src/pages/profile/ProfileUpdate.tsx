@@ -1,10 +1,12 @@
 import { uuidv4 } from "@firebase/util";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { ChangeEvent, Dispatch, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import api from "../../api/api";
 import { UpdateProfileObject } from "../../api/apiInterface";
 import { storageService } from "../../fbase";
 import { Profile } from "../../Interface";
+import { userObjectActions } from "../../store";
 
 interface Props {
   profileObject: Profile;
@@ -21,6 +23,8 @@ function ProfileUpdate({
   setProfileObject,
   setEditProfile,
 }: Props): JSX.Element {
+  const dispatch = useDispatch();
+
   const [editForm, setEditForm] = useState<UpdateProfileObject>({
     description: profileObject.description,
     nickname: profileObject.nickname,
@@ -108,6 +112,8 @@ function ProfileUpdate({
           picture_url: picture_url,
         };
       });
+
+      dispatch(userObjectActions.nickname(nickname));
     }
 
     setEditProfile(false);

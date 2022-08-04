@@ -23,6 +23,13 @@ const userObjectSlice = createSlice({
     logout(state: null | User) {
       return null;
     },
+    nickname(state: any, actions: { type: string; payload: any }) {
+      if (state) {
+        return { ...state, nickname: actions.payload };
+      } else {
+        return state;
+      }
+    },
   },
 });
 
