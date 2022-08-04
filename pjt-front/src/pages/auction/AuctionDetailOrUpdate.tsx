@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 import ReportModal from "./ReportModal";
 import CommentCreate from "./CommentCreate";
+import axios from "axios";
 
 interface ButtonProps {
   item: string;
@@ -53,6 +54,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
   const [item, setItem] = useState<ArtworkItem>(itemDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
+  const [like, setLike] = useState<number>(itemDefaultData.like_count);
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
@@ -188,6 +190,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
           const {
             artwork_id,
             attachmentRequestDtoList,
+            comments,
             createdDate,
             description,
             genre,
@@ -204,6 +207,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
           setItem({
             artwork_id,
             mediaList: attachmentRequestDtoList,
+            commentsList: comments,
             createdDate,
             description,
             genre,
@@ -256,6 +260,48 @@ function AuctionDetailOrUpdate(): JSX.Element {
     }
   };
 
+  // 왜 카운트 누른게 바로 적용되서 안보이는걸까
+  // 새로고침 눌러야만 적용됨
+  const onLikeClick = async () => {
+    // 좋아요 눌렀는지 안 눌렀는지 확인
+    const response = await axios({
+      url: `http://i7c101.p.ssafy.io:8080/like/have/${userObject?.nickname}/${address}`,
+      method: "get",
+    });
+
+    // 좋아요를 누를 때
+    if (response.data === 0) {
+      const likeResponse = await axios({
+        url: `http://i7c101.p.ssafy.io:8080/like/${userObject?.nickname}/${address}`,
+        method: "post",
+        data: {
+          artwork_id: address,
+          nickname: userObject?.nickname,
+        },
+      });
+
+      if (likeResponse) {
+        setLike(like + 1);
+      }
+    }
+    // 좋아요를 취소할 때
+    else {
+      const likeResponse = await axios({
+        url: `http://i7c101.p.ssafy.io:8080/like/${userObject?.nickname}/${address}`,
+        method: "delete",
+        data: {
+          artwork_id: address,
+          nickname: userObject?.nickname,
+        },
+      });
+      if (likeResponse) {
+        setLike(like - 1);
+      }
+    }
+  };
+
+  // useEffect(() => {}, [like]);
+
   useEffect(() => {
     async function loadData() {
       const response = await api.artwork.readOrUpdateOrDelete(
@@ -270,6 +316,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
         const {
           artwork_id,
           attachmentRequestDtoList,
+          comments,
           createdDate,
           description,
           genre,
@@ -286,6 +333,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
         setItem({
           artwork_id,
           mediaList: attachmentRequestDtoList,
+          commentsList: comments,
           genre,
           createdDate,
           description,
@@ -464,6 +512,21 @@ function AuctionDetailOrUpdate(): JSX.Element {
           <button onClick={onEditClick}>수정</button>
           <button onClick={onDeleteClick}>삭제</button>
           <button onClick={onListClick}>목록</button>
+          <hr />
+          <p>조회수 : {item.view_count}</p>
+          <p>
+            <button onClick={onLikeClick}>❤</button>
+            좋아요 : {item.like_count}
+          </p>
+          <div>
+            {item.commentsList.map((item) => {
+              return (
+                <li key={item.comment_id}>
+                  {item.content} | 작성자 : {item.nickname}
+                </li>
+              );
+            })}
+          </div>
           <hr />
           <CommentCreate artworkId={address}></CommentCreate>
         </div>

@@ -62,10 +62,20 @@ interface Media {
   url: string;
 }
 
+interface ArtworkComment {
+  comment_id: number;
+  content: string;
+  createdDate: Date;
+  modifiedDate: Date;
+  nickname: string;
+  parent_artwork_id: number;
+}
+
 // 판매글 목록에 보이는 거
 export interface ArtworkItem {
   artwork_id: number;
   mediaList: Media[];
+  commentsList: ArtworkComment[];
   genre: string[];
   ingredient: string;
   like_count: number;
