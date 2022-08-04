@@ -2,15 +2,14 @@ package com.ssafy.AwA.service;
 
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.attachment.Attachment;
+import com.ssafy.AwA.domain.comment.Comment;
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.ArtworkRequestDto;
 import com.ssafy.AwA.dto.ArtworkResponseDto;
 import com.ssafy.AwA.dto.AttachmentRequestDto;
-import com.ssafy.AwA.repository.ArtworkRepository;
-import com.ssafy.AwA.repository.AttachmentRepositroy;
-import com.ssafy.AwA.repository.ProfileRepository;
-import com.ssafy.AwA.repository.UserRepository;
+import com.ssafy.AwA.dto.CommentResponseDto;
+import com.ssafy.AwA.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +29,9 @@ public class ArtworkService {
     private final UserRepository userRepository;
     private final AttachmentRepositroy attachmentRepositroy;
     private final ProfileRepository profileRepository;
+    private final FollowRepository followRepository;
+
+    private final CommentRepository commentRepository;
 
     public ArtworkResponseDto saveArtwork(ArtworkRequestDto artworkRequestDto) {
         List<Attachment> attachmentList = new ArrayList<>();
@@ -144,6 +146,25 @@ public class ArtworkService {
 
         User targetUser = targetArtwork.getSell_user();
         Profile sellUserProfile = profileRepository.findByNickname(targetUser.getNickname());
+
+        List<Comment> commentList = commentRepository.findAllByParentArtwork(targetArtwork);
+        System.out.println("!!!!!!!!!!" + commentList.size());
+
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+        for (int i=0;i<commentList.size();i++) {
+            Comment comment = commentList.get(i);
+
+            CommentResponseDto commentResponseDto = CommentResponseDto.builder()
+                    .content(comment.getContent())
+                    .parent_artwork_id(comment.getParent_artwork().getArtwork_id())
+                    .comment_id(comment.getComment_id())
+                    .nickname(comment.getProfile().getNickname())
+                    .modifiedDate(comment.getModifiedDate())
+                    .createdDate(comment.getCreatedDate())
+                    .build();
+
+            commentResponseDtos.add(commentResponseDto);
+        }
         return ArtworkResponseDto.builder()
                 .sell_user_email(targetUser.getEmail())
                 .profile_picture(sellUserProfile.getProfile_picture_url())
@@ -157,6 +178,7 @@ public class ArtworkService {
                 .price(targetArtwork.getPrice())
                 .view_count(targetArtwork.getView_count())
                 .description(targetArtwork.getDescription())
+                .comments(commentResponseDtos)
                 .build();
     }
 
@@ -248,5 +270,17 @@ public class ArtworkService {
         System.out.println(targetArtwork.getArtwork_id() + " here");
         artworkRepository.delete(targetArtwork);
         return 1;
+    }
+
+    public List<ArtworkResponseDto> getOnlyFollowingArtworksList(String userEmail) {
+        //내가 팔로우 하는 사람들 리스트
+        User user = userRepository.findByEmail(userEmail);
+        Profile targetProfile = profileRepository.findByNickname(user.getNickname());
+        List<Profile> follwingList = followRepository.getFollowingList(targetProfile);
+
+        for(int i=0;i<follwingList.size();i++) {
+            System.out.println("내가 팔로우 하는 사람 : "+ follwingList.get(i).getNickname());
+        }
+        return null;
     }
 }

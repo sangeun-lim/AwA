@@ -2,6 +2,7 @@ package com.ssafy.AwA.dto;
 
 import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.attachment.Attachment;
+import com.ssafy.AwA.domain.comment.Comment;
 import com.ssafy.AwA.domain.user.User;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,14 +39,17 @@ public class ArtworkResponseDto {
     private int like_count;
     private int view_count;
 
+    private List<CommentResponseDto> comments;
+
     @Builder
-    public ArtworkResponseDto(Long artwork_id, LocalDateTime createdDate, String profile_picture, String sell_user_email, String sell_user_nickname, String title, int price, List<AttachmentRequestDto> attachmentRequestDtoList,
-                              String description, List<String> genre, String ingredient, int like_count, int view_count) {
+
+    public ArtworkResponseDto(Long artwork_id, LocalDateTime createdDate, String profile_picture, String sell_user_nickname, String sell_user_email, String title, int price, List<AttachmentRequestDto> attachmentRequestDtoList,
+                              String description, List<String> genre, String ingredient, int like_count, int view_count, List<CommentResponseDto> comments) {
         this.artwork_id = artwork_id;
         this.createdDate = createdDate;
         this.profile_picture = profile_picture;
-        this.sell_user_email = sell_user_email;
         this.sell_user_nickname = sell_user_nickname;
+        this.sell_user_email = sell_user_email;
         this.title = title;
         this.price = price;
         this.attachmentRequestDtoList = attachmentRequestDtoList;
@@ -54,5 +58,6 @@ public class ArtworkResponseDto {
         this.ingredient = ingredient;
         this.like_count = like_count;
         this.view_count = view_count;
+        this.comments = comments;
     }
 }

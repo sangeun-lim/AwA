@@ -25,6 +25,7 @@ public class CommentService {
         Profile writer = profileRepository.findByNickname(commentRequestDto.getNickname());
         Artwork targetArtwork = artworkRepository.findByArtwork_id(commentRequestDto.getParent_artwork_id());
 
+
         Comment comment = Comment.builder()
                 .content(commentRequestDto.getContent())
                 .profile(writer)
@@ -38,7 +39,7 @@ public class CommentService {
                 .modifiedDate(savedComment.getModifiedDate())
                 .comment_id(savedComment.getComment_id())
                 .content(savedComment.getContent())
-                .nickname(savedComment.getProfile().getNickname())
+                .nickname(writer.getNickname())
                 .parent_artwork_id(savedComment.getParent_artwork().getArtwork_id())
                 .build();
         return commentResponseDto;

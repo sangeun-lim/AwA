@@ -60,4 +60,9 @@ public class ArtworkApiController {
     public int deleteArtwork(@PathVariable("artwork_id") Long artwork_id, @RequestHeader(value="X-AUTH-TOKEN") String token, @RequestHeader(value="RefreshToken") String refreshToken) {
         return artworkService.deleteArtwork(artwork_id);
     }
+
+    @GetMapping("/onlyFollow/{userEmail}")
+    public List<ArtworkResponseDto> getOnlyFollowingArtworkList(@PathVariable("userEmail") String userEmail) {
+        return artworkService.getOnlyFollowingArtworksList(userEmail);
+    }
 }
