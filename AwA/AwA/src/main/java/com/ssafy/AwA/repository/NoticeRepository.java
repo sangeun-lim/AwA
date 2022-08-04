@@ -11,6 +11,9 @@ import java.util.List;
 
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
+    @Query("select N from Notice N ORDER BY N.createdDate DESC")
+    List<Notice> findAllOrderBy();
+
     @Query("select n from Notice n where n.notice_id =:noticeId")
     Notice findByNotice_id(@Param("noticeId") Long noticeId);
 }

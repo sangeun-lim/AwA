@@ -19,7 +19,7 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
 
     public List<Notice> getNoticeList() {
-        return noticeRepository.findAll();
+        return noticeRepository.findAllOrderBy();
     }
     public Notice saveNotice(NoticeDto noticeDto)
     {
