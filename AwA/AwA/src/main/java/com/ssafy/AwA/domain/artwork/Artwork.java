@@ -58,6 +58,7 @@ public class Artwork extends BaseTimeEntity {
 
     //댓글
     @OneToMany(mappedBy = "parent_artwork", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Comment> comments;
 
     @Column

@@ -1,5 +1,6 @@
 package com.ssafy.AwA.domain.comment;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.AwA.domain.BaseTimeEntity;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.profile.Profile;
@@ -21,6 +22,7 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_artwork")
+    @JsonBackReference
     private Artwork parent_artwork;
 
     @ManyToOne(fetch = FetchType.LAZY)
