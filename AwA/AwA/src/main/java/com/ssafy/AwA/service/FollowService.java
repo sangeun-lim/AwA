@@ -38,11 +38,13 @@ public class FollowService {
         return followRepository.save(newFollow);
     }
 
-    public Follow getFollowIdByFromUserEmailToUserEmail(String fromNickname, String toNickname) {
+    public Follow getFollowIdByFromUserEmailToUserEmail(String fromUserEmail, String toUserEmail) {
+        User fromUser = userRepository.findByEmail(fromUserEmail);
+        User toUser = userRepository.findByEmail(toUserEmail);
 
 
-        Profile fromProfile = profileRepository.findByNickname(fromNickname);
-        Profile toProfile = profileRepository.findByNickname(toNickname);
+        Profile fromProfile = profileRepository.findByNickname(fromUser.getNickname());
+        Profile toProfile = profileRepository.findByNickname(toUser.getNickname());
 
         return followRepository.findByFromUserAndToUser(fromProfile,toProfile);
 

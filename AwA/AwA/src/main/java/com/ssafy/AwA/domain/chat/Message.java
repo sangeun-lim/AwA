@@ -17,7 +17,7 @@ public class Message extends BaseTimeEntity {
     private Long message_id;
 
     //채팅방
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
     private Room room;
 

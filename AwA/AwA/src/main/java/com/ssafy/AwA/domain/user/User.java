@@ -1,6 +1,7 @@
 package com.ssafy.AwA.domain.user;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.AwA.domain.BaseTimeEntity;
@@ -55,7 +56,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
 
     @OneToOne(mappedBy = "owner_user",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private Profile profile;
     @Column
     private String refreshToken;

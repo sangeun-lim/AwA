@@ -1,5 +1,7 @@
 package com.ssafy.AwA.domain.follow;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.AwA.domain.profile.Profile;
 import lombok.*;
 
@@ -16,10 +18,12 @@ public class Follow {
 
     @JoinColumn(name = "from_profile_id")
     @ManyToOne
+    @JsonManagedReference
     private Profile fromProfile; //팔로우하는 유저
 
     @JoinColumn(name = "to_profile_id")
     @ManyToOne
+    @JsonManagedReference
     private Profile toProfile; //팔로우 당하는 유저
 
     @Builder

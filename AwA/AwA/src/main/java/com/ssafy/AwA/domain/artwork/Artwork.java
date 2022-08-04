@@ -45,7 +45,9 @@ public class Artwork extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL)
     @JsonManagedReference
-    List<Likes> like_count;
+    List<Likes> likes;
+
+    private int like_count;
 
     @ElementCollection
     @CollectionTable(name = "genre", joinColumns =
@@ -63,31 +65,40 @@ public class Artwork extends BaseTimeEntity {
     @Column
     private boolean is_sell;
 
-    @OneToOne(fetch = FetchType.LAZY ,mappedBy = "artwork")
+    @OneToOne(fetch = FetchType.LAZY ,mappedBy = "artwork", cascade = CascadeType.ALL)
     private PurchaseArtwork purchase_artwork;
 
 //    @OneToMany(mappedBy = "related_artwork")
 //    List<Room> rooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "artwork_id")
+    @OneToMany(mappedBy = "artwork_id", cascade = CascadeType.ALL)
     List<Attachment> attachment_list = new ArrayList<>();
 
     @OneToMany(mappedBy = "reported_artwork",cascade = CascadeType.ALL)
     List<Report> report_list = new ArrayList<>();
 
-
     @Builder
-    public Artwork(User sell_user, String title, int view_count, int price, String description, boolean is_sell, List<String> genre, String ingredient, List<Attachment> attachment_list) {
+    public Artwork(Long artwork_id, User sell_user, String title, int view_count, int price, String description, List<Likes> likes, int like_count, List<String> genre, String ingredient,
+                   List<Comment> comments, boolean is_sell, PurchaseArtwork purchase_artwork, List<Attachment> attachment_list, List<Report> report_list) {
+        this.artwork_id = artwork_id;
         this.sell_user = sell_user;
         this.title = title;
         this.view_count = view_count;
         this.price = price;
         this.description = description;
-        this.is_sell = is_sell;
+        this.likes = likes;
+        this.like_count = like_count;
         this.genre = genre;
         this.ingredient = ingredient;
+        this.comments = comments;
+        this.is_sell = is_sell;
+        this.purchase_artwork = purchase_artwork;
         this.attachment_list = attachment_list;
+        this.report_list = report_list;
     }
+
+
+
 
     //연관관계 메서드
     public void set_Sell_User(User user) {
@@ -138,5 +149,13 @@ public class Artwork extends BaseTimeEntity {
 
     public void updateAttachment(List<Attachment> attachmentList) {
         this.attachment_list = attachmentList;
+    }
+
+    public void addLike_count() {
+        this.like_count++;
+    }
+
+    public void deleteGenre() {
+        this.genre = null;
     }
 }

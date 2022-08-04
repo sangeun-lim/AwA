@@ -115,7 +115,7 @@ public class ProfileService {
                 .nickname(targetProfile.getNickname())
                 .description(targetProfile.getDescription())
                 .favorite_field(targetProfile.getFavorite_field())
-                .picture_url(targetProfile.getProfile_picture_url())
+                .picture_url(profileRequestDto.getProfile_picture_url())
                 .build();
 
          return profileUpdateResponse;

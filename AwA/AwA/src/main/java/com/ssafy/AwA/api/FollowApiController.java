@@ -24,8 +24,9 @@ public class FollowApiController {
     }
 
     @DeleteMapping("/{fromUserEmail}/{toUserEmail}")
-    public void unFollowUser(@PathVariable(name = "fromUserEmail") String fromUserEmail, @PathVariable(name = "toUserEmail") String toUserEmail) {
+    public int unFollowUser(@PathVariable(name = "fromUserEmail") String fromUserEmail, @PathVariable(name = "toUserEmail") String toUserEmail) {
         Follow follow = followService.getFollowIdByFromUserEmailToUserEmail(fromUserEmail,toUserEmail);
         followRepository.deleteById(follow.getFollow_id());
+        return 1;
     }
 }

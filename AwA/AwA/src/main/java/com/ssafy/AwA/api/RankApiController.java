@@ -27,6 +27,7 @@ public class RankApiController {
     public List<ProfileRankResponseDto> followTop10ProfileList() {
         return rankService.getFollowTop10ProfileList();
     }
-    //@GetMapping("/follow")
+
+
 
 }

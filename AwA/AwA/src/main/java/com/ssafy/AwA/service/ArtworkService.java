@@ -7,10 +7,7 @@ import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.ArtworkRequestDto;
 import com.ssafy.AwA.dto.ArtworkResponseDto;
 import com.ssafy.AwA.dto.AttachmentRequestDto;
-import com.ssafy.AwA.repository.ArtworkRepository;
-import com.ssafy.AwA.repository.AttachmentRepositroy;
-import com.ssafy.AwA.repository.ProfileRepository;
-import com.ssafy.AwA.repository.UserRepository;
+import com.ssafy.AwA.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +27,8 @@ public class ArtworkService {
     private final UserRepository userRepository;
     private final AttachmentRepositroy attachmentRepositroy;
     private final ProfileRepository profileRepository;
+
+    private final FollowRepository followRepository;
 
     public ArtworkResponseDto saveArtwork(ArtworkRequestDto artworkRequestDto) {
         List<Attachment> attachmentList = new ArrayList<>();
@@ -227,7 +226,7 @@ public class ArtworkService {
 
         ArtworkResponseDto artworkResponseDto = ArtworkResponseDto.builder()
                 .view_count(targetArtwork.getView_count())
-                .like_count(targetArtwork.getLike_count().size())
+                .like_count(targetArtwork.getLike_count())
                 .artwork_id(artwork_id)
                 .createdDate(targetArtwork.getCreatedDate())
                 .attachmentRequestDtoList(artworkRequestDto.getAttachmentList())
@@ -246,7 +245,19 @@ public class ArtworkService {
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
         System.out.println(targetArtwork+"!!!!!!!");
         System.out.println(targetArtwork.getArtwork_id() + " here");
+        targetArtwork.deleteGenre();
         artworkRepository.delete(targetArtwork);
         return 1;
+    }
+
+    public List<ArtworkResponseDto> getFollowingArtworks(String userEmail) {
+        User targetUser = userRepository.findByEmail(userEmail);
+        Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
+
+        //내가 팔로우 하는 프로필 목록
+        List<Profile> followingList = followRepository.getFollowingList(targetProfile);
+
+        System.out.println(followingList.size());
+        return null;
     }
 }

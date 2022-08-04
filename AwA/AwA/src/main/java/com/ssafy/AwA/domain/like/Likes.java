@@ -1,6 +1,7 @@
 package com.ssafy.AwA.domain.like;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.profile.Profile;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class Likes {
 
     @ManyToOne
     @JoinColumn(name = "artwork_id")
-    @JsonBackReference
+
     private Artwork artwork;
 
     @ManyToOne
