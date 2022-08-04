@@ -5,6 +5,7 @@ import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.ArtworkResponseDto;
 import com.ssafy.AwA.dto.AttachmentRequestDto;
+import com.ssafy.AwA.dto.SearchRequestDto;
 import com.ssafy.AwA.repository.ProfileRepository;
 import com.ssafy.AwA.repository.SearchCustomRepositoryImpl;
 import com.ssafy.AwA.repository.UserRepository;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +25,8 @@ public class SearchService {
     private final SearchCustomRepositoryImpl searchCustomRepository;
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
-    public List<ArtworkResponseDto> getSearchByTitle(String title) {
-        List<Artwork> allSearchByTitle = searchCustomRepository.findAllSearchByTitle(title);
+    public List<ArtworkResponseDto> getSearchByTitle(String title, @Valid SearchRequestDto searchRequestDto) {
+        List<Artwork> allSearchByTitle = searchCustomRepository.findAllSearchByTitle(title, searchRequestDto);
 
         List<ArtworkResponseDto> artworkResponseDtos = new ArrayList<>();
         for(int i=0;i<allSearchByTitle.size();i++) {
