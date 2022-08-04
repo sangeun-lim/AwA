@@ -16,7 +16,7 @@ const NoticeListItem = ({ notice }: Props): JSX.Element => {
   return (
     <div className={style.listBox}>
       <NavLink to={`/notice/${notice.notice_id}`}>{notice.title}</NavLink>
-      <span>{`${year}.${month}.${day}`}</span>
+      <div>{`${year}.${month}.${day}`}</div>
     </div>
   );
 };
