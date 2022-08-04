@@ -88,16 +88,15 @@ function ProfileUpdate({
       const imgRef = ref(storageService, `${userEmail}/${uuidv4()}`);
       const response = await uploadBytes(imgRef, newImage);
       imageUrl = await getDownloadURL(response.ref);
+    } else if (showImage === editForm.profile_picture_url) {
+      imageUrl = editForm.profile_picture_url;
     }
 
-    setEditForm((prev) => {
-      return {
-        ...prev,
-        profile_picture_url: imageUrl,
-      };
-    });
-
-    const response = await api.profile.updateProfile(userEmail, editForm);
+    const response = await api.profile.updateProfile(
+      userEmail,
+      editForm,
+      imageUrl
+    );
 
     if (response.status === 200) {
       const { description, favorite_field, nickname, picture_url } =

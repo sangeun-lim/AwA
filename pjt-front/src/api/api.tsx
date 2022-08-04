@@ -178,7 +178,11 @@ const api = {
       return response;
     },
 
-    updateProfile: async (email: string, formData: UpdateProfileObject) => {
+    updateProfile: async (
+      email: string,
+      formData: UpdateProfileObject,
+      imageUrl: string
+    ) => {
       const response = await axios({
         url: rf.profile.getOrUpdateProfile(email),
         headers: {
@@ -186,7 +190,7 @@ const api = {
           RefreshToken: localStorage.getItem("refresh_token") || "",
         },
         method: "put",
-        data: formData,
+        data: { ...formData, profile_picture_url: imageUrl },
       });
 
       return response;
