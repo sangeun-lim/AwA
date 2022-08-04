@@ -21,15 +21,15 @@ public class ProfileResponseDto {
 
     private List<Profile> follower_list;
 
-    private List<Artwork> artwork_list;
+    private List<ProfileArtworkResponse> artwork_list;
 
-    private List<Artwork> liked_artwork_list;
+    private List<ProfileArtworkResponse> liked_artwork_list;
 
 
     @Builder
 
     public ProfileResponseDto(String nickname, String description, String picture_url, Long owner_user, List<String> favorite_field, List<Profile> following_list, List<Profile> follower_list,
-                              List<Artwork> artwork_list, List<Artwork> liked_artwork_list) {
+                              List<ProfileArtworkResponse> artwork_list, List<ProfileArtworkResponse> liked_artwork_list) {
         this.nickname = nickname;
         this.description = description;
         this.picture_url = picture_url;

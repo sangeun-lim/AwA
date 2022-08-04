@@ -3,6 +3,7 @@ package com.ssafy.AwA.service;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
+import com.ssafy.AwA.dto.ProfileArtworkResponse;
 import com.ssafy.AwA.dto.ProfileRequestDto;
 import com.ssafy.AwA.dto.ProfileResponseDto;
 import com.ssafy.AwA.dto.ProfileUpdateResponse;
@@ -40,9 +41,59 @@ public class ProfileService {
         List<Profile> followerList = followRepository.getFollwerList(targetProfile);
 
         List<Artwork> sellArtworkList = artworkRepository.findAllBySell_user(targetUser);
-        System.out.println(sellArtworkList.size() + "here");
-
         List<Artwork> likeArtworkList = likeRepository.findAllByProfile(targetProfile);
+
+        List<ProfileArtworkResponse> sellProfileArtworkResponses = new ArrayList<>();
+        for(int i=0;i<sellArtworkList.size();i++)
+        {
+            Artwork targetArtwork = sellArtworkList.get(i);
+
+            if(targetArtwork.getAttachment_list().size() > 0) {
+                ProfileArtworkResponse profileArtworkResponse = ProfileArtworkResponse.builder()
+                        .artwork_id(targetArtwork.getArtwork_id())
+                        .genre(targetArtwork.getGenre())
+                        .createdDate(targetArtwork.getCreatedDate())
+                        .title(targetArtwork.getTitle())
+                        .picture_url(targetArtwork.getAttachment_list().get(0).getUrl())
+                        .build();
+                sellProfileArtworkResponses.add(profileArtworkResponse);
+            }
+            else {
+                ProfileArtworkResponse profileArtworkResponse = ProfileArtworkResponse.builder()
+                        .artwork_id(targetArtwork.getArtwork_id())
+                        .genre(targetArtwork.getGenre())
+                        .createdDate(targetArtwork.getCreatedDate())
+                        .title(targetArtwork.getTitle())
+                        .build();
+                sellProfileArtworkResponses.add(profileArtworkResponse);
+            }
+        }
+
+        List<ProfileArtworkResponse> likeProfileArtworkResponses = new ArrayList<>();
+        for(int i=0;i<likeArtworkList.size();i++) {
+            Artwork targetArtwork = likeArtworkList.get(i);
+
+            if(targetArtwork.getAttachment_list().size() > 0) {
+                ProfileArtworkResponse profileArtworkResponse = ProfileArtworkResponse.builder()
+                        .artwork_id(targetArtwork.getArtwork_id())
+                        .genre(targetArtwork.getGenre())
+                        .createdDate(targetArtwork.getCreatedDate())
+                        .title(targetArtwork.getTitle())
+                        .picture_url(targetArtwork.getAttachment_list().get(0).getUrl())
+                        .build();
+                likeProfileArtworkResponses.add(profileArtworkResponse);
+            }
+            else {
+                ProfileArtworkResponse profileArtworkResponse = ProfileArtworkResponse.builder()
+                        .artwork_id(targetArtwork.getArtwork_id())
+                        .genre(targetArtwork.getGenre())
+                        .createdDate(targetArtwork.getCreatedDate())
+                        .title(targetArtwork.getTitle())
+                        .build();
+                likeProfileArtworkResponses.add(profileArtworkResponse);
+            }
+
+        }
 
         ProfileResponseDto profileResponseDto = ProfileResponseDto.builder()
                 .nickname(targetProfile.getNickname())
@@ -52,8 +103,8 @@ public class ProfileService {
                 .favorite_field(targetProfile.getFavorite_field())
                 .follower_list(followerList)
                 .following_list(followingList)
-                .artwork_list(sellArtworkList)
-                .liked_artwork_list(likeArtworkList)
+                .artwork_list(sellProfileArtworkResponses)
+                .liked_artwork_list(likeProfileArtworkResponses)
                 .build();
 
         return profileResponseDto;
