@@ -31,7 +31,7 @@ public class LikeApiController {
         Profile targetProfile = profileRepository.findByNickname(nickname);
 
         Likes targetLike = likeRepository.findByArtworkAndProfile(targetArtwork,targetProfile);
-
+        targetArtwork.addLikeCount();
         if(targetLike.getArtwork().getArtwork_id() == targetArtwork.getArtwork_id())
             if(targetLike.getProfile().getProfile_id() == targetProfile.getProfile_id())
                 return 1;
@@ -44,7 +44,7 @@ public class LikeApiController {
         return 1;
     }
 
-    @GetMapping("have/{nickname}/{artwork_id}/")
+    @GetMapping("have/{nickname}/{artwork_id}")
     public int isLike(@PathVariable("nickname") String nickname, @PathVariable("artwork_id") Long artwork_id)
     {
         if(likeService.isLike(nickname,artwork_id))
