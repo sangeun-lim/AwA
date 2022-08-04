@@ -7,8 +7,39 @@ export interface User {
   birth?: string | null;
 }
 
+interface Owner {
+  _manager: boolean;
+  _seller: boolean;
+  authorities: { authority: string }[];
+  birth: string;
+  createdDate: string;
+  email: string;
+  genter: boolean;
+  modifiedDate: string;
+  nickname: string;
+  refreshToken: string;
+  roles: string[];
+  sell_list: string[];
+  user_id: number;
+}
+
+interface follow {
+  createdDate: string;
+  description: string;
+  favorite_field: string[];
+  modifiedDate: string;
+  nickname: string;
+  owner_user: Owner;
+  profile_id: number;
+  profile_picture_url: string;
+}
+
 // 프로필 Object
 export interface Profile {
+  // artwork_list: string[];
+  // liked_artwork_list: string[];
+  follower_list?: follow[];
+  following_list?: follow[];
   description: string;
   favorite_field: string[];
   nickname: string;
@@ -18,11 +49,12 @@ export interface Profile {
 
 // 댓글 Object
 export interface Comment {
-  id: number;
-  uid: number;
-  nickname: string;
+  comment_id: number;
   content: string;
-  createdAt: Date;
+  createdDate: string;
+  modifiedDate: string;
+  profile_id: number;
+  profile_picture_url: string;
 }
 
 interface Media {
