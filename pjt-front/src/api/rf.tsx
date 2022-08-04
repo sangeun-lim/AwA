@@ -5,6 +5,7 @@ const NOTICE = "notice/";
 const ARTWORK = "artwork/";
 const PROFILE = "profile/";
 const RANK = "rank/";
+const FOLLOW = "follow/";
 
 const rf = {
   auth: {
@@ -28,6 +29,13 @@ const rf = {
 
   profile: {
     getOrUpdateProfile: (userEmail: string) => HOST + PROFILE + `${userEmail}`,
+  },
+
+  follow: {
+    checkFollow: (fromUserEmail: string, toUserEmail: string) =>
+      HOST + FOLLOW + "have/" + `${fromUserEmail}/${toUserEmail}`,
+    followUser: (fromUserEmail: string, toUserEmail: string) =>
+      HOST + FOLLOW + `${fromUserEmail}/${toUserEmail}`,
   },
 
   rank: {

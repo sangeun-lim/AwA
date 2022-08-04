@@ -196,6 +196,38 @@ const api = {
       return response;
     },
   },
+
+  follow: {
+    checkFollow: async (fromUserEmail: string, toUserEmail: string) => {
+      const response = await axios({
+        url: rf.follow.checkFollow(fromUserEmail, toUserEmail),
+        headers: {
+          "x-auth-token": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
+        },
+        method: "get",
+      });
+
+      return response;
+    },
+
+    followOrUnfollow: async (
+      fromUserEmail: string,
+      toUserEmail: string,
+      method: string
+    ) => {
+      const response = await axios({
+        url: rf.follow.followUser(fromUserEmail, toUserEmail),
+        headers: {
+          "x-auth-token": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
+        },
+        method: method,
+      });
+
+      return response;
+    },
+  },
 };
 
 export default api;

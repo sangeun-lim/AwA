@@ -135,55 +135,71 @@ function ProfileUpdate({
   }, [editForm.nickname, isPossible]);
 
   return (
-    <div>
-      {showImage ? (
-        <img src={showImage} alt="프로필이미지" />
-      ) : (
-        <img
-          src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
-          alt="프로필이미지"
-        />
-      )}
-      <input type="file" accept="image/*" onChange={onImgChange} />
-      <button onClick={onBaseClick}>기본 이미지로</button>
-      <input
-        type="text"
-        name="nickname"
-        value={editForm.nickname}
-        onChange={onChange}
-        required
-      />
-      <button onClick={checkNickname}>중복확인</button>
-      {isPossible && <p>사용 가능한 닉네임입니다.</p>}
-      <textarea
-        name="description"
-        value={editForm.description || ""}
-        onChange={onChange}
-        cols={30}
-        rows={5}
-      ></textarea>
+    <>
+      <div></div>
       <div>
-        {FAVORITE.map((item) => {
-          return (
-            <label key={item}>
-              <input
-                type="checkbox"
-                name="favorite_field"
-                value={item}
-                onChange={onFavoriteChange}
-                checked={
-                  !!editForm.favorite_field.filter(
-                    (favorite) => favorite === item
-                  ).length
-                }
-              />
-              {item}
-            </label>
-          );
-        })}
+        <h3>프로필 정보 변경</h3>
+        {showImage ? (
+          <img src={showImage} alt="프로필이미지" />
+        ) : (
+          <img
+            src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+            alt="프로필이미지"
+          />
+        )}
+        <br></br>
+        <label htmlFor="imgTag">프로필 사진 변경</label>
+        <br></br>
+        <input
+          id="imgTag"
+          type="file"
+          accept="image/*"
+          onChange={onImgChange}
+        />
+        <br></br>
+        <button onClick={onBaseClick}>기본 이미지로 변경</button>
+        <p>닉네임</p>
+        <input
+          type="text"
+          name="nickname"
+          value={editForm.nickname}
+          onChange={onChange}
+          required
+        />
+        <button onClick={checkNickname}>중복 확인</button>
+        {isPossible && <p>사용 가능한 닉네임입니다.</p>}
+        <br></br>
+        <textarea
+          name="description"
+          value={editForm.description || ""}
+          onChange={onChange}
+          cols={30}
+          rows={5}
+        ></textarea>
+        <div>
+          {FAVORITE.map((item) => {
+            return (
+              <label key={item}>
+                <input
+                  type="checkbox"
+                  name="favorite_field"
+                  value={item}
+                  onChange={onFavoriteChange}
+                  checked={
+                    !!editForm.favorite_field.filter(
+                      (favorite) => favorite === item
+                    ).length
+                  }
+                />
+                {item}
+              </label>
+            );
+          })}
+        </div>
+        <button onClick={onSubmit}>제출</button>
+        <hr></hr>
       </div>
-      <button onClick={onSubmit}>제출</button>
-    </div>
+    </>
   );
 }
 
