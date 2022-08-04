@@ -6,6 +6,7 @@ const ARTWORK = "artwork/";
 const PROFILE = "profile/";
 const RANK = "rank/";
 const FOLLOW = "follow/";
+const LIKE = "like/";
 
 const rf = {
   auth: {
@@ -40,6 +41,11 @@ const rf = {
 
   rank: {
     getLikeRank: () => HOST + RANK + "like",
+  },
+
+  like: {
+    likeArtwork: (nickname: string, artwork_id: string) =>
+      HOST + LIKE + `${nickname}/${artwork_id}`,
   },
 };
 
