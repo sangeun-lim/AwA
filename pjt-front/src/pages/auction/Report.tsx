@@ -7,33 +7,20 @@ interface Props {
   open: boolean;
   close: () => void;
   artworkId: string;
-  // setUserObject: Dispatch<React.SetStateAction<User | null>>;
 }
-
 interface ReportData {
-  // category: string;
   content: string;
   report_profile_nickname: string;
   reported_artwork_id: number;
-  // uid: number;
-  // itemId: number;
-  // artist: string;
-  // file: File | any;
 }
 
 const defaultData = {
-  // category: "",
   content: "",
   report_profile_nickname: "",
   reported_artwork_id: 0,
-  // uid: 0,
-  // itemId: 0,
-  // artist: "",
-  // file: [],
 };
 
 function Report(props: Props): JSX.Element {
-  // const [reportImg, setReportImg] = useState<File>();
   const { open, close, artworkId } = props;
   const [reportForm, setReportForm] = useState<ReportData>(defaultData);
   const categoryList = ["A", "B", "C", "D", "E", "기타"];
@@ -60,21 +47,8 @@ function Report(props: Props): JSX.Element {
 
   useEffect(() => {}, [category]);
 
-  // 파일첨부 부분
-  // const addFile = (e: any) => {
-  //   e.preventDefault();
-  //   setReportImg(e.target.file);
-  // };
-
-  // 신고하기
-  // report_profile_nickname 보내는 부분만 수정하면 일단은 될거같은데..
-
   const onSubmit = async (e: any) => {
     e.preventDefault();
-    // console.log(category);
-    // console.log(reportForm.content);
-    // console.log(userObject.nickname);
-    // console.log(artworkId);
 
     const response = await axios({
       url: `http://i7c101.p.ssafy.io:8080/report/${artworkId}`,
@@ -128,16 +102,6 @@ function Report(props: Props): JSX.Element {
             ></textarea>
           </div>
           <br />
-          {/* <h3>
-            파일첨부
-            <label htmlFor="input-file" onChange={addFile}></label>
-            <input
-              id="input-file"
-              type="file"
-              accept="image/jpg, image/png, image/jpeg"
-            />
-          </h3>
-          <br /> */}
           <button onClick={close}>취소</button>
           <input type="submit" value="신고하기" />
         </form>
