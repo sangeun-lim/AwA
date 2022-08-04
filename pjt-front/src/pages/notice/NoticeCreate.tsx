@@ -52,8 +52,15 @@ function NoticeCreate(): JSX.Element {
   };
 
   return (
-    <div className={`container`}>
-      <h1 className={style.title}>NoticeCreate</h1>
+    <div className={style.noticeCreate}>
+      <section className={style.noticeTop}>
+        <div>
+          <div className={style.title}>공지사항</div>
+          <div className={style.content}>
+            Artwork Auction의 공지사항을 등록해주세요!
+          </div>
+        </div>
+      </section>
       <form onSubmit={onSubmit} className={style.form}>
         <div className={style.inputContainer}>
           <input
@@ -66,7 +73,6 @@ function NoticeCreate(): JSX.Element {
             required
           />
         </div>
-        <br></br>
         <div className={style.inputContainer}>
           <textarea
             name="content"
@@ -79,8 +85,7 @@ function NoticeCreate(): JSX.Element {
             required
           ></textarea>
         </div>
-        <br></br>
-        <div className={style.buttonBox}>
+        <div className={style.formButtonBox}>
           <input type="submit" value="작성" className={style.submitButton} />
           <button onClick={onCancelClick} className={style.btn}>
             취소
