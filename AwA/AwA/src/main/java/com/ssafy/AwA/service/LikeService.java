@@ -26,6 +26,7 @@ public class LikeService {
                 .profile(targetProfile)
                 .build();
 
+        targetArtwork.addLikeCount();
         if(likeRepository.findByArtworkAndProfile(targetArtwork,targetProfile) == null) {
             likeRepository.save(like);
             return 1;

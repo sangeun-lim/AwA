@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ToString
-public class ArtworkResponseDto {
+public class ArtworkResponseDto implements Comparable<ArtworkResponseDto> {
 
     private Long artwork_id;
 
@@ -59,5 +59,14 @@ public class ArtworkResponseDto {
         this.like_count = like_count;
         this.view_count = view_count;
         this.comments = comments;
+    }
+
+    @Override
+    public int compareTo(ArtworkResponseDto o) {
+        if(o.artwork_id < artwork_id) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -249,7 +250,7 @@ public class ArtworkService {
 
         ArtworkResponseDto artworkResponseDto = ArtworkResponseDto.builder()
                 .view_count(targetArtwork.getView_count())
-                .like_count(targetArtwork.getLike_count().size())
+                .like_count(targetArtwork.getLike_count())
                 .artwork_id(artwork_id)
                 .createdDate(targetArtwork.getCreatedDate())
                 .attachmentRequestDtoList(artworkRequestDto.getAttachmentList())
@@ -278,9 +279,51 @@ public class ArtworkService {
         Profile targetProfile = profileRepository.findByNickname(user.getNickname());
         List<Profile> follwingList = followRepository.getFollowingList(targetProfile);
 
+        List<ArtworkResponseDto> result = new ArrayList<>();
+
         for(int i=0;i<follwingList.size();i++) {
             System.out.println("내가 팔로우 하는 사람 : "+ follwingList.get(i).getNickname());
+            User followingUser = userRepository.findByNickname(follwingList.get(i).getNickname());
+
+            List<Artwork> sell_list = followingUser.getSell_list();
+            for(int j=0;j<sell_list.size();j++) {
+                Artwork sellArtwork = sell_list.get(j);
+
+                List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
+
+                for(int k=0;k<sellArtwork.getAttachment_list().size();k++) {
+                    attachmentRequestDtoList.add(AttachmentRequestDto.builder()
+                            .type(sellArtwork.getAttachment_list().get(k).getType())
+                            .url(sellArtwork.getAttachment_list().get(k).getUrl())
+                            .build()
+                    );
+                }
+
+                User findUser = userRepository.findByEmail(sellArtwork.getSell_user().getEmail());
+                Profile findProfile = profileRepository.findByNickname(findUser.getNickname());
+                System.out.println(findProfile.getProfile_picture_url()+"adfasdf");
+                ArtworkResponseDto artworkResponseDto = ArtworkResponseDto.builder()
+                        .artwork_id(sellArtwork.getArtwork_id())
+                        .attachmentRequestDtoList(attachmentRequestDtoList)
+                        .ingredient(sellArtwork.getIngredient())
+                        .view_count(sellArtwork.getView_count())
+                        .title(sellArtwork.getTitle())
+                        .sell_user_nickname(findUser.getNickname())
+                        .profile_picture(findProfile.getProfile_picture_url())
+                        .like_count(sellArtwork.getLike_count())
+                        .sell_user_email(sellArtwork.getSell_user().getEmail())
+                        .genre(sellArtwork.getGenre())
+                        .price(sellArtwork.getPrice())
+                        .description(sellArtwork.getDescription())
+                        .createdDate(sellArtwork.getCreatedDate())
+                        .build();
+
+                result.add(artworkResponseDto);
+            }
         }
-        return null;
+
+        Collections.sort(result, Collections.reverseOrder());
+
+        return result;
     }
 }
