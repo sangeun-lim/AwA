@@ -16,6 +16,7 @@ import api from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 import ReportModal from "./ReportModal";
+import CommentCreate from "./CommentCreate";
 
 interface ButtonProps {
   item: string;
@@ -463,6 +464,8 @@ function AuctionDetailOrUpdate(): JSX.Element {
           <button onClick={onEditClick}>수정</button>
           <button onClick={onDeleteClick}>삭제</button>
           <button onClick={onListClick}>목록</button>
+          <hr />
+          <CommentCreate artworkId={address}></CommentCreate>
         </div>
       )}
     </div>
