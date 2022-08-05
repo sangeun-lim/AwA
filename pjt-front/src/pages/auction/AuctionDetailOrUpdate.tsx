@@ -148,7 +148,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
     try {
       if (userObject) {
         // 기존 이미지 url들을 imageUrlLists에 담는다.
-        let imageUrlLists: string[] = item.mediaList.map(
+        let imageUrlLists: string[] = item.attachmentRequestDtoList.map(
           (media: { type: string; url: string }) => {
             return media.url;
           }
@@ -206,7 +206,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
           setItem({
             artwork_id,
-            mediaList: attachmentRequestDtoList,
+            attachmentRequestDtoList
             commentsList: comments,
             createdDate,
             description,
@@ -245,8 +245,11 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
         dispatch(loadingActions.toggle());
         if (response.status === 200) {
-          for (let i = 0; i < item.mediaList.length; i++) {
-            const imgRef = ref(storageService, item.mediaList[i].url);
+          for (let i = 0; i < item.attachmentRequestDtoList.length; i++) {
+            const imgRef = ref(
+              storageService,
+              item.attachmentRequestDtoList[i].url
+            );
             await deleteObject(imgRef);
           }
           navigate("/auction");
@@ -332,6 +335,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
         setItem({
           artwork_id,
+          attachmentRequestDtoList,
           mediaList: attachmentRequestDtoList,
           commentsList: comments,
           genre,
@@ -373,9 +377,11 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
     setGenresList(item.genre);
     setShowImages(
-      item.mediaList.map((media: { url: string; type: string }) => {
-        return media.url;
-      })
+      item.attachmentRequestDtoList.map(
+        (media: { url: string; type: string }) => {
+          return media.url;
+        }
+      )
     );
   }, [onEdit, item]);
 
@@ -487,17 +493,19 @@ function AuctionDetailOrUpdate(): JSX.Element {
         <div>
           <h1>AuctionDetail</h1>
           <ReportModal artworkId={address} />
-          {item.mediaList.length &&
-            item.mediaList.map((image: { type: string; url: string }) => (
-              <div key={image.url}>
-                <img
-                  src={image.url}
-                  alt={`${image.url}`}
-                  width="30%"
-                  height="30%"
-                />
-              </div>
-            ))}
+          {item.attachmentRequestDtoList.length &&
+            item.attachmentRequestDtoList.map(
+              (image: { type: string; url: string }) => (
+                <div key={image.url}>
+                  <img
+                    src={image.url}
+                    alt={`${image.url}`}
+                    width="30%"
+                    height="30%"
+                  />
+                </div>
+              )
+            )}
           <h2>{item.title}</h2>
           <p>작성자 : {item.sell_user_nickname}</p>
           <p>가격 : {item.price}원</p>

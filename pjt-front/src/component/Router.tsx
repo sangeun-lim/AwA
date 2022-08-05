@@ -70,7 +70,7 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/:id" element={<NoticeDetailAndEdit />} />
           <Route path="/notice/create" element={<NoticeCreate />} />
-          <Route path="/searchresult" element={<SearchResult />} />
+          <Route path="/searchresult/:word" element={<SearchResult />} />
           <Route path="/rank" element={<Rank />} />
           <Route path="*" element={<Error />} />
         </Routes>

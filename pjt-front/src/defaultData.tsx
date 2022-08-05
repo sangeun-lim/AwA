@@ -36,7 +36,7 @@ export const newItemDefaultData = {
 
 export const itemDefaultData = {
   artwork_id: 0,
-  mediaList: [],
+  attachmentRequestDtoList: [],
   commentsList: [],
   genre: [],
   ingredient: "",
@@ -57,4 +57,12 @@ export const profileDefaultData = {
   nickname: "",
   owner_user: 0,
   picture_url: "",
+};
+
+export const queryDefaultData = {
+  word: "",
+  genres: [],
+  min_price: 0,
+  max_price: 3000000,
+  status: 0,
 };
