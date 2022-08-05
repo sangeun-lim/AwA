@@ -146,8 +146,15 @@ function NoticeDetailAndEdit(): JSX.Element {
   return (
     <div>
       {onEdit ? (
-        <div className={`container`}>
-          <h1 className={style.title}>NoticeEdit</h1>
+        <div className={style.noticeCreate}>
+          <section className={style.noticeTop}>
+            <div>
+              <div className={style.title}>공지사항</div>
+              <div className={style.content}>
+                Artwork Auction의 공지사항을 수정해주세요!
+              </div>
+            </div>
+          </section>
           <form onSubmit={onSubmit} className={style.form}>
             <div className={style.inputContainer}>
               <input
@@ -160,7 +167,6 @@ function NoticeDetailAndEdit(): JSX.Element {
                 required
               />
             </div>
-            <br></br>
             <div className={style.inputContainer}>
               <textarea
                 name="content"
@@ -173,8 +179,7 @@ function NoticeDetailAndEdit(): JSX.Element {
                 required
               ></textarea>
             </div>
-            <br></br>
-            <div className={style.buttonBox}>
+            <div className={style.formButtonBox}>
               <input
                 type="submit"
                 value="수정"
@@ -187,15 +192,20 @@ function NoticeDetailAndEdit(): JSX.Element {
           </form>
         </div>
       ) : (
-        <div className={`container`}>
-          <h1 className={style.title}>Notice</h1>
+        <div className={style.noticeDetail}>
+          <section className={style.noticeTop}>
+            <div>
+              <div className={style.title}>공지사항</div>
+              <div className={style.content}>
+                Artwork Auction의 공지사항을 확인해보세요!
+              </div>
+            </div>
+          </section>
           <div className={style.noticeTitle}>
-            <h2>{notice?.title}</h2>
+            <div>{notice?.title}</div>
             <span>{`${year}.${month}.${day}`}</span>
           </div>
-          <div className={style.noticeContent}>
-            <p>{notice?.content}</p>
-          </div>
+          <div className={style.noticeContent}>{notice?.content}</div>
           <div className={style.buttonBox}>
             <button onClick={onEditClick} className={style.btn}>
               수정

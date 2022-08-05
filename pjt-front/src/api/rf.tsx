@@ -7,6 +7,7 @@ const PROFILE = "profile/";
 const RANK = "rank/";
 const FOLLOW = "follow/";
 const SEARCH = "search/";
+const LIKE = "like/";
 
 const rf = {
   auth: {
@@ -46,6 +47,11 @@ const rf = {
   search: {
     searchTitle: (word: string) => HOST + SEARCH + `title/${word}`,
     searchWriter: (word: string) => HOST + SEARCH + `writer/${word}`,
+  },
+
+  like: {
+    likeArtwork: (nickname: string, artwork_id: string) =>
+      HOST + LIKE + `${nickname}/${artwork_id}`,
   },
 };
 

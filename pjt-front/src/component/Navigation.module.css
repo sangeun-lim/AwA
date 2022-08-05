@@ -29,6 +29,7 @@
   text-decoration: none;
   color: black;
   margin: 20px;
+  white-space: nowrap;
 }
 
 .navList > div > .active,
@@ -88,7 +89,7 @@
     width: 180px;
     position: absolute;
     left: 0;
-    top: 77px;
+    top: 53px;
     background-color: rgb(255, 255, 255);
   }
 
