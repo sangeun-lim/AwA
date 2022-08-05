@@ -208,7 +208,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
           setItem({
             artwork_id,
             mediaList: attachmentRequestDtoList,
-            commentsList: comments,
+            comments,
             createdDate,
             description,
             genre,
@@ -334,7 +334,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
         setItem({
           artwork_id,
           mediaList: attachmentRequestDtoList,
-          commentsList: comments,
+          comments,
           genre,
           createdDate,
           description,
@@ -380,7 +380,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
     );
 
     setLike(item.like_count);
-  }, [onEdit, item, like]);
+  }, [onEdit, item]);
 
   return (
     <div>
@@ -526,18 +526,19 @@ function AuctionDetailOrUpdate(): JSX.Element {
             <p>좋아요 : {item.like_count} </p>
           )}
           <div>
-            {item.commentsList.map((item) => {
-              return (
-                <li key={item.comment_id}>
-                  {item.content} | 작성자 : {item.nickname}
-                  <CommentDetailOrUpdate
-                    artworkId={address}
-                    commentId={item.comment_id}
-                    nickname={item.nickname}
-                  ></CommentDetailOrUpdate>
-                </li>
-              );
-            })}
+            {item.comments &&
+              item.comments.map((item) => {
+                return (
+                  <li key={item.comment_id}>
+                    {item.content} | 작성자 : {item.nickname}
+                    <CommentDetailOrUpdate
+                      artworkId={address}
+                      commentId={item.comment_id}
+                      nickname={item.nickname}
+                    ></CommentDetailOrUpdate>
+                  </li>
+                );
+              })}
           </div>
           <hr />
           <CommentCreate artworkId={address}></CommentCreate>

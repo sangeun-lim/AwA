@@ -37,7 +37,7 @@ export const newItemDefaultData = {
 export const itemDefaultData = {
   artwork_id: 0,
   mediaList: [],
-  commentsList: [],
+  comments: [],
   genre: [],
   ingredient: "",
   like_count: 0,

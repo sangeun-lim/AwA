@@ -75,7 +75,7 @@ interface ArtworkComment {
 export interface ArtworkItem {
   artwork_id: number;
   mediaList: Media[];
-  commentsList: ArtworkComment[];
+  comments: ArtworkComment[];
   genre: string[];
   ingredient: string;
   like_count: number;
