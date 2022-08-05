@@ -47,3 +47,11 @@ export interface UpdateProfileObject {
   profile_picture_url: string;
   favorite_field: string[];
 }
+
+export interface QueryType {
+  word: string;
+  genres: string[];
+  min_price: number;
+  max_price: number;
+  status: number;
+}

@@ -74,8 +74,8 @@ interface ArtworkComment {
 // 판매글 목록에 보이는 거
 export interface ArtworkItem {
   artwork_id: number;
-  mediaList: Media[];
   comments: ArtworkComment[];
+  attachmentRequestDtoList: Media[];
   genre: string[];
   ingredient: string;
   like_count: number;

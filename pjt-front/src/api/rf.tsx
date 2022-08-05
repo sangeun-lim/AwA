@@ -6,6 +6,7 @@ const ARTWORK = "artwork/";
 const PROFILE = "profile/";
 const RANK = "rank/";
 const FOLLOW = "follow/";
+const SEARCH = "search/";
 const LIKE = "like/";
 
 const rf = {
@@ -34,13 +35,18 @@ const rf = {
 
   follow: {
     checkFollow: (fromUserEmail: string, toUserEmail: string) =>
-      HOST + FOLLOW + "have/" + `${fromUserEmail}/${toUserEmail}`,
+      HOST + FOLLOW + `have/${fromUserEmail}/${toUserEmail}`,
     followUser: (fromUserEmail: string, toUserEmail: string) =>
       HOST + FOLLOW + `${fromUserEmail}/${toUserEmail}`,
   },
 
   rank: {
     getLikeRank: () => HOST + RANK + "like",
+  },
+
+  search: {
+    searchTitle: (word: string) => HOST + SEARCH + `title/${word}`,
+    searchWriter: (word: string) => HOST + SEARCH + `writer/${word}`,
   },
 
   like: {

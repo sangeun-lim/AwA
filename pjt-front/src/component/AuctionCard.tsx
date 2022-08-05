@@ -12,23 +12,27 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
   return (
     <div>
       <div className={style.container}>
-        {item.mediaList.length && (
+        {item.attachmentRequestDtoList.length && (
           <img
-            src={item.mediaList[0].url}
+            src={item.attachmentRequestDtoList[0].url}
             alt="AuctionImg"
             className={style.auctionImg}
           />
         )}
         <div className={style.profile}>
-          {item.profile_picture ? (<img
-            src={item.profile_picture}
-            alt="profileImg"
-            className={style.profileImg}
-          />) : (<img
-            src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
-            alt="profileImg"
-            className={style.profileImg}
-          />)}
+          {item.profile_picture ? (
+            <img
+              src={item.profile_picture}
+              alt="profileImg"
+              className={style.profileImg}
+            />
+          ) : (
+            <img
+              src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+              alt="profileImg"
+              className={style.profileImg}
+            />
+          )}
           <span className={style.profileName}>{item.sell_user_nickname}</span>
         </div>
         <div className={style.overlay}></div>
