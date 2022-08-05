@@ -3,10 +3,7 @@ package com.ssafy.AwA.service;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
-import com.ssafy.AwA.dto.ProfileArtworkResponse;
-import com.ssafy.AwA.dto.ProfileRequestDto;
-import com.ssafy.AwA.dto.ProfileResponseDto;
-import com.ssafy.AwA.dto.ProfileUpdateResponse;
+import com.ssafy.AwA.dto.*;
 import com.ssafy.AwA.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -170,5 +167,24 @@ public class ProfileService {
                 .build();
 
          return profileUpdateResponse;
+    }
+
+    public List<ProfileListDto> getProfileListByUserEmail(UserEmailListDto userEmailListDto) {
+        List<String> userEmailList = userEmailListDto.getUserEmailList();
+
+        List<ProfileListDto> profileListDtos = new ArrayList<>();
+        for(int i=0;i<userEmailList.size();i++) {
+            String userEmail = userEmailList.get(i);
+            User targetUser = userRepository.findByEmail(userEmail);
+            Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
+
+            ProfileListDto profileListDto = ProfileListDto.builder()
+                    .nickname(targetUser.getNickname())
+                    .profile_picture_url(targetProfile.getProfile_picture_url())
+                    .build();
+
+            profileListDtos.add(profileListDto);
+        }
+        return profileListDtos;
     }
 }
