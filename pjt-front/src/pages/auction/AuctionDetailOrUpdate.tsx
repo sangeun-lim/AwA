@@ -206,7 +206,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
           setItem({
             artwork_id,
-            attachmentRequestDtoList
+            attachmentRequestDtoList,
             commentsList: comments,
             createdDate,
             description,
@@ -336,7 +336,6 @@ function AuctionDetailOrUpdate(): JSX.Element {
         setItem({
           artwork_id,
           attachmentRequestDtoList,
-          mediaList: attachmentRequestDtoList,
           commentsList: comments,
           genre,
           createdDate,
