@@ -16,13 +16,13 @@ public class SearchApiController {
 
     private final SearchService searchService;
 
-    @GetMapping("title/{title}")
+    @PostMapping("title/{title}")
     public List<ArtworkResponseDto> getSearchByTitle(@PathVariable("title") String title, @RequestBody @Valid SearchRequestDto searchRequestDto) {
         return searchService.getSearchByTitle(title, searchRequestDto);
     }
 
-    @GetMapping("writer/{nickname}")
-    public List<ArtworkResponseDto> getSearchByWriter(@PathVariable("nickname") String writer) {
-        return searchService.getSearchByWriter(writer);
+    @PostMapping("writer/{nickname}")
+    public List<ArtworkResponseDto> getSearchByWriter(@PathVariable("nickname") String writer, @RequestBody @Valid SearchRequestDto searchRequestDto) {
+        return searchService.getSearchByWriter(writer, searchRequestDto);
     }
 }

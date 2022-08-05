@@ -56,6 +56,10 @@ public class ArtworkApiController {
         return artworkResponseDto;
     }
 
+    @PutMapping("/sell/{artwork_id}")
+    public int sellArtwork(@PathVariable("artwork_id") Long artwork_id) {
+        return artworkService.sellArtwork(artwork_id);
+    }
     @DeleteMapping("{artwork_id}")
     public int deleteArtwork(@PathVariable("artwork_id") Long artwork_id, @RequestHeader(value="X-AUTH-TOKEN") String token, @RequestHeader(value="RefreshToken") String refreshToken) {
         return artworkService.deleteArtwork(artwork_id);
@@ -65,4 +69,7 @@ public class ArtworkApiController {
     public List<ArtworkResponseDto> getOnlyFollowingArtworkList(@PathVariable("userEmail") String userEmail) {
         return artworkService.getOnlyFollowingArtworksList(userEmail);
     }
+
+
+
 }

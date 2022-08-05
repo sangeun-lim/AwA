@@ -83,6 +83,7 @@ public class ArtworkService {
                 .title(savedArtwork.getTitle())
                 .genre(savedArtwork.getGenre())
                 .ingredient(savedArtwork.getIngredient())
+                .is_sell(savedArtwork.is_sell())
                 .build();
 
         return artworkResponseDto;
@@ -122,6 +123,7 @@ public class ArtworkService {
                     .genre(targetArtwork.getGenre())
                     .ingredient(targetArtwork.getIngredient())
                     .attachmentRequestDtoList(attachmentRequestDtoList)
+                    .is_sell(targetArtwork.is_sell())
                     .build());
         }
 
@@ -181,41 +183,8 @@ public class ArtworkService {
                 .description(targetArtwork.getDescription())
                 .comments(commentResponseDtos)
                 .like_count(targetArtwork.getLike_count())
+                .is_sell(targetArtwork.is_sell())
                 .build();
-    }
-
-    public ArtworkResponseDto updateTitle(Long artwork_id, String newTitle) {
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-        targetArtwork.updateTitle(newTitle);
-        return ArtworkResponseDto.builder()
-                .title(newTitle)
-                .build();
-    }
-
-    public void updatePrice(Long artwork_id, int newPrice) {
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-        targetArtwork.updatePrice(newPrice);
-
-    }
-
-    public void updateDescription(Long artwork_id, String newDescription) {
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-        targetArtwork.updateDescription(newDescription);
-    }
-
-    public void updateGenre(Long artwork_id, List<String> genre) {
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-        targetArtwork.updateGenre(genre);
-    }
-
-    public void updateIngredient(Long artwork_id, String ingredient) {
-        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-
-        targetArtwork.updateIngredient(ingredient);
     }
 
     public ArtworkResponseDto updateArtwork(Long artwork_id, ArtworkRequestDto artworkRequestDto) {
@@ -261,6 +230,7 @@ public class ArtworkService {
                 .price(artworkRequestDto.getPrice())
                 .sell_user_nickname(targetUser.getNickname())
                 .title(targetArtwork.getTitle())
+                .is_sell(targetArtwork.is_sell())
                 .build();
         return artworkResponseDto;
     }
@@ -317,6 +287,7 @@ public class ArtworkService {
                         .price(sellArtwork.getPrice())
                         .description(sellArtwork.getDescription())
                         .createdDate(sellArtwork.getCreatedDate())
+                        .is_sell(sellArtwork.is_sell())
                         .build();
 
                 result.add(artworkResponseDto);
@@ -326,5 +297,17 @@ public class ArtworkService {
         Collections.sort(result, Collections.reverseOrder());
 
         return result;
+    }
+
+    public int sellArtwork(Long artwork_id) {
+        Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+        boolean previousStatus = targetArtwork.is_sell();
+        targetArtwork.updateSellStatus();
+        boolean AfterStatus = targetArtwork.is_sell();
+
+        if(previousStatus!= AfterStatus) {
+            return 1;
+        }
+        else return 0;
     }
 }

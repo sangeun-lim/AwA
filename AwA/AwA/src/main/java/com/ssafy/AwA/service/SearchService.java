@@ -12,6 +12,7 @@ import com.ssafy.AwA.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -25,8 +26,18 @@ public class SearchService {
     private final SearchCustomRepositoryImpl searchCustomRepository;
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
-    public List<ArtworkResponseDto> getSearchByTitle(String title, @Valid SearchRequestDto searchRequestDto) {
-        List<Artwork> allSearchByTitle = searchCustomRepository.findAllSearchByTitle(title, searchRequestDto);
+    public List<ArtworkResponseDto> getSearchByTitle(String title, @RequestBody @Valid SearchRequestDto searchRequestDto) {
+        List<Artwork> allSearchByTitle = new ArrayList<>();
+        if(searchRequestDto.getGenre_count() == 1)
+            allSearchByTitle = searchCustomRepository.findAllSearchByTitle1(title, searchRequestDto);
+        else if(searchRequestDto.getGenre_count() == 2)
+            allSearchByTitle = searchCustomRepository.findAllSearchByTitle2(title, searchRequestDto);
+        else if(searchRequestDto.getGenre_count() == 3)
+            allSearchByTitle = searchCustomRepository.findAllSearchByTitle3(title, searchRequestDto);
+        else if(searchRequestDto.getGenre_count() == 4)
+            allSearchByTitle = searchCustomRepository.findAllSearchByTitle4(title, searchRequestDto);
+        else if (searchRequestDto.getGenre_count() == 5)
+            allSearchByTitle = searchCustomRepository.findAllSearchByTitle5(title, searchRequestDto);
 
         List<ArtworkResponseDto> artworkResponseDtos = new ArrayList<>();
         for(int i=0;i<allSearchByTitle.size();i++) {
@@ -64,8 +75,18 @@ public class SearchService {
         return artworkResponseDtos;
     }
 
-    public List<ArtworkResponseDto> getSearchByWriter(String writer) {
-        List<Artwork> allSearchByWriter = searchCustomRepository.findAllSearchByWriter(writer);
+    public List<ArtworkResponseDto> getSearchByWriter(String writer, @RequestBody @Valid SearchRequestDto searchRequestDto) {
+        List<Artwork> allSearchByWriter = new ArrayList<>();
+        if(searchRequestDto.getGenre_count() == 1)
+            allSearchByWriter = searchCustomRepository.findAllSearchByWriter1(writer,searchRequestDto);
+        else if(searchRequestDto.getGenre_count() == 2)
+            allSearchByWriter = searchCustomRepository.findAllSearchByTitle2(writer, searchRequestDto);
+        else if(searchRequestDto.getGenre_count() == 3)
+            allSearchByWriter = searchCustomRepository.findAllSearchByTitle3(writer, searchRequestDto);
+        else if(searchRequestDto.getGenre_count() == 4)
+            allSearchByWriter = searchCustomRepository.findAllSearchByTitle4(writer, searchRequestDto);
+        else if (searchRequestDto.getGenre_count() == 5)
+            allSearchByWriter = searchCustomRepository.findAllSearchByTitle5(writer, searchRequestDto);
 
         List<ArtworkResponseDto> artworkResponseDtos = new ArrayList<>();
         for(int i=0;i<allSearchByWriter.size();i++) {
