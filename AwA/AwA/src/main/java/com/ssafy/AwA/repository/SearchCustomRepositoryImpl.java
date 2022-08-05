@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class SearchCustomRepositoryImpl implements SearchCustomRepository{
+public class SearchCustomRepositoryImpl implements SearchCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -25,13 +25,36 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository{
         List<String> genre = searchRequestDto.getGenre();
         int status = searchRequestDto.getStatus();
 
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.title.contains(keyword)
-                        .and(artwork.genre.contains(genre.get(0)))
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
-                )
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+        if (searchRequestDto.getStatus() == 0) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.title.contains(keyword)
+                            .and(artwork.genre.contains(genre.get(0)))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
+        else if (searchRequestDto.getStatus() == 1) { //판매중인
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.title.contains(keyword)
+                            .and(artwork.genre.contains(genre.get(0)))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
+        else {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.title.contains(keyword)
+                            .and(artwork.genre.contains(genre.get(0)))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
+
     }
 
     @Override
@@ -39,15 +62,39 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository{
         List<String> genre = searchRequestDto.getGenre();
         int status = searchRequestDto.getStatus();
 
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.title.contains(keyword)
-                        .and((artwork.genre.contains(genre.get(0))
-                                .or(artwork.genre.contains(genre.get(1))))
-                        )
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
-                )
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+        if(searchRequestDto.getStatus() == 0) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
     }
 
     @Override
@@ -55,16 +102,42 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository{
         List<String> genre = searchRequestDto.getGenre();
         int status = searchRequestDto.getStatus();
 
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.title.contains(keyword)
-                        .and(artwork.genre.contains(genre.get(0))
-                                .or(artwork.genre.contains(genre.get(1)))
-                                .or(artwork.genre.contains(genre.get(2)))
-                        )
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
-                )
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+        if(searchRequestDto.getStatus() == 0) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
     }
 
     @Override
@@ -73,17 +146,45 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository{
 
         int status = searchRequestDto.getStatus();
 
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.title.contains(keyword)
-                        .and(artwork.genre.contains(genre.get(0))
-                                .or(artwork.genre.contains(genre.get(1)))
-                                .or(artwork.genre.contains(genre.get(2)))
-                                .or(artwork.genre.contains(genre.get(3)))
-                        )
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
-                )
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+        if(searchRequestDto.getStatus() == 0) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
     }
 
     @Override
@@ -92,83 +193,225 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository{
 
         int status = searchRequestDto.getStatus();
 
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.title.contains(keyword)
-                        .and(artwork.genre.contains(genre.get(0))
-                                .or(artwork.genre.contains(genre.get(1)))
-                                .or(artwork.genre.contains(genre.get(2)))
-                                .or(artwork.genre.contains(genre.get(3)))
-                                .or(artwork.genre.contains(genre.get(4)))
-                        )
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
-                )
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+        if(searchRequestDto.getStatus() == 0) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3)))
+                                    .or(artwork.genre.contains(genre.get(4))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3)))
+                                    .or(artwork.genre.contains(genre.get(4))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.title.contains(keyword)
+                            .and((artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3)))
+                                    .or(artwork.genre.contains(genre.get(4))))
+                            )
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
     }
 
     @Override
     public List<Artwork> findAllSearchByWriter1(String writer, SearchRequestDto searchRequestDto) {
         List<String> genre = searchRequestDto.getGenre();
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.sell_user.nickname.like(writer)
-                        .and(artwork.genre.contains(genre.get(0)))
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+
+        if(searchRequestDto.getStatus() == 0) { //판매, 판매완료 게시물 전체조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0)))
+
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0)))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else { //판매완료된 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0)))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
     }
 
     @Override
     public List<Artwork> findAllSearchByWriter2(String writer, SearchRequestDto searchRequestDto) {
         List<String> genre = searchRequestDto.getGenre();
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.sell_user.nickname.like(writer)
-                        .and(artwork.genre.contains(genre.get(0))
-                                .or(artwork.genre.contains(genre.get(1))))
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+        if(searchRequestDto.getStatus() == 0) { //판매, 판매완료 게시물 전체조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1))))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1))))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else { //판매완료된 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1))))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
     }
     @Override
     public List<Artwork> findAllSearchByWriter3(String writer, SearchRequestDto searchRequestDto) {
         List<String> genre = searchRequestDto.getGenre();
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.sell_user.nickname.like(writer)
-                        .and(artwork.genre.contains(genre.get(0))
-                                .or(artwork.genre.contains(genre.get(1)))
-                                .or(artwork.genre.contains(genre.get(2))))
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
-                )
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+        if(searchRequestDto.getStatus() == 0) { //판매, 판매완료 게시물 전체조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2))))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2))))
+
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else { //판매완료된 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2))))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
     }
     @Override
     public List<Artwork> findAllSearchByWriter4(String writer, SearchRequestDto searchRequestDto) {
         List<String> genre = searchRequestDto.getGenre();
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.sell_user.nickname.like(writer)
-                        .and(artwork.genre.contains(genre.get(0))
-                                .or(artwork.genre.contains(genre.get(1)))
-                                .or(artwork.genre.contains(genre.get(2)))
-                                .or(artwork.genre.contains(genre.get(3))))
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
-                )
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+        if(searchRequestDto.getStatus() == 0) { //판매, 판매완료 게시물 전체조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3))))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3))))
+
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else { //판매완료된 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3))))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
     }
     @Override
     public List<Artwork> findAllSearchByWriter5(String writer, SearchRequestDto searchRequestDto) {
         List<String> genre = searchRequestDto.getGenre();
-        return jpaQueryFactory.selectFrom(artwork)
-                .where(artwork.sell_user.nickname.like(writer)
-                        .and(artwork.genre.contains(genre.get(0))
-                                .or(artwork.genre.contains(genre.get(1)))
-                                .or(artwork.genre.contains(genre.get(2)))
-                                .or(artwork.genre.contains(genre.get(3)))
-                                .or(artwork.genre.contains(genre.get(4))))
-                        .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
-                )
-                .orderBy(artwork.artwork_id.desc())
-                .fetch();
+        if(searchRequestDto.getStatus() == 0) { //판매, 판매완료 게시물 전체조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3)))
+                                    .or(artwork.genre.contains(genre.get(4))))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3)))
+                                    .or(artwork.genre.contains(genre.get(4))))
+
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else { //판매완료된 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.genre.contains(genre.get(0))
+                                    .or(artwork.genre.contains(genre.get(1)))
+                                    .or(artwork.genre.contains(genre.get(2)))
+                                    .or(artwork.genre.contains(genre.get(3)))
+                                    .or(artwork.genre.contains(genre.get(4))))
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
     }
 
 }

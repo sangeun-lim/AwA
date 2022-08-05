@@ -39,14 +39,14 @@ public class ArtworkResponseDto implements Comparable<ArtworkResponseDto> {
     private int like_count;
     private int view_count;
 
-    private boolean is_sell;
+    private int is_sell;
 
     private List<CommentResponseDto> comments;
 
     @Builder
 
     public ArtworkResponseDto(Long artwork_id, LocalDateTime createdDate, String profile_picture, String sell_user_nickname, String sell_user_email, String title, int price, List<AttachmentRequestDto> attachmentRequestDtoList,
-                              String description, List<String> genre, String ingredient, int like_count, int view_count, List<CommentResponseDto> comments, boolean is_sell) {
+                              String description, List<String> genre, String ingredient, int like_count, int view_count, List<CommentResponseDto> comments, int is_sell) {
         this.artwork_id = artwork_id;
         this.createdDate = createdDate;
         this.profile_picture = profile_picture;
