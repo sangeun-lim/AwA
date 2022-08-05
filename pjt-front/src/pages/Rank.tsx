@@ -7,12 +7,12 @@ interface Like {
   title: string;
 }
 
-const defaultLike: Like = {
-  title: "",
-};
+interface Follow {
+  nickname: string;
+}
 
 function Rank(): JSX.Element {
-  // const [followRank, setFollowRank] = useState<Array<>>([]);
+  const [followRank, setFollowRank] = useState<Array<Follow>>([]);
   const [likeRank, setLikeRank] = useState<Array<Like>>([]);
 
   const likeRankRequest = async () => {
@@ -27,17 +27,29 @@ function Rank(): JSX.Element {
     }
   };
 
+  const followRankRequest = async () => {
+    const response = await axios({
+      url: rf.rank.getFollowRank(),
+      method: "get",
+    });
+    if (response.status === 200) {
+      const followRankList = response.data;
+      setFollowRank(followRankList);
+    }
+  };
+
   useEffect(() => {
     likeRankRequest();
+    followRankRequest();
   }, []);
 
   return (
     <div className={style.rank}>
       <div>
-        <p className="">주간 베스트 랭킹</p>
+        <p>주간 베스트 랭킹</p>
         {likeRank.map((item, index) => {
           return (
-            <li key={item.title}>
+            <li key={item.title + index}>
               {index + 1} | {item.title}
             </li>
           );
@@ -45,10 +57,10 @@ function Rank(): JSX.Element {
       </div>
       <div>
         <p>팔로우 랭킹</p>
-        {likeRank.map((item, index) => {
+        {followRank.map((item, index) => {
           return (
-            <li key={item.title}>
-              {index + 1} | {item.title}
+            <li key={item.nickname}>
+              {index + 1} | {item.nickname}
             </li>
           );
         })}

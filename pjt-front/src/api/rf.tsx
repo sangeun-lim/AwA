@@ -42,6 +42,7 @@ const rf = {
 
   rank: {
     getLikeRank: () => HOST + RANK + "like",
+    getFollowRank: () => HOST + RANK + "follow",
   },
 
   search: {
