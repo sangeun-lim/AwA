@@ -46,8 +46,8 @@ function Auction(): JSX.Element {
 
             const newAuction: ArtworkItem = {
               artwork_id,
+              comments,
               attachmentRequestDtoList,
-              commentsList: comments,
               genre,
               ingredient,
               like_count,

@@ -74,8 +74,8 @@ interface ArtworkComment {
 // 판매글 목록에 보이는 거
 export interface ArtworkItem {
   artwork_id: number;
+  comments: ArtworkComment[];
   attachmentRequestDtoList: Media[];
-  commentsList: ArtworkComment[];
   genre: string[];
   ingredient: string;
   like_count: number;
@@ -87,7 +87,6 @@ export interface ArtworkItem {
   view_count: number;
   createdDate: string;
   description: string;
-  comments?: Comment[] | null;
 }
 
 // 공지사항 Object
@@ -133,4 +132,11 @@ export interface editItem {
   price: number;
   ingredient: string;
   description: string;
+}
+
+export interface editComment {
+  comment_id: number;
+  content: string;
+  nickname: string;
+  parent_artwork_id: string;
 }
