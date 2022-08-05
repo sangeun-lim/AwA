@@ -10,37 +10,41 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
   const day = date.getDate();
 
   return (
-    <div>
+    <div className={style.imageCard}>
       <div className={style.container}>
-        {item.mediaList.length && (
+        {item.mediaList.length >= 1 ? (
           <img
             src={item.mediaList[0].url}
             alt="AuctionImg"
             className={style.auctionImg}
           />
+        ) : (
+          <div className={style.imageSample}>NO IMAGE</div>
         )}
         <div className={style.profile}>
-          {item.profile_picture ? (<img
-            src={item.profile_picture}
-            alt="profileImg"
-            className={style.profileImg}
-          />) : (<img
-            src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
-            alt="profileImg"
-            className={style.profileImg}
-          />)}
+          {item.profile_picture ? (
+            <img
+              src={item.profile_picture}
+              alt="profileImg"
+              className={style.profileImg}
+            />
+          ) : (
+            <img
+              src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+              alt="profileImg"
+              className={style.profileImg}
+            />
+          )}
           <span className={style.profileName}>{item.sell_user_nickname}</span>
         </div>
-        <div className={style.overlay}></div>
-        <div className={style.content}>
-          <h1>
-            <NavLink to={`/auction/detail/${item.artwork_id}`}>
-              {item.title}
-            </NavLink>
-          </h1>
-          <div>{item.genre[0]}</div>
-          <div>{`${year}.${month}.${day}`}</div>
-        </div>
+        <NavLink to={`/auction/detail/${item.artwork_id}`}>
+          <div className={style.overlay}></div>
+          <div className={style.content}>
+            <h3>{item.title}</h3>
+            <div>{item.genre[0]}</div>
+            <div>{`${year}.${month}.${day}`}</div>
+          </div>
+        </NavLink>
       </div>
     </div>
   );

@@ -1,9 +1,15 @@
+.imageCard {
+  position: relative;
+  width: 100%;
+  padding: 3%;
+}
+
 .container {
   position: relative;
-  width: 300px;
-  border-radius: 30px;
-  border: 1px solid black;
-  margin: 10px;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgb(200, 200, 200);
+  margin-right: 0px;
 }
 
 .profile {
@@ -28,8 +34,20 @@
 .auctionImg {
   width: 100%;
   height: 100%;
-  border-top-right-radius: 30px;
-  border-top-left-radius: 30px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.imageSample {
+  height: 300px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: bold;
+  color: rgb(150, 150, 150);
+  background-color: rgb(240, 240, 240);
 }
 
 .overlay {
@@ -38,7 +56,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 30px;
+  border-radius: 10px;
 
   background: rgba(0, 0, 0, 0);
   transition: background 0.5s ease;
@@ -52,17 +70,12 @@
 
 .content {
   position: absolute;
-  width: 300px;
-  right: 30px;
-  top: 30px;
+  width: 100%;
+  padding: 10%;
+  top: 5%;
   text-align: end;
   opacity: 0;
   transition: opacity 0.35s ease;
-  color: white;
-}
-
-.content > h1 > a {
-  text-decoration: none;
   color: white;
 }
 
