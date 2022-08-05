@@ -1,44 +1,33 @@
-import React, { useState } from "react";
+import React, { Dispatch, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { User, editComment } from "../../Interface";
+import {
+  User,
+  editComment,
+  ArtworkItem,
+  ArtworkComment,
+} from "../../Interface";
 import axios from "axios";
+import { itemDefaultData } from "../../defaultData";
 
-interface Comment {
-  comment_id: number;
-  content: string;
-  nickname: string;
-  parent_artwork_id: string;
+interface Props {
+  setItem: Dispatch<React.SetStateAction<ArtworkItem>>;
+  comment: ArtworkComment;
 }
 
-const commentDefaultData = {
-  comment_id: 0,
-  content: "",
-  nickname: "",
-  parent_artwork_id: "",
-};
-
-function CommentDetailOrUpdate({
-  artworkId,
-  commentId,
-  nickname,
-}: {
-  artworkId: string;
-  commentId: number;
-  nickname: string;
-}): JSX.Element {
+function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
   const navigate = useNavigate();
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );
-
-  const [comment, setComment] = useState<Comment>(commentDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
   const [editComment, setEditComment] = useState<editComment>({
-    comment_id: commentId,
+    comment_id: comment.comment_id,
     content: comment.content,
-    nickname: nickname,
-    parent_artwork_id: artworkId,
+    nickname: userObject.nickname,
+    parent_artwork_id: comment.parent_artwork_id,
+    createdDate: comment.createdDate,
+    modifiedDate: comment.modifiedDate,
   });
 
   const onChange = (e: any) => {
@@ -69,12 +58,50 @@ function CommentDetailOrUpdate({
       },
     });
     if (response.status === 200) {
-      setComment(response.data);
+      const updateData = response.data;
+      const {
+        comment_id,
+        content,
+        nickname,
+        parent_artwork_id,
+        createdDate,
+        modifiedDate,
+      } = updateData;
+
+      setEditComment({
+        comment_id,
+        content,
+        nickname,
+        parent_artwork_id,
+        createdDate,
+        modifiedDate,
+      });
+
+      setItem((prev) => {
+        return {
+          ...prev,
+          comments: prev.comments.map((item) => {
+            // 같은건 바꾸고 다른건 놔둔다.
+            if (item.comment_id === comment_id) {
+              return {
+                comment_id,
+                content,
+                nickname,
+                parent_artwork_id,
+                createdDate,
+                modifiedDate,
+              };
+            } else {
+              return item;
+            }
+          }),
+        };
+      });
     }
+    setOnEdit(!onEdit);
   };
 
   const onEditClick = () => {
-    setComment(editComment);
     setOnEdit(!onEdit);
   };
 
@@ -83,15 +110,23 @@ function CommentDetailOrUpdate({
     if (del) {
       try {
         const response = await axios({
-          url: `http://i7c101.p.ssafy.io:8080/comment/${commentId}`,
+          url: `http://i7c101.p.ssafy.io:8080/comment/${comment.comment_id}`,
           method: "delete",
           headers: {
             "X-AUTH-TOKEN": localStorage.getItem("token") || "",
             RefreshToken: localStorage.getItem("refresh_token") || "",
           },
         });
-        if (response.data === 1) {
-          navigate(`/auction/detail/${artworkId}`);
+        if (response.status === 200) {
+          setItem((prev) => {
+            return {
+              ...prev,
+              comments: prev.comments.filter(
+                (item) => item.comment_id !== comment.comment_id
+              ),
+            };
+          });
+          navigate(`/auction/detail/${comment.parent_artwork_id}`);
         } else {
           alert("댓글을 삭제할수 없습니다.");
         }
@@ -104,7 +139,7 @@ function CommentDetailOrUpdate({
   return (
     <div>
       {/* 댓글 쓴 사람이랑 수정하는 사람이 같으면 */}
-      {userObject.nickname === nickname ? (
+      {userObject.nickname === comment.nickname ? (
         <div>
           {onEdit ? (
             <div>
