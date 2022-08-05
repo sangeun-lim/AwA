@@ -49,6 +49,10 @@ function CommentForm(props: Props): JSX.Element {
         nickname: userObject.nickname,
         parent_artwork_id: artworkId,
       },
+      headers: {
+        "X-AUTH-TOKEN": localStorage.getItem("token") || "",
+        RefreshToken: localStorage.getItem("refresh_token") || "",
+      },
     });
     if (response.status === 200) {
       setNewComment(response.data);

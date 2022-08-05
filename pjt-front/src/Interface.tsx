@@ -133,3 +133,10 @@ export interface editItem {
   ingredient: string;
   description: string;
 }
+
+export interface editComment {
+  comment_id: number;
+  content: string;
+  nickname: string;
+  parent_artwork_id: string;
+}

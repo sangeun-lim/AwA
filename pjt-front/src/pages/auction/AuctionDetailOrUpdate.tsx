@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 import ReportModal from "./ReportModal";
 import CommentCreate from "./CommentCreate";
+import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
 import axios from "axios";
 
 interface ButtonProps {
@@ -377,7 +378,9 @@ function AuctionDetailOrUpdate(): JSX.Element {
         return media.url;
       })
     );
-  }, [onEdit, item]);
+
+    setLike(item.like_count);
+  }, [onEdit, item, like]);
 
   return (
     <div>
@@ -480,7 +483,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
               onChange={onChange}
             ></textarea>
             <br />
-            <input type="submit" value="작성" />
+            <input type="submit" value="수정" />
           </form>
         </div>
       ) : (
@@ -514,15 +517,24 @@ function AuctionDetailOrUpdate(): JSX.Element {
           <button onClick={onListClick}>목록</button>
           <hr />
           <p>조회수 : {item.view_count}</p>
-          <p>
-            <button onClick={onLikeClick}>❤</button>
-            좋아요 : {item.like_count}
-          </p>
+          {userObject?.nickname ? (
+            <p>
+              <button onClick={onLikeClick}>❤</button>
+              좋아요 : {item.like_count}
+            </p>
+          ) : (
+            <p>좋아요 : {item.like_count} </p>
+          )}
           <div>
             {item.commentsList.map((item) => {
               return (
                 <li key={item.comment_id}>
                   {item.content} | 작성자 : {item.nickname}
+                  <CommentDetailOrUpdate
+                    artworkId={address}
+                    commentId={item.comment_id}
+                    nickname={item.nickname}
+                  ></CommentDetailOrUpdate>
                 </li>
               );
             })}
