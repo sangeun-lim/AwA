@@ -1,26 +1,24 @@
-import React, { useState } from "react";
-import { User } from "../../Interface";
+import React, { Dispatch, useState } from "react";
+import { ArtworkItem, User } from "../../Interface";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
 interface Props {
   artworkId: string;
+  setItem: Dispatch<React.SetStateAction<ArtworkItem>>;
 }
 
 interface NewComment {
   content: string;
-  nickname: string;
   parent_artwork_id: number;
 }
 
 const newCommentDefaultData = {
   content: "",
-  nickname: "",
   parent_artwork_id: 0,
 };
 
-function CommentForm(props: Props): JSX.Element {
-  const { artworkId } = props;
+function CommentForm({ artworkId, setItem }: Props): JSX.Element {
   const [newComment, setNewComment] = useState<NewComment>(
     newCommentDefaultData
   );
@@ -44,18 +42,24 @@ function CommentForm(props: Props): JSX.Element {
     const response = await axios({
       url: `http://i7c101.p.ssafy.io:8080/comment`,
       method: "post",
+      headers: {
+        "X-AUTH-TOKEN": localStorage.getItem("token") || "",
+        RefreshToken: localStorage.getItem("refresh_token") || "",
+      },
       data: {
         content: newComment.content,
         nickname: userObject.nickname,
         parent_artwork_id: artworkId,
       },
-      headers: {
-        "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-        RefreshToken: localStorage.getItem("refresh_token") || "",
-      },
     });
     if (response.status === 200) {
-      setNewComment(response.data);
+      setNewComment(newCommentDefaultData);
+      setItem((prev) => {
+        return {
+          ...prev,
+          comments: prev.comments.concat(response.data),
+        };
+      });
     }
   };
 
