@@ -18,8 +18,6 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
             alt="AuctionImg"
             className={style.auctionImg}
           />
-        ) : (
-          <div className={style.imageSample}>NO IMAGE</div>
         )}
         <div className={style.profile}>
           {item.profile_picture ? (
