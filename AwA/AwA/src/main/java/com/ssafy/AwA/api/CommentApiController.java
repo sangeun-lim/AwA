@@ -13,17 +13,17 @@ public class CommentApiController {
 
     private final CommentService commentService;
     @PostMapping()
-    public CommentResponseDto saveComment(@RequestBody CommentRequestDto commentRequestDto) {
+    public CommentResponseDto saveComment(@RequestBody CommentRequestDto commentRequestDto, @RequestHeader(value="X-AUTH-TOKEN") String token, @RequestHeader(value="RefreshToken") String refreshToken) {
         return commentService.saveComment(commentRequestDto);
     }
 
     @PutMapping("/{commentId}")
-    public CommentResponseDto updateComment(@PathVariable("commentId") Long commentId, @RequestBody CommentRequestDto commentRequestDto) {
+    public CommentResponseDto updateComment(@PathVariable("commentId") Long commentId, @RequestBody CommentRequestDto commentRequestDto, @RequestHeader(value="X-AUTH-TOKEN") String token, @RequestHeader(value="RefreshToken") String refreshToken) {
         return commentService.updateComment(commentRequestDto, commentId);
     }
 
     @DeleteMapping("/{commentId}")
-    public int deleteComment(@PathVariable("commentId") Long commentId) {
+    public int deleteComment(@PathVariable("commentId") Long commentId, @RequestHeader(value="X-AUTH-TOKEN") String token, @RequestHeader(value="RefreshToken") String refreshToken) {
         return commentService.deleteComment(commentId);
     }
 

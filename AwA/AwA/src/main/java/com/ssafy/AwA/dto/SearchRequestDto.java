@@ -13,13 +13,17 @@ import java.util.List;
 public class SearchRequestDto {
 
     List<String> genre;
-    List<Integer> price;
+    int genre_count;
+    int min_price;
+    int max_price;
     int status;
 
     @Builder
-    public SearchRequestDto(List<String> genre, List<Integer> price, int status) {
+    public SearchRequestDto(List<String> genre, int genre_count, int min_price, int max_price, int status) {
         this.genre = genre;
-        this.price = price;
+        this.genre_count = genre_count;
+        this.min_price = min_price;
+        this.max_price = max_price;
         this.status = status;
     }
 }

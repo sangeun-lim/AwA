@@ -159,4 +159,8 @@ public class Artwork extends BaseTimeEntity {
     public void minusArtwork() {
         this.like_count--;
     }
+
+    public void updateSellStatus() {
+        this.is_sell = !this.is_sell;
+    }
 }
