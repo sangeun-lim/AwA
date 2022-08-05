@@ -1,0 +1,70 @@
+/* Auction */
+.auctionTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+  background-color: rgb(240, 240, 240);
+  margin-bottom: 20px;
+}
+
+.auctionTop .title {
+  font-weight: bold;
+  font-size: 50px;
+  margin: 10px 0;
+}
+
+.auction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.auction > div,
+.auctionTop > div {
+  width: 1280px;
+  margin: 10px 0;
+}
+
+@media (max-width: 1600px) {
+  .auction > div,
+  .auctionTop > div {
+    width: 80%;
+  }
+}
+
+.auctionButton {
+  padding: 0px 10px;
+  border: 2px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 15px;
+  cursor: pointer;
+  margin: 0 20px;
+  white-space: nowrap;
+}
+
+.auctionButton:hover {
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+.auctionList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+  justify-content: center;
+}
+
+/* .auctionList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+} */
+
+/* .auctionCard {
+  width: 300px;
+  height: auto;
+} */

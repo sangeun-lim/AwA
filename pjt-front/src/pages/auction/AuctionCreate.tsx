@@ -11,6 +11,7 @@ import { newItemDefaultData } from "../../defaultData";
 import api from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
+import style from "./Auction.module.css";
 
 interface ButtonProps {
   item: string;
@@ -164,7 +165,7 @@ function AuctionCreate(): JSX.Element {
   }, [userObject.nickname]);
 
   return (
-    <div>
+    <div className={style.auction}>
       <h1>Auction Create</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="input-file" onChange={handleAddImages}>

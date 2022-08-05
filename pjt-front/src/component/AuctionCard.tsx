@@ -10,7 +10,7 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
   const day = date.getDate();
 
   return (
-    <div>
+    <div className={style.imageCard}>
       <div className={style.container}>
         {item.attachmentRequestDtoList.length && (
           <img
@@ -18,6 +18,8 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
             alt="AuctionImg"
             className={style.auctionImg}
           />
+        ) : (
+          <div className={style.imageSample}>NO IMAGE</div>
         )}
         <div className={style.profile}>
           {item.profile_picture ? (
@@ -35,16 +37,14 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
           )}
           <span className={style.profileName}>{item.sell_user_nickname}</span>
         </div>
-        <div className={style.overlay}></div>
-        <div className={style.content}>
-          <h1>
-            <NavLink to={`/auction/detail/${item.artwork_id}`}>
-              {item.title}
-            </NavLink>
-          </h1>
-          <div>{item.genre[0]}</div>
-          <div>{`${year}.${month}.${day}`}</div>
-        </div>
+        <NavLink to={`/auction/detail/${item.artwork_id}`}>
+          <div className={style.overlay}></div>
+          <div className={style.content}>
+            <h3>{item.title}</h3>
+            <div>{item.genre[0]}</div>
+            <div>{`${year}.${month}.${day}`}</div>
+          </div>
+        </NavLink>
       </div>
     </div>
   );
