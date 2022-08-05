@@ -83,7 +83,7 @@ public class ArtworkService {
                 .title(savedArtwork.getTitle())
                 .genre(savedArtwork.getGenre())
                 .ingredient(savedArtwork.getIngredient())
-                .is_sell(savedArtwork.is_sell())
+                .is_sell(savedArtwork.getIs_sell())
                 .build();
 
         return artworkResponseDto;
@@ -123,7 +123,7 @@ public class ArtworkService {
                     .genre(targetArtwork.getGenre())
                     .ingredient(targetArtwork.getIngredient())
                     .attachmentRequestDtoList(attachmentRequestDtoList)
-                    .is_sell(targetArtwork.is_sell())
+                    .is_sell(targetArtwork.getIs_sell())
                     .build());
         }
 
@@ -144,14 +144,13 @@ public class ArtworkService {
                     .build()
             );
         }
-        for(int i=0;i<targetArtwork.getAttachment_list().size();i++)
-            System.out.println(targetArtwork.getAttachment_list().get(i).getUrl() +" here");
+
 
         User targetUser = targetArtwork.getSell_user();
         Profile sellUserProfile = profileRepository.findByNickname(targetUser.getNickname());
 
         List<Comment> commentList = commentRepository.findAllByParentArtwork(targetArtwork);
-        System.out.println("!!!!!!!!!!" + commentList.size());
+
 
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
         for (int i=0;i<commentList.size();i++) {
@@ -183,7 +182,7 @@ public class ArtworkService {
                 .description(targetArtwork.getDescription())
                 .comments(commentResponseDtos)
                 .like_count(targetArtwork.getLike_count())
-                .is_sell(targetArtwork.is_sell())
+                .is_sell(targetArtwork.getIs_sell())
                 .build();
     }
 
@@ -230,7 +229,7 @@ public class ArtworkService {
                 .price(artworkRequestDto.getPrice())
                 .sell_user_nickname(targetUser.getNickname())
                 .title(targetArtwork.getTitle())
-                .is_sell(targetArtwork.is_sell())
+                .is_sell(targetArtwork.getIs_sell())
                 .build();
         return artworkResponseDto;
     }
@@ -272,7 +271,7 @@ public class ArtworkService {
 
                 User findUser = userRepository.findByEmail(sellArtwork.getSell_user().getEmail());
                 Profile findProfile = profileRepository.findByNickname(findUser.getNickname());
-                System.out.println(findProfile.getProfile_picture_url()+"adfasdf");
+
                 ArtworkResponseDto artworkResponseDto = ArtworkResponseDto.builder()
                         .artwork_id(sellArtwork.getArtwork_id())
                         .attachmentRequestDtoList(attachmentRequestDtoList)
@@ -287,7 +286,7 @@ public class ArtworkService {
                         .price(sellArtwork.getPrice())
                         .description(sellArtwork.getDescription())
                         .createdDate(sellArtwork.getCreatedDate())
-                        .is_sell(sellArtwork.is_sell())
+                        .is_sell(sellArtwork.getIs_sell())
                         .build();
 
                 result.add(artworkResponseDto);
@@ -301,13 +300,13 @@ public class ArtworkService {
 
     public int sellArtwork(Long artwork_id) {
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
-        boolean previousStatus = targetArtwork.is_sell();
-        targetArtwork.updateSellStatus();
-        boolean AfterStatus = targetArtwork.is_sell();
+        int previousStatus = targetArtwork.getIs_sell();
+        if(previousStatus == 1)
+            targetArtwork.updateSellStatus(2);
+        else
+            targetArtwork.updateSellStatus(1);
 
-        if(previousStatus!= AfterStatus) {
-            return 1;
-        }
-        else return 0;
+        return targetArtwork.getIs_sell();
+
     }
 }

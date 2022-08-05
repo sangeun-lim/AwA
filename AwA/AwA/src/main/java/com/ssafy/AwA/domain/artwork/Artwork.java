@@ -64,7 +64,7 @@ public class Artwork extends BaseTimeEntity {
     private List<Comment> comments;
 
     @Column
-    private boolean is_sell;
+    private int is_sell;
 
     @OneToOne(fetch = FetchType.LAZY ,mappedBy = "artwork")
     private PurchaseArtwork purchase_artwork;
@@ -80,7 +80,7 @@ public class Artwork extends BaseTimeEntity {
 
     @Builder
     public Artwork(Long artwork_id, User sell_user, String title, int view_count, int price, String description, List<Likes> likes, int like_count, List<String> genre, String ingredient,
-                   List<Comment> comments, boolean is_sell, PurchaseArtwork purchase_artwork, List<Attachment> attachment_list, List<Report> report_list) {
+                   List<Comment> comments, int is_sell, PurchaseArtwork purchase_artwork, List<Attachment> attachment_list, List<Report> report_list) {
         this.artwork_id = artwork_id;
         this.sell_user = sell_user;
         this.title = title;
@@ -124,10 +124,6 @@ public class Artwork extends BaseTimeEntity {
         this.view_count++;
     }
 
-    public void isSell() {
-        this.is_sell = !this.is_sell;
-    }
-
     public void updateTitle(String newTitle) {
         this.title = newTitle;
     }
@@ -160,7 +156,7 @@ public class Artwork extends BaseTimeEntity {
         this.like_count--;
     }
 
-    public void updateSellStatus() {
-        this.is_sell = !this.is_sell;
+    public void updateSellStatus(int value) {
+        this.is_sell = value;
     }
 }

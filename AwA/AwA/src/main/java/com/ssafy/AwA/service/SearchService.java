@@ -68,6 +68,7 @@ public class SearchService {
                     .genre(targetArtwork.getGenre())
                     .ingredient(targetArtwork.getIngredient())
                     .attachmentRequestDtoList(attachmentRequestDtoList)
+                    .is_sell(targetArtwork.getIs_sell())
                     .build();
 
             artworkResponseDtos.add(artworkResponseDto);
@@ -80,13 +81,13 @@ public class SearchService {
         if(searchRequestDto.getGenre_count() == 1)
             allSearchByWriter = searchCustomRepository.findAllSearchByWriter1(writer,searchRequestDto);
         else if(searchRequestDto.getGenre_count() == 2)
-            allSearchByWriter = searchCustomRepository.findAllSearchByTitle2(writer, searchRequestDto);
+            allSearchByWriter = searchCustomRepository.findAllSearchByWriter2(writer, searchRequestDto);
         else if(searchRequestDto.getGenre_count() == 3)
-            allSearchByWriter = searchCustomRepository.findAllSearchByTitle3(writer, searchRequestDto);
+            allSearchByWriter = searchCustomRepository.findAllSearchByWriter3(writer, searchRequestDto);
         else if(searchRequestDto.getGenre_count() == 4)
-            allSearchByWriter = searchCustomRepository.findAllSearchByTitle4(writer, searchRequestDto);
+            allSearchByWriter = searchCustomRepository.findAllSearchByWriter4(writer, searchRequestDto);
         else if (searchRequestDto.getGenre_count() == 5)
-            allSearchByWriter = searchCustomRepository.findAllSearchByTitle5(writer, searchRequestDto);
+            allSearchByWriter = searchCustomRepository.findAllSearchByWriter5(writer, searchRequestDto);
 
         List<ArtworkResponseDto> artworkResponseDtos = new ArrayList<>();
         for(int i=0;i<allSearchByWriter.size();i++) {
@@ -117,6 +118,7 @@ public class SearchService {
                     .genre(targetArtwork.getGenre())
                     .ingredient(targetArtwork.getIngredient())
                     .attachmentRequestDtoList(attachmentRequestDtoList)
+                    .is_sell(targetArtwork.getIs_sell())
                     .build();
 
             artworkResponseDtos.add(artworkResponseDto);
