@@ -7,6 +7,7 @@ import {
   NewItemData,
   UpdateItemData,
   UpdateProfileObject,
+  QueryType,
 } from "./apiInterface";
 
 const api = {
@@ -223,6 +224,40 @@ const api = {
           RefreshToken: localStorage.getItem("refresh_token") || "",
         },
         method: method,
+      });
+
+      return response;
+    },
+  },
+
+  search: {
+    searchTitle: async (formData: QueryType) => {
+      const response = await axios({
+        url: rf.search.searchTitle(formData.word),
+        method: "post",
+        data: {
+          genre: formData.genres,
+          genre_count: formData.genres.length,
+          max_price: formData.max_price,
+          min_price: formData.min_price,
+          status: formData.status,
+        },
+      });
+
+      return response;
+    },
+
+    searchWriter: async (formData: QueryType) => {
+      const response = await axios({
+        url: rf.search.searchWriter(formData.word),
+        method: "post",
+        data: {
+          genre: formData.genres,
+          gerne_count: formData.genres.length,
+          max_price: formData.max_price,
+          min_price: formData.min_price,
+          status: formData.status,
+        },
       });
 
       return response;

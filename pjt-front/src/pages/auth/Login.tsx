@@ -115,6 +115,7 @@ function Login({ getUserData }: Props): JSX.Element {
             </button>
           </div>
         </form>
+        <a href="/oauth2/authorization/google">구글로그인</a>
       </div>
     </div>
   );

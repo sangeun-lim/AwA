@@ -65,7 +65,7 @@ interface Media {
 // 판매글 목록에 보이는 거
 export interface ArtworkItem {
   artwork_id: number;
-  mediaList: Media[];
+  attachmentRequestDtoList: Media[];
   genre: string[];
   ingredient: string;
   like_count: number;
@@ -77,6 +77,7 @@ export interface ArtworkItem {
   view_count: number;
   createdDate: string;
   description: string;
+  comments?: Comment[] | null;
 }
 
 // 공지사항 Object
