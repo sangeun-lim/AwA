@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { User, editComment } from "../../Interface";
 import axios from "axios";
@@ -28,10 +28,6 @@ function CommentDetailOrUpdate({
   nickname: string;
 }): JSX.Element {
   const navigate = useNavigate();
-
-  const params = useParams();
-  // const address = params.id || "";
-
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );

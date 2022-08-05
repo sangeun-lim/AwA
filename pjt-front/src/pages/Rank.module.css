@@ -1,4 +1,4 @@
-/* .rank {
+.rank {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -8,7 +8,7 @@
   border-color: rgb(231, 115, 92, 1);
 }
 
-li {
+.rank > div > p > li {
   list-style: none;
   width: 150px;
   height: 24px;
@@ -16,6 +16,6 @@ li {
   overflow: hidden;
 }
 
-p {
+.rank > div > p {
   text-align: center;
-} */
+}
