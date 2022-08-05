@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 import ReportModal from "./ReportModal";
 import CommentCreate from "./CommentCreate";
+import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
 import axios from "axios";
 
 interface ButtonProps {
@@ -148,7 +149,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
     try {
       if (userObject) {
         // 기존 이미지 url들을 imageUrlLists에 담는다.
-        let imageUrlLists: string[] = item.mediaList.map(
+        let imageUrlLists: string[] = item.attachmentRequestDtoList.map(
           (media: { type: string; url: string }) => {
             return media.url;
           }
@@ -206,8 +207,8 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
           setItem({
             artwork_id,
-            mediaList: attachmentRequestDtoList,
-            commentsList: comments,
+            comments,
+            attachmentRequestDtoList,
             createdDate,
             description,
             genre,
@@ -245,8 +246,11 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
         dispatch(loadingActions.toggle());
         if (response.status === 200) {
-          for (let i = 0; i < item.mediaList.length; i++) {
-            const imgRef = ref(storageService, item.mediaList[i].url);
+          for (let i = 0; i < item.attachmentRequestDtoList.length; i++) {
+            const imgRef = ref(
+              storageService,
+              item.attachmentRequestDtoList[i].url
+            );
             await deleteObject(imgRef);
           }
           navigate("/auction");
@@ -332,8 +336,8 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
         setItem({
           artwork_id,
-          mediaList: attachmentRequestDtoList,
-          commentsList: comments,
+          comments,
+          attachmentRequestDtoList,
           genre,
           createdDate,
           description,
@@ -373,10 +377,14 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
     setGenresList(item.genre);
     setShowImages(
-      item.mediaList.map((media: { url: string; type: string }) => {
-        return media.url;
-      })
+      item.attachmentRequestDtoList.map(
+        (media: { url: string; type: string }) => {
+          return media.url;
+        }
+      )
     );
+
+    setLike(item.like_count);
   }, [onEdit, item]);
 
   return (
@@ -480,24 +488,26 @@ function AuctionDetailOrUpdate(): JSX.Element {
               onChange={onChange}
             ></textarea>
             <br />
-            <input type="submit" value="작성" />
+            <input type="submit" value="수정" />
           </form>
         </div>
       ) : (
         <div>
           <h1>AuctionDetail</h1>
           <ReportModal artworkId={address} />
-          {item.mediaList.length &&
-            item.mediaList.map((image: { type: string; url: string }) => (
-              <div key={image.url}>
-                <img
-                  src={image.url}
-                  alt={`${image.url}`}
-                  width="30%"
-                  height="30%"
-                />
-              </div>
-            ))}
+          {item.attachmentRequestDtoList.length &&
+            item.attachmentRequestDtoList.map(
+              (image: { type: string; url: string }) => (
+                <div key={image.url}>
+                  <img
+                    src={image.url}
+                    alt={`${image.url}`}
+                    width="30%"
+                    height="30%"
+                  />
+                </div>
+              )
+            )}
           <h2>{item.title}</h2>
           <p>작성자 : {item.sell_user_nickname}</p>
           <p>가격 : {item.price}원</p>
@@ -514,18 +524,28 @@ function AuctionDetailOrUpdate(): JSX.Element {
           <button onClick={onListClick}>목록</button>
           <hr />
           <p>조회수 : {item.view_count}</p>
-          <p>
-            <button onClick={onLikeClick}>❤</button>
-            좋아요 : {item.like_count}
-          </p>
+          {userObject?.nickname ? (
+            <p>
+              <button onClick={onLikeClick}>❤</button>
+              좋아요 : {item.like_count}
+            </p>
+          ) : (
+            <p>좋아요 : {item.like_count} </p>
+          )}
           <div>
-            {item.commentsList.map((item) => {
-              return (
-                <li key={item.comment_id}>
-                  {item.content} | 작성자 : {item.nickname}
-                </li>
-              );
-            })}
+            {item.comments &&
+              item.comments.map((item) => {
+                return (
+                  <li key={item.comment_id}>
+                    {item.content} | 작성자 : {item.nickname}
+                    <CommentDetailOrUpdate
+                      artworkId={address}
+                      commentId={item.comment_id}
+                      nickname={item.nickname}
+                    ></CommentDetailOrUpdate>
+                  </li>
+                );
+              })}
           </div>
           <hr />
           <CommentCreate artworkId={address}></CommentCreate>

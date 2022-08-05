@@ -1,5 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import { User } from "../Interface";
+import { ArtworkItem, User } from "../Interface";
 
 const loadingSlice = createSlice({
   name: "isLoading",
@@ -33,14 +33,27 @@ const userObjectSlice = createSlice({
   },
 });
 
+const searchInitialState: ArtworkItem[] = [];
+
+const searchResultsSlice = createSlice({
+  name: "searchResults",
+  initialState: searchInitialState,
+  reducers: {
+    setResults(state: ArtworkItem[], actions: { type: string; payload: any }) {
+      return actions.payload;
+    },
+  },
+});
+
 const store = configureStore({
   reducer: {
     loading: loadingSlice.reducer,
     userObject: userObjectSlice.reducer,
+    searchResults: searchResultsSlice.reducer,
   },
 });
 
 export const loadingActions = loadingSlice.actions;
 export const userObjectActions = userObjectSlice.actions;
-
+export const searchResultsActions = searchResultsSlice.actions;
 export default store;

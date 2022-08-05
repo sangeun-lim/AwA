@@ -6,7 +6,6 @@ import Login from "../pages/auth/Login";
 import SignUp from "../pages/auth/SignUp";
 import FindPw from "../pages/auth/FindPw";
 import Profile from "../pages/profile/Profile";
-import Favorite from "../pages/profile/Favorite";
 import Chatting from "../pages/chatting/Chatting";
 import Auction from "../pages/auction/Auction";
 import AuctionDetailOrUpdate from "../pages/auction/AuctionDetailOrUpdate";
@@ -47,7 +46,6 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route path="/profile/:email" element={<Profile />} />
-          <Route path="/profile/favorite" element={<Favorite />} />
           {userObject && (
             <Route
               path="/chatting"
@@ -70,7 +68,7 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/:id" element={<NoticeDetailAndEdit />} />
           <Route path="/notice/create" element={<NoticeCreate />} />
-          <Route path="/searchresult" element={<SearchResult />} />
+          <Route path="/searchresult/:word" element={<SearchResult />} />
           <Route path="/rank" element={<Rank />} />
           <Route path="*" element={<Error />} />
         </Routes>

@@ -12,9 +12,9 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
   return (
     <div className={style.imageCard}>
       <div className={style.container}>
-        {item.mediaList.length >= 1 ? (
+        {item.attachmentRequestDtoList.length && (
           <img
-            src={item.mediaList[0].url}
+            src={item.attachmentRequestDtoList[0].url}
             alt="AuctionImg"
             className={style.auctionImg}
           />
