@@ -41,13 +41,14 @@ public class CommentService {
                 .content(savedComment.getContent())
                 .nickname(writer.getNickname())
                 .parent_artwork_id(savedComment.getParent_artwork().getArtwork_id())
+                .profile_picture_url(writer.getProfile_picture_url())
                 .build();
         return commentResponseDto;
     }
 
     public CommentResponseDto updateComment(CommentRequestDto commentRequestDto, Long commentId) {
         Comment targetComment = commentRepository.findByComment_id(commentId);
-
+        Profile writer = targetComment.getProfile();
         targetComment.updateContent(commentRequestDto.getContent());
 
         CommentResponseDto commentResponseDto = CommentResponseDto.builder()
@@ -57,6 +58,7 @@ public class CommentService {
                 .content(targetComment.getContent())
                 .nickname(targetComment.getProfile().getNickname())
                 .parent_artwork_id(targetComment.getParent_artwork().getArtwork_id())
+                .profile_picture_url(writer.getProfile_picture_url())
                 .build();
 
         return commentResponseDto;
@@ -71,6 +73,7 @@ public class CommentService {
     public CommentResponseDto getComment(Long commentId) {
         Comment targetComment = commentRepository.findByComment_id(commentId);
 
+        Profile writer = targetComment.getProfile();
         CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                 .createdDate(targetComment.getCreatedDate())
                 .modifiedDate(targetComment.getModifiedDate())
@@ -78,6 +81,7 @@ public class CommentService {
                 .parent_artwork_id(targetComment.getParent_artwork().getArtwork_id())
                 .nickname(targetComment.getProfile().getNickname())
                 .content(targetComment.getContent())
+                .profile_picture_url(writer.getProfile_picture_url())
                 .build();
 
         return commentResponseDto;

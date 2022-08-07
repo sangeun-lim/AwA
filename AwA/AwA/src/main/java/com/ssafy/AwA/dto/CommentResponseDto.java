@@ -29,14 +29,15 @@ public class CommentResponseDto extends BaseTimeEntity {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    private String profile_picture_url;
     @Builder
-    public CommentResponseDto(Long comment_id, Long parent_artwork_id, String nickname, String content, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public CommentResponseDto(Long comment_id, Long parent_artwork_id, String nickname, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, String profile_picture_url) {
         this.comment_id = comment_id;
         this.parent_artwork_id = parent_artwork_id;
         this.nickname = nickname;
         this.content = content;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
+        this.profile_picture_url = profile_picture_url;
     }
-
 }
