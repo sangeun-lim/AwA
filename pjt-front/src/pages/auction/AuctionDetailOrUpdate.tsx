@@ -16,7 +16,7 @@ import api from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 import ReportModal from "./ReportModal";
-import CommentCreate from "./CommentCreate";
+import CommentForm from "./CommentForm";
 import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
 import axios from "axios";
 import style from "./AuctionCreateUpdate.module.css";
@@ -56,7 +56,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
   const [item, setItem] = useState<ArtworkItem>(itemDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
-  const [like, setLike] = useState<number>(itemDefaultData.like_count);
+  // 라이크는 좋아요 개수를 다른 변수에 저장해놓고, 눌렀을때 변화가 되게?
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
@@ -271,9 +271,8 @@ function AuctionDetailOrUpdate(): JSX.Element {
     }
   };
 
-  // 왜 카운트 누른게 바로 적용되서 안보이는걸까
-  // 새로고침 눌러야만 적용됨
-  const onLikeClick = async () => {
+  const onLikeClick = async (e: any) => {
+    e.preventDefault();
     // 좋아요 눌렀는지 안 눌렀는지 확인
     const response = await axios({
       url: `http://i7c101.p.ssafy.io:8080/like/have/${userObject?.nickname}/${address}`,
@@ -292,12 +291,17 @@ function AuctionDetailOrUpdate(): JSX.Element {
       });
 
       if (likeResponse) {
-        setLike(like + 1);
+        setItem((prev) => {
+          return {
+            ...prev,
+            like_count: prev.like_count + 1,
+          };
+        });
       }
     }
     // 좋아요를 취소할 때
     else {
-      const likeResponse = await axios({
+      const unLikeResponse = await axios({
         url: `http://i7c101.p.ssafy.io:8080/like/${userObject?.nickname}/${address}`,
         method: "delete",
         data: {
@@ -305,13 +309,16 @@ function AuctionDetailOrUpdate(): JSX.Element {
           nickname: userObject?.nickname,
         },
       });
-      if (likeResponse) {
-        setLike(like - 1);
+      if (unLikeResponse) {
+        setItem((prev) => {
+          return {
+            ...prev,
+            like_count: prev.like_count - 1,
+          };
+        });
       }
     }
   };
-
-  // useEffect(() => {}, [like]);
 
   useEffect(() => {
     async function loadData() {
@@ -391,7 +398,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
       )
     );
 
-    setLike(item.like_count);
+    // setLike(item.like_count);
   }, [onEdit, item]);
 
   return (
@@ -609,9 +616,8 @@ function AuctionDetailOrUpdate(): JSX.Element {
                   <li key={item.comment_id}>
                     {item.content} | 작성자 : {item.nickname}
                     <CommentDetailOrUpdate
-                      artworkId={address}
-                      commentId={item.comment_id}
-                      nickname={item.nickname}
+                      comment={item}
+                      setItem={setItem}
                     ></CommentDetailOrUpdate>
                   </li>
                 );
@@ -621,6 +627,8 @@ function AuctionDetailOrUpdate(): JSX.Element {
           <div className={style.detailBottom}>
             <button onClick={onListClick}>목록</button>
           </div>
+          <hr />
+          <CommentForm setItem={setItem} artworkId={address}></CommentForm>
         </div>
       )}
     </div>
