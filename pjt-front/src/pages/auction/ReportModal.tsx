@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Report from "./Report";
 import { User, ArtworkItem } from "../../Interface";
+import style from "./Report.module.css";
 
 const ReportModal = ({ artworkId }: { artworkId: string }): JSX.Element => {
   const [showReport, setShowReport] = useState<boolean>(false);
@@ -15,7 +16,9 @@ const ReportModal = ({ artworkId }: { artworkId: string }): JSX.Element => {
 
   return (
     <div>
-      <button onClick={openReport}>신고</button>
+      <button onClick={openReport} className={style.btn}>
+        신고
+      </button>
       <Report
         open={showReport}
         close={closeReport}
