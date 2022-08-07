@@ -8,7 +8,6 @@ import {
   ArtworkComment,
 } from "../../Interface";
 import axios from "axios";
-import { itemDefaultData } from "../../defaultData";
 
 interface Props {
   setItem: Dispatch<React.SetStateAction<ArtworkItem>>;
@@ -81,7 +80,6 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
         return {
           ...prev,
           comments: prev.comments.map((item) => {
-            // 같은건 바꾸고 다른건 놔둔다.
             if (item.comment_id === comment_id) {
               return {
                 comment_id,
@@ -138,7 +136,6 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
 
   return (
     <div>
-      {/* 댓글 쓴 사람이랑 수정하는 사람이 같으면 */}
       {userObject.nickname === comment.nickname ? (
         <div>
           {onEdit ? (
@@ -162,7 +159,6 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
           )}
         </div>
       ) : (
-        // 다르면 안보이게
         <div></div>
       )}
     </div>

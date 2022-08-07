@@ -1,4 +1,4 @@
-const HOST = "http://i7c101.p.ssafy.io:8080/";
+const HOST = "http://i7c101.p.ssafy.io:8081/api/";
 
 const AUTH = "auth/";
 const NOTICE = "notice/";
