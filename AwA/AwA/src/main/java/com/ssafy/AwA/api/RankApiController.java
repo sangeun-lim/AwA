@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/rank")
+@RequestMapping("/api/rank")
 public class RankApiController {
 
     private final RankService rankService;

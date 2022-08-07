@@ -72,7 +72,7 @@ public class UserApiController {
 
 
     //닉네임 변경
-    @PutMapping("/profile/{nickname}/{newnickname}")
+    @PutMapping("/api/profile/{nickname}/{newnickname}")
     public int chageNickname(@PathVariable("nickname") String nickname,
                                          @PathVariable("newnickname") String newNickname) {
         try {
@@ -94,7 +94,7 @@ public class UserApiController {
 //        }
 //    }
 
-    @GetMapping("/profile/gender/{gender}")
+    @GetMapping("/api/profile/gender/{gender}")
     public List<User> findMans(@PathVariable("gender") int gender) {
         try {
 

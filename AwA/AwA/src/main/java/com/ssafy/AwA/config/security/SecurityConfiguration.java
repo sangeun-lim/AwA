@@ -1,5 +1,6 @@
 package com.ssafy.AwA.config.security;
 
+import com.ssafy.AwA.auth.PrincipalOauth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public SecurityConfiguration(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
+
+    @Autowired
+    private PrincipalOauth2UserService principalOauth2UserService;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -50,7 +54,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //인증 과정에서 예외가 발생할 경우 예외 전달. (Response로 클라이언트에게 전달) 책 403쪽
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); //어느 필터앞에 설정할 것인지.
+
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class) //어느 필터앞에 설정할 것인지.
+                // oauth2 로그인관련
+                .oauth2Login()
+//                .loginPage("/auth/sns-sign-in") // 인증이 필요한 url 접근시 명시된 url로 이동
+                .defaultSuccessUrl("http://i7c101.p.ssafy.io:8080/")
+//                .failureUrl("/auth/sns-sign-in") // 실패시 명시된 url로 이동
+                .userInfoEndpoint()
+                .userService(principalOauth2UserService);
     }
 
     //인증과 인가가 필요 없는 리소스 접근 home, preview, artwork 리스트 같은거 볼 때 등록하거나 수정하는건 위에 권한 설정
@@ -66,6 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://i7c101.p.ssafy.io:8080/");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.addExposedHeader("*"); // 모든걸 허용함

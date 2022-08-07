@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/artwork")
+@RequestMapping("/api/artwork")
 public class ArtworkApiController {
 
     private final Logger logger = LoggerFactory.getLogger(ArtworkApiController.class);
