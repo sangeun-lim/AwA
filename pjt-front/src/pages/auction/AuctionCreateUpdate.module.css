@@ -195,6 +195,13 @@
 .selectBox {
   width: 100%;
   margin: 10px 0;
+  border: 1px solid rgb(150, 150, 150);
+  height: 35px;
+  padding-left: 5px;
+}
+
+.selectBox > option:hover {
+  background-color: rgb(150, 150, 150);
 }
 
 .selectList {
@@ -367,6 +374,7 @@
 
 .detailBox > p {
   font-size: 15px;
+  white-space: pre-wrap;
 }
 
 .detailBox > div > button {

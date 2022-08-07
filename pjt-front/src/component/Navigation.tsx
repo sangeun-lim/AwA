@@ -5,6 +5,7 @@ import style from "./Navigation.module.css";
 import { User } from "./../Interface";
 import { useDispatch, useSelector } from "react-redux";
 import { userObjectActions } from "../store";
+import { GrSearch } from "react-icons/gr";
 
 function Navigation(): JSX.Element {
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ function Navigation(): JSX.Element {
               <button onClick={Logout} className={style.btn}>
                 Logout
               </button>
+              <GrSearch className={style.searchIcon} />
             </div>
           ) : (
             // 로그인 안 했을 때
@@ -125,6 +127,7 @@ function Navigation(): JSX.Element {
               >
                 Login
               </NavLink>
+              <GrSearch className={style.searchIcon} />
             </div>
           )}
 
