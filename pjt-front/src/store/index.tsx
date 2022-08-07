@@ -11,8 +11,20 @@ const loadingSlice = createSlice({
   },
 });
 
-const authInitialState: null | User = null;
+const firstChatSlice = createSlice({
+  name: "isFirst",
+  initialState: true,
+  reducers: {
+    isFirst(state: boolean) {
+      return true;
+    },
+    isNotFirst(state: boolean) {
+      return false;
+    },
+  },
+});
 
+const authInitialState: null | User = null;
 const userObjectSlice = createSlice({
   name: "userObject",
   initialState: authInitialState,
@@ -34,7 +46,6 @@ const userObjectSlice = createSlice({
 });
 
 const searchInitialState: ArtworkItem[] = [];
-
 const searchResultsSlice = createSlice({
   name: "searchResults",
   initialState: searchInitialState,
@@ -45,15 +56,31 @@ const searchResultsSlice = createSlice({
   },
 });
 
+const chatPartnerInitialState: string = "";
+const chatPartnerSlice = createSlice({
+  name: "chatPartner",
+  initialState: chatPartnerInitialState,
+  reducers: {
+    setPartner(state: string, actions: { type: string; payload: string }) {
+      return actions.payload;
+    },
+  },
+});
+
 const store = configureStore({
   reducer: {
     loading: loadingSlice.reducer,
     userObject: userObjectSlice.reducer,
     searchResults: searchResultsSlice.reducer,
+    chatPartner: chatPartnerSlice.reducer,
+    isFirst: firstChatSlice.reducer,
   },
 });
 
 export const loadingActions = loadingSlice.actions;
 export const userObjectActions = userObjectSlice.actions;
 export const searchResultsActions = searchResultsSlice.actions;
+export const chatPartnerActions = chatPartnerSlice.actions;
+export const firstChatActions = firstChatSlice.actions;
+
 export default store;

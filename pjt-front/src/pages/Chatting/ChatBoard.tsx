@@ -1,147 +1,110 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { User } from "../../Interface";
-import React, {
-  Dispatch,
-  useEffect,
-  useState,
-  ChangeEvent,
-  FormEvent,
-} from "react";
-import { MessageObject } from "../../Interface";
-// import socketIOClient from "socket.io-client";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { dbService } from "../../fbase";
+import { User } from "../../Interface";
+import style from "./ChatBoard.module.css";
+import socketIOClient from "socket.io-client";
+import ChatInput from "./ChatInput";
 
-interface Props {
-  roomName: string | null;
-  setRoomName: Dispatch<React.SetStateAction<string | null>>;
-  userObject: User;
-  selectChat: string | null;
+export interface Message {
+  sender: string;
+  createdDate: number;
+  message: string;
+  receiver: string;
 }
 
-interface SubProps {
-  message: MessageObject;
-}
+const SOCKET = socketIOClient("localhost:4002");
 
-// const SOCKET = socketIOClient("localhost:4002");
+function ChatBoard() {
+  const [messageList, setMessageList] = useState<Message[]>([]);
+  const userObject = useSelector(
+    (state: { userObject: User }) => state.userObject
+  );
+  const chatPartner = useSelector(
+    (state: { chatPartner: string }) => state.chatPartner
+  );
 
-// 페이지 우측 현재 채팅 중인 채팅방 컴포넌트
-function ChatBoard({ roomName, setRoomName, userObject, selectChat }: Props) {
-  const [messageList, setMessageList] = useState<MessageObject[]>([]);
-  const [newMessage, setNewMessage] = useState<string>("");
+  const getChats = async () => {
+    const roomName = [userObject.email, chatPartner];
+    roomName.sort();
+    const realRoomName: string = roomName[0] + roomName[1];
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+    const q = query(
+      collection(dbService, "Chatting"),
+      where("roomName", "==", realRoomName),
+      orderBy("createdDate", "asc")
+    );
 
-    setNewMessage(value);
-  };
+    const chats = await getDocs(q);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    const loadMessages: Message[] = chats.docs.map((doc) => {
+      const { sender, receiver, message, createdDate } = doc.data();
+      return { sender, receiver, message, createdDate };
+    });
 
-    if (userObject.email && roomName) {
-      const newMessageObject: MessageObject = {
-        message: newMessage,
-        email: userObject.email,
-        createdAt: Date.now(),
-        roomName: roomName,
-      };
-
-      // SOCKET.emit("send message", newMessageObject, selectChat);
-
-      // db에 저장하는 코드 필요
-      setMessageList((prev) => prev.concat(newMessageObject));
-    }
-
-    setNewMessage("");
-  };
-
-  const backClick = () => {
-    setRoomName(null);
+    setMessageList(loadMessages);
   };
 
   useEffect(() => {
-    // SOCKET.emit("enter_room", roomName);
-  }, [roomName]);
+    /* eslint-disable */
+    getChats();
+  }, [chatPartner]);
 
   useEffect(() => {
-    // 상대방과의 기존 채팅 목록을 가져옴
-    const getChat = async () => {
-      if (roomName) {
-        const q = query(
-          collection(dbService, "chatting"),
-          where(roomName, "==", "roomName"),
-          orderBy("createdAt", "asc")
-        );
+    const roomName = [userObject.email, chatPartner];
+    roomName.sort();
+    const realRoomName: string = roomName[0] + roomName[1];
 
-        const data = (await getDocs(q)).docs;
-
-        const chats: MessageObject[] = data.map((chat) => {
-          const { message, email, createdAt, roomName } = chat.data();
-
-          const chatData: MessageObject = {
-            roomName,
-            message,
-            email,
-            createdAt,
-          };
-
-          return chatData;
-        });
-
-        setMessageList(chats);
-      }
-    };
-
-    getChat();
-  }, [roomName]);
-
-  useEffect(() => {
-    // SOCKET.on("receive message", (message: MessageObject) => {
-    //   setMessageList((prev) => prev.concat(message));
-    // });
+    SOCKET.emit("enter_room", realRoomName);
   }, []);
 
+  useEffect(() => {
+    SOCKET.on("receive message", (data) => {
+      setMessageList((prev) => prev.concat(data));
+    });
+  }, []);
+
+  useEffect(() => {
+    var chattingBox = document.getElementById("chatBox");
+    if (chattingBox) {
+      chattingBox.scrollTop = chattingBox.scrollHeight;
+    }
+  }, [messageList]);
+
   return (
-    <div>
-      <button onClick={backClick}>뒤로가기</button>
-      <div>
-        {messageList.map((message: MessageObject, i) => {
-          return (
-            <div key={i}>
-              <MessageComponent message={message}></MessageComponent>
-            </div>
-          );
+    <div className={style.ChatBoard}>
+      <div className={style.Header}></div>
+      <div id="chatBox" className={style.Body}>
+        {messageList.map((item, i) => {
+          const t = new Date(item.createdDate);
+
+          const hour = t.getHours();
+          const minute = t.getMinutes();
+
+          if (item.sender === chatPartner) {
+            return (
+              <div className={style.yourMessageBox} key={i}>
+                <span className={style.message}>{item.message}</span>
+                <span className={style.time}>
+                  {hour}시 {minute}분
+                </span>
+              </div>
+            );
+          } else {
+            return (
+              <div className={style.myMessageBox} key={i}>
+                <span className={style.time}>
+                  {hour}시 {minute}분
+                </span>
+                <span className={style.message}>{item.message}</span>
+              </div>
+            );
+          }
         })}
       </div>
-      <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          placeholder="메시지를 입력해주세요."
-          value={newMessage}
-          onChange={onChange}
-          required
-        />
-        <input type="submit" value="전송" />
-      </form>
+      <ChatInput setMessageList={setMessageList} />
     </div>
-  );
-}
-
-// ----------------------------------------------------------------------------------
-
-// 메시지 컴포넌트
-function MessageComponent({ message }: SubProps) {
-  const d = new Date(message.createdAt);
-  // const date = d.getDate() 일 구분 어떻게 하지
-  const minute = d.getMinutes();
-  const hour = d.getHours();
-
-  return (
-    <>
-      <p>{message.email}</p>
-      <p>{message.message}</p>
-      <span>{`${hour}:${minute}`}</span>
-    </>
   );
 }
 

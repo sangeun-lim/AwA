@@ -253,10 +253,24 @@ const api = {
         method: "post",
         data: {
           genre: formData.genres,
-          gerne_count: formData.genres.length,
+          genre_count: formData.genres.length,
           max_price: formData.max_price,
           min_price: formData.min_price,
           status: formData.status,
+        },
+      });
+
+      return response;
+    },
+  },
+
+  chatting: {
+    getUserList: async (userEmailList: string[]) => {
+      const response = await axios({
+        url: rf.chatting.getUserList(),
+        method: "post",
+        data: {
+          userEmailList,
         },
       });
 

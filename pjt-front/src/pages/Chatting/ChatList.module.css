@@ -1,0 +1,27 @@
+.ChatList {
+  height: 100%;
+  width: 20%;
+  background-color: aliceblue;
+}
+
+.Header {
+  height: 50px;
+  width: 100%;
+  background-color: beige;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.Header > span {
+  text-align: center;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.Body {
+  overflow: scroll;
+  width: 100%;
+  height: calc(100% - 50px);
+  background-color: bisque;
+}

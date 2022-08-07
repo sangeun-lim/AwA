@@ -18,7 +18,6 @@ import Rank from "../pages/Rank";
 import Error from "../pages/Error";
 import Navigation from "./Navigation";
 import { User } from "./../Interface";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -29,8 +28,6 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
-
-  const [selectChat, setSelectChat] = useState<string | null>(null); // 채팅 상대유저의 이메일을 저장
 
   return (
     <>
@@ -46,17 +43,8 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route path="/profile/:email" element={<Profile />} />
-          {userObject && (
-            <Route
-              path="/chatting"
-              element={
-                <Chatting
-                  selectChat={selectChat}
-                  setSelectChat={setSelectChat}
-                />
-              }
-            />
-          )}
+          <Route path="/profile/favorite" element={<Favorite />} />
+          {userObject && <Route path="/chatting" element={<Chatting />} />}
           <Route path="/auction" element={<Auction />} />
           <Route
             path="/auction/detail/:id"

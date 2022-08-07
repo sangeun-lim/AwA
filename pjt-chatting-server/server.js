@@ -20,15 +20,17 @@ io.on("connection", (socket) => {
     socket.to(roomName).emit("hiMessage");
   });
 
-  socket.on("send message", (item, receiver) => {
-    socket.to(item.roomName).emit("receive message", {
-      email: item.email,
-      message: item.message,
-      roomName: item.roomName,
-      createdAt: item.createdAt,
-    });
-
-    socket.to(receiver).emit("update chatting list", item.name);
+  socket.on("send message", (item, realRoomName) => {
+    socket
+      .to(realRoomName)
+      .to(item.receiver)
+      .to(item.sender)
+      .emit("receive message", {
+        sender: item.sender,
+        receiver: item.receiver,
+        message: item.message,
+        createdDate: item.createdDate,
+      });
   });
 
   socket.on("disconnect", function () {
