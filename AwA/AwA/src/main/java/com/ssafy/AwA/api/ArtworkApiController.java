@@ -52,7 +52,7 @@ public class ArtworkApiController {
 
     @PutMapping("/{artwork_id}")
     public ArtworkResponseDto updateArtwork(@PathVariable("artwork_id") Long artwork_id, @RequestBody @Valid ArtworkRequestDto artworkRequestDto, @RequestHeader(value="X-AUTH-TOKEN") String token, @RequestHeader(value="RefreshToken") String refreshToken) {
-        ArtworkResponseDto artworkResponseDto = artworkService.updateArtwork(artwork_id, artworkRequestDto);
+        ArtworkResponseDto artworkResponseDto = artworkService.updateArtwork(artwork_id, artworkRequestDto, token);
         return artworkResponseDto;
     }
 

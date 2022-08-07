@@ -1,5 +1,6 @@
 package com.ssafy.AwA.service;
 
+import com.ssafy.AwA.config.security.JwtTokenProvider;
 import com.ssafy.AwA.domain.artwork.Artwork;
 import com.ssafy.AwA.domain.attachment.Attachment;
 import com.ssafy.AwA.domain.comment.Comment;
@@ -31,8 +32,8 @@ public class ArtworkService {
     private final AttachmentRepositroy attachmentRepositroy;
     private final ProfileRepository profileRepository;
     private final FollowRepository followRepository;
-
     private final CommentRepository commentRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public ArtworkResponseDto saveArtwork(ArtworkRequestDto artworkRequestDto) {
         List<Attachment> attachmentList = new ArrayList<>();
@@ -186,9 +187,14 @@ public class ArtworkService {
                 .build();
     }
 
-    public ArtworkResponseDto updateArtwork(Long artwork_id, ArtworkRequestDto artworkRequestDto) {
+    public ArtworkResponseDto updateArtwork(Long artwork_id, ArtworkRequestDto artworkRequestDto, String token) {
         Artwork targetArtwork = artworkRepository.findByArtwork_id(artwork_id);
+
         User targetUser = userRepository.findByNickname(artworkRequestDto.getSell_user_nickname());
+        if(!targetUser.getEmail().equals(jwtTokenProvider.getUserEmail(token)))
+        {
+            return null;
+        }
         List<Attachment> attachmentInArtwork = attachmentRepositroy.findAllByArtwork_id(targetArtwork.getArtwork_id());
 
         for(int i=0;i<attachmentInArtwork.size();i++)

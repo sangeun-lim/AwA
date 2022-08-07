@@ -44,7 +44,6 @@ public class ArtworkResponseDto implements Comparable<ArtworkResponseDto> {
     private List<CommentResponseDto> comments;
 
     @Builder
-
     public ArtworkResponseDto(Long artwork_id, LocalDateTime createdDate, String profile_picture, String sell_user_nickname, String sell_user_email, String title, int price, List<AttachmentRequestDto> attachmentRequestDtoList,
                               String description, List<String> genre, String ingredient, int like_count, int view_count, List<CommentResponseDto> comments, int is_sell) {
         this.artwork_id = artwork_id;

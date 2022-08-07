@@ -74,6 +74,8 @@ public class UserService {
                .gender(targetUser.isGender())
                .nickname(targetUser.getNickname())
                .email(targetUser.getEmail())
+               .is_manager(targetUser.is_manager())
+               .is_seller(targetUser.is_seller())
                .build();
 
        return responseUserDto;
