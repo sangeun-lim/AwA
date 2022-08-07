@@ -6,7 +6,6 @@ import Login from "../pages/auth/Login";
 import SignUp from "../pages/auth/SignUp";
 import FindPw from "../pages/auth/FindPw";
 import Profile from "../pages/profile/Profile";
-import Favorite from "../pages/profile/Favorite";
 import Chatting from "../pages/chatting/Chatting";
 import Auction from "../pages/auction/Auction";
 import AuctionDetailOrUpdate from "../pages/auction/AuctionDetailOrUpdate";

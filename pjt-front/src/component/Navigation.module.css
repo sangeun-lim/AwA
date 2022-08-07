@@ -146,6 +146,7 @@
   .navList > .right {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     width: 100%;
   }
 
@@ -170,4 +171,9 @@
 
 .logoImg {
   height: 50px;
+}
+
+.searchIcon {
+  font-size: 18px;
+  margin: 10px;
 }

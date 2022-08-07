@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// import styled from "styled-components";
+import style from "./Auction.module.css";
 
 import api from "../../api/api";
 import AuctionCard from "../../component/AuctionCard";
 import { loadingActions } from "../../store";
 import { ArtworkItem } from "./../../Interface";
+import SearchComponent from "../../component/SearchComponent";
 
 function Auction(): JSX.Element {
   const navigate = useNavigate();
@@ -77,17 +80,25 @@ function Auction(): JSX.Element {
   }, [dispatch]);
 
   return (
-    <>
-      <h1>Auction</h1>
-      <button onClick={onClick}>상품등록</button>
-      {itemList.map((item) => {
-        return (
-          <div key={item.artwork_id}>
-            <AuctionCard item={item}></AuctionCard>
-          </div>
-        );
-      })}
-    </>
+    <div className={style.auction}>
+      <section className={style.auctionTop}>
+        <SearchComponent />
+      </section>
+      <div>
+        <button onClick={onClick} className={style.auctionButton}>
+          상품등록
+        </button>
+        <div className={`${style.auctionList}`}>
+          {itemList.map((item) => {
+            return (
+              <div key={item.artwork_id} className={style.auctionCard}>
+                <AuctionCard item={item}></AuctionCard>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }
 

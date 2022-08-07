@@ -62,7 +62,7 @@ interface Media {
   url: string;
 }
 
-interface ArtworkComment {
+export interface ArtworkComment {
   comment_id: number;
   content: string;
   createdDate: Date;
@@ -138,5 +138,7 @@ export interface editComment {
   comment_id: number;
   content: string;
   nickname: string;
-  parent_artwork_id: string;
+  parent_artwork_id: number;
+  createdDate: Date;
+  modifiedDate: Date;
 }

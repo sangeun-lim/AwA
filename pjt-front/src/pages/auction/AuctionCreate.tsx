@@ -11,6 +11,7 @@ import { newItemDefaultData } from "../../defaultData";
 import api from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
+import style from "./AuctionCreateUpdate.module.css";
 
 interface ButtonProps {
   item: string;
@@ -22,7 +23,7 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   useEffect(() => {}, []);
 
   return (
-    <div>
+    <div className={style.selected}>
       <b>{item}</b>
       <button
         onClick={(e) => {
@@ -50,6 +51,7 @@ function AuctionCreate(): JSX.Element {
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );
+  const [fileName, setFileName] = useState<string>();
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -60,6 +62,11 @@ function AuctionCreate(): JSX.Element {
         [name]: value,
       };
     });
+  };
+
+  const loadName = (e: any) => {
+    const file = e.target.files[0].name;
+    setFileName(file);
   };
 
   // 이미지를 여러개 가져와 보자!!!!!
@@ -107,6 +114,10 @@ function AuctionCreate(): JSX.Element {
       const newGenreList = prev?.filter((gen) => gen !== item);
       return newGenreList;
     });
+  };
+
+  const onCancelClick = () => {
+    navigate("/auction");
   };
 
   const onSubmit = async (e: any) => {
@@ -164,97 +175,148 @@ function AuctionCreate(): JSX.Element {
   }, [userObject.nickname]);
 
   return (
-    <div>
-      <h1>Auction Create</h1>
+    <div className={style.auction}>
+      <section className={style.auctionTop}>
+        <div>
+          <div className={style.title}>Auction</div>
+          <div className={style.content}>판매할 상품을 등록해주세요!</div>
+        </div>
+      </section>
       <form onSubmit={onSubmit}>
-        <label htmlFor="input-file" onChange={handleAddImages}>
-          <input type="file" accept="image/*" id="input-file" multiple />
-          {/* <Plus fill="#646F7C" /> */}
-          <span>사진추가</span>
-        </label>
-        {showImages && (
-          <div>
-            {showImages.map((image, id) => (
-              <div key={id}>
-                <img
-                  src={image}
-                  alt={`${image}-${id}`}
-                  width="30%"
-                  height="30%"
-                />
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (window.confirm("사진뺄거야?")) {
-                      handleDeleteImage(id);
-                    }
-                  }}
-                >
-                  X
-                </button>
+        <div className={style.formBox}>
+          <div className={style.image}>
+            <label
+              htmlFor="input-file"
+              onChange={handleAddImages}
+              className={style.imageInput}
+            >
+              <input
+                type="file"
+                accept="image/*"
+                id="input-file"
+                onChange={loadName}
+                multiple
+              />
+              <input
+                className={style.imageUpload}
+                placeholder={fileName}
+                readOnly
+              />
+              <span>사진추가</span>
+            </label>
+            {showImages && (
+              <div className={style.showImages}>
+                {showImages.map((image, id) => (
+                  <div key={id} className={style.imageSample}>
+                    <img src={image} alt={`${image}-${id}`} />
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (window.confirm("사진뺄거야?")) {
+                          handleDeleteImage(id);
+                        }
+                      }}
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
-        <br />
-        <input
-          name="title"
-          type="text"
-          placeholder="title"
-          value={newItem.title || ""}
-          onChange={onChange}
-          required
-        />
-        <br />
-        <input
-          name="price"
-          type="number"
-          placeholder="price"
-          min="0"
-          step="1000"
-          value={newItem.price}
-          onChange={onChange}
-          required
-        />
-        <br />
-        {genresList &&
-          genresList.map((item, i) => (
-            <div key={i}>
-              <GenreButton deleteGenre={deleteGenre} item={item}></GenreButton>
+          <div className={style.info}>
+            <div className={style.inputContainer}>
+              <input
+                name="title"
+                id="title"
+                type="text"
+                value={newItem.title || ""}
+                onChange={onChange}
+                className={style.input}
+                required
+              />
+              <label htmlFor="title">작품명</label>
+              <div className={style.bar}></div>
             </div>
-          ))}
-        <select name="genre" id="genre" onChange={selectGenres} defaultValue="">
-          <option value="" disabled>
-            선택
-          </option>
-          <option value="회화">회화</option>
-          <option value="조소">조소</option>
-          <option value="건축">건축</option>
-          <option value="공예">공예</option>
-          <option value="서예">서예</option>
-          <option value="디지털">디지털</option>
-          <option value="기타">기타</option>
-        </select>
-        <br />
-        <input
-          name="ingredient"
-          type="text"
-          placeholder="재료"
-          value={newItem.ingredient || ""}
-          onChange={onChange}
-          required
-        />
-        <br />
-        <textarea
-          name="description"
-          cols={30}
-          rows={10}
-          placeholder="상세 설명"
-          value={newItem.description || ""}
-          onChange={onChange}
-        ></textarea>
-        <br />
-        <input type="submit" value="작성" />
+            <div className={style.inputContainer}>
+              <input
+                name="price"
+                id="price"
+                type="number"
+                min="0"
+                step="1000"
+                value={newItem.price}
+                onChange={onChange}
+                className={style.input}
+                required
+              />
+              <label htmlFor="price">가격</label>
+              <div className={style.bar}></div>
+            </div>
+            <div>
+              <div className={style.selectLabel}>장르선택</div>
+              <select
+                name="genre"
+                id="genre"
+                onChange={selectGenres}
+                defaultValue=""
+                className={style.selectBox}
+              >
+                <option value="" disabled>
+                  선택
+                </option>
+                <option value="회화">회화</option>
+                <option value="조소">조소</option>
+                <option value="건축">건축</option>
+                <option value="공예">공예</option>
+                <option value="서예">서예</option>
+                <option value="디지털">디지털</option>
+                <option value="기타">기타</option>
+              </select>
+            </div>
+            <div className={style.selectList}>
+              {genresList &&
+                genresList.map((item, i) => (
+                  <div key={i}>
+                    <GenreButton
+                      deleteGenre={deleteGenre}
+                      item={item}
+                    ></GenreButton>
+                  </div>
+                ))}
+            </div>
+            <div className={style.inputContainer}>
+              <input
+                name="ingredient"
+                id="ingredient"
+                type="text"
+                value={newItem.ingredient || ""}
+                onChange={onChange}
+                className={style.input}
+                required
+              />
+              <label htmlFor="ingredient">재료</label>
+              <div className={style.bar}></div>
+            </div>
+            <div className={style.inputContainer}>
+              <div className={style.selectLabel}>상세 설명</div>
+              <textarea
+                name="description"
+                cols={30}
+                rows={10}
+                value={newItem.description || ""}
+                onChange={onChange}
+                className={style.inputTextarea}
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div className={style.formButtonBox}>
+          <input type="submit" value="작성" className={style.submitButton} />
+          <button onClick={onCancelClick} className={style.btn}>
+            취소
+          </button>
+        </div>
       </form>
     </div>
   );
