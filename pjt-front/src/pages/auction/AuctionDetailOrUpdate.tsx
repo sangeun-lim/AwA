@@ -19,6 +19,7 @@ import ReportModal from "./ReportModal";
 import CommentCreate from "./CommentCreate";
 import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
 import axios from "axios";
+import style from "./AuctionCreateUpdate.module.css";
 
 interface ButtonProps {
   item: string;
@@ -30,7 +31,7 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
   useEffect(() => {}, []);
 
   return (
-    <div>
+    <div className={style.selected}>
       <b>{item}</b>
       <button
         onClick={(e) => {
@@ -75,6 +76,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
   const [showImages, setShowImages] = useState<string[]>([]);
   // 삭제할 이미지 url
   const [delImages, setDelImages] = useState<string[]>([]);
+  const [fileName, setFileName] = useState<string>();
 
   // 수정 상태 변화
   const onChange = (e: any) => {
@@ -86,6 +88,11 @@ function AuctionDetailOrUpdate(): JSX.Element {
         [name]: value,
       };
     });
+  };
+
+  const loadName = (e: any) => {
+    const file = e.target.files[0].name;
+    setFileName(file);
   };
 
   // 이미지를 여러개 가져와 보자!!!!!
@@ -390,149 +397,212 @@ function AuctionDetailOrUpdate(): JSX.Element {
   return (
     <div>
       {onEdit ? (
-        <div>
-          <h1>Auction Edit</h1>
+        <div className={style.auction}>
+          <section className={style.auctionTop}>
+            <div>
+              <div className={style.title}>Auction</div>
+              <div className={style.content}>판매중인 상품을 수정해주세요!</div>
+            </div>
+          </section>
           <form onSubmit={onSubmit}>
-            <label htmlFor="input-file" onChange={handleAddImages}>
-              <input type="file" id="input-file" multiple />
-              {/* <Plus fill="#646F7C" /> */}
-              <span>사진추가</span>
-            </label>
-            {showImages && (
-              <div>
-                {showImages.map((image, id) => (
-                  <div key={id}>
-                    <img
-                      src={image}
-                      alt={`${image}-${id}`}
-                      width="20%"
-                      height="20%"
-                    />
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (window.confirm("사진뺄거야?")) {
-                          handleDeleteImage(id);
-                        }
-                      }}
-                    >
-                      X
-                    </button>
+            <div className={style.formBox}>
+              <div className={style.image}>
+                <label
+                  htmlFor="input-file"
+                  onChange={handleAddImages}
+                  className={style.imageInput}
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="input-file"
+                    onChange={loadName}
+                    multiple
+                  />
+                  <input
+                    className={style.imageUpload}
+                    placeholder={fileName}
+                    readOnly
+                  />
+                  <span>사진추가</span>
+                </label>
+                {showImages && (
+                  <div className={style.showImages}>
+                    {showImages.map((image, id) => (
+                      <div key={id} className={style.imageSample}>
+                        <img src={image} alt={`${image}-${id}`} />
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (window.confirm("사진뺄거야?")) {
+                              handleDeleteImage(id);
+                            }
+                          }}
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            )}
-            <br />
-            <input
-              name="title"
-              type="text"
-              placeholder="title"
-              value={editItem.title || ""}
-              onChange={onChange}
-              required
-            />
-            <br />
-            <input
-              name="price"
-              type="number"
-              placeholder="price"
-              min="0"
-              step="1000"
-              value={editItem.price}
-              onChange={onChange}
-              required
-            />
-            <br />
-            {genresList &&
-              genresList.map((item, i) => (
-                <div key={i}>
-                  <GenreButton
-                    deleteGenre={deleteGenre}
-                    item={item}
-                  ></GenreButton>
+              <div className={style.info}>
+                <div className={style.inputContainer}>
+                  <input
+                    name="title"
+                    type="text"
+                    placeholder="title"
+                    value={editItem.title || ""}
+                    onChange={onChange}
+                    className={style.input}
+                    required
+                  />
+                  <label htmlFor="title">작품명</label>
+                  <div className={style.bar}></div>
                 </div>
-              ))}
-            <select
-              name="genres"
-              id="genres"
-              onChange={selectGenres}
-              defaultValue=""
-            >
-              <option value="" disabled>
-                선택
-              </option>
-              <option value="회화">회화</option>
-              <option value="조소">조소</option>
-              <option value="건축">건축</option>
-              <option value="공예">공예</option>
-              <option value="서예">서예</option>
-              <option value="디지털">디지털</option>
-              <option value="기타">기타</option>
-            </select>
-            <br />
-            <input
-              name="ingredient"
-              type="text"
-              placeholder="재료"
-              value={editItem.ingredient || ""}
-              onChange={onChange}
-              required
-            />
-            <br />
-            <textarea
-              name="description"
-              cols={30}
-              rows={10}
-              placeholder="상세 설명"
-              value={editItem.description || ""}
-              onChange={onChange}
-            ></textarea>
-            <br />
-            <input type="submit" value="수정" />
+                <div className={style.inputContainer}>
+                  <input
+                    name="price"
+                    type="number"
+                    placeholder="price"
+                    min="0"
+                    step="1000"
+                    value={editItem.price}
+                    onChange={onChange}
+                    className={style.input}
+                    required
+                  />
+                  <label htmlFor="price">가격</label>
+                  <div className={style.bar}></div>
+                </div>
+                <div>
+                  <div className={style.selectLabel}>장르선택</div>
+                  <select
+                    name="genres"
+                    id="genres"
+                    onChange={selectGenres}
+                    defaultValue=""
+                    className={style.selectBox}
+                  >
+                    <option value="" disabled>
+                      선택
+                    </option>
+                    <option value="회화">회화</option>
+                    <option value="조소">조소</option>
+                    <option value="건축">건축</option>
+                    <option value="공예">공예</option>
+                    <option value="서예">서예</option>
+                    <option value="디지털">디지털</option>
+                    <option value="기타">기타</option>
+                  </select>
+                </div>
+                <div className={style.selectList}>
+                  {genresList &&
+                    genresList.map((item, i) => (
+                      <div key={i}>
+                        <GenreButton
+                          deleteGenre={deleteGenre}
+                          item={item}
+                        ></GenreButton>
+                      </div>
+                    ))}
+                </div>
+                <div className={style.inputContainer}>
+                  <input
+                    name="ingredient"
+                    type="text"
+                    placeholder="재료"
+                    value={editItem.ingredient || ""}
+                    onChange={onChange}
+                    className={style.input}
+                    required
+                  />
+                  <label htmlFor="ingredient">재료</label>
+                  <div className={style.bar}></div>
+                </div>
+                <div className={style.inputContainer}>
+                  <div className={style.selectLabel}>상세 설명</div>
+                  <textarea
+                    name="description"
+                    cols={30}
+                    rows={10}
+                    placeholder="상세 설명"
+                    value={editItem.description || ""}
+                    onChange={onChange}
+                    className={style.inputTextarea}
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <div className={style.formButtonBox}>
+              <input
+                type="submit"
+                value="수정"
+                className={style.submitButton}
+              />
+            </div>
           </form>
         </div>
       ) : (
-        <div>
-          <h1>AuctionDetail</h1>
-          <ReportModal artworkId={address} />
-          {item.attachmentRequestDtoList.length &&
-            item.attachmentRequestDtoList.map(
-              (image: { type: string; url: string }) => (
-                <div key={image.url}>
-                  <img
-                    src={image.url}
-                    alt={`${image.url}`}
-                    width="30%"
-                    height="30%"
-                  />
-                </div>
-              )
-            )}
-          <h2>{item.title}</h2>
-          <p>작성자 : {item.sell_user_nickname}</p>
-          <p>가격 : {item.price}원</p>
-          <p>
-            장르 :{" "}
-            {item.genre.map((item: string, i: number) => (
-              <span key={i}>{item} </span>
-            ))}
-          </p>
-          <p>재료 : {item.ingredient}</p>
-          <p>{item.description}</p>
-          <button onClick={onEditClick}>수정</button>
-          <button onClick={onDeleteClick}>삭제</button>
-          <button onClick={onListClick}>목록</button>
-          <hr />
-          <p>조회수 : {item.view_count}</p>
-          {userObject?.nickname ? (
-            <p>
-              <button onClick={onLikeClick}>❤</button>
-              좋아요 : {item.like_count}
-            </p>
-          ) : (
-            <p>좋아요 : {item.like_count} </p>
-          )}
-          <div>
+        <div className={style.auction}>
+          <div className={style.detailTop}>
+            <p>조회수 : {item.view_count}</p>
+            <div>
+              {userObject?.nickname ? (
+                <p className={style.detailLike}>
+                  <button onClick={onLikeClick}>❤</button>
+                  {item.like_count}
+                </p>
+              ) : (
+                <p className={style.detailLike}>{item.like_count} </p>
+              )}
+              <ReportModal artworkId={address} />
+            </div>
+          </div>
+          <div className={style.detail}>
+            <div className={style.detailImage}>
+              {item.attachmentRequestDtoList.length &&
+                item.attachmentRequestDtoList.map(
+                  (image: { type: string; url: string }) => (
+                    <div key={image.url} className={style.imageSample}>
+                      <img src={image.url} alt={`${image.url}`} />
+                    </div>
+                  )
+                )}
+            </div>
+            <div className={style.detailInfo}>
+              <div className={style.title}>{item.title}</div>
+              <div className={style.userName}>{item.sell_user_nickname}</div>
+              <hr />
+              <div className={style.detailInfoBox}>
+                <div>가격</div>
+                <p>{item.price}원</p>
+              </div>
+              <hr />
+              <div className={style.detailInfoBox}>
+                <div>장르</div>
+                <p>
+                  {item.genre.map((item: string, i: number) => (
+                    <span key={i}>{item} </span>
+                  ))}
+                </p>
+              </div>
+              <hr />
+              <div className={style.detailInfoBox}>
+                <div>재료</div>
+                <p>{item.ingredient}</p>
+              </div>
+            </div>
+          </div>
+          <div className={style.detailBox}>
+            <div>상세 정보</div>
+            <p>{item.description}</p>
+            <div>
+              <button onClick={onEditClick}>수정</button>
+              <button onClick={onDeleteClick}>삭제</button>
+            </div>
+          </div>
+          <div className={style.detailBox}>
             {item.comments &&
               item.comments.map((item) => {
                 return (
@@ -546,9 +616,11 @@ function AuctionDetailOrUpdate(): JSX.Element {
                   </li>
                 );
               })}
+            <CommentCreate artworkId={address}></CommentCreate>
           </div>
-          <hr />
-          <CommentCreate artworkId={address}></CommentCreate>
+          <div className={style.detailBottom}>
+            <button onClick={onListClick}>목록</button>
+          </div>
         </div>
       )}
     </div>
