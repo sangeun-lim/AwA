@@ -1,80 +1,134 @@
-import { User } from "../../Interface";
-import React, { Dispatch, useEffect, useState } from "react";
-import { ChattingRoom } from "../../Interface";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import api from "../../api/api";
 import { dbService } from "../../fbase";
+import { User } from "../../Interface";
+import { firstChatActions } from "../../store";
+import style from "./ChatList.module.css";
+import ChatListItem from "./ChatListItem";
+import socketIOClient from "socket.io-client";
 
-interface Props {
-  userObject: User;
-  setSelectChat: Dispatch<React.SetStateAction<string | null>>;
+export interface MyChatList {
+  id?: string;
+  partnerEmail?: string;
+  nickname?: string;
+  profile_picture_url?: string;
+  createdDate?: number;
+  recentlyDate?: string;
+  recentlyMessage?: string;
 }
 
-interface SubProps {
-  setSelectChat: Dispatch<React.SetStateAction<string | null>>;
-  item: string;
-}
+const SOCKET = socketIOClient("localhost:4002");
 
-// 페이지 좌측 채팅 리스트 목록 컴포넌트
-function ChatList({ userObject, setSelectChat }: Props): JSX.Element {
-  const [chatList, setChatList] = useState<ChattingRoom[]>([]);
+function ChatList(): JSX.Element {
+  const dispatch = useDispatch();
 
-  // 처음에 들어왔을 때, 해당 유저의 유저 목록을 불러오는 요청 있어야됨. => chatList에 저장
-  useEffect(() => {
-    const callChatList = async () => {
-      if (userObject.email) {
-        const q = query(
-          collection(dbService, "chatList"),
-          where(userObject.email, "in", ["user1, user2"])
-        );
-
-        const chats = (await getDocs(q)).docs;
-
-        const docs: ChattingRoom[] = chats.map((chat) => {
-          const { user1, user2 } = chat.data();
-          const roomData: ChattingRoom = {
-            id: chat.id,
-            user1,
-            user2,
-          };
-          return roomData;
-        });
-
-        setChatList(docs);
-      }
-    };
-
-    callChatList();
-  }, [userObject.email]);
-
-  return (
-    <div>
-      {chatList.map((item) => {
-        const email = userObject.email === item.user1 ? item.user2 : item.user1;
-
-        return (
-          <ChatListComponent
-            key={item.id}
-            item={email}
-            setSelectChat={setSelectChat}
-          ></ChatListComponent>
-        );
-      })}
-    </div>
+  const userObject = useSelector(
+    (state: { userObject: User }) => state.userObject
   );
-}
+  const chatPartner = useSelector(
+    (state: { chatPartner: string }) => state.chatPartner
+  );
+  const [chatList, setChatList] = useState<MyChatList[]>([]);
 
-// ----------------------------------------------------------------------------------
+  const getChatList = async () => {
+    const q = query(
+      collection(dbService, "ChattingRoom"),
+      where("myEmail", "==", userObject.email),
+      orderBy("recentlyDate", "desc")
+    );
 
-// 채팅방 리스트 아이템 컴포넌트
-function ChatListComponent({ setSelectChat, item }: SubProps) {
-  const onClick = () => {
-    setSelectChat(item);
+    const myChatList = await getDocs(q);
+
+    const userEmailList: string[] = [];
+    const midChatList: MyChatList[] = myChatList.docs.map((doc) => {
+      const chatRoom: MyChatList = { ...doc.data(), id: doc.id };
+
+      if (chatPartner === doc.data().partnerEmail) {
+        dispatch(firstChatActions.isNotFirst());
+      }
+
+      userEmailList.push(doc.data().partnerEmail);
+      return chatRoom;
+    });
+
+    const response = await api.chatting.getUserList(userEmailList);
+
+    if (response.status === 200) {
+      const chattingList: MyChatList[] = [];
+      for (let i = 0; i < midChatList.length; i++) {
+        chattingList.push({ ...midChatList[i], ...response.data[i] });
+      }
+
+      setChatList(chattingList);
+    }
   };
 
+  useEffect(() => {
+    /* eslint-disable */
+    getChatList();
+  }, []);
+
+  useEffect(() => {
+    SOCKET.emit("enter_room", userObject.email);
+  }, []);
+
+  useEffect(() => {
+    SOCKET.on("receive message", async (data) => {
+      const topChat: MyChatList = {};
+
+      // 기존 채팅방 배열에서 채팅이 온 채팅방을 삭제
+      setChatList((prev) => {
+        return prev.filter((chat) => {
+          if (
+            chat.partnerEmail === data.sender ||
+            chat.partnerEmail === data.receiver
+          ) {
+            topChat.id = chat.id;
+            topChat.createdDate = chat.createdDate;
+            topChat.nickname = chat.nickname;
+            topChat.profile_picture_url = chat.profile_picture_url;
+            topChat.recentlyDate = data.createdDate;
+            topChat.recentlyMessage = data.message;
+            topChat.partnerEmail = chatPartner;
+          }
+
+          return (
+            chat.partnerEmail !== data.sender &&
+            chat.partnerEmail !== data.receiver
+          );
+        });
+      });
+
+      if (!topChat?.id) {
+        const response = await api.chatting.getUserList([chatPartner]);
+        topChat.nickname = response.data.nickname;
+        topChat.profile_picture_url = response.data.profile_picture_url;
+        topChat.createdDate = data.createdDate;
+        topChat.recentlyDate = data.createdData;
+        topChat.recentlyMessage = data.message;
+        topChat.partnerEmail = chatPartner;
+      }
+
+      // 삭제된 채팅방을 맨 위로 올린다.
+      setChatList((prev) => {
+        return [topChat].concat(prev);
+      });
+    });
+  }, []);
+
   return (
-    <>
-      <div onClick={onClick}>{item}</div>
-    </>
+    <div className={style.ChatList}>
+      <div className={style.Header}>
+        <span>내 채팅방 목록</span>
+      </div>
+      <div className={style.Body}>
+        {chatList.map((item, i) => {
+          return <ChatListItem item={item} key={i} />;
+        })}
+      </div>
+    </div>
   );
 }
 

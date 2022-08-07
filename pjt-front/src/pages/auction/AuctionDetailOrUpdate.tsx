@@ -394,7 +394,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
           <h1>Auction Edit</h1>
           <form onSubmit={onSubmit}>
             <label htmlFor="input-file" onChange={handleAddImages}>
-              <input type="file" id="input-file" multiple />
+              <input accept="image/*" type="file" id="input-file" multiple />
               {/* <Plus fill="#646F7C" /> */}
               <span>사진추가</span>
             </label>

@@ -1,4 +1,4 @@
-const HOST = "http://i7c101.p.ssafy.io:8080/";
+const HOST = "http://i7c101.p.ssafy.io:8081/api/";
 
 const AUTH = "auth/";
 const NOTICE = "notice/";
@@ -52,6 +52,10 @@ const rf = {
   like: {
     likeArtwork: (nickname: string, artwork_id: string) =>
       HOST + LIKE + `${nickname}/${artwork_id}`,
+  },
+
+  chatting: {
+    getUserList: () => HOST + PROFILE + "list",
   },
 };
 
