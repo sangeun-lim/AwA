@@ -45,7 +45,8 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
     e.preventDefault();
 
     const response = await axios({
-      url: `http://i7c101.p.ssafy.io:8080/comment/${editComment.comment_id}`,
+      // url: `http://i7c101.p.ssafy.io:8080/comment/${editComment.comment_id}`,
+      url: `http://i7c101.p.ssafy.io:8081/api/comment/${editComment.comment_id}`,
       method: "put",
       headers: {
         "X-AUTH-TOKEN": localStorage.getItem("token") || "",

@@ -2,6 +2,7 @@ import React, { Dispatch, useState } from "react";
 import { ArtworkItem, User } from "../../Interface";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import style from "./Comment.module.css";
 
 interface Props {
   artworkId: string;
@@ -40,7 +41,8 @@ function CommentForm({ artworkId, setItem }: Props): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
     const response = await axios({
-      url: `http://i7c101.p.ssafy.io:8080/comment`,
+      // url: `http://i7c101.p.ssafy.io:8080/comment`,
+      url: "http://i7c101.p.ssafy.io:8081/api/",
       method: "post",
       headers: {
         "X-AUTH-TOKEN": localStorage.getItem("token") || "",
@@ -65,8 +67,7 @@ function CommentForm({ artworkId, setItem }: Props): JSX.Element {
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        <h4>댓글 : </h4>
+      <form onSubmit={onSubmit} className={style.commentForm}>
         <input
           name="content"
           type="text"

@@ -1,0 +1,96 @@
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.search > div {
+  width: 1280px;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 1600px) {
+  .search > div {
+    width: 80%;
+  }
+}
+
+/* searchBar */
+.searchBar {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.searchBar > select {
+  width: 15%;
+  height: 40px;
+  margin: 10px;
+  border: none;
+  padding: 3px;
+}
+
+.searchBar > .searchInput {
+  display: flex;
+  width: 85%;
+  height: 40px;
+  margin: 10px;
+  border-bottom: 1px solid black;
+}
+
+.searchInput > input {
+  width: 100%;
+  border: none;
+}
+
+.searchInput > input:focus {
+  width: 100%;
+  outline: none;
+}
+
+.searchIcon {
+  padding: 7px;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+/* searchOption */
+.searchOption {
+  width: 100%;
+}
+
+.searchOption > span {
+  width: 15%;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.options {
+  display: flex;
+}
+
+.options > div > label {
+  margin: 0 10px;
+  white-space: nowrap;
+  cursor: pointer;
+  padding: 0 15px;
+}
+
+[type="checkbox"]:checked + label {
+  background-color: rgb(230, 230, 230);
+  border-radius: 10px;
+  padding: 0 15px;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.searchOption > div > input[type="number"] {
+  margin: 10px;
+}

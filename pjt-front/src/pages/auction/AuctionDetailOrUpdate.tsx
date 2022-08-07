@@ -149,6 +149,10 @@ function AuctionDetailOrUpdate(): JSX.Element {
     setOnEdit(!onEdit);
   };
 
+  const onCancelClick = () => {
+    navigate(`/auction/detail/${item.artwork_id}`);
+  };
+
   const onSubmit = async (e: any) => {
     e.preventDefault();
     dispatch(loadingActions.toggle());
@@ -275,14 +279,16 @@ function AuctionDetailOrUpdate(): JSX.Element {
     e.preventDefault();
     // 좋아요 눌렀는지 안 눌렀는지 확인
     const response = await axios({
-      url: `http://i7c101.p.ssafy.io:8080/like/have/${userObject?.nickname}/${address}`,
+      // url: `http://i7c101.p.ssafy.io:8080/like/have/${userObject?.nickname}/${address}`,
+      url: `http://i7c101.p.ssafy.io:8081/api/like/have/${userObject?.nickname}/${address}`,
       method: "get",
     });
 
     // 좋아요를 누를 때
     if (response.data === 0) {
       const likeResponse = await axios({
-        url: `http://i7c101.p.ssafy.io:8080/like/${userObject?.nickname}/${address}`,
+        // url: `http://i7c101.p.ssafy.io:8080/like/${userObject?.nickname}/${address}`,
+        url: `http://i7c101.p.ssafy.io:8081/api/like/${userObject?.nickname}/${address}`,
         method: "post",
         data: {
           artwork_id: address,
@@ -302,7 +308,8 @@ function AuctionDetailOrUpdate(): JSX.Element {
     // 좋아요를 취소할 때
     else {
       const unLikeResponse = await axios({
-        url: `http://i7c101.p.ssafy.io:8080/like/${userObject?.nickname}/${address}`,
+        // url: `http://i7c101.p.ssafy.io:8080/like/${userObject?.nickname}/${address}`,
+        url: `http://i7c101.p.ssafy.io:8081/api/like/${userObject?.nickname}/${address}`,
         method: "delete",
         data: {
           artwork_id: address,
@@ -547,6 +554,9 @@ function AuctionDetailOrUpdate(): JSX.Element {
                 value="수정"
                 className={style.submitButton}
               />
+              <button onClick={onCancelClick} className={style.btn}>
+                취소
+              </button>
             </div>
           </form>
         </div>
