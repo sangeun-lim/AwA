@@ -54,6 +54,10 @@ const rf = {
     likeArtwork: (nickname: string, artwork_id: string) =>
       HOST + LIKE + `${nickname}/${artwork_id}`,
   },
+
+  chatting: {
+    getUserList: () => HOST + PROFILE + "list",
+  },
 };
 
 export default rf;

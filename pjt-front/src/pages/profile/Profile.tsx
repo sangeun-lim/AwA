@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
-import { loadingActions } from "../../store";
+import {
+  chatPartnerActions,
+  firstChatActions,
+  loadingActions,
+} from "../../store";
 import { Profile, User } from "../../Interface";
 import { profileDefaultData } from "../../defaultData";
 import ProfileUpdate from "./ProfileUpdate";
@@ -12,6 +16,7 @@ import UserArtworkList from "./UserArtworkList";
 
 const ProfilePage = (): JSX.Element => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const params = useParams();
   const userEmail = params.email || "";
   const userObject = useSelector(
@@ -62,6 +67,12 @@ const ProfilePage = (): JSX.Element => {
       setIFollow(!iFollow);
       getProfile();
     }
+  };
+
+  const goChat = () => {
+    dispatch(chatPartnerActions.setPartner(userEmail));
+    dispatch(firstChatActions.isFirst());
+    navigate("/chatting");
   };
 
   useEffect(() => {
@@ -139,6 +150,7 @@ const ProfilePage = (): JSX.Element => {
       {profileObject.following_list?.length && (
         <Followings following_list={profileObject.following_list} />
       )}
+      <button onClick={goChat}>채팅하기</button>
       {userObject &&
         userObject.email !== userEmail &&
         (iFollow ? (

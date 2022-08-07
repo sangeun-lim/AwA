@@ -1,0 +1,410 @@
+.auction > form,
+.auction > div,
+.auctionTop > div {
+  width: 1280px;
+  margin: 20px 0;
+}
+
+@media (max-width: 1600px) {
+  .auction > form,
+  .auction > div,
+  .auctionTop > div {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .formBox {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Auction Create & Update */
+.auctionTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+  background-color: rgb(240, 240, 240);
+  margin-bottom: 20px;
+}
+
+.auctionTop .title {
+  font-weight: bold;
+  font-size: 50px;
+  margin: 10px 0;
+}
+
+.auction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Form */
+@media (min-width: 1001px) {
+  .formBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+}
+
+.image,
+.info {
+  width: 100%;
+  margin: 10px;
+}
+
+/* image */
+.imageInput {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.imageInput input[type="file"] {
+  display: none;
+}
+
+.imageInput > .imageUpload {
+  display: inline-block;
+  height: 40px;
+  padding: 0 10px;
+  margin: 0px 10px;
+  border: 1px solid rgb(200, 200, 200);
+  color: rgb(200, 200, 200);
+  width: 85%;
+}
+
+.imageInput > span {
+  display: inline-block;
+  padding: 7px 20px;
+  color: #fff;
+  background-color: rgb(200, 200, 200);
+  cursor: pointer;
+  height: 40px;
+  margin: 0 20px 0 0;
+  white-space: nowrap;
+}
+
+.showImages {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageSample {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  width: 80%;
+}
+
+.imageSample > img {
+  width: 100%;
+}
+
+.imageSample > button {
+  margin: 0 5px;
+  font-size: 15px;
+  width: 20px;
+  border: none;
+}
+
+/* input */
+.inputContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 30px 0px;
+  position: relative;
+}
+
+.input {
+  height: 50px;
+  border: none;
+  width: 100%;
+  font-size: 20px;
+}
+
+.input:focus {
+  height: 50px;
+  outline: none;
+}
+
+.input:focus ~ label,
+.input:not([value=""]) ~ label,
+.labelUp {
+  color: rgb(150, 150, 150);
+  transform: translate(-10%, -60%) scale(0.8);
+}
+
+.input:focus ~ .bar:before,
+.input:focus ~ .bar:after {
+  width: 50%;
+}
+
+.inputContainer label {
+  position: absolute;
+  color: rgb(150, 150, 150);
+  font-size: 18px;
+  line-height: 50px;
+  transition: 0.3s ease;
+  cursor: auto;
+}
+
+.bar {
+  position: absolute;
+  background: rgb(200, 200, 200);
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+}
+
+.bar:before,
+.bar:after {
+  content: "";
+  position: absolute;
+  background: rgb(0, 0, 0);
+  width: 0;
+  height: 2px;
+  transition: 0.3s ease;
+}
+
+.bar:before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+/* select */
+.selectLabel {
+  color: rgb(150, 150, 150);
+  font-size: 14.5px;
+}
+
+.selectBox {
+  width: 100%;
+  margin: 10px 0;
+  border: 1px solid rgb(150, 150, 150);
+  height: 35px;
+  padding-left: 5px;
+}
+
+.selectBox > option:hover {
+  background-color: rgb(150, 150, 150);
+}
+
+.selectList {
+  display: flex;
+  margin: 2px;
+}
+
+.selected {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.selected > b {
+  font-size: 17px;
+}
+
+.selected > button {
+  margin: 0 5px;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  border: none;
+}
+
+/* textarea */
+.inputTextarea {
+  height: 350px;
+  border: none;
+  border-bottom: 2px solid rgb(200, 200, 200);
+  margin: 10px 0;
+  padding-bottom: 50px;
+}
+
+.inputTextarea:focus-visible {
+  height: 350px;
+  outline: none;
+  border-bottom: 2px solid rgb(0, 0, 0);
+}
+
+/* button */
+.formButtonBox {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px 0;
+}
+
+.btn {
+  padding: 0px 50px;
+  border: 2px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 50px;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+.submitButton {
+  padding: 0px 50px;
+  border: 2px solid rgb(150, 150, 150);
+  background: rgb(255, 255, 255);
+  color: rgb(150, 150, 150);
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 50px;
+}
+
+.submitButton:hover {
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+/* AuctionDetail */
+.detailTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.detailTop > p {
+  font-size: 15px;
+  margin: 0;
+  color: rgb(100, 100, 100);
+}
+
+.detailTop > div {
+  display: flex;
+  align-items: center;
+}
+
+.detailLike {
+  font-size: 15px;
+  margin: 0;
+}
+
+.detailLike > button {
+  background-color: white;
+  border: none;
+  color: red;
+}
+
+@media (min-width: 1001px) {
+  .detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 1000px) {
+  .detail {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.detailImage,
+.detailInfo {
+  width: 100%;
+  margin: 20px;
+}
+
+.detailImage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.detailInfo > .title {
+  font-size: 50px;
+  font-weight: bold;
+  margin: 20px 10px;
+}
+
+.detailInfo > .userName {
+  font-size: 20px;
+  margin: 10px;
+}
+
+.detailInfoBox > div {
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  margin: 0px 10px;
+}
+
+.detailInfoBox > p {
+  margin: 0px 10px;
+  font-size: 15px;
+}
+
+.detailBox {
+  padding: 20px 30px 0;
+  border-top: 2px solid black;
+}
+
+.detailBox > div {
+  font-size: 17px;
+  font-weight: bold;
+  color: black;
+  margin: 10px 0px;
+}
+
+.detailBox > p {
+  font-size: 15px;
+  white-space: pre-wrap;
+}
+
+.detailBox > div > button {
+  font-size: 15px;
+  padding: 0px 10px;
+  margin: 20px 10px 0 0;
+  border: 2px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.detailBox > div > button:hover {
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+.detailBottom {
+  display: flex;
+  justify-content: end;
+}
+
+.detailBottom > button {
+  font-size: 15px;
+  padding: 5px 20px;
+  margin: 20px 10px 0 0;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  white-space: nowrap;
+}

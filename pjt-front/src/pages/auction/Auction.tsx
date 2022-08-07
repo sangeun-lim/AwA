@@ -7,6 +7,7 @@ import api from "../../api/api";
 import AuctionCard from "../../component/AuctionCard";
 import { loadingActions } from "../../store";
 import { ArtworkItem } from "./../../Interface";
+import SearchComponent from "../../component/SearchComponent";
 
 function Auction(): JSX.Element {
   const navigate = useNavigate();
@@ -80,10 +81,7 @@ function Auction(): JSX.Element {
   return (
     <div className={style.auction}>
       <section className={style.auctionTop}>
-        <div>
-          <div className={style.title}>검색</div>
-          <div className={style.content}>검색 Component</div>
-        </div>
+        <SearchComponent />
       </section>
       <div>
         <button onClick={onClick} className={style.auctionButton}>
