@@ -14,7 +14,7 @@ interface Owner {
   birth: string;
   createdDate: string;
   email: string;
-  genter: boolean;
+  gender: boolean;
   modifiedDate: string;
   nickname: string;
   refreshToken: string;
@@ -23,7 +23,7 @@ interface Owner {
   user_id: number;
 }
 
-interface follow {
+export interface Follow {
   createdDate: string;
   description: string;
   favorite_field: string[];
@@ -34,12 +34,28 @@ interface follow {
   profile_picture_url: string;
 }
 
+export interface ArtworkList {
+  artwork_id: number;
+  title: string;
+  picture_url: string;
+  genre: string[];
+  createdDate: string;
+}
+
+export interface LikeArtworkList {
+  artwork_id: number;
+  title: string;
+  picture_url: string;
+  genre: string[];
+  createdDate: string;
+}
+
 // 프로필 Object
 export interface Profile {
-  // artwork_list: string[];
-  // liked_artwork_list: string[];
-  follower_list?: follow[];
-  following_list?: follow[];
+  artwork_list: ArtworkList[];
+  liked_artwork_list: LikeArtworkList[];
+  follower_list: Follow[];
+  following_list: Follow[];
   description: string;
   favorite_field: string[];
   nickname: string;

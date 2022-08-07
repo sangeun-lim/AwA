@@ -57,6 +57,10 @@ export const profileDefaultData = {
   nickname: "",
   owner_user: 0,
   picture_url: "",
+  follower_list: [],
+  following_list: [],
+  artwork_list: [],
+  liked_artwork_list: [],
 };
 
 export const queryDefaultData = {

@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import { Follow } from "../../Interface";
 
 interface Props {
-  follower_list: Follow[];
+  following_list: Follow[];
 }
 
-function Followers({ follower_list }: Props): JSX.Element {
+function Followings({ following_list }: Props): JSX.Element {
   const [watchFollowList, setWatchFollowList] = useState<boolean>(false);
 
-  const getFollowers = async () => {
+  const getFollowings = async () => {
     setWatchFollowList(!watchFollowList);
   };
 
   return (
     <div>
-      <button onClick={getFollowers}>팔로워목록</button>
+      <button onClick={getFollowings}>팔로잉목록</button>
       {watchFollowList ? (
         <div>
-          {follower_list.map((item) => {
+          {following_list.map((item) => {
             return (
               <li key={item.nickname}>
                 <img src={item.profile_picture_url} alt="프로필사진" /> |{" "}
@@ -33,4 +33,4 @@ function Followers({ follower_list }: Props): JSX.Element {
   );
 }
 
-export default Followers;
+export default Followings;

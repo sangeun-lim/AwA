@@ -10,6 +10,9 @@ import {
 import { Profile, User } from "../../Interface";
 import { profileDefaultData } from "../../defaultData";
 import ProfileUpdate from "./ProfileUpdate";
+import Followers from "./Followers";
+import Followings from "./Followings";
+import UserArtworkList from "./UserArtworkList";
 
 const ProfilePage = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -140,7 +143,13 @@ const ProfilePage = (): JSX.Element => {
       )}
       <h2>{profileObject.nickname}</h2>
       <h3>팔로워 수 : {profileObject.follower_list?.length}</h3>
+      {profileObject.follower_list?.length && (
+        <Followers follower_list={profileObject.follower_list} />
+      )}
       <h3>팔로잉 수 : {profileObject.following_list?.length}</h3>
+      {profileObject.following_list?.length && (
+        <Followings following_list={profileObject.following_list} />
+      )}
       <button onClick={goChat}>채팅하기</button>
       {userObject &&
         userObject.email !== userEmail &&
@@ -152,6 +161,11 @@ const ProfilePage = (): JSX.Element => {
       <p>{profileObject.description}</p>
       <div>
         <p>{profileObject.favorite_field}</p>
+      </div>
+      <div>
+        <UserArtworkList
+          artwork_list={profileObject.artwork_list}
+        ></UserArtworkList>
       </div>
     </div>
   );
