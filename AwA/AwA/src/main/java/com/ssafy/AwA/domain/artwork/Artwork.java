@@ -40,7 +40,7 @@ public class Artwork extends BaseTimeEntity {
     @Column
     private int price;
 
-    @Column
+    @Column(length = 10000)
     private String description;
 
     @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL)
