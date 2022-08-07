@@ -1,22 +1,17 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { dbService } from "../../fbase";
-import { User } from "../../Interface";
+import { Message, User } from "../../Interface";
 import style from "./ChatBoard.module.css";
 import socketIOClient from "socket.io-client";
 import ChatInput from "./ChatInput";
-
-export interface Message {
-  sender: string;
-  createdDate: number;
-  message: string;
-  receiver: string;
-}
+import { chatPartnerActions } from "../../store";
 
 const SOCKET = socketIOClient("localhost:4002");
 
 function ChatBoard() {
+  const dispatch = useDispatch();
   const [messageList, setMessageList] = useState<Message[]>([]);
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
@@ -44,6 +39,10 @@ function ChatBoard() {
     });
 
     setMessageList(loadMessages);
+  };
+
+  const onBackClick = () => {
+    dispatch(chatPartnerActions.setPartner(""));
   };
 
   useEffect(() => {
@@ -74,7 +73,11 @@ function ChatBoard() {
 
   return (
     <div className={style.ChatBoard}>
-      <div className={style.Header}></div>
+      <div className={style.Header}>
+        <span className={style.backButton} onClick={onBackClick}>
+          {"<"}
+        </span>
+      </div>
       <div id="chatBox" className={style.Body}>
         {messageList.map((item, i) => {
           const t = new Date(item.createdDate);
@@ -103,7 +106,7 @@ function ChatBoard() {
           }
         })}
       </div>
-      <ChatInput setMessageList={setMessageList} />
+      <ChatInput />
     </div>
   );
 }

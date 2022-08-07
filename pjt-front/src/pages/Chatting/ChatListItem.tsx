@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { MyChatList } from "../../Interface";
 import { chatPartnerActions } from "../../store";
-import { MyChatList } from "./ChatList";
 import style from "./ChatListItem.module.css";
 
 interface Props {

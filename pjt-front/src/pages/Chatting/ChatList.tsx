@@ -3,21 +3,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../../api/api";
 import { dbService } from "../../fbase";
-import { User } from "../../Interface";
+import { MyChatList, User } from "../../Interface";
 import { firstChatActions } from "../../store";
 import style from "./ChatList.module.css";
 import ChatListItem from "./ChatListItem";
 import socketIOClient from "socket.io-client";
-
-export interface MyChatList {
-  id?: string;
-  partnerEmail?: string;
-  nickname?: string;
-  profile_picture_url?: string;
-  createdDate?: number;
-  recentlyDate?: string;
-  recentlyMessage?: string;
-}
 
 const SOCKET = socketIOClient("localhost:4002");
 

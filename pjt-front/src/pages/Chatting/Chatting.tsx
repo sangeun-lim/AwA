@@ -12,7 +12,11 @@ function Chatting(): JSX.Element {
   return (
     <div className={style.Chatting}>
       <ChatList></ChatList>
-      {chatPartner && <ChatBoard></ChatBoard>}
+      {chatPartner ? (
+        <ChatBoard></ChatBoard>
+      ) : (
+        <div className={style.emptyBox}></div>
+      )}
     </div>
   );
 }
