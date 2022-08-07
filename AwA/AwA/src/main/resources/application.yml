@@ -1,20 +1,26 @@
-
 spring:
   datasource:
-    url: jdbc:mariadb://i7c101.p.ssafy.io/AwA
+    url: jdbc:mariadb://i7c101.p.ssafy.io/testing
     username: AwA
     password: tpwlslrnldudnj!#%
     driver-class-name: org.mariadb.jdbc.Driver
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 654989514571-ji9os6ujroj61ajmf3mviched2h7i3jh.apps.googleusercontent.com
+            client-secret: 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
+            scope: profile,email
 
+    #spring:
+    #  datasource:
+    #    url: jdbc:mariadb://awa.cwesz7tzcefm.ap-northeast-2.rds.amazonaws.com/AwA
+    #    username: ssafy
+    #    password: tpwlslrnldudnj!#%
+    #    driver-class-name: org.mariadb.jdbc.Driver
 
-#spring:
-#  datasource:
-#    url: jdbc:mariadb://awa.cwesz7tzcefm.ap-northeast-2.rds.amazonaws.com/AwA
-#    username: ssafy
-#    password: tpwlslrnldudnj!#%
-#    driver-class-name: org.mariadb.jdbc.Driver
-
-  #main:
+    #main:
     #allow-circular-references: true 서로 참조하는 무한루프에서 빠져나오기 위한것이였는데 뭐였더라.. userService내에서 jwtTokenProvider쓰고 JwtTokenProvider에서 userService또불러서 썼는데 걍 userRepository 쓰는걸로 해결
     #무한루프는 양방향 일 때 컨트롤러에서 엔티티를 반환하는 경우 문제 가 생길 수 있다.
     port:
@@ -67,8 +73,8 @@ logging:
     org.hibernate.sql: debug
     org.hibernate.type: trace
 
-server :
-  port : 8081
+server:
+  port: 8080
 #  ssl :
 #    enabled : true
 #    key-alias: AwAKey
