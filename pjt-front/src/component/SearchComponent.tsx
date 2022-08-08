@@ -1,7 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import api from "../api/api";
 import { QueryType } from "../api/apiInterface";
 import { queryDefaultData } from "../defaultData";
