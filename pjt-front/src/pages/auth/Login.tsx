@@ -9,6 +9,7 @@ import { loginDefaultData } from "./../../defaultData";
 import api from "../../api/api";
 import { loadingActions } from "../../store";
 import { User } from "../../Interface";
+import { setCookie } from "../../cookie";
 
 interface Props {
   getUserData: Function;
@@ -31,8 +32,8 @@ function Login({ getUserData }: Props): JSX.Element {
       dispatch(loadingActions.toggle());
 
       if (response.status === 200) {
-        localStorage.setItem("token", response.data.accessToken);
-        localStorage.setItem("refresh_token", response.data.refreshToken);
+        sessionStorage.setItem("token", response.data.accessToken);
+        setCookie("refresh_token", response.data.refreshToken);
         getUserData();
         navigate("/");
       }

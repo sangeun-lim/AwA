@@ -4,6 +4,7 @@ import AppRouter from "./Router";
 import style from "./App.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingActions, userObjectActions } from "../store";
+import { getCookie } from "../cookie";
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ function App(): JSX.Element {
 
   const getUserData = async () => {
     dispatch(loadingActions.toggle());
-    const token = localStorage.getItem("refresh_token") || "";
+    const token = getCookie("refresh_token") || "";
     try {
       const response = await api.auth.getUserObject(token);
       dispatch(loadingActions.toggle());
@@ -27,7 +28,7 @@ function App(): JSX.Element {
   useEffect(() => {
     const getUserData = async () => {
       dispatch(loadingActions.toggle());
-      const token = localStorage.getItem("refresh_token") || "";
+      const token = getCookie("refresh_token") || "";
       try {
         const response = await api.auth.getUserObject(token);
 
@@ -42,7 +43,7 @@ function App(): JSX.Element {
       }
     };
 
-    if (localStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")) {
       getUserData();
     } else {
       dispatch(userObjectActions.logout());
