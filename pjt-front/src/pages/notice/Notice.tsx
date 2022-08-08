@@ -1,44 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { Dispatch, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../api/api";
 import NoticeListItem from "../../component/NoticeListItem";
 import { loadingActions } from "../../store";
-import { NoticeItem } from "./../../Interface";
+import { NoticeItem, User } from "./../../Interface";
 import style from "./Notice.module.css";
+
+interface SubProps {
+  num: number;
+  setPageNum: Dispatch<React.SetStateAction<number>>;
+}
+
+function PageButton({ num, setPageNum }: SubProps): JSX.Element {
+  const onPageClick = () => {
+    setPageNum(num);
+  };
+
+  return <button onClick={onPageClick}>{num}</button>;
+}
 
 function Notice(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [noticeList, setNoticeList] = useState<NoticeItem[]>([]);
+  const [pageNum, setPageNum] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState<number>(1);
+  const userObject = useSelector(
+    (state: { userObject: User | null }) => state.userObject
+  );
 
   const onClick = () => {
     navigate("/notice/create");
+  };
+
+  const buttonRendering = () => {
+    const result = [];
+    for (let i = 1; i <= totalCount; i++) {
+      result.push(<PageButton key={i} num={i} setPageNum={setPageNum} />);
+    }
+
+    return result;
   };
 
   useEffect(() => {
     const callNotice = async () => {
       dispatch(loadingActions.toggle());
       try {
-        const response = await api.notice.readAll();
+        const response = await api.notice.readAll(pageNum);
         dispatch(loadingActions.toggle());
         if (response.status === 200) {
-          const notices = response.data;
-          const newNotices: NoticeItem[] = notices.map((notice: NoticeItem) => {
-            const { notice_id, title, content, createdDate, modifiedDate } =
-              notice;
-            const newNotice: NoticeItem = {
-              notice_id,
-              title,
-              content,
-              createdDate,
-              modifiedDate,
-            };
-            return newNotice;
-          });
-          setNoticeList(newNotices);
+          setNoticeList(response.data.noticeDtoList);
+          setTotalCount(Math.floor(response.data.totalCount / 10) + 1);
         } else {
           alert("정보 조회에 실패했습니다.");
           navigate("/");
@@ -50,7 +65,7 @@ function Notice(): JSX.Element {
     };
 
     callNotice();
-  }, [navigate, dispatch]);
+  }, [navigate, dispatch, pageNum]);
 
   return (
     <div className={style.notice}>
@@ -75,11 +90,14 @@ function Notice(): JSX.Element {
           );
         })}
       </ul>
-      <div className={style.buttonBox}>
-        <button onClick={onClick} className={style.btn}>
-          작성
-        </button>
-      </div>
+      {userObject && userObject._manager && (
+        <div className={style.buttonBox}>
+          <button onClick={onClick} className={style.btn}>
+            작성
+          </button>
+        </div>
+      )}
+      <div>{buttonRendering()}</div>
     </div>
   );
 }

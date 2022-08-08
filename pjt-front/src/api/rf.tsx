@@ -1,4 +1,4 @@
-const HOST = "http://i7c101.p.ssafy.io:8081/";
+const HOST = "http://i7c101.p.ssafy.io:8081/api/";
 
 const AUTH = "auth/";
 const NOTICE = "notice/";
@@ -20,7 +20,7 @@ const rf = {
   notice: {
     create: () => HOST + NOTICE,
     readOrUpdateOrDelete: (noticeId: string) => HOST + NOTICE + `${noticeId}`,
-    readAll: () => HOST + NOTICE + "list",
+    readAll: (pageNum: number) => HOST + NOTICE + `page/${pageNum}`,
   },
 
   artwork: {

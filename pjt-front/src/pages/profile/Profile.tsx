@@ -122,7 +122,7 @@ const ProfilePage = (): JSX.Element => {
         <button onClick={onEditClick}>수정</button>
       )}
       <br></br>
-      {editProfile && (
+      {editProfile && userObject && userObject.email === userEmail && (
         <ProfileUpdate
           profileObject={profileObject}
           userEmail={userEmail}
@@ -141,7 +141,9 @@ const ProfilePage = (): JSX.Element => {
       <h2>{profileObject.nickname}</h2>
       <h3>팔로워 수 : {profileObject.follower_list?.length}</h3>
       <h3>팔로잉 수 : {profileObject.following_list?.length}</h3>
-      <button onClick={goChat}>채팅하기</button>
+      {userObject && userObject.email !== userEmail && (
+        <button onClick={goChat}>채팅하기</button>
+      )}
       {userObject &&
         userObject.email !== userEmail &&
         (iFollow ? (

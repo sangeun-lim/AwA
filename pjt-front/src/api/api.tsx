@@ -73,9 +73,9 @@ const api = {
   },
 
   notice: {
-    readAll: async () => {
+    readAll: async (pageNum: number) => {
       const response = await axios({
-        url: rf.notice.readAll(),
+        url: rf.notice.readAll(pageNum),
         method: "get",
       });
 

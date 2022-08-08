@@ -56,7 +56,7 @@ function ChatBoard() {
     const realRoomName: string = roomName[0] + roomName[1];
 
     SOCKET.emit("enter_room", realRoomName);
-  }, []);
+  }, [chatPartner]);
 
   useEffect(() => {
     SOCKET.on("receive message", (data) => {

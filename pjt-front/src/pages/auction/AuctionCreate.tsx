@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { storageService } from "../../fbase";
@@ -49,7 +49,7 @@ function AuctionCreate(): JSX.Element {
   const [images, setImages] = useState<File[]>([]);
   const [showImages, setShowImages] = useState<string[]>([]);
   const userObject = useSelector(
-    (state: { userObject: User }) => state.userObject
+    (state: { userObject: User | null }) => state.userObject
   );
   const [fileName, setFileName] = useState<string>();
 
@@ -122,57 +122,63 @@ function AuctionCreate(): JSX.Element {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-
-    dispatch(loadingActions.toggle());
-    try {
-      let imageUrlList: Array<string> = [];
-
-      for (let i = 0; i < images.length; i++) {
-        let imageUrl: string = "";
-        const imgRef = ref(storageService, `${userObject.email}/${uuidv4()}`);
-        const response = await uploadBytes(imgRef, images[i]);
-        imageUrl = await getDownloadURL(response.ref);
-        imageUrlList.push(imageUrl);
-      }
-
-      const response = await api.artwork.post(
-        newItem,
-        genresList,
-        imageUrlList
-      );
-
+    if (userObject) {
       dispatch(loadingActions.toggle());
-      if (response.status === 200) {
-        if (response.headers["x-auth-token"]) {
-          localStorage.setItem("token", response.headers["x-auth-token"]);
-          localStorage.setItem(
-            "refresh_token",
-            response.headers["refreshtoken"] || ""
-          );
+
+      try {
+        let imageUrlList: Array<string> = [];
+
+        for (let i = 0; i < images.length; i++) {
+          let imageUrl: string = "";
+          const imgRef = ref(storageService, `${userObject.email}/${uuidv4()}`);
+          const response = await uploadBytes(imgRef, images[i]);
+          imageUrl = await getDownloadURL(response.ref);
+          imageUrlList.push(imageUrl);
         }
 
-        const data = response.data;
-        const next_url = data.artwork_id;
+        const response = await api.artwork.post(
+          newItem,
+          genresList,
+          imageUrlList
+        );
 
-        alert("작성 완료");
-        navigate(`/auction/detail/${next_url}`);
-      } else {
-        alert("작성 실패");
+        dispatch(loadingActions.toggle());
+        if (response.status === 200) {
+          if (response.headers["x-auth-token"]) {
+            localStorage.setItem("token", response.headers["x-auth-token"]);
+            localStorage.setItem(
+              "refresh_token",
+              response.headers["refreshtoken"] || ""
+            );
+          }
+
+          const data = response.data;
+          const next_url = data.artwork_id;
+
+          alert("작성 완료");
+          navigate(`/auction/detail/${next_url}`);
+        } else {
+          alert("작성 실패");
+        }
+      } catch (err) {
+        dispatch(loadingActions.toggle());
+        console.error(err);
       }
-    } catch (err) {
-      dispatch(loadingActions.toggle());
-      console.error(err);
     }
   };
 
   useEffect(() => {
-    setNewItem((prev) => {
-      return {
-        ...prev,
-        sell_user_nickname: userObject.nickname,
-      };
-    });
-  }, [userObject.nickname]);
+    if (userObject) {
+      setNewItem((prev) => {
+        return {
+          ...prev,
+          sell_user_nickname: userObject.nickname,
+        };
+      });
+    } else {
+      navigate("/auction");
+    }
+  }, []);
 
   return (
     <div className={style.auction}>

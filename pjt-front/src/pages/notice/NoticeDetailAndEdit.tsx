@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { NoticeItem, NoticeEditing } from "../../Interface";
+import { NoticeItem, NoticeEditing, User } from "../../Interface";
 import style from "./Notice.module.css";
 import { noticeDefaultData } from "./../../defaultData";
 import api from "../../api/api";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 
 function NoticeDetailAndEdit(): JSX.Element {
@@ -20,6 +20,9 @@ function NoticeDetailAndEdit(): JSX.Element {
     title: notice.title,
     content: notice.content,
   });
+  const userObject = useSelector(
+    (state: { userObject: User | null }) => state.userObject
+  );
 
   const date = new Date(notice.createdDate);
   const year = date.getFullYear();
@@ -207,12 +210,16 @@ function NoticeDetailAndEdit(): JSX.Element {
           </div>
           <div className={style.noticeContent}>{notice?.content}</div>
           <div className={style.buttonBox}>
-            <button onClick={onEditClick} className={style.btn}>
-              수정
-            </button>
-            <button onClick={onDeleteClick} className={style.btn}>
-              삭제
-            </button>
+            {userObject && userObject._manager && (
+              <button onClick={onEditClick} className={style.btn}>
+                수정
+              </button>
+            )}
+            {userObject && userObject._manager && (
+              <button onClick={onDeleteClick} className={style.btn}>
+                삭제
+              </button>
+            )}
             <button onClick={onListClick} className={style.btn}>
               목록
             </button>

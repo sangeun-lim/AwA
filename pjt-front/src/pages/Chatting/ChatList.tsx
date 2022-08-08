@@ -62,13 +62,12 @@ function ChatList(): JSX.Element {
 
   useEffect(() => {
     SOCKET.emit("enter_room", userObject.email);
-  }, []);
+  }, [userObject.email]);
 
   useEffect(() => {
     SOCKET.on("receive message", async (data) => {
       const topChat: MyChatList = {};
 
-      // 기존 채팅방 배열에서 채팅이 온 채팅방을 삭제
       setChatList((prev) => {
         return prev.filter((chat) => {
           if (
@@ -93,15 +92,15 @@ function ChatList(): JSX.Element {
 
       if (!topChat?.id) {
         const response = await api.chatting.getUserList([chatPartner]);
-        topChat.nickname = response.data.nickname;
-        topChat.profile_picture_url = response.data.profile_picture_url;
+        topChat.nickname = response.data[0].nickname;
+        topChat.profile_picture_url = response.data[0].profile_picture_url;
         topChat.createdDate = data.createdDate;
         topChat.recentlyDate = data.createdData;
         topChat.recentlyMessage = data.message;
         topChat.partnerEmail = chatPartner;
       }
+      console.log(topChat);
 
-      // 삭제된 채팅방을 맨 위로 올린다.
       setChatList((prev) => {
         return [topChat].concat(prev);
       });
@@ -114,8 +113,8 @@ function ChatList(): JSX.Element {
         <span>내 채팅방 목록</span>
       </div>
       <div className={style.Body}>
-        {chatList.map((item, i) => {
-          return <ChatListItem item={item} key={i} />;
+        {chatList.map((item) => {
+          return <ChatListItem item={item} key={item.partnerEmail} />;
         })}
       </div>
     </div>

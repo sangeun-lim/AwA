@@ -11,7 +11,6 @@ function SearchResult(): JSX.Element {
 
   return (
     <>
-      <h1>SearchResult</h1>
       <SearchComponent />
       {searchResults.length &&
         searchResults.map((item) => {

@@ -614,10 +614,12 @@ function AuctionDetailOrUpdate(): JSX.Element {
           <div className={style.detailBox}>
             <div>상세 정보</div>
             <p>{item.description}</p>
-            <div>
-              <button onClick={onEditClick}>수정</button>
-              <button onClick={onDeleteClick}>삭제</button>
-            </div>
+            {userObject && userObject.email === item.sell_user_email && (
+              <div>
+                <button onClick={onEditClick}>수정</button>
+                <button onClick={onDeleteClick}>삭제</button>
+              </div>
+            )}
           </div>
           <div className={style.detailBox}>
             {item.comments &&
