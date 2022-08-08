@@ -6,9 +6,11 @@ import com.ssafy.AwA.domain.profile.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface LikeRepository extends JpaRepository<Likes, Long> {
     @Query("select l from Likes l where l.artwork=:artwork and l.profile=:profile")
     Likes findByArtworkAndProfile(@Param("artwork") Artwork targetArtwork,@Param("profile") Profile targetProfile);

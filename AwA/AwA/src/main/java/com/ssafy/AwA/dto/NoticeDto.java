@@ -1,16 +1,30 @@
 package com.ssafy.AwA.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class NoticeDto {
 
-    String title;
-    String content;
+    private Long notice_id;
+
+    private String title;
+
+    private String content;
+
+    private int viewCount;
+
+    @Builder
+    public NoticeDto(Long notice_id, String title, String content, int viewCount) {
+        this.notice_id = notice_id;
+        this.title = title;
+        this.content = content;
+        this.viewCount = viewCount;
+    }
 }
