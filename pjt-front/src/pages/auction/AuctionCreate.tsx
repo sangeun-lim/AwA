@@ -12,6 +12,7 @@ import api from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 import style from "./AuctionCreateUpdate.module.css";
+import { setCookie } from "../../cookie";
 
 interface ButtonProps {
   item: string;
@@ -145,11 +146,8 @@ function AuctionCreate(): JSX.Element {
         dispatch(loadingActions.toggle());
         if (response.status === 200) {
           if (response.headers["x-auth-token"]) {
-            localStorage.setItem("token", response.headers["x-auth-token"]);
-            localStorage.setItem(
-              "refresh_token",
-              response.headers["refreshtoken"] || ""
-            );
+            sessionStorage.setItem("token", response.headers["x-auth-token"]);
+            setCookie("refresh_token", response.headers["refreshtoken"] || "");
           }
 
           const data = response.data;

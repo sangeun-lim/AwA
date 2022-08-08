@@ -10,7 +10,7 @@ import {
   QueryType,
   newCommentType,
 } from "./apiInterface";
-import { METHODS } from "http";
+import { getCookie } from "../cookie";
 
 const api = {
   auth: {
@@ -89,7 +89,8 @@ const api = {
         url: rf.notice.create(),
         method: "post",
         headers: {
-          token: localStorage.getItem("token") || "",
+          "X-AUTH-TOKEN": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
         data: {
           title: formData.title,
@@ -108,8 +109,8 @@ const api = {
         url: rf.notice.readOrUpdateOrDelete(id),
         method: method,
         headers: {
-          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-          RefreshToken: localStorage.getItem("refresh_token") || "",
+          "X-AUTH-TOKEN": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
         data: formData,
       });
@@ -137,8 +138,8 @@ const api = {
         url: rf.artwork.readAllOrPost(),
         method: "post",
         headers: {
-          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-          RefreshToken: localStorage.getItem("refresh_token") || "",
+          "X-AUTH-TOKEN": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
         data: {
           ...formData,
@@ -161,8 +162,8 @@ const api = {
         url: rf.artwork.readDetailOrUpdateOrDelete(id),
         method: method,
         headers: {
-          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-          RefreshToken: localStorage.getItem("refresh_token") || "",
+          "X-AUTH-TOKEN": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
         data: formData,
       });
@@ -189,8 +190,8 @@ const api = {
       const response = await axios({
         url: rf.profile.getOrUpdateProfile(email),
         headers: {
-          "x-auth-token": localStorage.getItem("token") || "",
-          RefreshToken: localStorage.getItem("refresh_token") || "",
+          "x-auth-token": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
         method: "put",
         data: { ...formData, profile_picture_url: imageUrl },
@@ -205,8 +206,8 @@ const api = {
       const response = await axios({
         url: rf.follow.checkFollow(fromUserEmail, toUserEmail),
         headers: {
-          "x-auth-token": localStorage.getItem("token") || "",
-          RefreshToken: localStorage.getItem("refresh_token") || "",
+          "x-auth-token": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
         method: "get",
       });
@@ -222,8 +223,8 @@ const api = {
       const response = await axios({
         url: rf.follow.followUser(fromUserEmail, toUserEmail),
         headers: {
-          "x-auth-token": localStorage.getItem("token") || "",
-          RefreshToken: localStorage.getItem("refresh_token") || "",
+          "x-auth-token": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
         method: method,
       });
@@ -238,8 +239,8 @@ const api = {
         url: rf.comment.createComment(),
         method: "post",
         headers: {
-          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-          RefreshToken: localStorage.getItem("refresh_token") || "",
+          "X-AUTH-TOKEN": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
         data: {
           ...formData,
@@ -254,8 +255,8 @@ const api = {
         url: rf.comment.editOrDeleteComment(comment_id),
         method: "put",
         headers: {
-          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-          RefreshToken: localStorage.getItem("refresh_token") || "",
+          "X-AUTH-TOKEN": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
         data: {
           ...formData,
@@ -269,8 +270,8 @@ const api = {
         url: rf.comment.editOrDeleteComment(comment_id),
         method: "delete",
         headers: {
-          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-          RefreshToken: localStorage.getItem("refresh_token") || "",
+          "X-AUTH-TOKEN": sessionStorage.getItem("token") || "",
+          RefreshToken: getCookie("refresh_token") || "",
         },
       });
       return response;
