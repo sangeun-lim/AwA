@@ -37,9 +37,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         SessionCreationPolicy.STATELESS) //REST API 기반 애플리케이션의 동작 방식 설정, 지금 JWT토큰으로 인증처리, 세션 사용안해서 STATELESS로 설정
                 .and()
                 .authorizeRequests()//애플리케이션에 들어오는 요청에 대한 사용권한 체크
-                .antMatchers(HttpMethod.POST, "/artwork").authenticated()
-                .antMatchers(HttpMethod.PUT,"/artwork").authenticated()
-                .antMatchers(HttpMethod.DELETE,"/artwork").authenticated()
+//                .antMatchers(HttpMethod.POST, "/artwork").authenticated()
+//                .antMatchers(HttpMethod.PUT,"/artwork").authenticated()
+//                .antMatchers(HttpMethod.DELETE,"/artwork").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/notice").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/notice").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/api/notice").hasRole("ADMIN")
                 //.antMatchers("/auth/userinfo").hasRole("ADMIN")
 //                .antMatchers("/auth/sign-in", "/auth/sign-up").permitAll() //antPattern을 통해 권한 설정 특정 경로에 모두 허용
 //                .antMatchers(HttpMethod.GET, "/artwork").permitAll() //artwork로 시작하는 경로의 GET요청은 모두 허용

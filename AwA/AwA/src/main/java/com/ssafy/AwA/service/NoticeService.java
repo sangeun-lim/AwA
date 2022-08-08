@@ -5,6 +5,7 @@ import com.ssafy.AwA.domain.notice.Notice;
 import com.ssafy.AwA.dto.ArtworkResponseDto;
 import com.ssafy.AwA.dto.NoticeDto;
 import com.ssafy.AwA.dto.NoticePageDto;
+import com.ssafy.AwA.dto.NoticeRequestDto;
 import com.ssafy.AwA.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -28,7 +29,7 @@ public class NoticeService {
     public List<Notice> getNoticeList() {
         return noticeRepository.findAllOrderBy();
     }
-    public Notice saveNotice(NoticeDto noticeDto)
+    public Notice saveNotice(NoticeRequestDto noticeDto)
     {
         Notice newNotice = Notice.builder()
                 .title(noticeDto.getTitle())
@@ -44,7 +45,7 @@ public class NoticeService {
         return findNoticeByNoticeId;
     }
 
-    public Notice updateNotice(Long noticeId, NoticeDto noticeDto) {
+    public Notice updateNotice(Long noticeId, NoticeRequestDto noticeDto) {
         Notice targetNotice = noticeRepository.findByNotice_id(noticeId);
 
         targetNotice.updateTitle(noticeDto.getTitle());
