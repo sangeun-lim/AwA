@@ -69,8 +69,6 @@ public class Artwork extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY ,mappedBy = "artwork")
     private PurchaseArtwork purchase_artwork;
 
-//    @OneToMany(mappedBy = "related_artwork")
-//    List<Room> rooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "artwork_id")
     List<Attachment> attachment_list = new ArrayList<>();

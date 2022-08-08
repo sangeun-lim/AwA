@@ -28,4 +28,7 @@ public interface ArtworkRepository extends JpaRepository<Artwork, Long> {
 
     @Query("select a from Artwork a")
     Page<Artwork> findAll(Pageable pageable);
+
+    @Query("select a from Artwork a where a.sell_user=:sell_user")
+    Page<Artwork> findAllBySell_userPage(Pageable pageable, @Param("sell_user") User sell_user);
 }

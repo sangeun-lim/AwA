@@ -252,19 +252,24 @@ public class ArtworkService {
         return 1;
     }
 
-    public List<ArtworkResponseDto> getOnlyFollowingArtworksList(String userEmail) {
+    public ArtworkPageDto getOnlyFollowingArtworksList(String userEmail, int pageNo) {
         //내가 팔로우 하는 사람들 리스트
         User user = userRepository.findByEmail(userEmail);
         Profile targetProfile = profileRepository.findByNickname(user.getNickname());
         List<Profile> follwingList = followRepository.getFollowingList(targetProfile);
-
+        long totalCount = 0;
         List<ArtworkResponseDto> result = new ArrayList<>();
 
         for(int i=0;i<follwingList.size();i++) {
             System.out.println("내가 팔로우 하는 사람 : "+ follwingList.get(i).getNickname());
             User followingUser = userRepository.findByNickname(follwingList.get(i).getNickname());
+            PageRequest page = PageRequest.of(pageNo-1, 9, Sort.by(Sort.Direction.DESC, "artwork_id"));//        Pa
+            Page<Artwork> sellListPage = artworkRepository.findAllBySell_userPage(page, followingUser);
 
-            List<Artwork> sell_list = followingUser.getSell_list();
+            totalCount+=sellListPage.getTotalElements();
+
+
+            List<Artwork> sell_list = sellListPage.getContent();
             for(int j=0;j<sell_list.size();j++) {
                 Artwork sellArtwork = sell_list.get(j);
 
@@ -303,8 +308,11 @@ public class ArtworkService {
         }
 
         Collections.sort(result, Collections.reverseOrder());
-
-        return result;
+        ArtworkPageDto artworkPageDto = ArtworkPageDto.builder()
+                .artworkResponseDto(result)
+                .totalCount(totalCount)
+                .build();
+        return artworkPageDto;
     }
 
     public int sellArtwork(Long artwork_id) {
@@ -320,10 +328,11 @@ public class ArtworkService {
     }
 
     public ArtworkPageDto getArtworksByPageNo(int pageNo) {
-        PageRequest page = PageRequest.of(pageNo, 10, Sort.by(Sort.Direction.DESC, "artwork_id"));
+        PageRequest page = PageRequest.of(pageNo-1, 9, Sort.by(Sort.Direction.DESC, "artwork_id"));
         Page<Artwork> allArtworksPage = artworkRepository.findAll(page);
 
         List<Artwork> allArtworks = allArtworksPage.getContent();
+        System.out.println(allArtworks.size() + "한페이지당 개수");
         System.out.println(allArtworksPage.getTotalElements() + "총 개수");
         List<ArtworkResponseDto> artworkResponseDtoList = new ArrayList<>();
 

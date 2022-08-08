@@ -76,6 +76,8 @@ public class NoticeService {
                     .content(notice.getContent())
                     .title(notice.getTitle())
                     .viewCount(notice.getViewCount())
+                    .createdDate(notice.getCreatedDate())
+                    .modifiedDate(notice.getModifiedDate())
                     .build();
 
             noticeDtoList.add(noticeDto);

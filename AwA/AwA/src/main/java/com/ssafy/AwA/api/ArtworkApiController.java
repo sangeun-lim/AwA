@@ -69,9 +69,9 @@ public class ArtworkApiController {
         return artworkService.deleteArtwork(artwork_id);
     }
 
-    @GetMapping("/onlyFollow/{userEmail}")
-    public List<ArtworkResponseDto> getOnlyFollowingArtworkList(@PathVariable("userEmail") String userEmail) {
-        return artworkService.getOnlyFollowingArtworksList(userEmail);
+    @GetMapping("/onlyFollow/{userEmail}/{pageNo}")
+    public ArtworkPageDto getOnlyFollowingArtworkList(@PathVariable("userEmail") String userEmail, @PathVariable("pageNo") int pageNo) {
+        return artworkService.getOnlyFollowingArtworksList(userEmail,pageNo);
     }
 
 
