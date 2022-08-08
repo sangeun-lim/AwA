@@ -43,7 +43,6 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route path="/profile/:email" element={<Profile />} />
-          <Route path="/profile/favorite" element={<Favorite />} />
           {userObject && <Route path="/chatting" element={<Chatting />} />}
           <Route path="/auction" element={<Auction />} />
           <Route

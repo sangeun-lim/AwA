@@ -7,7 +7,7 @@ interface Props {
 }
 
 function UserArtworkList({ artwork_list }: Props): JSX.Element {
-  const [watchArtworkList, setWatchArtworkList] = useState<boolean>(true);
+  const [watchArtworkList, setWatchArtworkList] = useState<boolean>(false);
 
   const getArtworkList = async () => {
     setWatchArtworkList(!watchArtworkList);
