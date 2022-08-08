@@ -37,6 +37,10 @@ public class ArtworkApiController {
         return ResponseEntity.status(HttpStatus.OK).body(artworkResponseDto);
     }
 
+    @GetMapping("/page/{pageNo}")
+    public ArtworkPageDto getArtworksByPageNo(@PathVariable("pageNo") int pageNo) {
+        return artworkService.getArtworksByPageNo(pageNo);
+    }
     @GetMapping
     public List<ArtworkResponseDto> getAllArtwork() {
         List<ArtworkResponseDto> artworkResponseDto = artworkService.getAllArtwork();

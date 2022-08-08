@@ -6,14 +6,14 @@ import com.ssafy.AwA.domain.attachment.Attachment;
 import com.ssafy.AwA.domain.comment.Comment;
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
-import com.ssafy.AwA.dto.ArtworkRequestDto;
-import com.ssafy.AwA.dto.ArtworkResponseDto;
-import com.ssafy.AwA.dto.AttachmentRequestDto;
-import com.ssafy.AwA.dto.CommentResponseDto;
+import com.ssafy.AwA.dto.*;
 import com.ssafy.AwA.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,8 +92,11 @@ public class ArtworkService {
 
     public List<ArtworkResponseDto> getAllArtwork() {
         List<Artwork> allArtworks = artworkRepository.findAllByOrderByArtwork_idDesc();
-
-
+//        PageRequest page = PageRequest.of(1, 3, Sort.by(Sort.Direction.DESC, "artwork_id"));
+//        Page<Artwork> allArtworksPage = artworkRepository.findAll(page);
+//
+//        List<Artwork> allArtworks = allArtworksPage.getContent();
+//        System.out.println(allArtworksPage.getTotalElements() + "총 개수");
         List<ArtworkResponseDto> artworkResponseDtoList = new ArrayList<>();
 
         for(int i=0;i<allArtworks.size();i++) {
@@ -314,5 +317,51 @@ public class ArtworkService {
 
         return targetArtwork.getIs_sell();
 
+    }
+
+    public ArtworkPageDto getArtworksByPageNo(int pageNo) {
+        PageRequest page = PageRequest.of(pageNo, 10, Sort.by(Sort.Direction.DESC, "artwork_id"));
+        Page<Artwork> allArtworksPage = artworkRepository.findAll(page);
+
+        List<Artwork> allArtworks = allArtworksPage.getContent();
+        System.out.println(allArtworksPage.getTotalElements() + "총 개수");
+        List<ArtworkResponseDto> artworkResponseDtoList = new ArrayList<>();
+
+        for(int i=0;i<allArtworks.size();i++) {
+            Artwork targetArtwork = allArtworks.get(i);
+
+            User sellUser = targetArtwork.getSell_user();
+            Profile sellUserProfile = profileRepository.findByNickname(sellUser.getNickname());
+
+            List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
+            for (int j = 0; j < targetArtwork.getAttachment_list().size(); j++)
+            {       attachmentRequestDtoList.add(AttachmentRequestDto.builder()
+                    .type(targetArtwork.getAttachment_list().get(j).getType())
+                    .url(targetArtwork.getAttachment_list().get(j).getUrl())
+                    .build()
+            );
+            }
+
+            artworkResponseDtoList.add(ArtworkResponseDto.builder()
+                    .sell_user_email(sellUser.getEmail())
+                    .profile_picture(sellUserProfile.getProfile_picture_url())
+                    .createdDate(targetArtwork.getCreatedDate())
+                    .description(targetArtwork.getDescription())
+                    .artwork_id(targetArtwork.getArtwork_id())
+                    .sell_user_nickname(sellUser.getNickname())
+                    .title(targetArtwork.getTitle())
+                    .view_count(targetArtwork.getView_count())
+                    .price(targetArtwork.getPrice())
+                    .genre(targetArtwork.getGenre())
+                    .ingredient(targetArtwork.getIngredient())
+                    .attachmentRequestDtoList(attachmentRequestDtoList)
+                    .is_sell(targetArtwork.getIs_sell())
+                    .build());
+        }
+        ArtworkPageDto artworkPageDto = ArtworkPageDto.builder()
+                .artworkResponseDto(artworkResponseDtoList)
+                .totalCount(allArtworksPage.getTotalElements())
+                .build();
+        return artworkPageDto;
     }
 }

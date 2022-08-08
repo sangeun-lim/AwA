@@ -5,9 +5,11 @@ import com.ssafy.AwA.domain.profile.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
    @Query("select f from Follow f where f.fromProfile =:fromProfile and f.toProfile =:toProfile")
     Follow findByFromUserAndToUser(@Param("fromProfile") Profile fromProfile, @Param("toProfile") Profile toProfile);

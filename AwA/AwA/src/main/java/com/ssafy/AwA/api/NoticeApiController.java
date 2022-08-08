@@ -2,6 +2,7 @@ package com.ssafy.AwA.api;
 
 import com.ssafy.AwA.domain.notice.Notice;
 import com.ssafy.AwA.dto.NoticeDto;
+import com.ssafy.AwA.dto.NoticePageDto;
 import com.ssafy.AwA.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,11 @@ public class NoticeApiController {
 
     private final NoticeService noticeService;
 
+    @GetMapping("/page/{pageNo}")
+    public NoticePageDto getNotciesByPageNo(@PathVariable("pageNo") int pageNo)
+    {
+        return noticeService.getNoticeByPageNo(pageNo);
+    }
     @GetMapping("/list")
     public List<Notice> getNoticeList() {
         return noticeService.getNoticeList();
