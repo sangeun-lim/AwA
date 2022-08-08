@@ -99,7 +99,6 @@ function ChatList(): JSX.Element {
         topChat.recentlyMessage = data.message;
         topChat.partnerEmail = chatPartner;
       }
-      console.log(topChat);
 
       setChatList((prev) => {
         return [topChat].concat(prev);
