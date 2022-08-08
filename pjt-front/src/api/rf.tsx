@@ -8,6 +8,7 @@ const RANK = "rank/";
 const FOLLOW = "follow/";
 const SEARCH = "search/";
 const LIKE = "like/";
+const COMMENT = "comment/";
 
 const rf = {
   auth: {
@@ -51,12 +52,20 @@ const rf = {
   },
 
   like: {
+    likeCheck: (nickname: string, artwork_id: string) =>
+      HOST + LIKE + `have/${nickname}/${artwork_id}`,
     likeArtwork: (nickname: string, artwork_id: string) =>
       HOST + LIKE + `${nickname}/${artwork_id}`,
   },
 
   chatting: {
     getUserList: () => HOST + PROFILE + "list",
+  },
+
+  comment: {
+    createComment: () => HOST + "comment",
+    editOrDeleteComment: (comment_id: string) =>
+      HOST + COMMENT + `${comment_id}`,
   },
 };
 

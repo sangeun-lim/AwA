@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import styled from "styled-components";
 import style from "./Auction.module.css";
 
 import api from "../../api/api";

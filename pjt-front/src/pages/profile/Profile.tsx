@@ -10,6 +10,10 @@ import {
 import { Profile, User } from "../../Interface";
 import { profileDefaultData } from "../../defaultData";
 import ProfileUpdate from "./ProfileUpdate";
+import Followers from "./Followers";
+import Followings from "./Followings";
+import UserArtworkList from "./UserArtworkList";
+import UserLikedArtworkList from "./UserLikedArtworkList";
 
 const ProfilePage = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -140,10 +144,12 @@ const ProfilePage = (): JSX.Element => {
       )}
       <h2>{profileObject.nickname}</h2>
       <h3>팔로워 수 : {profileObject.follower_list?.length}</h3>
+      <Followers follower_list={profileObject.follower_list} />
       <h3>팔로잉 수 : {profileObject.following_list?.length}</h3>
       {userObject && userObject.email !== userEmail && (
         <button onClick={goChat}>채팅하기</button>
       )}
+      <Followings following_list={profileObject.following_list} />
       {userObject &&
         userObject.email !== userEmail &&
         (iFollow ? (
@@ -154,6 +160,14 @@ const ProfilePage = (): JSX.Element => {
       <p>{profileObject.description}</p>
       <div>
         <p>{profileObject.favorite_field}</p>
+      </div>
+      <div>
+        <UserArtworkList
+          artwork_list={profileObject.artwork_list}
+        ></UserArtworkList>
+        <UserLikedArtworkList
+          liked_artwork_list={profileObject.liked_artwork_list}
+        ></UserLikedArtworkList>
       </div>
     </div>
   );

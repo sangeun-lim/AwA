@@ -7,8 +7,7 @@ import {
   ArtworkItem,
   ArtworkComment,
 } from "../../Interface";
-import axios from "axios";
-import { itemDefaultData } from "../../defaultData";
+import api from "../../api/api";
 
 interface Props {
   setItem: Dispatch<React.SetStateAction<ArtworkItem>>;
@@ -44,20 +43,17 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    const response = await axios({
-      // url: `http://i7c101.p.ssafy.io:8080/comment/${editComment.comment_id}`,
-      url: `http://i7c101.p.ssafy.io:8081/api/comment/${editComment.comment_id}`,
-      method: "put",
-      headers: {
-        "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-        RefreshToken: localStorage.getItem("refresh_token") || "",
-      },
-      data: {
-        content: editComment.content,
-        nickname: editComment.nickname,
-        parent_artwork_id: editComment.parent_artwork_id,
-      },
-    });
+    const formData = {
+      content: editComment.content,
+      nickname: editComment.nickname,
+      parent_artwork_id: editComment.parent_artwork_id,
+    };
+
+    const response = await api.comment.editComment(
+      formData,
+      editComment.comment_id
+    );
+
     if (response.status === 200) {
       const updateData = response.data;
       const {
@@ -82,7 +78,6 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
         return {
           ...prev,
           comments: prev.comments.map((item) => {
-            // 같은건 바꾸고 다른건 놔둔다.
             if (item.comment_id === comment_id) {
               return {
                 comment_id,
@@ -110,14 +105,8 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
     const del: boolean = window.confirm("댓글 삭제?");
     if (del) {
       try {
-        const response = await axios({
-          url: `http://i7c101.p.ssafy.io:8080/comment/${comment.comment_id}`,
-          method: "delete",
-          headers: {
-            "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-            RefreshToken: localStorage.getItem("refresh_token") || "",
-          },
-        });
+        const response = await api.comment.deleteComment(comment.comment_id);
+
         if (response.status === 200) {
           setItem((prev) => {
             return {
@@ -139,7 +128,6 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
 
   return (
     <div>
-      {/* 댓글 쓴 사람이랑 수정하는 사람이 같으면 */}
       {userObject.nickname === comment.nickname ? (
         <div>
           {onEdit ? (
@@ -163,7 +151,6 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
           )}
         </div>
       ) : (
-        // 다르면 안보이게
         <div></div>
       )}
     </div>

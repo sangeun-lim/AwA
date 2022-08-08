@@ -8,7 +8,9 @@ import {
   UpdateItemData,
   UpdateProfileObject,
   QueryType,
+  newCommentType,
 } from "./apiInterface";
+import { METHODS } from "http";
 
 const api = {
   auth: {
@@ -230,6 +232,51 @@ const api = {
     },
   },
 
+  comment: {
+    createComment: async (formData: newCommentType) => {
+      const response = await axios({
+        url: rf.comment.createComment(),
+        method: "post",
+        headers: {
+          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
+        },
+        data: {
+          ...formData,
+        },
+      });
+
+      return response;
+    },
+
+    editComment: async (formData: newCommentType, comment_id: string) => {
+      const response = await axios({
+        url: rf.comment.editOrDeleteComment(comment_id),
+        method: "put",
+        headers: {
+          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
+        },
+        data: {
+          ...formData,
+        },
+      });
+      return response;
+    },
+
+    deleteComment: async (comment_id: string) => {
+      const response = await axios({
+        url: rf.comment.editOrDeleteComment(comment_id),
+        method: "delete",
+        headers: {
+          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
+        },
+      });
+      return response;
+    },
+  },
+
   search: {
     searchTitle: async (formData: QueryType) => {
       const response = await axios({
@@ -274,6 +321,31 @@ const api = {
         },
       });
 
+      return response;
+    },
+  },
+
+  like: {
+    checkLike: async (nickname: string, artwork_id: string) => {
+      const response = await axios({
+        url: rf.like.likeCheck(nickname, artwork_id),
+        method: "get",
+      });
+      return response;
+    },
+    LikeArticle: async (
+      nickname: string,
+      artwork_id: string,
+      method: string
+    ) => {
+      const response = await axios({
+        url: rf.like.likeArtwork(nickname, artwork_id),
+        method: method,
+        data: {
+          nickname: nickname,
+          artwork_id: artwork_id,
+        },
+      });
       return response;
     },
   },

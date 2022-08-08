@@ -1,17 +1,16 @@
-import React, { Dispatch, useState } from "react";
+import React, { Dispatch, FormEvent, useState } from "react";
 import { ArtworkItem, User } from "../../Interface";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import style from "./Comment.module.css";
+import api from "../../api/api";
 
 interface Props {
-  artworkId: string;
+  artworkId: number;
   setItem: Dispatch<React.SetStateAction<ArtworkItem>>;
 }
 
 interface NewComment {
   content: string;
-  parent_artwork_id: number;
 }
 
 const newCommentDefaultData = {
@@ -38,22 +37,15 @@ function CommentForm({ artworkId, setItem }: Props): JSX.Element {
     });
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await axios({
-      // url: `http://i7c101.p.ssafy.io:8080/comment`,
-      url: "http://i7c101.p.ssafy.io:8081/api/",
-      method: "post",
-      headers: {
-        "X-AUTH-TOKEN": localStorage.getItem("token") || "",
-        RefreshToken: localStorage.getItem("refresh_token") || "",
-      },
-      data: {
-        content: newComment.content,
-        nickname: userObject.nickname,
-        parent_artwork_id: artworkId,
-      },
-    });
+    const formData = {
+      content: newComment.content,
+      nickname: userObject.nickname,
+      parent_artwork_id: artworkId,
+    };
+    const response = await api.comment.createComment(formData);
+
     if (response.status === 200) {
       setNewComment(newCommentDefaultData);
       setItem((prev) => {

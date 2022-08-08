@@ -55,3 +55,9 @@ export interface QueryType {
   max_price: number;
   status: number;
 }
+
+export interface newCommentType {
+  content: string;
+  nickname: string;
+  parent_artwork_id: number;
+}
