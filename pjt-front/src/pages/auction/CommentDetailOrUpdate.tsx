@@ -8,6 +8,7 @@ import {
   ArtworkComment,
 } from "../../Interface";
 import api from "../../api/api";
+import style from "./Comment.module.css";
 
 interface Props {
   setItem: Dispatch<React.SetStateAction<ArtworkItem>>;
@@ -23,7 +24,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
   const [editComment, setEditComment] = useState<editComment>({
     comment_id: comment.comment_id,
     content: comment.content,
-    nickname: userObject.nickname,
+    nickname: comment.nickname,
     parent_artwork_id: comment.parent_artwork_id,
     createdDate: comment.createdDate,
     modifiedDate: comment.modifiedDate,
@@ -132,7 +133,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
         <div>
           {onEdit ? (
             <div>
-              <form onSubmit={onSubmit}>
+              <form onSubmit={onSubmit} className={style.commentEditForm}>
                 <input
                   name="content"
                   type="text"
@@ -140,18 +141,34 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
                   onChange={onChange}
                   value={editComment.content || ""}
                 />
-                <input type="submit" value="댓글수정" />
+                <input type="submit" value="수정" />
+                <button onClick={onDeleteClick}>삭제</button>
               </form>
             </div>
           ) : (
-            <div>
-              <button onClick={onEditClick}>수정</button>
-              <button onClick={onDeleteClick}>삭제</button>
+            <div className={style.commentDetail}>
+              <div>
+                <div className={style.commentContent}>
+                  <div className={style.commentProfileImg}></div>
+                  <b>{editComment.nickname}</b>
+                  <div>{editComment.content}</div>
+                </div>
+              </div>
+              <div className={style.commentButton}>
+                <button onClick={onEditClick}>수정</button>
+                <button onClick={onDeleteClick}>삭제</button>
+              </div>
             </div>
           )}
         </div>
       ) : (
-        <div></div>
+        <div className={style.commentDetail}>
+          <div className={style.commentContent}>
+            <div className={style.commentProfileImg}></div>
+            <b>{editComment.nickname}</b>
+            <div>{editComment.content}</div>
+          </div>
+        </div>
       )}
     </div>
   );

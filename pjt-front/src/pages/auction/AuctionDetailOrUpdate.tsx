@@ -610,19 +610,22 @@ function AuctionDetailOrUpdate(): JSX.Element {
               </div>
             )}
           </div>
-          <div className={style.detailBox}>
-            {item.comments &&
+          <div className={style.commentBox}>
+            {item.comments.length >= 1 ? (
               item.comments.map((item) => {
                 return (
-                  <li key={item.comment_id}>
-                    {item.content} | 작성자 : {item.nickname}
+                  <p key={item.comment_id}>
                     <CommentDetailOrUpdate
                       comment={item}
                       setItem={setItem}
                     ></CommentDetailOrUpdate>
-                  </li>
+                  </p>
                 );
-              })}
+              })
+            ) : (
+              <div className={style.commentNone}>댓글없으니까 달아줘</div>
+            )}
+            <hr />
             <CommentForm
               setItem={setItem}
               artworkId={Number(address)}

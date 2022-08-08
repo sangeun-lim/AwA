@@ -393,6 +393,11 @@
   border: 2px solid rgb(0, 0, 0);
 }
 
+.commentBox {
+  padding: 20px 30px 0;
+  border-top: 2px solid black;
+}
+
 .detailBottom {
   display: flex;
   justify-content: flex-end;
@@ -407,4 +412,10 @@
   color: rgb(0, 0, 0);
   cursor: pointer;
   white-space: nowrap;
+}
+
+.commentNone {
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
 }
