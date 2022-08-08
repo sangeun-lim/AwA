@@ -14,6 +14,7 @@ import Followers from "./Followers";
 import Followings from "./Followings";
 import UserArtworkList from "./UserArtworkList";
 import UserLikedArtworkList from "./UserLikedArtworkList";
+import style from "./Profile.module.css";
 
 const ProfilePage = (): JSX.Element => {
   const dispatch = useDispatch();
