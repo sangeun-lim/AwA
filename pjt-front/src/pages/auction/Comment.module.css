@@ -8,7 +8,7 @@
   width: 100%;
   height: 35px;
   border: none;
-  font-size: 15px;
+  font-size: 14px;
   border-bottom: 1px solid rgb(150, 150, 150);
 }
 
@@ -19,14 +19,93 @@
 
 .commentForm > input[type="submit"] {
   white-space: nowrap;
-  margin: 0 10px;
+  margin: 0 7px;
   border: 1px solid rgb(150, 150, 150);
   background-color: white;
-  font-size: 15px;
+  font-size: 13px;
   padding: 0 10px;
+  color: rgb(120, 120, 120);
 }
 
 .commentForm > input[type="submit"]:hover {
+  border: 1px solid rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+}
+
+/* commentDetail */
+.commentDetail {
+  display: flex;
+  justify-content: space-between;
+}
+
+.commentProfileImg {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background-color: rgb(200, 200, 200);
+}
+
+.commentContent {
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+}
+
+.commentContent > div,
+.commentContent > b {
+  margin: 0 3px;
+  white-space: nowrap;
+}
+
+.commentButton > button {
+  padding: 0px 5px;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 13px;
+  cursor: pointer;
+  margin: 0 2px;
+  white-space: nowrap;
+}
+
+.commentButton > button:hover {
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+}
+
+/* commentEdit */
+.commentEditForm {
+  display: flex;
+  justify-content: space-between;
+}
+
+.commentEditForm > input[type="text"] {
+  width: 100%;
+  height: 30px;
+  border: none;
+  font-size: 14px;
+  border-bottom: 1px solid rgb(150, 150, 150);
+}
+
+.commentEditForm > input[type="text"]:focus {
+  outline: none;
+  border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+.commentEditForm > input[type="submit"],
+.commentEditForm > button {
+  padding: 0px 5px;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 13px;
+  cursor: pointer;
+  margin: 0 2px;
+  white-space: nowrap;
+}
+
+.commentEditForm > input[type="submit"]:hover,
+.commentEditForm > button:hover {
   border: 1px solid rgb(0, 0, 0);
   color: rgb(0, 0, 0);
 }
