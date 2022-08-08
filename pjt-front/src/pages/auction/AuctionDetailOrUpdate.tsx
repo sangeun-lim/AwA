@@ -632,7 +632,10 @@ function AuctionDetailOrUpdate(): JSX.Element {
                   </li>
                 );
               })}
-            <CommentForm setItem={setItem} artworkId={address}></CommentForm>
+            <CommentForm
+              setItem={setItem}
+              artworkId={Number(address)}
+            ></CommentForm>
           </div>
           <div className={style.detailBottom}>
             <button onClick={onListClick}>목록</button>

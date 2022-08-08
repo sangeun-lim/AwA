@@ -8,6 +8,7 @@ import {
   UpdateItemData,
   UpdateProfileObject,
   QueryType,
+  newCommentType,
 } from "./apiInterface";
 
 const api = {
@@ -224,6 +225,24 @@ const api = {
           RefreshToken: localStorage.getItem("refresh_token") || "",
         },
         method: method,
+      });
+
+      return response;
+    },
+  },
+
+  comment: {
+    createComment: async (formData: newCommentType) => {
+      const response = await axios({
+        url: rf.comment.createComment(),
+        method: "post",
+        headers: {
+          "X-AUTH-TOKEN": localStorage.getItem("token") || "",
+          RefreshToken: localStorage.getItem("refresh_token") || "",
+        },
+        data: {
+          formData,
+        },
       });
 
       return response;

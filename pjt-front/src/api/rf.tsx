@@ -8,6 +8,7 @@ const RANK = "rank/";
 const FOLLOW = "follow/";
 const SEARCH = "search/";
 const LIKE = "like/";
+const COMMENT = "comment/";
 
 const rf = {
   auth: {
@@ -57,6 +58,10 @@ const rf = {
 
   chatting: {
     getUserList: () => HOST + PROFILE + "list",
+  },
+
+  comment: {
+    createComment: () => HOST + COMMENT,
   },
 };
 
