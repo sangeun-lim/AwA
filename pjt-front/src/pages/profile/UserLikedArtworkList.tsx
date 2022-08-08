@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { LikeArtworkList } from "../../Interface";
+import style from "./UserAuctionCard.module.css";
+import styles from "./Profile.module.css";
+import { NavLink } from "react-router-dom";
 
 interface Props {
   liked_artwork_list: LikeArtworkList[];
@@ -16,21 +19,35 @@ function UserLikedArtworkList({ liked_artwork_list }: Props): JSX.Element {
   return (
     <div>
       <button onClick={getArtworkList}>좋아요한 게시글</button>
-      {watchLikedArtworkList ? (
-        <div>
-          {liked_artwork_list.length &&
-            liked_artwork_list.map((item) => {
-              return (
-                <div key={item.artwork_id}>
-                  <img src={item.picture_url} alt="게시물사진" />
-                  <p>{item.title}</p>
-                </div>
-              );
-            })}
-        </div>
-      ) : (
-        <div></div>
-      )}
+      <div className={`${styles.auctionList}`}>
+        {watchLikedArtworkList ? (
+          <div>
+            {liked_artwork_list.length &&
+              liked_artwork_list.map((item) => {
+                return (
+                  <div key={item.artwork_id} className={style.imageCard}>
+                    <div className={style.container}>
+                      <img
+                        src={item.picture_url}
+                        alt="AuctionImg"
+                        className={style.auctionImg}
+                      />
+                      <NavLink to={`/auction/detail/${item.artwork_id}`}>
+                        <div className={style.overlay}></div>
+                        <div className={style.content}>
+                          <h3>{item.title}</h3>
+                          <div>{item.genre[0]}</div>
+                        </div>
+                      </NavLink>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </div>
     </div>
   );
 }

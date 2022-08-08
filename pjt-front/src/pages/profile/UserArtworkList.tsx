@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { ArtworkList } from "../../Interface";
-import AuctionCard from "../../component/AuctionCard";
-
+import style from "./UserAuctionCard.module.css";
+import styles from "./Profile.module.css";
+import { NavLink } from "react-router-dom";
 interface Props {
   artwork_list: ArtworkList[];
 }
@@ -16,23 +17,35 @@ function UserArtworkList({ artwork_list }: Props): JSX.Element {
   return (
     <div>
       <button onClick={getArtworkList}>내 게시글</button>
-      {watchArtworkList ? (
-        <div>
-          {artwork_list.length &&
-            artwork_list.map((item) => {
-              return (
-                <div key={item.artwork_id}>
-                  {/* 옥션카드 형태로 받아올라했는데, 데이터 받는게 완전 달라서 이거는...
-                  새롭게 컴포넌트를 만들던가 css를 해줘야될거같은데.. */}
-                  <img src={item.picture_url} alt="게시물사진" />
-                  <p>{item.title}</p>
-                </div>
-              );
-            })}
-        </div>
-      ) : (
-        <div></div>
-      )}
+      <div className={`${styles.auctionList}`}>
+        {watchArtworkList ? (
+          <div>
+            {artwork_list.length &&
+              artwork_list.map((item) => {
+                return (
+                  <div key={item.artwork_id} className={style.imageCard}>
+                    <div className={style.container}>
+                      <img
+                        src={item.picture_url}
+                        alt="AuctionImg"
+                        className={style.auctionImg}
+                      />
+                      <NavLink to={`/auction/detail/${item.artwork_id}`}>
+                        <div className={style.overlay}></div>
+                        <div className={style.content}>
+                          <h3>{item.title}</h3>
+                          <div>{item.genre[0]}</div>
+                        </div>
+                      </NavLink>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </div>
     </div>
   );
 }

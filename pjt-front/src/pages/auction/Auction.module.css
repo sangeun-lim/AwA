@@ -49,14 +49,3 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, auto));
   justify-content: center;
 }
-
-/* .auctionList {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-} */
-
-/* .auctionCard {
-  width: 300px;
-  height: auto;
-} */
