@@ -79,7 +79,7 @@ interface Media {
 }
 
 export interface ArtworkComment {
-  comment_id: number;
+  comment_id: string;
   content: string;
   createdDate: Date;
   modifiedDate: Date;
@@ -151,7 +151,7 @@ export interface editItem {
 }
 
 export interface editComment {
-  comment_id: number;
+  comment_id: string;
   content: string;
   nickname: string;
   parent_artwork_id: number;
