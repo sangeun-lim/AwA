@@ -30,7 +30,7 @@ public class JwtTokenProvider {
 
 //    @Value("${springboot.jwt.secret}")
     private String secretKey = "secretKeyforAwAProject_The signing key's size is 176 bits which is not secure enough for the HS256 algorithm.";
-    private final long tokenValidMillisecond = 1000L*60*60; // 1시간
+    private final long tokenValidMillisecond = 1000L*60*60*6; // 1시간
     private final long refreshTokenValidMillisecond = 1000L*60*60*24*14; //2주
 
     @PostConstruct
