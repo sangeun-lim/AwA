@@ -21,7 +21,7 @@ const rf = {
   notice: {
     create: () => HOST + NOTICE,
     readOrUpdateOrDelete: (noticeId: string) => HOST + NOTICE + `${noticeId}`,
-    readAll: () => HOST + NOTICE + "list",
+    readAll: (pageNum: number) => HOST + NOTICE + `page/${pageNum}`,
   },
 
   artwork: {

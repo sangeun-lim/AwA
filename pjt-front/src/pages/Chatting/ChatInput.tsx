@@ -7,30 +7,17 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import React, { ChangeEvent, Dispatch, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dbService } from "../../fbase";
-import { User } from "../../Interface";
+import { NewMessage, User } from "../../Interface";
 import { firstChatActions } from "../../store";
 import socketIOClient from "socket.io-client";
 import style from "./ChatInput.module.css";
-import { Message } from "./ChatBoard";
-
-interface NewMessage {
-  sender: string;
-  createdDate: number;
-  message: string;
-  receiver: string;
-  roomName: string;
-}
-
-interface Props {
-  setMessageList: Dispatch<React.SetStateAction<Message[]>>;
-}
 
 const SOCKET = socketIOClient("localhost:4002");
 
-function ChatInput({ setMessageList }: Props) {
+function ChatInput() {
   const dispatch = useDispatch();
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject

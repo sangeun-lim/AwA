@@ -3,21 +3,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../../api/api";
 import { dbService } from "../../fbase";
-import { User } from "../../Interface";
+import { MyChatList, User } from "../../Interface";
 import { firstChatActions } from "../../store";
 import style from "./ChatList.module.css";
 import ChatListItem from "./ChatListItem";
 import socketIOClient from "socket.io-client";
-
-export interface MyChatList {
-  id?: string;
-  partnerEmail?: string;
-  nickname?: string;
-  profile_picture_url?: string;
-  createdDate?: number;
-  recentlyDate?: string;
-  recentlyMessage?: string;
-}
 
 const SOCKET = socketIOClient("localhost:4002");
 
@@ -72,13 +62,12 @@ function ChatList(): JSX.Element {
 
   useEffect(() => {
     SOCKET.emit("enter_room", userObject.email);
-  }, []);
+  }, [userObject.email]);
 
   useEffect(() => {
     SOCKET.on("receive message", async (data) => {
       const topChat: MyChatList = {};
 
-      // 기존 채팅방 배열에서 채팅이 온 채팅방을 삭제
       setChatList((prev) => {
         return prev.filter((chat) => {
           if (
@@ -103,15 +92,15 @@ function ChatList(): JSX.Element {
 
       if (!topChat?.id) {
         const response = await api.chatting.getUserList([chatPartner]);
-        topChat.nickname = response.data.nickname;
-        topChat.profile_picture_url = response.data.profile_picture_url;
+        topChat.nickname = response.data[0].nickname;
+        topChat.profile_picture_url = response.data[0].profile_picture_url;
         topChat.createdDate = data.createdDate;
         topChat.recentlyDate = data.createdData;
         topChat.recentlyMessage = data.message;
         topChat.partnerEmail = chatPartner;
       }
+      console.log(topChat);
 
-      // 삭제된 채팅방을 맨 위로 올린다.
       setChatList((prev) => {
         return [topChat].concat(prev);
       });
@@ -124,8 +113,8 @@ function ChatList(): JSX.Element {
         <span>내 채팅방 목록</span>
       </div>
       <div className={style.Body}>
-        {chatList.map((item, i) => {
-          return <ChatListItem item={item} key={i} />;
+        {chatList.map((item) => {
+          return <ChatListItem item={item} key={item.partnerEmail} />;
         })}
       </div>
     </div>

@@ -1,16 +1,20 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import api from "../../api/api";
 import style from "./Notice.module.css";
 import { noticeCreateDefaultData } from "./../../defaultData";
 import { NewNoticeData } from "./../../api/apiInterface";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
+import { User } from "../../Interface";
 
 function NoticeCreate(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userObject = useSelector(
+    (state: { userObject: User | null }) => state.userObject
+  );
 
   const [newNotice, setNewNotice] = useState<NewNoticeData>(
     noticeCreateDefaultData
@@ -50,6 +54,12 @@ function NoticeCreate(): JSX.Element {
       dispatch(loadingActions.toggle());
     }
   };
+
+  useEffect(() => {
+    if (!userObject || !userObject._manager) {
+      navigate("/notice");
+    }
+  }, [navigate, userObject]);
 
   return (
     <div className={style.noticeCreate}>

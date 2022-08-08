@@ -5,6 +5,7 @@ export interface User {
   nickname: string;
   gender?: boolean | null;
   birth?: string | null;
+  _manager: boolean;
 }
 
 interface Owner {
@@ -120,18 +121,30 @@ export interface NoticeEditing {
 }
 
 // 채팅방 Object
-export interface ChattingRoom {
-  id: string;
-  user1: string;
-  user2: string;
+export interface MyChatList {
+  id?: string;
+  partnerEmail?: string;
+  nickname?: string;
+  profile_picture_url?: string;
+  createdDate?: number;
+  recentlyDate?: string;
+  recentlyMessage?: string;
 }
 
 // 채팅메시지 Object
-export interface MessageObject {
-  roomName: string;
-  email: string;
+export interface Message {
+  sender: string;
+  createdDate: number;
   message: string;
-  createdAt: number;
+  receiver: string;
+}
+
+export interface NewMessage {
+  sender: string;
+  createdDate: number;
+  message: string;
+  receiver: string;
+  roomName: string;
 }
 
 // 신고 Object

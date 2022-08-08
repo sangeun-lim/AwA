@@ -17,18 +17,12 @@ import SearchResult from "../pages/SearchResult";
 import Rank from "../pages/Rank";
 import Error from "../pages/Error";
 import Navigation from "./Navigation";
-import { User } from "./../Interface";
-import { useSelector } from "react-redux";
 
 interface Props {
   getUserData: Function;
 }
 
 const AppRouter = ({ getUserData }: Props): JSX.Element => {
-  const userObject = useSelector(
-    (state: { userObject: User | null }) => state.userObject
-  );
-
   return (
     <>
       <Router>
@@ -43,15 +37,13 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route path="/profile/:email" element={<Profile />} />
-          {userObject && <Route path="/chatting" element={<Chatting />} />}
+          <Route path="/chatting" element={<Chatting />} />
           <Route path="/auction" element={<Auction />} />
           <Route
             path="/auction/detail/:id"
             element={<AuctionDetailOrUpdate />}
           />
-          {userObject && (
-            <Route path="/auction/create" element={<AuctionCreate />} />
-          )}
+          <Route path="/auction/create" element={<AuctionCreate />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/notice/:id" element={<NoticeDetailAndEdit />} />
           <Route path="/notice/create" element={<NoticeCreate />} />
