@@ -135,14 +135,20 @@ const ProfilePage = (): JSX.Element => {
           setEditProfile={setEditProfile}
         />
       )}
-      {profileObject.picture_url ? (
-        <img src={profileObject.picture_url} alt="프로필사진" />
-      ) : (
-        <img
-          src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
-          alt="프로필사진"
-        />
-      )}
+      <div className={style.MyProfileImg}>
+        {profileObject.picture_url ? (
+          <img
+            src={profileObject.picture_url}
+            alt="프로필사진"
+            className={style.MyProfileImage}
+          />
+        ) : (
+          <img
+            src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+            alt="프로필사진"
+          />
+        )}
+      </div>
       <h2>{profileObject.nickname}</h2>
       <h3>팔로워 수 : {profileObject.follower_list?.length}</h3>
       <Followers follower_list={profileObject.follower_list} />
@@ -162,14 +168,14 @@ const ProfilePage = (): JSX.Element => {
       <div>
         <p>{profileObject.favorite_field}</p>
       </div>
-      <div>
+      <p className={style.tabBox}>
         <UserArtworkList
           artwork_list={profileObject.artwork_list}
         ></UserArtworkList>
         <UserLikedArtworkList
           liked_artwork_list={profileObject.liked_artwork_list}
         ></UserLikedArtworkList>
-      </div>
+      </p>
     </div>
   );
 };

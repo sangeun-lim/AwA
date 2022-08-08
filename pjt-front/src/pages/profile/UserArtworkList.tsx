@@ -15,11 +15,11 @@ function UserArtworkList({ artwork_list }: Props): JSX.Element {
   };
 
   return (
-    <div>
+    <div className={styles.Auction}>
       <button onClick={getArtworkList}>내 게시글</button>
-      <div className={`${styles.auctionList}`}>
+      <div>
         {watchArtworkList ? (
-          <div>
+          <div className={`${styles.AuctionList}`}>
             {artwork_list.length &&
               artwork_list.map((item) => {
                 return (

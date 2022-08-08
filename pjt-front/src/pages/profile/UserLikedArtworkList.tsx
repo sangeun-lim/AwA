@@ -17,11 +17,11 @@ function UserLikedArtworkList({ liked_artwork_list }: Props): JSX.Element {
   };
 
   return (
-    <div>
+    <div className={styles.Auction}>
       <button onClick={getArtworkList}>좋아요한 게시글</button>
-      <div className={`${styles.auctionList}`}>
+      <div>
         {watchLikedArtworkList ? (
-          <div>
+          <div className={`${styles.AuctionList}`}>
             {liked_artwork_list.length &&
               liked_artwork_list.map((item) => {
                 return (
