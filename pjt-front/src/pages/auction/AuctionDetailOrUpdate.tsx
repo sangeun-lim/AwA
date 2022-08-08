@@ -278,51 +278,40 @@ function AuctionDetailOrUpdate(): JSX.Element {
   const onLikeClick = async (e: any) => {
     e.preventDefault();
     // 좋아요 눌렀는지 안 눌렀는지 확인
-    const response = await axios({
-      // url: `http://i7c101.p.ssafy.io:8080/like/have/${userObject?.nickname}/${address}`,
-      url: `http://i7c101.p.ssafy.io:8081/api/like/have/${userObject?.nickname}/${address}`,
-      method: "get",
-    });
+    if (userObject) {
+      const response = await api.like.checkLike(userObject.nickname, address);
+      // 좋아요를 누를 때
+      if (response.data === 0) {
+        const likeResponse = await api.like.LikeArticle(
+          userObject.nickname,
+          address,
+          "post"
+        );
 
-    // 좋아요를 누를 때
-    if (response.data === 0) {
-      const likeResponse = await axios({
-        // url: `http://i7c101.p.ssafy.io:8080/like/${userObject?.nickname}/${address}`,
-        url: `http://i7c101.p.ssafy.io:8081/api/like/${userObject?.nickname}/${address}`,
-        method: "post",
-        data: {
-          artwork_id: address,
-          nickname: userObject?.nickname,
-        },
-      });
-
-      if (likeResponse) {
-        setItem((prev) => {
-          return {
-            ...prev,
-            like_count: prev.like_count + 1,
-          };
-        });
+        if (likeResponse) {
+          setItem((prev) => {
+            return {
+              ...prev,
+              like_count: prev.like_count + 1,
+            };
+          });
+        }
       }
-    }
-    // 좋아요를 취소할 때
-    else {
-      const unLikeResponse = await axios({
-        // url: `http://i7c101.p.ssafy.io:8080/like/${userObject?.nickname}/${address}`,
-        url: `http://i7c101.p.ssafy.io:8081/api/like/${userObject?.nickname}/${address}`,
-        method: "delete",
-        data: {
-          artwork_id: address,
-          nickname: userObject?.nickname,
-        },
-      });
-      if (unLikeResponse) {
-        setItem((prev) => {
-          return {
-            ...prev,
-            like_count: prev.like_count - 1,
-          };
-        });
+      // 좋아요를 취소할 때
+      else {
+        const unLikeResponse = await api.like.LikeArticle(
+          userObject.nickname,
+          address,
+          "delete"
+        );
+        if (unLikeResponse) {
+          setItem((prev) => {
+            return {
+              ...prev,
+              like_count: prev.like_count - 1,
+            };
+          });
+        }
       }
     }
   };

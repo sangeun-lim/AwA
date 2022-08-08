@@ -52,6 +52,8 @@ const rf = {
   },
 
   like: {
+    likeCheck: (nickname: string, artwork_id: string) =>
+      HOST + LIKE + `have/${nickname}/${artwork_id}`,
     likeArtwork: (nickname: string, artwork_id: string) =>
       HOST + LIKE + `${nickname}/${artwork_id}`,
   },
@@ -61,7 +63,9 @@ const rf = {
   },
 
   comment: {
-    createComment: () => HOST + COMMENT,
+    createComment: () => HOST + "comment",
+    editOrDeleteComment: (comment_id: string) =>
+      HOST + COMMENT + `${comment_id}`,
   },
 };
 
