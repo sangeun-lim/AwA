@@ -7,6 +7,7 @@ import { UpdateProfileObject } from "../../api/apiInterface";
 import { storageService } from "../../fbase";
 import { Profile } from "../../Interface";
 import { userObjectActions } from "../../store";
+import style from "./Profile.module.css";
 
 interface Props {
   profileObject: Profile;
@@ -140,11 +141,16 @@ function ProfileUpdate({
       <div>
         <h3>프로필 정보 변경</h3>
         {showImage ? (
-          <img src={showImage} alt="프로필이미지" />
+          <img
+            src={showImage}
+            alt="프로필이미지"
+            className={style.MyProfileImg}
+          />
         ) : (
           <img
             src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
             alt="프로필이미지"
+            className={style.MyProfileImg}
           />
         )}
         <br></br>

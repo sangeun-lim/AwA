@@ -18,7 +18,6 @@ import { loadingActions } from "../../store";
 import ReportModal from "./ReportModal";
 import CommentForm from "./CommentForm";
 import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
-import axios from "axios";
 import style from "./AuctionCreateUpdate.module.css";
 
 interface ButtonProps {
@@ -393,8 +392,6 @@ function AuctionDetailOrUpdate(): JSX.Element {
         }
       )
     );
-
-    // setLike(item.like_count);
   }, [onEdit, item]);
 
   return (

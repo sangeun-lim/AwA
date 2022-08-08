@@ -1,5 +1,30 @@
-.auctionList {
+.Auction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.AuctionList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, auto));
   justify-content: center;
+}
+
+.tabBox {
+  width: 1050px;
+  height: 600px;
+  float: left;
+}
+
+.MyProfileImg {
+  width: 100%;
+  height: 100%;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.MyProfileImage {
+  height: 300px;
+  width: 250px;
 }
