@@ -15,6 +15,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("select c from Comment c where c.comment_id=:comment_id")
     Comment findByComment_id(@Param("comment_id") Long comment_id);
 
-    @Query("select c from Comment c where c.parent_artwork=:parent_artwork ORDER BY c.createdDate desc")
+    @Query("select c from Comment c where c.parent_artwork=:parent_artwork ORDER BY c.createdDate asc")
     List<Comment> findAllByParentArtwork(@Param("parent_artwork") Artwork parent_artwork);
 }
