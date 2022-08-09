@@ -1,4 +1,5 @@
-const HOST = "https://i7c101.p.ssafy.io:8081/api/";
+// const HOST = "https://i7c101.p.ssafy.io:8081/api/";
+const HOST = "https://awa24.site:8081/api/";
 
 const AUTH = "auth/";
 const NOTICE = "notice/";
