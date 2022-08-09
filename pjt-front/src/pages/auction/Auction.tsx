@@ -8,7 +8,7 @@ import AuctionCard from "../../component/AuctionCard";
 import { loadingActions } from "../../store";
 import { ArtworkItem, User } from "./../../Interface";
 import SearchComponent from "../../component/SearchComponent";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { Masonry } from "@mui/lab";
 
 function Auction(): JSX.Element {
   const navigate = useNavigate();
@@ -18,32 +18,34 @@ function Auction(): JSX.Element {
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
+  const [pageNum, setPageNum] = useState<number>(1);
 
   const onClick = () => {
     navigate("/auction/create");
   };
 
-  useEffect(() => {
-    const callAuction = async () => {
+  const callAuction = async () => {
+    dispatch(loadingActions.toggle());
+    try {
+      const response = await api.artwork.getArtworks(pageNum);
+      setPageNum(pageNum + 1);
+      setItemList((prev) => prev.concat(response.data.artworkResponseDto));
       dispatch(loadingActions.toggle());
-      try {
-        const response = await api.artwork.readAll();
+    } catch (err) {
+      console.log(err);
+      dispatch(loadingActions.toggle());
+    }
+  };
 
-        if (response.status === 200) {
-          setItemList(response.data);
-        }
-        dispatch(loadingActions.toggle());
-      } catch (err) {
-        console.log(err);
-        dispatch(loadingActions.toggle());
-      }
-    };
+  useEffect(() => {}, []);
 
+  useEffect(() => {
+    /* eslint-disable */
     callAuction();
-  }, [dispatch]);
+  }, []);
 
   return (
-    <div className={style.auction}>
+    <div id="auctionPage" className={style.auction}>
       <section className={style.auctionTop}>
         <SearchComponent />
       </section>
@@ -54,19 +56,15 @@ function Auction(): JSX.Element {
           </button>
         )}
       </div>
-      <ResponsiveMasonry
-        columnsCountBreakPoints={{ 350: 1, 750: 2, 1000: 3, 1300: 4 }}
-      >
-        <Masonry>
-          {itemList.map((item) => {
-            return (
-              <div key={item.artwork_id} className="grid-item">
-                <AuctionCard item={item}></AuctionCard>
-              </div>
-            );
-          })}
-        </Masonry>
-      </ResponsiveMasonry>
+      <Masonry columns={{ sm: 2, md: 3, lg: 4 }} spacing={1}>
+        {itemList.map((item, i) => {
+          return (
+            <div key={i} className="grid-item">
+              <AuctionCard item={item}></AuctionCard>
+            </div>
+          );
+        })}
+      </Masonry>
     </div>
   );
 }

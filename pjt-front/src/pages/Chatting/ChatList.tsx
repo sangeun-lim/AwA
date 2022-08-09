@@ -9,7 +9,7 @@ import style from "./ChatList.module.css";
 import ChatListItem from "./ChatListItem";
 import socketIOClient from "socket.io-client";
 
-const SOCKET = socketIOClient("localhost:4002");
+const SOCKET = socketIOClient("https://awa24.site:4002");
 
 function ChatList(): JSX.Element {
   const dispatch = useDispatch();
@@ -70,17 +70,22 @@ function ChatList(): JSX.Element {
 
       setChatList((prev) => {
         return prev.filter((chat) => {
-          if (
-            chat.partnerEmail === data.sender ||
-            chat.partnerEmail === data.receiver
-          ) {
+          if (chat.partnerEmail === data.sender) {
             topChat.id = chat.id;
             topChat.createdDate = chat.createdDate;
             topChat.nickname = chat.nickname;
             topChat.profile_picture_url = chat.profile_picture_url;
             topChat.recentlyDate = data.createdDate;
             topChat.recentlyMessage = data.message;
-            topChat.partnerEmail = chatPartner;
+            topChat.partnerEmail = data.sender;
+          } else if (chat.partnerEmail === data.receiver) {
+            topChat.id = chat.id;
+            topChat.createdDate = chat.createdDate;
+            topChat.nickname = chat.nickname;
+            topChat.profile_picture_url = chat.profile_picture_url;
+            topChat.recentlyDate = data.createdDate;
+            topChat.recentlyMessage = data.message;
+            topChat.partnerEmail = data.receiver;
           }
 
           return (
@@ -97,7 +102,11 @@ function ChatList(): JSX.Element {
         topChat.createdDate = data.createdDate;
         topChat.recentlyDate = data.createdData;
         topChat.recentlyMessage = data.message;
-        topChat.partnerEmail = chatPartner;
+        if (userObject.email === data.sender) {
+          topChat.partnerEmail = data.receiver;
+        } else {
+          topChat.partnerEmail = data.sender;
+        }
       }
       console.log(topChat);
 
