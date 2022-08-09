@@ -381,7 +381,7 @@
 }
 
 .detailBox {
-  padding: 20px 30px;
+  padding: 20px 30px 20px 0;
   border-top: 2px solid black;
   width: 100%;
 }
