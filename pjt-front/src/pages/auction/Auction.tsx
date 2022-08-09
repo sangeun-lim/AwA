@@ -8,6 +8,7 @@ import AuctionCard from "../../component/AuctionCard";
 import { loadingActions } from "../../store";
 import { ArtworkItem, User } from "./../../Interface";
 import SearchComponent from "../../component/SearchComponent";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 function Auction(): JSX.Element {
   const navigate = useNavigate();
@@ -52,16 +53,20 @@ function Auction(): JSX.Element {
             상품등록
           </button>
         )}
-        <div className={`${style.auctionList}`}>
+      </div>
+      <ResponsiveMasonry
+        columnsCountBreakPoints={{ 350: 1, 750: 2, 1000: 3, 1300: 4 }}
+      >
+        <Masonry>
           {itemList.map((item) => {
             return (
-              <div key={item.artwork_id} className={style.auctionCard}>
+              <div key={item.artwork_id} className="grid-item">
                 <AuctionCard item={item}></AuctionCard>
               </div>
             );
           })}
-        </div>
-      </div>
+        </Masonry>
+      </ResponsiveMasonry>
     </div>
   );
 }
