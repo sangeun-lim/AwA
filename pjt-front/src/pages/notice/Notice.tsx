@@ -18,7 +18,11 @@ function PageButton({ num, setPageNum }: SubProps): JSX.Element {
     setPageNum(num);
   };
 
-  return <button onClick={onPageClick}>{num}</button>;
+  return (
+    <button onClick={onPageClick} className={style.buttonRender}>
+      {num}
+    </button>
+  );
 }
 
 function Notice(): JSX.Element {
