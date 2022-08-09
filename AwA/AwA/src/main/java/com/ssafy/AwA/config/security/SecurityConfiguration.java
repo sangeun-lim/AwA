@@ -81,7 +81,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("http://i7c101.p.ssafy.io:8080/");
+        configuration.addAllowedOrigin("http://i7c101.p.ssafy.io:8081/");
+        configuration.addAllowedOrigin("https://i7c101.p.ssafy.io:8081/");
+        configuration.addAllowedOrigin("https://awa24.site");
+        configuration.addAllowedOrigin("http://awa24.site");
+        configuration.addAllowedOrigin("https://www.awa24.site");
+        configuration.addAllowedOrigin("http://www.awa24.site");
+
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.addExposedHeader("*"); // 모든걸 허용함
