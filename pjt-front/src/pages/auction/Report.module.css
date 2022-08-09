@@ -1,15 +1,98 @@
-.btn {
+/* modal창 외부화면 */
+.report {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* modal창 */
+.reportBody {
+  position: absolute;
+  width: 500px;
+  padding: 40px;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+}
+
+.reportCloseBtn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reportTitle {
+  border-bottom: 2px solid rgb(200, 200, 200);
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.reportType {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  border-bottom: 1px solid rgb(200, 200, 200);
+  padding-bottom: 15px;
+}
+
+.reportType > select {
+  margin-left: 10px;
+}
+
+.reportContent > div {
+  margin-bottom: 10px;
+}
+
+.reportContent > textarea {
+  width: 90%;
+  height: 300px;
+  border: 1px solid rgb(200, 200, 200);
+  margin: 10px 0;
+  resize: none;
+}
+
+.reportContent > textarea:focus-visible {
+  outline: none;
+  border: 1px solid rgb(0, 0, 0);
+}
+
+/* button */
+.reportBtn {
   padding: 0px 10x;
-  border: 2px solid rgb(150, 150, 150);
+  border: 1px solid rgb(150, 150, 150);
   background-color: white;
   color: rgb(150, 150, 150);
-  font-size: 12px;
+  font-size: 15px;
   cursor: pointer;
   margin: 0 20px;
   white-space: nowrap;
 }
 
-.btn:hover {
+.reportBtn:hover {
   color: rgb(0, 0, 0);
-  border: 2px solid rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+}
+
+.reportBtnRed {
+  padding: 0px 10x;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 15px;
+  cursor: pointer;
+  margin: 0 20px;
+  white-space: nowrap;
+}
+
+.reportBtnRed:hover {
+  color: rgb(220, 0, 0);
+  border: 1px solid rgb(220, 0, 0);
 }

@@ -16,7 +16,7 @@ const ReportModal = ({ artworkId }: { artworkId: string }): JSX.Element => {
 
   return (
     <div>
-      <button onClick={openReport} className={style.btn}>
+      <button onClick={openReport} className={style.reportBtnRed}>
         신고
       </button>
       <Report
