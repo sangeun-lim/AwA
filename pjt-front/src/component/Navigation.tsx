@@ -5,7 +5,7 @@ import style from "./Navigation.module.css";
 import { User } from "./../Interface";
 import { useDispatch, useSelector } from "react-redux";
 import { userObjectActions } from "../store";
-import { GrSearch } from "react-icons/gr";
+import { GoSearch } from "react-icons/go";
 import SearchComponent from "./SearchComponent";
 
 function Navigation(): JSX.Element {
@@ -16,6 +16,7 @@ function Navigation(): JSX.Element {
   );
 
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
+  const [searchBar, setSearchBar] = useState<boolean>(false);
 
   const logoutRequest = async () => {
     dispatch(userObjectActions.logout());
@@ -36,10 +37,10 @@ function Navigation(): JSX.Element {
   };
 
   return (
-    <div className="sticky-top">
-      <nav className={style.navBox}>
+    <div className={style.nav}>
+      <nav className={searchBar ? style.navBoxSearch : style.navBox}>
         <div
-          className={!menuToggle ? style.bugerMenu : style.menu}
+          className={!menuToggle ? style.burgerMenu : style.menu}
           onClick={() =>
             menuToggle ? setMenuToggle(false) : setMenuToggle(true)
           }
@@ -48,6 +49,8 @@ function Navigation(): JSX.Element {
           <div className={style.burgerLine2}></div>
           <div className={style.burgerLine3}></div>
         </div>
+        <img src="./img/logo.png" alt="로고" className={style.burgerLogoImg} />
+        <div></div>
 
         <div
           className={[
@@ -134,20 +137,25 @@ function Navigation(): JSX.Element {
                 </NavLink>
               </div>
             )}
-            <input type="checkbox" id="searchBar" />
-            <label htmlFor="searchBar">
-              <GrSearch className={style.searchIcon} />
-            </label>
-            <div className={style.navSearchBar}>
+
+            <GoSearch
+              onClick={() => setSearchBar(!searchBar)}
+              className={style.searchIcon}
+            />
+            <div
+              className={
+                searchBar ? style.navSearchBarActive : style.navSearchBar
+              }
+            >
               <SearchComponent />
             </div>
             {/* <button>
             <NavLink to="/알림모달창">알림이모티콘</NavLink>
             </button> */}
           </div>
-          {/* bugerMenu */}
-          <div>
-            <div className={style.bugerList}>
+          {/* burgerMenu */}
+          <div className={style.burgerMenuBox}>
+            <div className={style.burgerList}>
               <NavLink
                 to="/auction"
                 className={({ isActive }) => (isActive ? style.active : "")}
@@ -169,7 +177,7 @@ function Navigation(): JSX.Element {
             </div>
             {userObject ? (
               // 로그인 했을 때
-              <div className={style.bugerList}>
+              <div className={style.burgerList}>
                 <NavLink
                   to={`/profile/${userObject.email}`}
                   className={({ isActive }) => (isActive ? style.active : "")}
@@ -185,7 +193,7 @@ function Navigation(): JSX.Element {
               </div>
             ) : (
               // 로그인 안 했을 때
-              <div className={style.bugerList}>
+              <div className={style.burgerList}>
                 <NavLink
                   to="/auth/signup"
                   className={({ isActive }) => (isActive ? style.active : "")}

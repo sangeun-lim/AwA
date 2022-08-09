@@ -5,8 +5,15 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 300px;
   margin-bottom: 20px;
-  border-bottom: 2px solid rgb(200, 200, 200);
+  background-color: rgb(231, 115, 92, 0.2);
+}
+
+.auctionTop .title {
+  font-weight: bold;
+  font-size: 50px;
+  margin: 10px 0;
 }
 
 .auction {
@@ -16,13 +23,15 @@
   margin-bottom: 20px;
 }
 
-.auction > div {
+.auction > div,
+.auctionTop > div {
   width: 1280px;
   margin: 10px 0;
 }
 
 @media (max-width: 1600px) {
-  .auction > div {
+  .auction > div,
+  .auctionTop > div {
     width: 80%;
   }
 }
