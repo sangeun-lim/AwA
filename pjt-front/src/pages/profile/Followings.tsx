@@ -14,7 +14,7 @@ function Followings({ following_list }: Props): JSX.Element {
 
   return (
     <div>
-      <button onClick={getFollowings}>팔로잉목록</button>
+      <p onClick={getFollowings}>팔로잉</p>
       {watchFollowList ? (
         <div>
           {following_list.map((item) => {

@@ -65,16 +65,6 @@ function Rank(): JSX.Element {
           );
         })}
       </div>
-      {/* <div>
-        <p>판매 랭킹</p>
-        {likeRank.map((item, index) => {
-          return (
-            <div key={item.title}>
-              {index + 1} | {item.title}
-            </div>
-          );
-        })}
-      </div> */}
     </div>
   );
 }

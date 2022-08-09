@@ -61,3 +61,10 @@ export interface newCommentType {
   nickname: string;
   parent_artwork_id: number;
 }
+
+export interface ReportType {
+  reported_artwork_id: string;
+  category: string;
+  content: string;
+  report_profile_nickname: string;
+}

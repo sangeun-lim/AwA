@@ -14,7 +14,7 @@ function Followers({ follower_list }: Props): JSX.Element {
 
   return (
     <div>
-      <button onClick={getFollowers}>팔로워목록</button>
+      <p onClick={getFollowers}>팔로워</p>
       {watchFollowList ? (
         <div>
           {follower_list.map((item) => {
