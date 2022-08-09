@@ -8,70 +8,81 @@ import AuctionCard from "../../component/AuctionCard";
 import { loadingActions } from "../../store";
 import { ArtworkItem, User } from "./../../Interface";
 import SearchComponent from "../../component/SearchComponent";
-import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { Masonry } from "@mui/lab";
+import { useInView } from "react-intersection-observer";
 
 function Auction(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [ref, inView] = useInView();
 
   const [itemList, setItemList] = useState<ArtworkItem[]>([]);
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
+  const loading = useSelector((state: { loading: boolean }) => state.loading);
+  const [pageNum, setPageNum] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(100);
 
   const onClick = () => {
     navigate("/auction/create");
   };
 
-  useEffect(() => {
-    const callAuction = async () => {
+  const callAuction = async () => {
+    dispatch(loadingActions.toggle());
+    try {
+      const response = await api.artwork.getArtworks(pageNum);
+      setPageNum(pageNum + 1);
+      setItemList((prev) => prev.concat(response.data.artworkResponseDto));
+      setLastPage(Math.floor(response.data.totalCount / 20) + 1);
       dispatch(loadingActions.toggle());
-      try {
-        const response = await api.artwork.readAll();
+    } catch (err) {
+      console.log(err);
+      dispatch(loadingActions.toggle());
+    }
+  };
 
-        if (response.status === 200) {
-          setItemList(response.data);
-        }
-        dispatch(loadingActions.toggle());
-      } catch (err) {
-        console.log(err);
-        dispatch(loadingActions.toggle());
-      }
-    };
-
+  useEffect(() => {
+    /* eslint-disable */
     callAuction();
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    if (inView && !loading && pageNum <= lastPage) {
+      callAuction();
+      setPageNum((prev) => prev + 1);
+    }
+  }, [inView, loading]);
 
   return (
-    <div className={style.auction}>
-      <section className={style.auctionTop}>
+    <div>
+      <div className={style.auction}>
+        <section className={style.auctionTop}>
+          <SearchComponent />
+        </section>
         <div>
-          <div className={style.title}>세룽룽</div>
-          <div className={style.content}>
-            Artwork Auction에서 좋은 작품을 만날 기회
-          </div>
+          {userObject && (
+            <button onClick={onClick} className={style.auctionButton}>
+              상품등록
+            </button>
+          )}
         </div>
-      </section>
-      <div>
-        {userObject && (
-          <button onClick={onClick} className={style.auctionButton}>
-            상품등록
-          </button>
-        )}
-      </div>
-      <ResponsiveMasonry
-        columnsCountBreakPoints={{ 350: 1, 750: 2, 1000: 3, 1300: 4 }}
-      >
-        <Masonry>
-          {itemList.map((item) => {
+        <Masonry columns={{ sm: 2, md: 3, xl: 4 }} spacing={1}>
+          {itemList.map((item, i) => {
             return (
-              <div key={item.artwork_id} className="grid-item">
+              <div key={i} className="grid-item">
                 <AuctionCard item={item}></AuctionCard>
               </div>
             );
           })}
         </Masonry>
-      </ResponsiveMasonry>
+      </div>
+      {pageNum > lastPage && (
+        <div className={style.lastBox}>
+          <span>마지막 게시글 입니다</span>
+        </div>
+      )}
+      <div ref={ref}>.</div>
     </div>
   );
 }

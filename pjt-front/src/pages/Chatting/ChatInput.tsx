@@ -15,7 +15,7 @@ import { firstChatActions } from "../../store";
 import socketIOClient from "socket.io-client";
 import style from "./ChatInput.module.css";
 
-const SOCKET = socketIOClient("localhost:4002");
+const SOCKET = socketIOClient("https://awa24.site:4002/");
 
 function ChatInput() {
   const dispatch = useDispatch();

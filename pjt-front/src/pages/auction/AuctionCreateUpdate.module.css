@@ -418,6 +418,9 @@
   padding: 20px 30px 0;
   border-top: 2px solid black;
 }
+.commentBox > div {
+  padding-bottom: 10px;
+}
 
 .detailBottom {
   display: flex;
