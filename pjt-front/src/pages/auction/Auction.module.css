@@ -44,7 +44,24 @@
 }
 
 .auctionList {
-  display: grid;
+  /* column-width: 300px;
+  column-gap: 15px;
+  width: 90%;
+  margin: 50px auto; */
+  /* display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, auto));
-  justify-content: center;
+  justify-content: center; */
+}
+
+#grid {
+  width: 80%;
+}
+
+.auctionCard {
+  /* transition: opacity 0.4s ease-in-out; */
+  break-inside: avoid-column;
+}
+
+.grid-item {
+  width: 23%;
 }
