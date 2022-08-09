@@ -122,7 +122,7 @@ const ProfilePage = (): JSX.Element => {
   }, [dispatch, userEmail, userObject]);
 
   return (
-    <div>
+    <div className={style.BigBox}>
       {userObject && userObject.email === userEmail && (
         <button onClick={onEditClick}>수정</button>
       )}
@@ -140,42 +140,54 @@ const ProfilePage = (): JSX.Element => {
           <img
             src={profileObject.picture_url}
             alt="프로필사진"
-            className={style.MyProfileImage}
+            className={style.MyProfileImgImg}
           />
         ) : (
           <img
             src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
             alt="프로필사진"
+            className={style.MyProfileImgImg}
           />
         )}
       </div>
-      <h2>{profileObject.nickname}</h2>
-      <h3>팔로워 수 : {profileObject.follower_list?.length}</h3>
-      <Followers follower_list={profileObject.follower_list} />
-      <h3>팔로잉 수 : {profileObject.following_list?.length}</h3>
+      <div className={style.ProfileNickname}>{profileObject.nickname}</div>
+      <div className={style.Follow}>
+        <Followers follower_list={profileObject.follower_list} />
+        <p>{profileObject.follower_list?.length}</p>
+      </div>
+      <div className={style.Follow}>
+        <Followings following_list={profileObject.following_list} />
+        <p>{profileObject.following_list?.length}</p>
+      </div>
+
       {userObject && userObject.email !== userEmail && (
-        <button onClick={goChat}>채팅하기</button>
+        <p onClick={goChat}>채팅하기</p>
       )}
-      <Followings following_list={profileObject.following_list} />
-      {userObject &&
-        userObject.email !== userEmail &&
-        (iFollow ? (
-          <button onClick={onUnfollow}>언팔로우</button>
-        ) : (
-          <button onClick={onFollow}>팔로우</button>
-        ))}
+      <div>
+        {userObject &&
+          userObject.email !== userEmail &&
+          (iFollow ? (
+            <button className={style.Following} onClick={onUnfollow}>
+              언팔로우
+            </button>
+          ) : (
+            <button className={style.Unfollowing} onClick={onFollow}>
+              팔로우
+            </button>
+          ))}
+      </div>
       <p>{profileObject.description}</p>
       <div>
         <p>{profileObject.favorite_field}</p>
       </div>
-      <p className={style.tabBox}>
+      <div>
         <UserArtworkList
           artwork_list={profileObject.artwork_list}
         ></UserArtworkList>
         <UserLikedArtworkList
           liked_artwork_list={profileObject.liked_artwork_list}
         ></UserLikedArtworkList>
-      </p>
+      </div>
     </div>
   );
 };

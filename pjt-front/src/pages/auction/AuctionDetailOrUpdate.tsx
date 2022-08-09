@@ -17,8 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 import ReportModal from "./ReportModal";
 import CommentForm from "./CommentForm";
-import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
 import style from "./AuctionCreateUpdate.module.css";
+import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
 
 interface ButtonProps {
   item: string;
@@ -55,7 +55,6 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
   const [item, setItem] = useState<ArtworkItem>(itemDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
-  // 라이크는 좋아요 개수를 다른 변수에 저장해놓고, 눌렀을때 변화가 되게?
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
@@ -276,17 +275,14 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
   const onLikeClick = async (e: any) => {
     e.preventDefault();
-    // 좋아요 눌렀는지 안 눌렀는지 확인
     if (userObject) {
       const response = await api.like.checkLike(userObject.nickname, address);
-      // 좋아요를 누를 때
       if (response.data === 0) {
         const likeResponse = await api.like.LikeArticle(
           userObject.nickname,
           address,
           "post"
         );
-
         if (likeResponse) {
           setItem((prev) => {
             return {
@@ -295,9 +291,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
             };
           });
         }
-      }
-      // 좋아요를 취소할 때
-      else {
+      } else {
         const unLikeResponse = await api.like.LikeArticle(
           userObject.nickname,
           address,
@@ -549,7 +543,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
       ) : (
         <div className={style.auction}>
           <div className={style.detailTop}>
-            <p>조회수 : {item.view_count}</p>
+            <div>조회수 : {item.view_count}</div>
             <div>
               {userObject?.nickname ? (
                 <p className={style.detailLike}>
@@ -605,7 +599,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
             )}
           </div>
           <div className={style.commentBox}>
-            {/* {item.comments ? (
+            {item.comments ? (
               item.comments.map((item) => {
                 return (
                   <p key={item.comment_id}>
@@ -617,19 +611,14 @@ function AuctionDetailOrUpdate(): JSX.Element {
                 );
               })
             ) : (
-              <div className={style.commentNone}>댓글없으니까 달아줘</div>
-            )} */}
-            {item.comments &&
-              item.comments.map((item) => {
-                return (
-                  <p key={item.comment_id}>
-                    <CommentDetailOrUpdate
-                      comment={item}
-                      setItem={setItem}
-                    ></CommentDetailOrUpdate>
-                  </p>
-                );
-              })}
+              <div className={style.commentNone}>
+                댓글없으니까 달아줘
+                <p>
+                  이상태에서 댓글쓰려니까 댓글이 바로 반영안되고 페이지도
+                  안뜨네; 아 골치네...
+                </p>
+              </div>
+            )}
             <CommentForm
               setItem={setItem}
               artworkId={Number(address)}

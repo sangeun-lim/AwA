@@ -1,4 +1,4 @@
-const HOST = "http://i7c101.p.ssafy.io:8081/api/";
+const HOST = "https://awa24.site:8081/api/";
 
 const AUTH = "auth/";
 const NOTICE = "notice/";
@@ -9,6 +9,7 @@ const FOLLOW = "follow/";
 const SEARCH = "search/";
 const LIKE = "like/";
 const COMMENT = "comment/";
+const REPORT = "report/";
 
 const rf = {
   auth: {
@@ -64,8 +65,12 @@ const rf = {
 
   comment: {
     createComment: () => HOST + "comment",
-    editOrDeleteComment: (comment_id: string) =>
+    getOrEditOrDeleteComment: (comment_id: string) =>
       HOST + COMMENT + `${comment_id}`,
+  },
+
+  report: {
+    report: (artwork_id: string) => HOST + REPORT + `${artwork_id}`,
   },
 };
 

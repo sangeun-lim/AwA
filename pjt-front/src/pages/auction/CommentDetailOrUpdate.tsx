@@ -1,4 +1,4 @@
-import React, { Dispatch, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -21,6 +21,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
     (state: { userObject: User }) => state.userObject
   );
   const [onEdit, setOnEdit] = useState<boolean>(false);
+
   const [editComment, setEditComment] = useState<editComment>({
     comment_id: comment.comment_id,
     content: comment.content,
@@ -28,6 +29,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
     parent_artwork_id: comment.parent_artwork_id,
     createdDate: comment.createdDate,
     modifiedDate: comment.modifiedDate,
+    profile_picture_url: comment.profile_picture_url,
   });
 
   const onChange = (e: any) => {
@@ -64,6 +66,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
         parent_artwork_id,
         createdDate,
         modifiedDate,
+        profile_picture_url,
       } = updateData;
 
       setEditComment({
@@ -73,6 +76,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
         parent_artwork_id,
         createdDate,
         modifiedDate,
+        profile_picture_url,
       });
 
       setItem((prev) => {
@@ -87,6 +91,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
                 parent_artwork_id,
                 createdDate,
                 modifiedDate,
+                profile_picture_url,
               };
             } else {
               return item;
@@ -147,12 +152,14 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
             </div>
           ) : (
             <div className={style.commentDetail}>
-              <div>
-                <div className={style.commentContent}>
-                  <div className={style.commentProfileImg}></div>
-                  <b>{editComment.nickname}</b>
-                  <div>{editComment.content}</div>
-                </div>
+              <div className={style.commentContent}>
+                <img
+                  className={style.commentProfileImg}
+                  src={editComment.profile_picture_url}
+                  alt="profile"
+                />
+                <b>{editComment.nickname}</b>
+                <div>{editComment.content}</div>
               </div>
               <div className={style.commentButton}>
                 <button onClick={onEditClick}>수정</button>
@@ -164,7 +171,11 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
       ) : (
         <div className={style.commentDetail}>
           <div className={style.commentContent}>
-            <div className={style.commentProfileImg}></div>
+            <img
+              className={style.commentProfileImg}
+              src={editComment.profile_picture_url}
+              alt="profile"
+            />
             <b>{editComment.nickname}</b>
             <div>{editComment.content}</div>
           </div>
