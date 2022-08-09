@@ -251,7 +251,7 @@
 
 .btn {
   padding: 0px 50px;
-  border: 2px solid rgb(150, 150, 150);
+  border: 1px solid rgb(150, 150, 150);
   background-color: white;
   color: rgb(150, 150, 150);
   font-size: 20px;
@@ -262,12 +262,12 @@
 
 .btn:hover {
   color: rgb(0, 0, 0);
-  border: 2px solid rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
 }
 
 .submitButton {
   padding: 0px 50px;
-  border: 2px solid rgb(150, 150, 150);
+  border: 1px solid rgb(150, 150, 150);
   background: rgb(255, 255, 255);
   color: rgb(150, 150, 150);
   font-size: 20px;
@@ -277,7 +277,7 @@
 
 .submitButton:hover {
   color: rgb(0, 0, 0);
-  border: 2px solid rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
 }
 
 /* AuctionDetail */
@@ -321,13 +321,14 @@
   .detail {
     display: flex;
     flex-direction: column;
+    margin: 0;
   }
 }
 
 .detailImage,
 .detailInfo {
   width: 100%;
-  margin: 20px;
+  margin: 10px;
 }
 
 .detailImage {
@@ -346,6 +347,11 @@
 .detailInfo > .userName {
   font-size: 20px;
   margin: 10px;
+}
+
+.detailInfoBox {
+  border-top: 1px solid rgb(200, 200, 200);
+  padding: 15px 0;
 }
 
 .detailInfoBox > div {
@@ -418,4 +424,5 @@
   font-size: 15px;
   font-weight: bold;
   text-align: center;
+  margin-bottom: 15px;
 }

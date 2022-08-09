@@ -564,7 +564,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
           </div>
           <div className={style.detail}>
             <div className={style.detailImage}>
-              {item.attachmentRequestDtoList.length &&
+              {item.attachmentRequestDtoList &&
                 item.attachmentRequestDtoList.map(
                   (image: { type: string; url: string }) => (
                     <div key={image.url} className={style.imageSample}>
@@ -576,12 +576,10 @@ function AuctionDetailOrUpdate(): JSX.Element {
             <div className={style.detailInfo}>
               <div className={style.title}>{item.title}</div>
               <div className={style.userName}>{item.sell_user_nickname}</div>
-              <hr />
               <div className={style.detailInfoBox}>
                 <div>가격</div>
                 <p>{item.price}원</p>
               </div>
-              <hr />
               <div className={style.detailInfoBox}>
                 <div>장르</div>
                 <p>
@@ -590,7 +588,6 @@ function AuctionDetailOrUpdate(): JSX.Element {
                   ))}
                 </p>
               </div>
-              <hr />
               <div className={style.detailInfoBox}>
                 <div>재료</div>
                 <p>{item.ingredient}</p>
@@ -608,7 +605,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
             )}
           </div>
           <div className={style.commentBox}>
-            {item.comments.length >= 1 ? (
+            {/* {item.comments ? (
               item.comments.map((item) => {
                 return (
                   <p key={item.comment_id}>
@@ -621,8 +618,18 @@ function AuctionDetailOrUpdate(): JSX.Element {
               })
             ) : (
               <div className={style.commentNone}>댓글없으니까 달아줘</div>
-            )}
-            <hr />
+            )} */}
+            {item.comments &&
+              item.comments.map((item) => {
+                return (
+                  <p key={item.comment_id}>
+                    <CommentDetailOrUpdate
+                      comment={item}
+                      setItem={setItem}
+                    ></CommentDetailOrUpdate>
+                  </p>
+                );
+              })}
             <CommentForm
               setItem={setItem}
               artworkId={Number(address)}

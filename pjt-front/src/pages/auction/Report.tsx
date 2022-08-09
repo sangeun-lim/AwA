@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { User } from "../../Interface";
 import { useSelector } from "react-redux";
+import style from "./Report.module.css";
 
 interface Props {
   open: boolean;
@@ -67,46 +68,53 @@ function Report(props: Props): JSX.Element {
   };
 
   return (
-    <>
+    <div>
       {open ? (
-        <form onSubmit={onSubmit}>
-          <button onClick={close}>X</button>
-          <div>
-            <h1>신고</h1>
-          </div>
-          <hr />
-          <div>
-            <select onChange={selectCategory} value={category}>
-              {categoryList.map((item) => (
-                <option value={item} key={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-            <p>
-              신고 유형: <b>{category}</b>
-            </p>
-          </div>
-
-          <div>
-            <h3>신고내용</h3>
-            <label htmlFor="content"></label>
-            <textarea
-              name="content"
-              value={reportForm.content}
-              cols={30}
-              rows={10}
-              placeholder="신고 내용을 입력해주세요."
-              onChange={onChange}
-              required
-            ></textarea>
-          </div>
-          <br />
-          <button onClick={close}>취소</button>
-          <input type="submit" value="신고하기" />
-        </form>
+        <div className={style.report}>
+          <form onSubmit={onSubmit} className={style.reportBody}>
+            <div className={style.reportCloseBtn}>
+              <button onClick={close} className={style.reportBtn}>
+                X
+              </button>
+            </div>
+            <div className={style.reportTitle}>
+              <h1>게시물 신고</h1>
+            </div>
+            <div className={style.reportType}>
+              <div>신고 유형 : </div>
+              <select onChange={selectCategory} value={category}>
+                {categoryList.map((item) => (
+                  <option value={item} key={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+              {/* <div>
+                신고 유형 : <b>{category}</b>
+              </div> */}
+            </div>
+            <div className={style.reportContent}>
+              <div>신고내용</div>
+              <label htmlFor="content"></label>
+              <textarea
+                name="content"
+                value={reportForm.content}
+                cols={30}
+                rows={10}
+                placeholder="신고 내용을 입력해주세요."
+                onChange={onChange}
+                required
+              ></textarea>
+            </div>
+            <br />
+            <input type="submit" value="신고" className={style.reportBtn} />
+            <button onClick={close} className={style.reportBtn}>
+              취소
+            </button>
+          </form>
+        </div>
       ) : null}
-    </>
+    </div>
   );
 }
 
