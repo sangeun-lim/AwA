@@ -86,6 +86,7 @@ export interface ArtworkComment {
   modifiedDate: Date;
   nickname: string;
   parent_artwork_id: number;
+  profile_picture_url: string;
 }
 
 // 판매글 목록에 보이는 거
@@ -162,7 +163,6 @@ export interface editItem {
   ingredient: string;
   description: string;
 }
-
 export interface editComment {
   comment_id: string;
   content: string;
@@ -170,4 +170,5 @@ export interface editComment {
   parent_artwork_id: number;
   createdDate: Date;
   modifiedDate: Date;
+  profile_picture_url: string;
 }

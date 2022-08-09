@@ -17,8 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadingActions } from "../../store";
 import ReportModal from "./ReportModal";
 import CommentForm from "./CommentForm";
-import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
 import style from "./AuctionCreateUpdate.module.css";
+import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
 
 interface ButtonProps {
   item: string;
@@ -55,7 +55,6 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
   const [item, setItem] = useState<ArtworkItem>(itemDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
-  // 라이크는 좋아요 개수를 다른 변수에 저장해놓고, 눌렀을때 변화가 되게?
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
@@ -247,17 +246,14 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
   const onLikeClick = async (e: any) => {
     e.preventDefault();
-    // 좋아요 눌렀는지 안 눌렀는지 확인
     if (userObject) {
       const response = await api.like.checkLike(userObject.nickname, address);
-      // 좋아요를 누를 때
       if (response.data === 0) {
         const likeResponse = await api.like.LikeArticle(
           userObject.nickname,
           address,
           "post"
         );
-
         if (likeResponse) {
           setItem((prev) => {
             return {
@@ -266,9 +262,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
             };
           });
         }
-      }
-      // 좋아요를 취소할 때
-      else {
+      } else {
         const unLikeResponse = await api.like.LikeArticle(
           userObject.nickname,
           address,
@@ -284,6 +278,25 @@ function AuctionDetailOrUpdate(): JSX.Element {
         }
       }
     }
+  };
+
+  // detailImage 변경
+  const bigPic = document.querySelector(".big");
+  const smallPics = document.querySelectorAll(".small");
+
+  for (var i = 0; i < smallPics.length; i++) {
+    smallPics[i].addEventListener("click", changePic);
+  }
+
+  function changePic(this: any) {
+    const smallPicAttribute = this.getAttribute("src");
+    bigPic?.setAttribute("src", smallPicAttribute);
+  }
+
+  const firstImg = () => {
+    const smallImageList = document.querySelector(".checked > input");
+    const checked = smallImageList;
+    checked?.setAttribute("checked", "checked");
   };
 
   useEffect(() => {
@@ -484,7 +497,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
       ) : (
         <div className={style.auction}>
           <div className={style.detailTop}>
-            <p>조회수 : {item.view_count}</p>
+            <div>조회수 : {item.view_count}</div>
             <div>
               {userObject?.nickname ? (
                 <p className={style.detailLike}>
@@ -497,18 +510,75 @@ function AuctionDetailOrUpdate(): JSX.Element {
               <ReportModal artworkId={address} />
             </div>
           </div>
+
           <div className={style.detail}>
-            <div className={style.detailImage}>
-              {item.attachmentRequestDtoList &&
-                item.attachmentRequestDtoList.map(
-                  (image: { type: string; url: string }) => (
-                    <div key={image.url} className={style.imageSample}>
-                      <img src={image.url} alt={`${image.url}`} />
-                    </div>
-                  )
+            <div className={style.detailContent}>
+              <div className={style.detailImage}>
+                <div className={style.smallImageList} onLoad={firstImg}>
+                  {item.attachmentRequestDtoList &&
+                    item.attachmentRequestDtoList.map(
+                      (image: { type: string; url: string }) => (
+                        <div key={image.url} className="checked">
+                          <input type="radio" id={image.url} name="image" />
+                          <label
+                            htmlFor={image.url}
+                            className={style.smallImage}
+                          >
+                            <img
+                              src={image.url}
+                              alt={`${image.url}`}
+                              className="small"
+                            />
+                          </label>
+                        </div>
+                      )
+                    )}
+                </div>
+                {item.attachmentRequestDtoList && (
+                  <div className={style.bigImage}>
+                    {item?.attachmentRequestDtoList[0]?.url && (
+                      <img
+                        src={item.attachmentRequestDtoList[0]?.url}
+                        alt=""
+                        className="big"
+                      />
+                    )}
+                  </div>
                 )}
+              </div>
+              <div className={style.detailInfo}>
+                <div className={style.title}>{item.title}</div>
+                <div className={style.userName}>{item.sell_user_nickname}</div>
+                <div className={style.detailInfoBox}>
+                  <div>가격</div>
+                  <p>{item.price}원</p>
+                </div>
+                <div className={style.detailInfoBox}>
+                  <div>장르</div>
+                  <p>
+                    {item.genre.map((item: string, i: number) => (
+                      <span key={i}>{item} </span>
+                    ))}
+                  </p>
+                </div>
+                <div className={style.detailInfoBox}>
+                  <div>재료</div>
+                  <p>{item.ingredient}</p>
+                </div>
+              </div>
+              <div className={style.detailBox}>
+                <div>상세 정보</div>
+                <p>{item.description}</p>
+                {userObject && userObject.email === item.sell_user_email && (
+                  <div>
+                    <button onClick={onEditClick}>수정</button>
+                    <button onClick={onDeleteClick}>삭제</button>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className={style.detailInfo}>
+
+            <div className={style.detailInfoSide}>
               <div className={style.title}>{item.title}</div>
               <div className={style.userName}>{item.sell_user_nickname}</div>
               <div className={style.detailInfoBox}>
@@ -528,16 +598,6 @@ function AuctionDetailOrUpdate(): JSX.Element {
                 <p>{item.ingredient}</p>
               </div>
             </div>
-          </div>
-          <div className={style.detailBox}>
-            <div>상세 정보</div>
-            <p>{item.description}</p>
-            {userObject && userObject.email === item.sell_user_email && (
-              <div>
-                <button onClick={onEditClick}>수정</button>
-                <button onClick={onDeleteClick}>삭제</button>
-              </div>
-            )}
           </div>
           <div className={style.commentBox}>
             {item.comments &&

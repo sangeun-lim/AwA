@@ -243,13 +243,46 @@
 }
 
 /* buttonRedner */
-.buttonRender {
+.pageButtonBox {
+  display: flex;
+  /* position: fixed;
+  bottom: 50px; */
+}
+
+.pageButton {
   padding: 2px 7px;
-  border: 1px solid rgb(150, 150, 150);
+  border: none;
   background-color: white;
   color: rgb(150, 150, 150);
   font-size: 13px;
   cursor: pointer;
   margin: 0 5px;
   white-space: nowrap;
+  align-items: baseline;
+}
+
+.pageButton:hover {
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+.pageButtonActive {
+  padding: 2px 7px;
+  border: 1px solid rgb(0, 0, 0);
+  background-color: white;
+  color: rgb(0, 0, 0);
+  font-size: 13px;
+  cursor: pointer;
+  margin: 0 5px;
+  white-space: nowrap;
+}
+
+.pageIcon {
+  color: rgb(150, 150, 150);
+  padding-bottom: 3px;
+  font-size: 17px;
+}
+
+.pageIcon:hover {
+  color: rgb(0, 0, 0);
 }

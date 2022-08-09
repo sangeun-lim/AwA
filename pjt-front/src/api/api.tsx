@@ -9,6 +9,7 @@ import {
   UpdateProfileObject,
   QueryType,
   newCommentType,
+  ReportType,
 } from "./apiInterface";
 import { getCookie } from "../cookie";
 
@@ -259,9 +260,17 @@ const api = {
       return response;
     },
 
+    getComment: async (comment_id: string) => {
+      const response = await axios({
+        url: rf.comment.getOrEditOrDeleteComment(comment_id),
+        method: "get",
+      });
+      return response;
+    },
+
     editComment: async (formData: newCommentType, comment_id: string) => {
       const response = await axios({
-        url: rf.comment.editOrDeleteComment(comment_id),
+        url: rf.comment.getOrEditOrDeleteComment(comment_id),
         method: "put",
         headers: {
           "X-AUTH-TOKEN": sessionStorage.getItem("token") || "",
@@ -276,7 +285,7 @@ const api = {
 
     deleteComment: async (comment_id: string) => {
       const response = await axios({
-        url: rf.comment.editOrDeleteComment(comment_id),
+        url: rf.comment.getOrEditOrDeleteComment(comment_id),
         method: "delete",
         headers: {
           "X-AUTH-TOKEN": sessionStorage.getItem("token") || "",
@@ -354,6 +363,22 @@ const api = {
         data: {
           nickname: nickname,
           artwork_id: artwork_id,
+        },
+      });
+      return response;
+    },
+  },
+
+  report: {
+    auctionReport: async (formData: ReportType, artworkId: string) => {
+      const response = await axios({
+        url: rf.report.report(artworkId),
+        method: "post",
+        data: {
+          category: formData.category,
+          content: formData.content,
+          report_profile_nickname: formData.report_profile_nickname,
+          reported_artwork_id: formData.reported_artwork_id,
         },
       });
       return response;

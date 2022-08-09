@@ -1,25 +1,31 @@
 import React, { Dispatch, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { resourceLimits } from "worker_threads";
 
 import api from "../../api/api";
 import NoticeListItem from "../../component/NoticeListItem";
 import { loadingActions } from "../../store";
 import { NoticeItem, User } from "./../../Interface";
 import style from "./Notice.module.css";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
 interface SubProps {
   num: number;
   setPageNum: Dispatch<React.SetStateAction<number>>;
+  pageNum: number;
 }
 
-function PageButton({ num, setPageNum }: SubProps): JSX.Element {
+function PageButton({ num, setPageNum, pageNum }: SubProps): JSX.Element {
   const onPageClick = () => {
     setPageNum(num);
   };
 
   return (
-    <button onClick={onPageClick} className={style.buttonRender}>
+    <button
+      onClick={onPageClick}
+      className={num === pageNum ? style.pageButtonActive : style.pageButton}
+    >
       {num}
     </button>
   );
@@ -31,6 +37,7 @@ function Notice(): JSX.Element {
 
   const [noticeList, setNoticeList] = useState<NoticeItem[]>([]);
   const [pageNum, setPageNum] = useState<number>(1);
+  // const [pageLength, setPageLength] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(1);
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
@@ -43,8 +50,12 @@ function Notice(): JSX.Element {
   const buttonRendering = () => {
     const result = [];
     for (let i = 1; i <= totalCount; i++) {
-      result.push(<PageButton key={i} num={i} setPageNum={setPageNum} />);
+      result.push(
+        <PageButton key={i} num={i} setPageNum={setPageNum} pageNum={pageNum} />
+      );
     }
+
+    // setPageLength(result.length);
 
     return result;
   };
@@ -101,7 +112,38 @@ function Notice(): JSX.Element {
           </button>
         </div>
       )}
-      <div>{buttonRendering()}</div>
+      <div className={style.pageButtonBox}>
+        {pageNum === 1 ? null : (
+          <div>
+            <button onClick={() => setPageNum(1)} className={style.pageButton}>
+              처음페이지
+            </button>
+            <button
+              onClick={() => setPageNum(pageNum - 1)}
+              className={style.pageButton}
+            >
+              <AiOutlineLeft className={style.pageIcon} />
+            </button>
+          </div>
+        )}
+        {buttonRendering()}
+        {pageNum === totalCount ? null : (
+          <div>
+            <button
+              onClick={() => setPageNum(pageNum + 1)}
+              className={style.pageButton}
+            >
+              <AiOutlineRight className={style.pageIcon} />
+            </button>
+            <button
+              onClick={() => setPageNum(totalCount)}
+              className={style.pageButton}
+            >
+              끝페이지
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

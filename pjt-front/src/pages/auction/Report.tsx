@@ -3,6 +3,7 @@ import React, { useEffect, useState, ChangeEvent } from "react";
 import { User } from "../../Interface";
 import { useSelector } from "react-redux";
 import style from "./Report.module.css";
+import api from "../../api/api";
 
 interface Props {
   open: boolean;
@@ -24,7 +25,7 @@ const defaultData = {
 function Report(props: Props): JSX.Element {
   const { open, close, artworkId } = props;
   const [reportForm, setReportForm] = useState<ReportData>(defaultData);
-  const categoryList = ["A", "B", "C", "D", "E", "기타"];
+  const categoryList = ["욕설", "도배", "저작권침해", "광고", "기타"];
   const [category, setCategory] = useState<string>("");
 
   const userObject = useSelector(
@@ -51,16 +52,14 @@ function Report(props: Props): JSX.Element {
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
-    const response = await axios({
-      url: `http://i7c101.p.ssafy.io:8080/report/${artworkId}`,
-      method: "post",
-      data: {
-        category: category,
-        content: reportForm.content,
-        report_profile_nickname: userObject.nickname,
-        reported_artwork_id: artworkId,
-      },
-    });
+    const formData = {
+      category: category,
+      content: reportForm.content,
+      report_profile_nickname: userObject.nickname,
+      reported_artwork_id: artworkId,
+    };
+
+    const response = await api.report.auctionReport(formData, artworkId);
 
     if (response.status === 200) {
       alert("신고가 접수되었습니다!");
@@ -89,9 +88,6 @@ function Report(props: Props): JSX.Element {
                   </option>
                 ))}
               </select>
-              {/* <div>
-                신고 유형 : <b>{category}</b>
-              </div> */}
             </div>
             <div className={style.reportContent}>
               <div>신고내용</div>
