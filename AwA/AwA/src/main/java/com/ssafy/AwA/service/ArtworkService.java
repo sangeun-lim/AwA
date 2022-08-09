@@ -263,7 +263,7 @@ public class ArtworkService {
         for(int i=0;i<follwingList.size();i++) {
             System.out.println("내가 팔로우 하는 사람 : "+ follwingList.get(i).getNickname());
             User followingUser = userRepository.findByNickname(follwingList.get(i).getNickname());
-            PageRequest page = PageRequest.of(pageNo-1, 9, Sort.by(Sort.Direction.DESC, "artwork_id"));//        Pa
+            PageRequest page = PageRequest.of(pageNo-1, 20, Sort.by(Sort.Direction.DESC, "artwork_id"));//        Pa
             Page<Artwork> sellListPage = artworkRepository.findAllBySell_userPage(page, followingUser);
 
             totalCount+=sellListPage.getTotalElements();
@@ -328,7 +328,7 @@ public class ArtworkService {
     }
 
     public ArtworkPageDto getArtworksByPageNo(int pageNo) {
-        PageRequest page = PageRequest.of(pageNo-1, 9, Sort.by(Sort.Direction.DESC, "artwork_id"));
+        PageRequest page = PageRequest.of(pageNo-1, 20, Sort.by(Sort.Direction.DESC, "artwork_id"));
         Page<Artwork> allArtworksPage = artworkRepository.findAll(page);
 
         List<Artwork> allArtworks = allArtworksPage.getContent();
