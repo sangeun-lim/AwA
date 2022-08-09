@@ -13,7 +13,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("*")
+                .allowedOrigins("http://localhost:3000", "https://awa24.site", "https://www.awa24.site", "http://awa24.site", "http://www.awa24.site")
                 .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE")
                 .exposedHeaders("X-AUTH-TOKEN")
                 .exposedHeaders("RefreshToken");
