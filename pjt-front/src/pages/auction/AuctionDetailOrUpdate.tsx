@@ -148,7 +148,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
   };
 
   const onCancelClick = () => {
-    navigate(`/auction/detail/${item.artwork_id}`);
+    setOnEdit(!onEdit);
   };
 
   const onSubmit = async (e: any) => {
@@ -195,42 +195,13 @@ function AuctionDetailOrUpdate(): JSX.Element {
           "put"
         );
 
-        if (response.status === 200) {
-          const updateData = response.data;
-          const {
-            artwork_id,
-            attachmentRequestDtoList,
-            comments,
-            createdDate,
-            description,
-            genre,
-            ingredient,
-            like_count,
-            price,
-            profile_picture,
-            sell_user_email,
-            sell_user_nickname,
-            title,
-            view_count,
-          } = updateData;
-
-          setItem({
-            artwork_id,
-            comments,
-            attachmentRequestDtoList,
-            createdDate,
-            description,
-            genre,
-            ingredient,
-            like_count,
-            price,
-            profile_picture,
-            sell_user_email,
-            sell_user_nickname,
-            title,
-            view_count,
-          });
-        }
+        setItem((prev) => {
+          return {
+            ...response.data,
+            comments: prev.comments,
+            sell_user_email: prev.sell_user_email,
+          };
+        });
       }
 
       setOnEdit(!onEdit);
@@ -336,43 +307,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
         "get"
       );
 
-      if (response.status === 200) {
-        const auctionItem = response.data;
-
-        const {
-          artwork_id,
-          attachmentRequestDtoList,
-          comments,
-          createdDate,
-          description,
-          genre,
-          ingredient,
-          like_count,
-          price,
-          profile_picture,
-          sell_user_nickname,
-          sell_user_email,
-          title,
-          view_count,
-        } = auctionItem;
-
-        setItem({
-          artwork_id,
-          comments,
-          attachmentRequestDtoList,
-          genre,
-          createdDate,
-          description,
-          price,
-          title,
-          ingredient,
-          like_count,
-          profile_picture,
-          sell_user_nickname,
-          sell_user_email,
-          view_count,
-        });
-      }
+      setItem(response.data);
     }
 
     try {
@@ -665,26 +600,17 @@ function AuctionDetailOrUpdate(): JSX.Element {
             </div>
           </div>
           <div className={style.commentBox}>
-            {item.comments ? (
+            {item.comments &&
               item.comments.map((item) => {
                 return (
-                  <p key={item.comment_id}>
+                  <div key={item.comment_id}>
                     <CommentDetailOrUpdate
                       comment={item}
                       setItem={setItem}
                     ></CommentDetailOrUpdate>
-                  </p>
+                  </div>
                 );
-              })
-            ) : (
-              <div className={style.commentNone}>
-                댓글없으니까 달아줘
-                <p>
-                  이상태에서 댓글쓰려니까 댓글이 바로 반영안되고 페이지도
-                  안뜨네; 아 골치네...
-                </p>
-              </div>
-            )}
+              })}
             <CommentForm
               setItem={setItem}
               artworkId={Number(address)}

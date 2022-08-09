@@ -29,6 +29,7 @@ const rf = {
     readAllOrPost: () => HOST + ARTWORK,
     readDetailOrUpdateOrDelete: (artwork_id: string) =>
       HOST + ARTWORK + `${artwork_id}`,
+    getArtworks: (pageNum: number) => HOST + ARTWORK + `page/${pageNum}`,
   },
 
   profile: {

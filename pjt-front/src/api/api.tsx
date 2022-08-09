@@ -171,6 +171,15 @@ const api = {
 
       return response;
     },
+
+    getArtworks: async (pageNum: number) => {
+      const response = await axios({
+        url: rf.artwork.getArtworks(pageNum),
+        method: "get",
+      });
+
+      return response;
+    },
   },
 
   profile: {

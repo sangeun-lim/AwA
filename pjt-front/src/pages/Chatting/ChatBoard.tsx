@@ -8,7 +8,7 @@ import socketIOClient from "socket.io-client";
 import ChatInput from "./ChatInput";
 import { chatPartnerActions } from "../../store";
 
-const SOCKET = socketIOClient("localhost:4002");
+const SOCKET = socketIOClient("https://awa24.site:4002/");
 
 function ChatBoard() {
   const dispatch = useDispatch();
