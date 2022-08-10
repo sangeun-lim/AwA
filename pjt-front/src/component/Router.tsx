@@ -35,7 +35,10 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
             path="/auth/login"
             element={<Login getUserData={getUserData} />}
           />
-          <Route path="/social/:params" element={<OnSocialLogin />} />
+          <Route
+            path="/social/:params"
+            element={<OnSocialLogin getUserData={getUserData} />}
+          />
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route path="/profile/:email" element={<Profile />} />
