@@ -1,6 +1,7 @@
 package com.ssafy.AwA.config.security;
 
 import com.ssafy.AwA.auth.PrincipalOauth2UserService;
+import com.ssafy.AwA.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,14 +10,26 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private final UserRepository userRepository = null;
     @Autowired
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -30,6 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        System.out.println("실행해줘");
         httpSecurity.httpBasic().disable() //UI를 사용하는 것을 기본값으로 가진 시큐리티 설정을 비활성화
                 .csrf().disable() //csrf보안은 REST API에서 필요없어서 끔... 맞나?
                 .sessionManagement()
@@ -61,8 +75,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class) //어느 필터앞에 설정할 것인지.
                 // oauth2 로그인관련
                 .oauth2Login()
+//                .successHandler(onAuthenticationSuccess)
 //                .loginPage("/auth/sns-sign-in") // 인증이 필요한 url 접근시 명시된 url로 이동
-                .defaultSuccessUrl("http://i7c101.p.ssafy.io:8080/")
+                .successHandler(new AuthenticationSuccessHandler() {
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        System.out.println("authentication:: "+ authentication.getName());
+                        System.out.println("순서확인2");
+//                        List<String> roles = new ArrayList<>();
+//                        roles.add(authentication.getAuthorities().toString());
+//                        String refreshToken = jwtTokenProvider.createRefreshToken(authentication.getName(), roles);
+//                        response.setHeader("RefreshToken",refreshToken);
+                        String refreshToken = userRepository.findByEmail(authentication.getName()).getRefreshToken();
+                        response.sendRedirect("http://localhost:3000/social/"+refreshToken);
+                    }
+                })
+//                .defaultSuccessUrl("http://localhost:3000/")
 //                .failureUrl("/auth/sns-sign-in") // 실패시 명시된 url로 이동
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService);
