@@ -44,6 +44,18 @@ const api = {
       return response;
     },
 
+    email: async (email: string) => {
+      const response = await axios({
+        url: rf.auth.email(),
+        method: "post",
+        data: {
+          email: email,
+        },
+      });
+
+      return response;
+    },
+
     checkEmail: async (email: string) => {
       const response = await axios({
         url: rf.auth.signup() + `/email/${email}`,
