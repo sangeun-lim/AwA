@@ -111,3 +111,8 @@
   border: 1px solid rgb(0, 0, 0);
   color: rgb(0, 0, 0);
 }
+
+.userName {
+  text-decoration: none;
+  color: black;
+}
