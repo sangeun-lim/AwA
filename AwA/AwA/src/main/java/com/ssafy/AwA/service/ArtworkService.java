@@ -167,6 +167,7 @@ public class ArtworkService {
                     .nickname(comment.getProfile().getNickname())
                     .modifiedDate(comment.getModifiedDate())
                     .createdDate(comment.getCreatedDate())
+                    .profile_picture_url(comment.getProfile().getProfile_picture_url())
                     .build();
 
             commentResponseDtos.add(commentResponseDto);
