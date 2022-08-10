@@ -17,9 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -376,7 +374,8 @@ public class ArtworkService {
         return artworkPageDto;
     }
 
-    public ArtworkPageDto getAllArtworks(String userEmail, int pageNo) {
+    public ArtworkPageDto getRecommandArtworks(String userEmail) {
+        //내가 팔로우 하는 사람들 리스트
         User targetUser = userRepository.findByEmail(userEmail);
         Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
 
@@ -411,10 +410,104 @@ public class ArtworkService {
         for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++)
             System.out.println(notLikeAndCommentArtworksInGenre.get(i).getTitle());
 
-        System.out.println("내가 좋아요와 댓글을 달지 않은 게시물 중 내가 선호하는 장르에 속하지 않는 게시물");
-        for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++)
-            System.out.println(notLikeAndCommentArtworksNotInGenre.get(i).getTitle());
+//        System.out.println("내가 좋아요와 댓글을 달지 않은 게시물 중 내가 선호하는 장르에 속하지 않는 게시물");
+//        for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++)
+//            System.out.println(notLikeAndCommentArtworksNotInGenre.get(i).getTitle());
 
-        return null;
+
+        double[] viewCount = new double[notLikeAndCommentArtworksInGenre.size()];
+        double[] likeCount = new double[notLikeAndCommentArtworksInGenre.size()];
+        double[] commentCount = new double[notLikeAndCommentArtworksInGenre.size()];
+
+        //각 게시물 마다 조회수, 좋아요수, 댓글수 받기
+        for(int i=0;i< notLikeAndCommentArtworksInGenre.size();i++) {
+            Artwork targetArtwork = notLikeAndCommentArtworksInGenre.get(i);
+
+            viewCount[i]=targetArtwork.getView_count();
+            likeCount[i]=targetArtwork.getLike_count()+1;
+            commentCount[i]=targetArtwork.getComments().size()+1;
+        }
+
+        //평균구하기
+        double avgViewCount = Arrays.stream(viewCount).sum() / viewCount.length;
+        double avgLikeCount = Arrays.stream(likeCount).sum() / likeCount.length;
+        double avgCommentCount = Arrays.stream(commentCount).sum() / commentCount.length;
+
+        //(x-평균)의 제곱값 구하기
+        double powViewCount[] = new double[notLikeAndCommentArtworksInGenre.size()];
+        double powLikeCount[] = new double[notLikeAndCommentArtworksInGenre.size()];
+        double powCommentCount[] = new double[notLikeAndCommentArtworksInGenre.size()];
+        for(int i=0;i< notLikeAndCommentArtworksInGenre.size();i++) {
+            powViewCount[i] = Math.pow((viewCount[i]-avgViewCount),2);
+            powLikeCount[i] = Math.pow((likeCount[i]-avgLikeCount),2);
+            powCommentCount[i] = Math.pow((commentCount[i]-avgCommentCount),2);
+        }
+
+        //표준편차 구하기 (위의 값의 평균 구한 후 제곱근)
+        double sdViewCount = Math.sqrt(Arrays.stream(powViewCount).sum() / powViewCount.length);
+        double sdLikeCount = Math.sqrt(Arrays.stream(powLikeCount).sum() / powLikeCount.length);
+        double sdCommentCount = Math.sqrt(Arrays.stream(powCommentCount).sum() / powCommentCount.length);
+
+        Collections.sort(notLikeAndCommentArtworksInGenre, new Comparator<Artwork>(){
+            @Override
+            public int compare(Artwork artwork, Artwork t1) {
+
+                return (int) (((((t1.getView_count() - avgViewCount) / sdViewCount) * 0.5 +
+                                        ((t1.getLike_count() - avgLikeCount) / (sdLikeCount+1)) * 0.3 +
+                                        ((t1.getComments().size() - avgCommentCount)/(sdCommentCount+1))*0.2) -
+
+                                        (((artwork.getView_count() - avgViewCount) / sdViewCount) * 0.5 +
+                                                ((artwork.getLike_count() - avgLikeCount) / (sdLikeCount+1)) * 0.3 +
+                                                ((artwork.getComments().size() - avgCommentCount)/(sdCommentCount+1))*0.2))*100);
+
+            }
+        });
+
+        for(int i=0;i< notLikeAndCommentArtworksInGenre.size();i++) {
+            System.out.println(notLikeAndCommentArtworksInGenre.get(i).getTitle());
+        }
+        List<ArtworkResponseDto> result = new ArrayList<>();
+        for(int i=0;i< notLikeAndCommentArtworksInGenre.size();i++)
+        {
+            Artwork targetArtwork = notLikeAndCommentArtworksInGenre.get(i);
+
+            List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
+
+            for(int k=0;k<targetArtwork.getAttachment_list().size();k++) {
+                attachmentRequestDtoList.add(AttachmentRequestDto.builder()
+                        .type(targetArtwork.getAttachment_list().get(k).getType())
+                        .url(targetArtwork.getAttachment_list().get(k).getUrl())
+                        .build()
+                );
+            }
+
+            User findUser = userRepository.findByEmail(targetArtwork.getSell_user().getEmail());
+            Profile findProfile = profileRepository.findByNickname(findUser.getNickname());
+
+            ArtworkResponseDto artworkResponseDto = ArtworkResponseDto.builder()
+                    .artwork_id(targetArtwork.getArtwork_id())
+                    .attachmentRequestDtoList(attachmentRequestDtoList)
+                    .ingredient(targetArtwork.getIngredient())
+                    .view_count(targetArtwork.getView_count())
+                    .title(targetArtwork.getTitle())
+                    .sell_user_nickname(findUser.getNickname())
+                    .profile_picture(findProfile.getProfile_picture_url())
+                    .like_count(targetArtwork.getLike_count())
+                    .sell_user_email(targetArtwork.getSell_user().getEmail())
+                    .genre(targetArtwork.getGenre())
+                    .price(targetArtwork.getPrice())
+                    .description(targetArtwork.getDescription())
+                    .createdDate(targetArtwork.getCreatedDate())
+                    .is_sell(targetArtwork.getIs_sell())
+                    .build();
+
+            result.add(artworkResponseDto);
+        }
+
+
+        ArtworkPageDto artworkPageDto = ArtworkPageDto.builder()
+                .artworkResponseDto(result)
+                .build();
+        return artworkPageDto;
     }
 }

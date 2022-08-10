@@ -74,9 +74,9 @@ public class ArtworkApiController {
         return artworkService.getOnlyFollowingArtworksList(userEmail,pageNo);
     }
 
-    @GetMapping("all/{userEmail}/{pageNo}")
-    public ArtworkPageDto getAllArtworks(@PathVariable("userEmail") String userEmail, @PathVariable("pageNo") int pageNo) {
-        return artworkService.getAllArtworks(userEmail, pageNo);
+    @GetMapping("recommand/{userEmail}")
+    public ArtworkPageDto getRecommandArtworks(@PathVariable("userEmail") String userEmail) {
+        return artworkService.getRecommandArtworks(userEmail);
     }
 
 
