@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { User } from "../../Interface";
 import { useSelector } from "react-redux";
