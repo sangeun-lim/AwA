@@ -30,7 +30,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
     createdDate: comment.createdDate,
     modifiedDate: comment.modifiedDate,
     profile_picture_url: comment.profile_picture_url,
-    email: comment.email,
+    userEmail: comment.userEmail,
   });
 
   const onChange = (e: any) => {
@@ -68,7 +68,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
         createdDate,
         modifiedDate,
         profile_picture_url,
-        email,
+        userEmail,
       } = updateData;
 
       setEditComment({
@@ -79,7 +79,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
         createdDate,
         modifiedDate,
         profile_picture_url,
-        email,
+        userEmail,
       });
 
       setItem((prev) => {
@@ -95,7 +95,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
                 createdDate,
                 modifiedDate,
                 profile_picture_url,
-                email,
+                userEmail,
               };
             } else {
               return item;
@@ -171,10 +171,10 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
                   />
                 )}
                 <NavLink
-                  to={`/profile/${editComment.email}`}
+                  to={`/profile/${editComment.userEmail}`}
                   className={style.userName}
                 >
-                  <b>{editComment.nickname}</b>
+                  {editComment.nickname}
                 </NavLink>
                 <div>{editComment.content}</div>
               </div>
@@ -202,10 +202,10 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
               />
             )}
             <NavLink
-              to={`/profile/${editComment.email}`}
+              to={`/profile/${editComment.userEmail}`}
               className={style.userName}
             >
-              <b>{editComment.nickname}</b>
+              {editComment.nickname}
             </NavLink>
             <div>{editComment.content}</div>
           </div>
