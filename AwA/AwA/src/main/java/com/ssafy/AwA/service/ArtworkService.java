@@ -159,7 +159,7 @@ public class ArtworkService {
         List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
         for (int i=0;i<commentList.size();i++) {
             Comment comment = commentList.get(i);
-
+            User commentUser = userRepository.findByNickname(comment.getProfile().getNickname());
             CommentResponseDto commentResponseDto = CommentResponseDto.builder()
                     .content(comment.getContent())
                     .parent_artwork_id(comment.getParent_artwork().getArtwork_id())
@@ -168,6 +168,7 @@ public class ArtworkService {
                     .modifiedDate(comment.getModifiedDate())
                     .createdDate(comment.getCreatedDate())
                     .profile_picture_url(comment.getProfile().getProfile_picture_url())
+                    .userEmail(commentUser.getEmail())
                     .build();
 
             commentResponseDtos.add(commentResponseDto);
