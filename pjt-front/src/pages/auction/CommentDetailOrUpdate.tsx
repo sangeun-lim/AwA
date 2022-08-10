@@ -134,7 +134,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
 
   return (
     <div>
-      {userObject.nickname === comment.nickname ? (
+      {userObject?.nickname === comment?.nickname ? (
         <div>
           {onEdit ? (
             <div>

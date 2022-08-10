@@ -17,6 +17,7 @@ import SearchResult from "../pages/SearchResult";
 import Rank from "../pages/Rank";
 import Error from "../pages/Error";
 import Navigation from "./Navigation";
+import OnSocialLogin from "./../pages/auth/OnSocialLogin";
 
 interface Props {
   getUserData: Function;
@@ -34,6 +35,7 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
             path="/auth/login"
             element={<Login getUserData={getUserData} />}
           />
+          <Route path="/social/:params" element={<OnSocialLogin />} />
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/findpw" element={<FindPw />} />
           <Route path="/profile/:email" element={<Profile />} />

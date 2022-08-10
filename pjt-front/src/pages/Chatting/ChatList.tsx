@@ -25,7 +25,7 @@ function ChatList(): JSX.Element {
   const getChatList = async () => {
     const q = query(
       collection(dbService, "ChattingRoom"),
-      where("myEmail", "==", userObject.email),
+      where("myEmail", "==", userObject?.email),
       orderBy("recentlyDate", "desc")
     );
 
@@ -61,8 +61,8 @@ function ChatList(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    SOCKET.emit("enter_room", userObject.email);
-  }, [userObject.email]);
+    SOCKET.emit("enter_room", userObject?.email);
+  }, [userObject?.email]);
 
   useEffect(() => {
     SOCKET.on("receive message", async (data) => {
@@ -102,7 +102,7 @@ function ChatList(): JSX.Element {
         topChat.createdDate = data.createdDate;
         topChat.recentlyDate = data.createdData;
         topChat.recentlyMessage = data.message;
-        if (userObject.email === data.sender) {
+        if (userObject?.email === data.sender) {
           topChat.partnerEmail = data.receiver;
         } else {
           topChat.partnerEmail = data.sender;
