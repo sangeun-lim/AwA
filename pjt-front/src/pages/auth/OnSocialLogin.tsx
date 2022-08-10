@@ -1,9 +1,19 @@
 import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { setCookie } from "./../../cookie";
 
-function OnSocialLogin() {
+interface Props {
+  getUserData: Function;
+}
+
+function OnSocialLogin({ getUserData }: Props) {
+  const params = useParams();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    let Token = new URL(window.location.href).searchParams.get("refreshToken");
-    console.log(Token);
+    setCookie("refresh_token", params.params || "");
+    getUserData(params.params || "");
+    navigate("/");
   }, []);
 
   return <div></div>;
