@@ -1,4 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { setCookie } from "./../cookie";
 import { ArtworkItem, User } from "../Interface";
 
 const loadingSlice = createSlice({
@@ -33,6 +34,8 @@ const userObjectSlice = createSlice({
       return actions.payload;
     },
     logout(state: null | User) {
+      sessionStorage.setItem("token", "");
+      setCookie("refresh_token", "");
       return null;
     },
     nickname(state: any, actions: { type: string; payload: any }) {

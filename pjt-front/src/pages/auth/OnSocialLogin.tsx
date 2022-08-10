@@ -12,9 +12,10 @@ function OnSocialLogin({ getUserData }: Props) {
 
   useEffect(() => {
     setCookie("refresh_token", params.params || "");
+    /* eslint-disable */
     getUserData(params.params || "");
     navigate("/");
-  }, []);
+  }, [navigate]);
 
   return <div></div>;
 }

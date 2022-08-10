@@ -17,6 +17,7 @@ const rf = {
     logout: () => HOST + AUTH + "logout",
     signup: () => HOST + AUTH + "sign-up",
     userinfo: () => HOST + AUTH + "userinfo",
+    email: () => HOST + "email",
   },
 
   notice: {
