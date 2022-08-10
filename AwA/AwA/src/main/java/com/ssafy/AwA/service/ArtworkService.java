@@ -375,4 +375,46 @@ public class ArtworkService {
                 .build();
         return artworkPageDto;
     }
+
+    public ArtworkPageDto getAllArtworks(String userEmail, int pageNo) {
+        User targetUser = userRepository.findByEmail(userEmail);
+        Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
+
+        List<String> favorite_Genre = targetProfile.getFavorite_field();
+        System.out.println("내가 선호하는 장르" + " " + favorite_Genre.size());
+        for(int i=0;i<favorite_Genre.size();i++)
+            System.out.println(favorite_Genre.get(i));
+
+        List<Artwork> notLikeAndCommentArtworks = artworkRepository.findNotLikeAndCommentArtworks(targetUser, targetProfile,targetProfile);
+
+        List<Artwork> notLikeAndCommentArtworksNotInGenre = new ArrayList<>();
+        List<Artwork> notLikeAndCommentArtworksInGenre = new ArrayList<>();
+        for(int i=0; i<notLikeAndCommentArtworks.size();i++) {
+            Artwork targetArtwork = notLikeAndCommentArtworks.get(i);
+
+            boolean check = false;
+            for(int j=0;j<targetArtwork.getGenre().size();j++) {
+                String genre = targetArtwork.getGenre().get(j);
+                if(favorite_Genre.contains(genre)) {
+                    //유저의 선호 분야 장르에 해당하는 게시물 이라면
+                    check=true;
+                }
+            }
+
+            if(check)  //해당한다면
+                notLikeAndCommentArtworksInGenre.add(targetArtwork);
+            else
+                notLikeAndCommentArtworksNotInGenre.add(targetArtwork);
+        }
+
+        System.out.println("내가 좋아요와 댓글을 달지 않은 게시물 중 내가 선호하는 장르에 속하는 게시물");
+        for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++)
+            System.out.println(notLikeAndCommentArtworksInGenre.get(i).getTitle());
+
+        System.out.println("내가 좋아요와 댓글을 달지 않은 게시물 중 내가 선호하는 장르에 속하지 않는 게시물");
+        for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++)
+            System.out.println(notLikeAndCommentArtworksNotInGenre.get(i).getTitle());
+
+        return null;
+    }
 }
