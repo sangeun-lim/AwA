@@ -1,5 +1,5 @@
 import React, { useEffect, useState, ChangeEvent } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, NavLink } from "react-router-dom";
 
 import { storageService } from "../../fbase";
 import {
@@ -548,7 +548,14 @@ function AuctionDetailOrUpdate(): JSX.Element {
               </div>
               <div className={style.detailInfo}>
                 <div className={style.title}>{item.title}</div>
-                <div className={style.userName}>{item.sell_user_nickname}</div>
+                <div>
+                  <NavLink
+                    to={`/profile/${item.sell_user_email}`}
+                    className={style.userName}
+                  >
+                    {item.sell_user_nickname}
+                  </NavLink>
+                </div>
                 <div className={style.detailInfoBox}>
                   <div>가격</div>
                   <p>{item.price}원</p>
@@ -580,7 +587,14 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
             <div className={style.detailInfoSide}>
               <div className={style.title}>{item.title}</div>
-              <div className={style.userName}>{item.sell_user_nickname}</div>
+              <div>
+                <NavLink
+                  to={`/profile/${item.sell_user_email}`}
+                  className={style.userName}
+                >
+                  {item.sell_user_nickname}
+                </NavLink>
+              </div>
               <div className={style.detailInfoBox}>
                 <div>가격</div>
                 <p>{item.price}원</p>
