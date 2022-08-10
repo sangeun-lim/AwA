@@ -64,6 +64,11 @@ function Login({ getUserData }: Props): JSX.Element {
     }
   };
 
+  const moveSignUp = async (e: any) => {
+    e.preventDefault();
+    navigate("/auth/signup");
+  };
+
   useEffect(() => {
     if (!!userObject) {
       navigate("/");
@@ -114,9 +119,41 @@ function Login({ getUserData }: Props): JSX.Element {
                 tabIndex={-1}
               />
             </button>
+            <br />
+            <div className={style.buttonContainer}>
+              <button
+                onClick={moveSignUp}
+                className={style.loginSubmit}
+                tabIndex={-1}
+              >
+                <h5>회원가입</h5>
+              </button>
+            </div>
           </div>
         </form>
-        <a href="/oauth2/authorization/google">구글로그인</a>
+        <div className={style.socialButton}>
+          <a href="https://awa24.site:8081/oauth2/authorization/google">
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/stately-century-349715.appspot.com/o/sang9203%40naver.com%2Fgoogleicon.PNG?alt=media&token=8b62cb84-0a9a-45ff-8f15-bfe5150ae500"
+              alt="구글"
+              className={style.socialImg}
+            />
+          </a>
+          <a href="https://awa24.site:8081/oauth2/authorization/naver">
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/stately-century-349715.appspot.com/o/sang9203%40naver.com%2FbtnG_%EC%95%84%EC%9D%B4%EC%BD%98%EC%82%AC%EA%B0%81.png?alt=media&token=057ae52c-b9eb-48a8-a670-9943699d619d"
+              alt="네이버"
+              className={style.socialImg}
+            />
+          </a>
+          <a href="https://awa24.site:8081/oauth2/authorization/kakao">
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/stately-century-349715.appspot.com/o/sang9203%40naver.com%2Fkakao_icon.png?alt=media&token=de6d1b4d-bc39-4110-9315-61d49c1fc6cd"
+              alt="카카오"
+              className={style.socialImg}
+            />
+          </a>
+        </div>
       </div>
     </div>
   );
