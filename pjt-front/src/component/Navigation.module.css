@@ -74,8 +74,11 @@
 }
 
 @media (max-width: 768px) {
-  .navBox {
+  .burgerBox {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
 
   .navList {

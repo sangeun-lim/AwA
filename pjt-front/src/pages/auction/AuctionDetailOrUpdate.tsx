@@ -548,7 +548,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
               </div>
               <div className={style.detailInfo}>
                 <div className={style.title}>{item.title}</div>
-                <div>
+                <div className={style.userNameBox}>
                   <NavLink
                     to={`/profile/${item.sell_user_email}`}
                     className={style.userName}
@@ -587,7 +587,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
             <div className={style.detailInfoSide}>
               <div className={style.title}>{item.title}</div>
-              <div>
+              <div className={style.userNameBox}>
                 <NavLink
                   to={`/profile/${item.sell_user_email}`}
                   className={style.userName}

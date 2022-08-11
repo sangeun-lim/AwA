@@ -1,63 +1,252 @@
-.BigBox {
-  min-width: 1024px;
-  width: 60%;
-  height: 100%;
-}
-
-.MyProfileImg {
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  overflow: hidden;
-}
-
-.MyProfileImgImg {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-
-.ProfileNickname {
-  width: 100px;
-  height: 44px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.FollowButton {
-  width: 30%;
-  height: 30px;
-  margin: 15px auto 15px auto;
-}
-
-.Follow {
-  margin-top: 3px;
-}
-
-.Following {
-  background-color: rgba(231, 115, 92, 1);
-  border: 0px;
-  border-radius: 10px;
-  color: white;
-}
-.Unfollowing {
-  background-color: rgba(231, 115, 92, 1);
-  color: snow;
-  border: 0px;
-  border-radius: 10px;
-}
-
-.Auction {
+.profile {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.AuctionList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+.profile > div {
+  width: 1280px;
+}
+
+@media (max-width: 1600px) {
+  .profile > div {
+    width: 80%;
+  }
+}
+
+/* Top */
+.profileTop {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 20px;
+  width: 100%;
+}
+
+.btn {
+  padding: 0px 10px;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 15px;
+  cursor: pointer;
+  margin: 0 5px;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+}
+
+/* Middle */
+@media (max-width: 768px) {
+  .profileMiddle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profileMiddleLeft,
+  .profileMiddleRight {
+    width: 100%;
+  }
+
+  .profileBottom {
+    display: none;
+  }
+
+  .profileBottomSmall {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: 769px) {
+  .profileMiddle {
+    display: flex;
+  }
+
+  .profileMiddleLeft {
+    width: 45%;
+  }
+
+  .profileMiddleRight {
+    width: 55%;
+  }
+
+  .profileBottom {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .profileBottomSmall {
+    display: none;
+  }
+}
+
+/* profileMiddleLeft */
+.profileImgBox {
+  text-align: center;
+  margin: 20px;
+}
+
+.profileImgBox > img {
+  width: 80%;
+}
+
+.chattingBox {
+  display: flex;
+  padding: 20px;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.chattingBtn,
+.unfollowBtn {
+  padding: 2px 20px;
+  border: 1px solid rgb(150, 150, 150);
+  border-radius: 5px;
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 17px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.chattingBtn:hover,
+.unfollowBtn:hover {
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+}
+
+.followBtn {
+  padding: 2px 20px;
+  border: 1px solid rgb(231, 115, 92);
+  border-radius: 5px;
+  background-color: rgb(231, 115, 92);
+  color: rgb(255, 255, 255);
+  font-size: 17px;
+  cursor: pointer;
+  margin-right: 20px;
+  white-space: nowrap;
+}
+
+/* profileMiddleRight */
+.profileNickname {
+  font-size: 40px;
+  font-weight: bold;
+  white-space: nowrap;
+  margin: 20px;
+}
+
+.followBox {
+  display: flex;
+  margin: 20px;
+}
+
+.follow {
+  display: flex;
+  margin-right: 20px;
+  font-size: 20px;
+}
+
+.follow > button {
+  border: none;
+  background-color: white;
+}
+
+.follow > .followNum {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.profileDescription {
+  margin: 20px;
+  border-top: 1px solid rgb(200, 200, 200);
+  padding-top: 20px;
+}
+
+.favoriteField {
+  display: flex;
+  margin: 20px;
+  font-size: 14px;
+}
+
+/* Bottom */
+input[name="tabmenu"] {
+  display: none;
+}
+
+.tabmenu {
+  width: 100%;
+  display: flex;
+}
+
+.tabmenu > label {
+  width: 50%;
+  cursor: pointer;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 3px solid rgb(255, 255, 255);
+}
+
+.myArtwork,
+.likeArtwork {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+input[id="myArtwork"]:checked ~ .tabmenu .myArtwork,
+input[id="likeArtwork"]:checked ~ .tabmenu .likeArtwork {
+  border-bottom: 3px solid rgb(231, 115, 92);
+  color: rgb(231, 115, 92);
+}
+
+.tabInner {
+  position: relative;
+  overflow: hidden;
+}
+
+.tabs {
+  width: 200%;
+  display: flex;
+  transition: 0.5s;
+  position: relative;
+  left: 0%;
+}
+
+.tab {
+  width: 50%;
+}
+
+input[id="myArtwork"]:checked ~ .tabInner .tabs {
+  left: 0;
+}
+
+input[id="likeArtwork"]:checked ~ .tabInner .tabs {
+  left: -100%;
+}
+
+/* BottomSmall */
+.bottomTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  height: 70px;
+  border-top: 1px solid rgb(200, 200, 200);
+  border-bottom: 2px solid rgb(200, 200, 200);
+  margin-top: 50px;
+  margin-bottom: 20px;
 }

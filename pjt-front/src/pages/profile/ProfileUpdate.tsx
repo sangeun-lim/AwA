@@ -7,9 +7,11 @@ import { UpdateProfileObject } from "../../api/apiInterface";
 import { storageService } from "../../fbase";
 import { Profile } from "../../Interface";
 import { userObjectActions } from "../../store";
-import style from "./Profile.module.css";
+import style from "./ProfileUpdate.module.css";
 
 interface Props {
+  open: boolean;
+  close: () => void;
   profileObject: Profile;
   userEmail: string;
   setProfileObject: Dispatch<React.SetStateAction<Profile>>;
@@ -19,6 +21,8 @@ interface Props {
 const FAVORITE = ["회화", "조소", "건축", "공예", "서예", "디지털", "기타"];
 
 function ProfileUpdate({
+  open,
+  close,
   profileObject,
   userEmail,
   setProfileObject,
@@ -117,6 +121,7 @@ function ProfileUpdate({
     }
 
     setEditProfile(false);
+    close();
   };
 
   const onImgChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -136,76 +141,99 @@ function ProfileUpdate({
   }, [editForm.nickname, isPossible]);
 
   return (
-    <>
-      <div></div>
-      <div>
-        <h3>프로필 정보 변경</h3>
-        {showImage ? (
-          <img
-            src={showImage}
-            alt="프로필이미지"
-            className={style.MyProfileImg}
-          />
-        ) : (
-          <img
-            src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
-            alt="프로필이미지"
-            className={style.MyProfileImg}
-          />
-        )}
-        <br></br>
-        <label htmlFor="imgTag">프로필 사진 변경</label>
-        <br></br>
-        <input
-          id="imgTag"
-          type="file"
-          accept="image/*"
-          onChange={onImgChange}
-        />
-        <br></br>
-        <button onClick={onBaseClick}>기본 이미지로 변경</button>
-        <p>닉네임</p>
-        <input
-          type="text"
-          name="nickname"
-          value={editForm.nickname}
-          onChange={onChange}
-          required
-        />
-        <button onClick={checkNickname}>중복 확인</button>
-        {isPossible && <p>사용 가능한 닉네임입니다.</p>}
-        <br></br>
-        <textarea
-          name="description"
-          value={editForm.description || ""}
-          onChange={onChange}
-          cols={30}
-          rows={5}
-        ></textarea>
-        <div>
-          {FAVORITE.map((item) => {
-            return (
-              <label key={item}>
-                <input
-                  type="checkbox"
-                  name="favorite_field"
-                  value={item}
-                  onChange={onFavoriteChange}
-                  checked={
-                    !!editForm.favorite_field.filter(
-                      (favorite) => favorite === item
-                    ).length
-                  }
+    <div>
+      {open ? (
+        <div className={style.updateModal}>
+          <div className={style.updateModalBody}>
+            <div className={style.updateCloseBtn}>
+              <button onClick={close} className={style.updateBtn}>
+                X
+              </button>
+            </div>
+            <h3>프로필 정보 변경</h3>
+            <div className={style.profileImage}>
+              {showImage ? (
+                <img
+                  src={showImage}
+                  alt="프로필이미지"
+                  className={style.MyProfileImg}
                 />
-                {item}
+              ) : (
+                <img
+                  src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+                  alt="프로필이미지"
+                  className={style.MyProfileImg}
+                />
+              )}
+            </div>
+            <div className={style.profileImageChange}>
+              <label htmlFor="imgTag" className={style.imageInput}>
+                <input
+                  id="imgTag"
+                  type="file"
+                  accept="image/*"
+                  onChange={onImgChange}
+                />
+                <div>프로필 사진 변경</div>
               </label>
-            );
-          })}
+              <button onClick={onBaseClick}>기본 이미지</button>
+            </div>
+            <div className={style.profileInfo}>
+              <div className={style.nicknameChange}>
+                <div>닉네임</div>
+                <input
+                  type="text"
+                  name="nickname"
+                  value={editForm.nickname}
+                  onChange={onChange}
+                  required
+                />
+                <button onClick={checkNickname}>중복 확인</button>
+                {isPossible && <p>사용 가능한 닉네임입니다.</p>}
+              </div>
+              <div className={style.descriptionChange}>
+                <div className={style.profileLabel}>소개글</div>
+                <textarea
+                  name="description"
+                  value={editForm.description || ""}
+                  onChange={onChange}
+                  cols={30}
+                  rows={5}
+                  className={style.description}
+                ></textarea>
+              </div>
+              <div className={style.genreChange}>
+                <div className={style.profileLabel}>선호 장르 선택</div>
+                <div className={style.options}>
+                  {FAVORITE.map((item) => {
+                    return (
+                      <div key={item}>
+                        <input
+                          type="checkbox"
+                          name="favorite_field"
+                          id={`profile${item}`}
+                          value={item}
+                          onChange={onFavoriteChange}
+                          checked={
+                            !!editForm.favorite_field.filter(
+                              (favorite) => favorite === item
+                            ).length
+                          }
+                        />
+                        <label htmlFor={`profile${item}`}>{item}</label>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            <button onClick={onSubmit} className={style.submit}>
+              수정하기
+            </button>
+          </div>
         </div>
-        <button onClick={onSubmit}>제출</button>
-        <hr></hr>
-      </div>
-    </>
+      ) : null}
+    </div>
   );
 }
 

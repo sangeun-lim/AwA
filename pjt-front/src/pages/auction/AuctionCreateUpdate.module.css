@@ -358,11 +358,18 @@
   /* white-space: nowrap; */
 }
 
+.userNameBox {
+  margin: 10px;
+}
+
 .userName {
   font-size: 20px;
-  margin: 10px;
   text-decoration: none;
   color: black;
+}
+
+.userName:hover {
+  color: rgb(231, 115, 92);
 }
 
 .detailInfoBox {

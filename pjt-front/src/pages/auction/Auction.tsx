@@ -58,7 +58,12 @@ function Auction(): JSX.Element {
     <div>
       <div className={style.auction}>
         <section className={style.auctionTop}>
-          <SearchComponent />
+          <div>
+            <div className={style.title}>세룽룽</div>
+            <div className={style.content}>
+              Artwork Auction에서 좋은 작품을 만날 기회
+            </div>
+          </div>
         </section>
         <div>
           {userObject && (
