@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import rf from "../api/rf";
 import style from "./Rank.module.css";
 
 interface Follow {
   nickname: string;
+  email: string;
+  profile_picture_url: string;
 }
 
 function RankFollow(): JSX.Element {
@@ -26,14 +29,43 @@ function RankFollow(): JSX.Element {
   }, []);
 
   return (
-    <div className={style.rank}>
-      <div>
-        <p>팔로우 랭킹</p>
+    <div>
+      <div className={style.Container}>
+        {/* 팔로우 랭킹 ?   인플루언서 ?   Rank of Influencer */}
+        <p className={style.rankTitle}>팔로우 랭킹</p>
         {followRank.map((item, index) => {
           return (
-            <li key={item.nickname}>
-              {index + 1} | {item.nickname}
-            </li>
+            <div className={style.listItem}>
+              <div className={style.itemContent}>
+                <li key={item.nickname} className={style.txtLine}>
+                  <span className={style.rankNumber}>
+                    {index + 1}
+                    {`. `}
+                  </span>{" "}
+                  {item.profile_picture_url ? (
+                    <img
+                      className={style.profileImage}
+                      src={item.profile_picture_url}
+                      alt="profile"
+                    />
+                  ) : (
+                    <img
+                      className={style.profileImage}
+                      src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+                      alt="profile"
+                    />
+                  )}{" "}
+                  <span>
+                    <NavLink
+                      to={`/profile/${item.email}`}
+                      className={style.moveLink}
+                    >
+                      {item.nickname}
+                    </NavLink>
+                  </span>
+                </li>
+              </div>
+            </div>
           );
         })}
       </div>

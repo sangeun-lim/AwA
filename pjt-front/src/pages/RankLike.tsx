@@ -1,10 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import rf from "../api/rf";
 import style from "./Rank.module.css";
 
 interface Like {
   title: string;
+  artwork_id: string;
 }
 
 function RankLike(): JSX.Element {
@@ -27,14 +29,29 @@ function RankLike(): JSX.Element {
   }, []);
 
   return (
-    <div className={style.rank}>
-      <div>
-        <p>주간 베스트 랭킹</p>
+    <div>
+      <div className={style.Container}>
+        <p className={style.rankTitle}>베스트 게시물</p>
         {likeRank.map((item, index) => {
           return (
-            <li key={item.title + index}>
-              {index + 1} | {item.title}
-            </li>
+            <div className={style.listItem}>
+              <div className={style.itemContent}>
+                <li key={item.title + index} className={style.txtLine}>
+                  <span className={style.rankNumber}>
+                    {index + 1}
+                    {`. `}
+                  </span>{" "}
+                  <span>
+                    <NavLink
+                      to={`/auction/detail/${item.artwork_id}`}
+                      className={style.moveLink}
+                    >
+                      {item.title}
+                    </NavLink>
+                  </span>
+                </li>
+              </div>
+            </div>
           );
         })}
       </div>
