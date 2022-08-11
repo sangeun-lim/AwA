@@ -35,7 +35,9 @@ function Auction(): JSX.Element {
       setPageNum(pageNum + 1);
       setItemList((prev) => prev.concat(response.data.artworkResponseDto));
       setLastPage(Math.floor(response.data.totalCount / 20) + 1);
-      dispatch(loadingActions.toggle());
+      setTimeout(() => {
+        dispatch(loadingActions.toggle());
+      }, 1000);
     } catch (err) {
       console.log(err);
       dispatch(loadingActions.toggle());

@@ -43,7 +43,7 @@ function App(): JSX.Element {
       }
     };
 
-    if (sessionStorage.getItem("token")) {
+    if (getCookie("refresh_token")) {
       getUserData();
     } else {
       dispatch(userObjectActions.logout());

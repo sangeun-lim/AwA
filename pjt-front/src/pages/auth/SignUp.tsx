@@ -12,6 +12,10 @@ import { Term1, Term2 } from "./authTerms";
 
 import style from "./SignUp.module.css";
 
+const EMAIL_CHECK = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+const PASSWORD_VALIDATION =
+  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!%*#?&])[A-Za-z\d@!%*#?&]{8,}$/;
+
 function SignUp(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,9 +26,45 @@ function SignUp(): JSX.Element {
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );
-  const [userInput, setUserInput] = useState("");
+  const [userInput, setUserInput] = useState<string>("");
   const [ce, setCe] = useState<string>("");
   const [pass, setPass] = useState<boolean>(false);
+
+  const onChange = (e: any) => {
+    const { name, value } = e.target;
+
+    setSignUpForm((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const checkEmailButton = async () => {
+    if (EMAIL_CHECK.test(signUpForm.id)) {
+      dispatch(loadingActions.toggle());
+      try {
+        const emailCheck = await api.auth.checkEmail(signUpForm.id);
+
+        if (!emailCheck.data) {
+          alert("이미 사용중인 이메일입니다.");
+          setCheckEmail(false);
+        } else {
+          setCheckEmail(signUpForm.id);
+          const response = await api.auth.email(signUpForm.id);
+          setCe(response.data);
+        }
+
+        dispatch(loadingActions.toggle());
+      } catch (err) {
+        dispatch(loadingActions.toggle());
+        console.error(err);
+      }
+    } else {
+      alert("이메일 형식이 아닙니다!");
+    }
+  };
 
   const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -32,11 +72,33 @@ function SignUp(): JSX.Element {
   };
 
   const onCheckEmail = () => {
-    if (ce === userInput) {
+    if (String(ce) === userInput) {
       setPass(true);
       alert("인증이 완료되었습니다.");
     } else {
       alert("인증 코드가 다릅니다.");
+    }
+  };
+
+  const checkNicknameButton = async () => {
+    if (signUpForm.nickname.length < 2) {
+      alert("두 글자 이상 입력해주세요");
+    } else {
+      try {
+        dispatch(loadingActions.toggle());
+        const nicknameCheck = await api.auth.checkNickname(signUpForm.nickname);
+        dispatch(loadingActions.toggle());
+
+        if (!nicknameCheck.data) {
+          alert("중복 닉네임입니다.");
+          setCheckNickname(false);
+        } else {
+          setCheckNickname(signUpForm.nickname);
+        }
+      } catch (err) {
+        dispatch(loadingActions.toggle());
+        console.error(err);
+      }
     }
   };
 
@@ -60,56 +122,6 @@ function SignUp(): JSX.Element {
     }
   };
 
-  const checkEmailButton = async () => {
-    dispatch(loadingActions.toggle());
-    try {
-      const emailCheck = await api.auth.checkEmail(signUpForm.id);
-
-      if (!emailCheck.data) {
-        alert("이미 사용중인 이메일입니다.");
-        setCheckEmail(false);
-      } else {
-        setCheckEmail(signUpForm.id);
-        const response = await api.auth.email(signUpForm.id);
-        setCe(response.data);
-      }
-
-      dispatch(loadingActions.toggle());
-    } catch (err) {
-      dispatch(loadingActions.toggle());
-      console.error(err);
-    }
-  };
-
-  const checkNicknameButton = async () => {
-    dispatch(loadingActions.toggle());
-    try {
-      const nicknameCheck = await api.auth.checkNickname(signUpForm.nickname);
-      dispatch(loadingActions.toggle());
-
-      if (!nicknameCheck.data) {
-        alert("중복 닉네임입니다.");
-        setCheckNickname(false);
-      } else {
-        setCheckNickname(signUpForm.nickname);
-      }
-    } catch (err) {
-      dispatch(loadingActions.toggle());
-      console.error(err);
-    }
-  };
-
-  const onChange = (e: any) => {
-    const { name, value } = e.target;
-
-    setSignUpForm((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -117,7 +129,7 @@ function SignUp(): JSX.Element {
       try {
         signupRequest();
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     } else {
       alert("비밀번호가 일치하지 않습니다.");
@@ -238,167 +250,189 @@ function SignUp(): JSX.Element {
       <div className={style.container}>
         <div className={style.title}>회원가입</div>
 
-        <div className={style.inputContainer}>
-          <div className={style.idContainer}>
-            <input
-              name="id"
-              id="id"
-              type="email"
-              value={signUpForm.id}
-              onChange={onChange}
-              required
-              className={style.signInput}
-              disabled={pass}
-            />
-            <label htmlFor="id">[필수]아이디 </label>
-            <button onClick={checkEmailButton} className={style.btn}>
-              <span>이메일 인증</span>
-            </button>
-            <div className={style.bar}></div>
-          </div>
-        </div>
-        {ce && !pass && (
+        <form onSubmit={onSubmit}>
           <div className={style.inputContainer}>
             <div className={style.idContainer}>
               <input
-                name="emailCheck"
-                id="emailCheck"
+                name="id"
+                id="id"
                 type="email"
-                value={userInput}
-                onChange={onEmailChange}
+                value={signUpForm.id}
+                onChange={onChange}
                 required
                 className={style.signInput}
+                disabled={!!ce}
               />
-              <label htmlFor="id">인증번호를 입력해주세요 </label>
-              <button onClick={onCheckEmail} className={style.btn}>
-                <span>확인</span>
+              <label htmlFor="id">[필수]아이디 </label>
+              <button
+                type="button"
+                onClick={checkEmailButton}
+                className={style.btn}
+                disabled={pass}
+              >
+                <span>이메일 인증</span>
               </button>
-
               <div className={style.bar}></div>
             </div>
           </div>
-        )}
-        <div className={style.inputContainer}>
-          <input
-            name="pw1"
-            id="password"
-            type="password"
-            value={signUpForm.pw1}
-            onChange={onChange}
-            required
-            className={style.signInput}
-          />
-          <label htmlFor="password">[필수]비밀번호</label>
-          <div className={style.bar}></div>
-        </div>
-        <div className={style.inputContainer}>
-          <input
-            name="pw2"
-            id="password2"
-            type="password"
-            value={signUpForm.pw2}
-            onChange={onChange}
-            required
-            className={style.signInput}
-          />
-          <label htmlFor="password2">[필수]비밀번호 확인</label>
-          <div className={style.bar}></div>
-        </div>
-        {signUpForm.pw1 && signUpForm.pw1 !== signUpForm.pw2 && (
-          <span>비밀번호가 다릅니다.</span>
-        )}
-        {signUpForm.pw1 && signUpForm.pw1 === signUpForm.pw2 && (
-          <span>비밀번호가 같습니다.</span>
-        )}
-        <div className={style.inputContainer}>
-          <div className={style.idContainer}>
+          {ce && !pass && (
+            <div className={style.inputContainer}>
+              <div className={style.idContainer}>
+                <input
+                  name="emailCheck"
+                  id="emailCheck"
+                  type="text"
+                  value={userInput}
+                  onChange={onEmailChange}
+                  required
+                  className={style.signInput}
+                />
+                <label htmlFor="id">인증번호를 입력해주세요 </label>
+                <button
+                  onClick={onCheckEmail}
+                  type="button"
+                  className={style.btn}
+                >
+                  <span>확인</span>
+                </button>
+
+                <div className={style.bar}></div>
+              </div>
+            </div>
+          )}
+          <div className={style.inputContainer}>
             <input
-              name="nickname"
-              id="nickname"
-              type="text"
-              value={signUpForm.nickname}
+              name="pw1"
+              id="password"
+              type="password"
+              value={signUpForm.pw1}
               onChange={onChange}
               required
               className={style.signInput}
             />
-            <label htmlFor="nickname">[필수]닉네임</label>
+            <label htmlFor="password">[필수]비밀번호</label>
             <div className={style.bar}></div>
-            <button onClick={checkNicknameButton} className={style.btn}>
-              중복확인
+          </div>
+          <div className={style.inputContainer}>
+            <input
+              name="pw2"
+              id="password2"
+              type="password"
+              value={signUpForm.pw2}
+              onChange={onChange}
+              required
+              className={style.signInput}
+            />
+            <label htmlFor="password2">[필수]비밀번호 확인</label>
+            <div className={style.bar}></div>
+          </div>
+          {!PASSWORD_VALIDATION.test(signUpForm.pw1) && (
+            <p className={style.smallText}>
+              비밀번호는 8자 이상 문자와 숫자, 특수문자의 조합이어야합니다.
+            </p>
+          )}
+          {PASSWORD_VALIDATION.test(signUpForm.pw1) &&
+            signUpForm.pw1 !== signUpForm.pw2 && (
+              <p className={style.smallText}>비밀번호가 다릅니다.</p>
+            )}
+          {PASSWORD_VALIDATION.test(signUpForm.pw1) &&
+            signUpForm.pw1 === signUpForm.pw2 && (
+              <p className={style.smallText}>비밀번호가 같습니다.</p>
+            )}
+          <div className={style.inputContainer}>
+            <div className={style.idContainer}>
+              <input
+                name="nickname"
+                id="nickname"
+                type="text"
+                value={signUpForm.nickname}
+                onChange={onChange}
+                required
+                className={style.signInput}
+              />
+              <label htmlFor="nickname">[필수]닉네임</label>
+              <div className={style.bar}></div>
+              <button
+                type="button"
+                onClick={checkNicknameButton}
+                className={style.btn}
+              >
+                중복확인
+              </button>
+            </div>
+          </div>
+          {checkNickname && <p className={style.smallText}>사용가능합니다.</p>}
+          <div className={style.inputContainer}>
+            <input
+              name="birth"
+              id="birth"
+              type="date"
+              value={signUpForm.birth}
+              onChange={onChange}
+              className={style.signInput}
+            />
+            <label htmlFor="birth" className={style.labelUp}>
+              [선택]생년월일
+            </label>
+            <div className={style.bar}></div>
+          </div>
+          <div className={style.radio}>
+            <div className={style.radioBtn}>
+              <input
+                name="gender"
+                id="male"
+                type="radio"
+                value="true"
+                onChange={onChange}
+                className={style.radioInput}
+              />
+              <label htmlFor="male" className={style.radioLabel}>
+                남
+              </label>
+            </div>
+            <div className={style.radioBtn}>
+              <input
+                name="gender"
+                id="female"
+                type="radio"
+                value="false"
+                onChange={onChange}
+                className={style.radioInput}
+              />
+              <label htmlFor="female" className={style.radioLabel}>
+                여
+              </label>
+            </div>
+          </div>
+          <div className={style.buttonContainer}>
+            <button
+              type="button"
+              className={
+                checkEmail &&
+                checkNickname &&
+                !!signUpForm.pw1 &&
+                signUpForm.pw1 === signUpForm.pw2 &&
+                useCheck === true &&
+                infoCheck === true
+                  ? style.buttonActive
+                  : style.buttonDisabled
+              }
+            >
+              <input
+                disabled={
+                  !(pass && checkNickname) &&
+                  PASSWORD_VALIDATION.test(signUpForm.pw1) &&
+                  signUpForm.pw1 === signUpForm.pw2
+                }
+                type="submit"
+                value="회원가입"
+                onClick={onSubmit}
+                className={style.signSubmit}
+                tabIndex={-1}
+              />
             </button>
           </div>
-        </div>
-        {checkNickname && <span>사용가능합니다.</span>}
-        <div className={style.inputContainer}>
-          <input
-            name="birth"
-            id="birth"
-            type="date"
-            value={signUpForm.birth}
-            onChange={onChange}
-            className={style.signInput}
-          />
-          <label htmlFor="birth" className={style.labelUp}>
-            [선택]생년월일
-          </label>
-          <div className={style.bar}></div>
-        </div>
-        <div className={style.radio}>
-          <div className={style.radioBtn}>
-            <input
-              name="gender"
-              id="male"
-              type="radio"
-              value="true"
-              onChange={onChange}
-              className={style.radioInput}
-            />
-            <label htmlFor="male" className={style.radioLabel}>
-              남
-            </label>
-          </div>
-          <div className={style.radioBtn}>
-            <input
-              name="gender"
-              id="female"
-              type="radio"
-              value="false"
-              onChange={onChange}
-              className={style.radioInput}
-            />
-            <label htmlFor="female" className={style.radioLabel}>
-              여
-            </label>
-          </div>
-        </div>
-        <div className={style.buttonContainer}>
-          <button
-            className={
-              checkEmail &&
-              checkNickname &&
-              !!signUpForm.pw1 &&
-              signUpForm.pw1 === signUpForm.pw2 &&
-              useCheck === true &&
-              infoCheck === true
-                ? style.buttonActive
-                : style.buttonDisabled
-            }
-            // tabIndex={-1}
-          >
-            <input
-              disabled={
-                !(pass && checkNickname) &&
-                !!signUpForm.pw1 &&
-                signUpForm.pw1 === signUpForm.pw2
-              }
-              type="submit"
-              value="회원가입"
-              onClick={onSubmit}
-              className={style.signSubmit}
-              tabIndex={-1}
-            />
-          </button>
-        </div>
+        </form>
       </div>
     </div>
   );
