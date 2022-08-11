@@ -22,14 +22,6 @@ function Navigation(): JSX.Element {
     dispatch(userObjectActions.logout());
     navigate("/preview");
     localStorage.setItem("token", "");
-    // const response = await axios({
-    //   url: api.auth.logout(),
-    //   method: "post",
-    //   data: localStorage.getItem("token"),
-    // });
-    // if (response.status === 200) {
-    //   navigate("/preview");
-    // }
   };
 
   const Logout = () => {

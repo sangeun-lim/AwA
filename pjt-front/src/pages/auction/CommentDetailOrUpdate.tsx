@@ -1,5 +1,5 @@
-import React, { Dispatch, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { Dispatch, useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   User,
@@ -30,6 +30,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
     createdDate: comment.createdDate,
     modifiedDate: comment.modifiedDate,
     profile_picture_url: comment.profile_picture_url,
+    userEmail: comment.userEmail,
   });
 
   const onChange = (e: any) => {
@@ -67,6 +68,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
         createdDate,
         modifiedDate,
         profile_picture_url,
+        userEmail,
       } = updateData;
 
       setEditComment({
@@ -77,6 +79,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
         createdDate,
         modifiedDate,
         profile_picture_url,
+        userEmail,
       });
 
       setItem((prev) => {
@@ -92,6 +95,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
                 createdDate,
                 modifiedDate,
                 profile_picture_url,
+                userEmail,
               };
             } else {
               return item;
@@ -153,12 +157,25 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
           ) : (
             <div className={style.commentDetail}>
               <div className={style.commentContent}>
-                <img
-                  className={style.commentProfileImg}
-                  src={editComment.profile_picture_url}
-                  alt="profile"
-                />
-                <b>{editComment.nickname}</b>
+                {editComment.profile_picture_url ? (
+                  <img
+                    className={style.commentProfileImg}
+                    src={editComment.profile_picture_url}
+                    alt="profile"
+                  />
+                ) : (
+                  <img
+                    className={style.commentProfileImg}
+                    src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+                    alt="profile"
+                  />
+                )}
+                <NavLink
+                  to={`/profile/${editComment.userEmail}`}
+                  className={style.userName}
+                >
+                  {editComment.nickname}
+                </NavLink>
                 <div>{editComment.content}</div>
               </div>
               <div className={style.commentButton}>
@@ -171,12 +188,25 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
       ) : (
         <div className={style.commentDetail}>
           <div className={style.commentContent}>
-            <img
-              className={style.commentProfileImg}
-              src={editComment.profile_picture_url}
-              alt="profile"
-            />
-            <b>{editComment.nickname}</b>
+            {editComment.profile_picture_url ? (
+              <img
+                className={style.commentProfileImg}
+                src={editComment.profile_picture_url}
+                alt="profile"
+              />
+            ) : (
+              <img
+                className={style.commentProfileImg}
+                src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+                alt="profile"
+              />
+            )}
+            <NavLink
+              to={`/profile/${editComment.userEmail}`}
+              className={style.userName}
+            >
+              {editComment.nickname}
+            </NavLink>
             <div>{editComment.content}</div>
           </div>
         </div>

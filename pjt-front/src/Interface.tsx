@@ -1,4 +1,3 @@
-// 유저 Object
 export interface User {
   user_id: number;
   email: string;
@@ -64,16 +63,6 @@ export interface Profile {
   picture_url: string;
 }
 
-// 댓글 Object
-export interface Comment {
-  comment_id: number;
-  content: string;
-  createdDate: string;
-  modifiedDate: string;
-  profile_id: number;
-  profile_picture_url: string;
-}
-
 interface Media {
   type: string;
   url: string;
@@ -87,9 +76,9 @@ export interface ArtworkComment {
   nickname: string;
   parent_artwork_id: number;
   profile_picture_url: string;
+  userEmail: string;
 }
 
-// 판매글 목록에 보이는 거
 export interface ArtworkItem {
   artwork_id: number;
   comments: ArtworkComment[];
@@ -107,7 +96,6 @@ export interface ArtworkItem {
   description: string;
 }
 
-// 공지사항 Object
 export interface NoticeItem {
   notice_id: number;
   title: string;
@@ -148,15 +136,6 @@ export interface NewMessage {
   roomName: string;
 }
 
-// 신고 Object
-export interface ReportObject {
-  id: number;
-  uid: number; // 신고자 id
-  itemId: number;
-  category: string;
-  content: string;
-}
-
 export interface editItem {
   title: string;
   price: number;
@@ -171,4 +150,5 @@ export interface editComment {
   createdDate: Date;
   modifiedDate: Date;
   profile_picture_url: string;
+  userEmail: string;
 }

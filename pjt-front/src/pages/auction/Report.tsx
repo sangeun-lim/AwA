@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState, ChangeEvent } from "react";
 import { User } from "../../Interface";
 import { useSelector } from "react-redux";
@@ -63,6 +62,7 @@ function Report(props: Props): JSX.Element {
 
     if (response.status === 200) {
       alert("신고가 접수되었습니다!");
+      close();
     }
   };
 

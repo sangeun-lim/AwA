@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,12 +22,30 @@ function SignUp(): JSX.Element {
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );
+  const [userInput, setUserInput] = useState("");
+  const [ce, setCe] = useState<string>("");
+  const [pass, setPass] = useState<boolean>(false);
+
+  const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setUserInput(value);
+  };
+
+  const onCheckEmail = () => {
+    if (ce === userInput) {
+      setPass(true);
+      alert("인증이 완료되었습니다.");
+    } else {
+      alert("인증 코드가 다릅니다.");
+    }
+  };
 
   const signupRequest = async () => {
     try {
       dispatch(loadingActions.toggle());
 
       const response = await api.auth.signup(signUpForm);
+      setCe(response.data);
 
       dispatch(loadingActions.toggle());
       if (response.status === 200) {
@@ -47,14 +65,16 @@ function SignUp(): JSX.Element {
     try {
       const emailCheck = await api.auth.checkEmail(signUpForm.id);
 
-      dispatch(loadingActions.toggle());
-
       if (!emailCheck.data) {
         alert("이미 사용중인 이메일입니다.");
         setCheckEmail(false);
       } else {
         setCheckEmail(signUpForm.id);
+        const response = await api.auth.email(signUpForm.id);
+        setCe(response.data);
       }
+
+      dispatch(loadingActions.toggle());
     } catch (err) {
       dispatch(loadingActions.toggle());
       console.error(err);
@@ -228,15 +248,36 @@ function SignUp(): JSX.Element {
               onChange={onChange}
               required
               className={style.signInput}
+              disabled={pass}
             />
             <label htmlFor="id">[필수]아이디 </label>
             <button onClick={checkEmailButton} className={style.btn}>
-              <span>중복확인</span>
+              <span>이메일 인증</span>
             </button>
             <div className={style.bar}></div>
           </div>
         </div>
-        {checkEmail && <span>사용가능합니다.</span>}
+        {ce && !pass && (
+          <div className={style.inputContainer}>
+            <div className={style.idContainer}>
+              <input
+                name="emailCheck"
+                id="emailCheck"
+                type="email"
+                value={userInput}
+                onChange={onEmailChange}
+                required
+                className={style.signInput}
+              />
+              <label htmlFor="id">인증번호를 입력해주세요 </label>
+              <button onClick={onCheckEmail} className={style.btn}>
+                <span>확인</span>
+              </button>
+
+              <div className={style.bar}></div>
+            </div>
+          </div>
+        )}
         <div className={style.inputContainer}>
           <input
             name="pw1"
@@ -346,7 +387,7 @@ function SignUp(): JSX.Element {
           >
             <input
               disabled={
-                !(checkEmail && checkNickname) &&
+                !(pass && checkNickname) &&
                 !!signUpForm.pw1 &&
                 signUpForm.pw1 === signUpForm.pw2
               }

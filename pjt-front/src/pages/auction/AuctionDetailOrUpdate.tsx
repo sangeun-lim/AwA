@@ -595,7 +595,6 @@ function AuctionDetailOrUpdate(): JSX.Element {
                   {item.sell_user_nickname}
                 </NavLink>
               </div>
-              {/* <div className={style.userName}>{item.sell_user_nickname}</div> */}
               <div className={style.detailInfoBox}>
                 <div>가격</div>
                 <p>{item.price}원</p>
