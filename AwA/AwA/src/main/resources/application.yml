@@ -67,8 +67,14 @@ logging:
     org.hibernate.sql: debug
     org.hibernate.type: trace
 
-server :
-  port : 8081
+server:
+  port: 8081
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: tpwlslrnldudnj!#%
+  http2:
+    enabled: true
 #  ssl :
 #    enabled : true
 #    key-alias: AwAKey

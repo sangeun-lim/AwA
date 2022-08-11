@@ -30,4 +30,9 @@ public class ProfileApiController {
     public List<ProfileListDto> getProfileListByUserEmail(@RequestBody @Valid UserEmailListDto userEmailListDto) {
         return profileService.getProfileListByUserEmail(userEmailListDto);
     }
+
+    @GetMapping("/email/{nickname}")
+    public String getProfileEmail(@PathVariable(name = "nickname") String nickname) {
+        return profileService.getProfileEmail(nickname);
+    }
 }

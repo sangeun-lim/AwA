@@ -55,7 +55,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
 
     @OneToOne(mappedBy = "owner_user",cascade = CascadeType.ALL)
-    @JsonManagedReference
+
     private Profile profile;
     @Column
     private String refreshToken;

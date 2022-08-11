@@ -35,6 +35,12 @@ public class ProfileService {
 
 
         List<Profile> followingList = followRepository.getFollowingList(targetProfile);
+        for(int i=0;i<followingList.size();i++) {
+            Profile profile = followingList.get(i);
+
+            System.out.println(profile.getOwner_user().getEmail()+" 주인은?");
+
+        }
         List<Profile> followerList = followRepository.getFollwerList(targetProfile);
 
         List<Artwork> sellArtworkList = artworkRepository.findAllBySell_user(targetUser);
@@ -186,5 +192,11 @@ public class ProfileService {
             profileListDtos.add(profileListDto);
         }
         return profileListDtos;
+    }
+
+    public String getProfileEmail(String nickname) {
+        User targetUser = userRepository.findByNickname(nickname);
+
+        return targetUser.getEmail();
     }
 }
