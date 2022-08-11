@@ -362,3 +362,9 @@ a {
   border: 2px solid rgb(231, 115, 92);
   color: rgb(231, 115, 92);
 }
+
+.smallText {
+  font-size: 14px;
+  color: rgb(231, 115, 92);
+  padding-bottom: 15px;
+}
