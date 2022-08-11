@@ -1,5 +1,8 @@
 package com.ssafy.AwA.config.security;
 
+import com.ssafy.AwA.auth.PrincipalOauth2UserService;
+import com.ssafy.AwA.domain.user.User;
+import com.ssafy.AwA.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,14 +11,26 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private final UserRepository userRepository = null;
     @Autowired
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -24,8 +39,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @Autowired
+    private PrincipalOauth2UserService principalOauth2UserService;
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        System.out.println("실행해줘");
         httpSecurity.httpBasic().disable() //UI를 사용하는 것을 기본값으로 가진 시큐리티 설정을 비활성화
                 .csrf().disable() //csrf보안은 REST API에서 필요없어서 끔... 맞나?
                 .sessionManagement()
@@ -33,9 +52,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         SessionCreationPolicy.STATELESS) //REST API 기반 애플리케이션의 동작 방식 설정, 지금 JWT토큰으로 인증처리, 세션 사용안해서 STATELESS로 설정
                 .and()
                 .authorizeRequests()//애플리케이션에 들어오는 요청에 대한 사용권한 체크
-                .antMatchers(HttpMethod.POST, "/artwork").authenticated()
-                .antMatchers(HttpMethod.PUT,"/artwork").authenticated()
-                .antMatchers(HttpMethod.DELETE,"/artwork").authenticated()
+//                .antMatchers(HttpMethod.POST, "/artwork").authenticated()
+//                .antMatchers(HttpMethod.PUT,"/artwork").authenticated()
+//                .antMatchers(HttpMethod.DELETE,"/artwork").authenticated()
+                .antMatchers(HttpMethod.POST,"/api/notice").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/notice").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/api/notice").hasRole("ADMIN")
                 //.antMatchers("/auth/userinfo").hasRole("ADMIN")
 //                .antMatchers("/auth/sign-in", "/auth/sign-up").permitAll() //antPattern을 통해 권한 설정 특정 경로에 모두 허용
 //                .antMatchers(HttpMethod.GET, "/artwork").permitAll() //artwork로 시작하는 경로의 GET요청은 모두 허용
@@ -50,7 +72,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //인증 과정에서 예외가 발생할 경우 예외 전달. (Response로 클라이언트에게 전달) 책 403쪽
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); //어느 필터앞에 설정할 것인지.
+
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class) //어느 필터앞에 설정할 것인지.
+                // oauth2 로그인관련
+                .oauth2Login()
+//                .successHandler(onAuthenticationSuccess)
+//                .loginPage("/auth/sns-sign-in") // 인증이 필요한 url 접근시 명시된 url로 이동
+                .successHandler(new AuthenticationSuccessHandler() {
+                    @Override
+                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                        System.out.println("authentication:: "+ authentication.getName());
+                        System.out.println("순서확인2");
+//                        List<String> roles = new ArrayList<>();
+//                        roles.add(authentication.getAuthorities().toString());
+//                        String refreshToken = jwtTokenProvider.createRefreshToken(authentication.getName(), roles);
+//                        response.setHeader("RefreshToken",refreshToken);
+                        User targetUser = userRepository.findByEmail(authentication.getName());
+                        String refreshToken = targetUser.getRefreshToken();
+                        String token = jwtTokenProvider.createToken(targetUser.getEmail(),targetUser.getRoles());
+                        response.sendRedirect("https://AwA24.site/#/social/refreshtoken="+refreshToken+"&accesstoken="+token);
+                    }
+                })
+//                .defaultSuccessUrl("http://localhost:3000/")
+//                .failureUrl("/auth/sns-sign-in") // 실패시 명시된 url로 이동
+                .userInfoEndpoint()
+                .userService(principalOauth2UserService);
     }
 
     //인증과 인가가 필요 없는 리소스 접근 home, preview, artwork 리스트 같은거 볼 때 등록하거나 수정하는건 위에 권한 설정
@@ -66,6 +112,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://i7c101.p.ssafy.io:8081/");
+        configuration.addAllowedOrigin("https://i7c101.p.ssafy.io:8081/");
+        configuration.addAllowedOrigin("https://awa24.site");
+        configuration.addAllowedOrigin("http://awa24.site");
+        configuration.addAllowedOrigin("https://www.awa24.site");
+        configuration.addAllowedOrigin("http://www.awa24.site");
+
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.addExposedHeader("*"); // 모든걸 허용함

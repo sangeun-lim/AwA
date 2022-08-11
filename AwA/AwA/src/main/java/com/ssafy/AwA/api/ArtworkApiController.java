@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/artwork")
+@RequestMapping("/api/artwork")
 public class ArtworkApiController {
 
     private final Logger logger = LoggerFactory.getLogger(ArtworkApiController.class);
@@ -37,6 +37,10 @@ public class ArtworkApiController {
         return ResponseEntity.status(HttpStatus.OK).body(artworkResponseDto);
     }
 
+    @GetMapping("/page/{pageNo}")
+    public ArtworkPageDto getArtworksByPageNo(@PathVariable("pageNo") int pageNo) {
+        return artworkService.getArtworksByPageNo(pageNo);
+    }
     @GetMapping
     public List<ArtworkResponseDto> getAllArtwork() {
         List<ArtworkResponseDto> artworkResponseDto = artworkService.getAllArtwork();
@@ -65,11 +69,15 @@ public class ArtworkApiController {
         return artworkService.deleteArtwork(artwork_id);
     }
 
-    @GetMapping("/onlyFollow/{userEmail}")
-    public List<ArtworkResponseDto> getOnlyFollowingArtworkList(@PathVariable("userEmail") String userEmail) {
-        return artworkService.getOnlyFollowingArtworksList(userEmail);
+    @GetMapping("/onlyFollow/{userEmail}/{pageNo}")
+    public ArtworkPageDto getOnlyFollowingArtworkList(@PathVariable("userEmail") String userEmail, @PathVariable("pageNo") int pageNo) {
+        return artworkService.getOnlyFollowingArtworksList(userEmail,pageNo);
     }
 
+    @GetMapping("recommand/{userEmail}")
+    public ArtworkPageDto getRecommandArtworks(@PathVariable("userEmail") String userEmail) {
+        return artworkService.getRecommandArtworks(userEmail);
+    }
 
 
 }

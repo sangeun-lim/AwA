@@ -28,7 +28,9 @@ public class SearchService {
     private final ProfileRepository profileRepository;
     public List<ArtworkResponseDto> getSearchByTitle(String title, @RequestBody @Valid SearchRequestDto searchRequestDto) {
         List<Artwork> allSearchByTitle = new ArrayList<>();
-        if(searchRequestDto.getGenre_count() == 1)
+        if(searchRequestDto.getGenre_count()==0)
+            allSearchByTitle = searchCustomRepository.findAllSearchByTitle(title,searchRequestDto);
+        else if(searchRequestDto.getGenre_count() == 1)
             allSearchByTitle = searchCustomRepository.findAllSearchByTitle1(title, searchRequestDto);
         else if(searchRequestDto.getGenre_count() == 2)
             allSearchByTitle = searchCustomRepository.findAllSearchByTitle2(title, searchRequestDto);

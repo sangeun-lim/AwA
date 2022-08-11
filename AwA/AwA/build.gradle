@@ -29,9 +29,11 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web' //web
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' //spring data jpa
-	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0") //sql 이쁘게 보여주는거
-	implementation('org.glassfish:jakarta.el') //얜 뭐였지?
+	//implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0") //sql 이쁘게 보여주는거
+	//implementation('org.glassfish:jakarta.el') //얜 뭐였지?
 	implementation('org.springframework.boot:spring-boot-starter-validation') //얘도 뭐였지?
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-mail' //mail
 
 	implementation 'org.springframework.boot:spring-boot-starter-security' //스프링 시큐리티
 
@@ -44,9 +46,7 @@ dependencies {
 
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.4' //mariaDB
 
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-	implementation 'org.springframework.boot:spring-boot-starter-mail' //mail
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test' //test용
 

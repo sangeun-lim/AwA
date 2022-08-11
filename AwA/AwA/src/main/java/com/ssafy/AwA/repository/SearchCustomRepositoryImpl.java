@@ -19,7 +19,35 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-
+    @Override
+    public List<Artwork> findAllSearchByTitle(String keyword, SearchRequestDto searchRequestDto) {
+        if (searchRequestDto.getStatus() == 0) {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.title.contains(keyword)
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
+        else if (searchRequestDto.getStatus() == 1) { //판매중인
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.title.contains(keyword)
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
+        else {
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.title.contains(keyword)
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
+                    )
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
+    }
     @Override
     public List<Artwork> findAllSearchByTitle1(String keyword, SearchRequestDto searchRequestDto) {
         List<String> genre = searchRequestDto.getGenre();
@@ -413,5 +441,4 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         }
     }
-
 }

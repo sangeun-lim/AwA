@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface SearchCustomRepository {
 
+    List<Artwork> findAllSearchByTitle(String keyword, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByTitle1(String keyword, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByTitle2(String keyword, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByTitle3(String keyword, SearchRequestDto searchRequestDto);

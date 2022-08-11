@@ -11,7 +11,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/report")
+@RequestMapping("/api/report")
 public class ReportApiController {
 
     private final ArtworkService artworkService;

@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/follow")
+@RequestMapping("/api/follow")
 @RequiredArgsConstructor
 public class FollowApiController {
 
