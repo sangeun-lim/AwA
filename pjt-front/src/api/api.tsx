@@ -113,7 +113,7 @@ const api = {
       return response;
     },
 
-    readOrUpdateOrDelete: async (
+    updateOrDelete: async (
       id: string,
       formData: NewNoticeData | null,
       method: string
@@ -128,6 +128,13 @@ const api = {
         data: formData,
       });
 
+      return response;
+    },
+    read: async (id: string) => {
+      const response = await axios({
+        url: rf.notice.readOrUpdateOrDelete(id),
+        method: "get",
+      });
       return response;
     },
   },
@@ -166,7 +173,7 @@ const api = {
       return response;
     },
 
-    readOrUpdateOrDelete: async (
+    updateOrDelete: async (
       id: string,
       formData: UpdateItemData | null,
       method: string
@@ -181,6 +188,14 @@ const api = {
         data: formData,
       });
 
+      return response;
+    },
+
+    read: async (id: string) => {
+      const response = await axios({
+        url: rf.artwork.readDetailOrUpdateOrDelete(id),
+        method: "get",
+      });
       return response;
     },
 

@@ -61,6 +61,7 @@ export const profileDefaultData = {
   following_list: [],
   artwork_list: [],
   liked_artwork_list: [],
+  userEmail: "",
 };
 
 export const queryDefaultData = {

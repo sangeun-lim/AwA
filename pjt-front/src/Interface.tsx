@@ -32,6 +32,7 @@ export interface Follow {
   owner_user: Owner;
   profile_id: number;
   profile_picture_url: string;
+  userEmail: string;
 }
 
 export interface ArtworkList {

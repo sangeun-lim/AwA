@@ -189,11 +189,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
           }),
         };
 
-        const response = await api.artwork.readOrUpdateOrDelete(
-          address,
-          data,
-          "put"
-        );
+        const response = await api.artwork.updateOrDelete(address, data, "put");
 
         setItem((prev) => {
           return {
@@ -218,7 +214,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
       dispatch(loadingActions.toggle());
 
       try {
-        const response = await api.artwork.readOrUpdateOrDelete(
+        const response = await api.artwork.updateOrDelete(
           address,
           null,
           "delete"
@@ -301,12 +297,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
   useEffect(() => {
     async function loadData() {
-      const response = await api.artwork.readOrUpdateOrDelete(
-        address,
-        null,
-        "get"
-      );
-
+      const response = await api.artwork.read(address);
       setItem(response.data);
     }
 

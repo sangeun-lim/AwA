@@ -61,13 +61,16 @@ function CommentForm({ artworkId, setItem }: Props): JSX.Element {
     <div>
       <form onSubmit={onSubmit} className={style.commentForm}>
         <input
+          disabled={!userObject}
           name="content"
           type="text"
-          placeholder="댓글을 작성하세요."
+          placeholder={
+            !userObject ? "로그인해야 이용가능합니다" : "댓글을 입력해주세요"
+          }
           onChange={onChange}
           value={newComment.content || ""}
         />
-        <input type="submit" value="댓글작성" />
+        <input type="submit" value="댓글작성" disabled={!userObject} />
       </form>
     </div>
   );

@@ -140,7 +140,6 @@ function Navigation(): JSX.Element {
                 </NavLink>
               </div>
             )}
-
             <GoSearch
               onClick={() => setSearchBar(!searchBar)}
               className={style.searchIcon}
@@ -152,9 +151,6 @@ function Navigation(): JSX.Element {
             >
               <SearchComponent />
             </div>
-            {/* <button>
-            <NavLink to="/알림모달창">알림이모티콘</NavLink>
-            </button> */}
           </div>
           {/* burgerMenu */}
           <div className={style.burgerMenuBox}>
