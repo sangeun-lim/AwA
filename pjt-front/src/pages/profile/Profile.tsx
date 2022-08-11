@@ -10,8 +10,6 @@ import {
 import { Profile, User } from "../../Interface";
 import { profileDefaultData } from "../../defaultData";
 import ProfileUpdate from "./ProfileUpdate";
-import Followers from "./Followers";
-import Followings from "./Followings";
 import Follow from "./Follow";
 import UserArtworkList from "./UserArtworkList";
 import UserLikedArtworkList from "./UserLikedArtworkList";

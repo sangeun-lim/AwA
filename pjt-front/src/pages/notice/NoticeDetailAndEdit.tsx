@@ -54,7 +54,7 @@ function NoticeDetailAndEdit(): JSX.Element {
     dispatch(loadingActions.toggle());
 
     try {
-      const response = await api.notice.readOrUpdateOrDelete(
+      const response = await api.notice.updateOrDelete(
         address,
         {
           title: editNotice.title,
@@ -66,11 +66,7 @@ function NoticeDetailAndEdit(): JSX.Element {
       dispatch(loadingActions.toggle());
 
       if (response.status === 200) {
-        const updateValue = await api.notice.readOrUpdateOrDelete(
-          address,
-          null,
-          "get"
-        );
+        const updateValue = await api.notice.read(address);
 
         const newData = updateValue.data;
 
@@ -93,7 +89,7 @@ function NoticeDetailAndEdit(): JSX.Element {
       dispatch(loadingActions.toggle());
 
       try {
-        const response = await api.notice.readOrUpdateOrDelete(
+        const response = await api.notice.updateOrDelete(
           address,
           null,
           "delete"
@@ -114,11 +110,7 @@ function NoticeDetailAndEdit(): JSX.Element {
 
   useEffect(() => {
     async function loadData() {
-      const response = await api.notice.readOrUpdateOrDelete(
-        address,
-        null,
-        "get"
-      );
+      const response = await api.notice.read(address);
 
       const newData = response.data;
 

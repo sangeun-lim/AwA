@@ -59,17 +59,18 @@ function Auction(): JSX.Element {
       <div className={style.auction}>
         <section className={style.auctionTop}>
           <div>
-            <div className={style.title}>세룽룽</div>
-            <div className={style.content}>
-              Artwork Auction에서 좋은 작품을 만날 기회
-            </div>
+            <div className={style.title}>Artwork Auction </div>
+            <div className={style.content}>좋은 작품을 만날 기회</div>
           </div>
         </section>
         <div>
-          {userObject && (
+          {userObject ? (
             <button onClick={onClick} className={style.auctionButton}>
               상품등록
             </button>
+          ) : (
+            // 로그인페이지로 이동 시킬까?
+            <></>
           )}
         </div>
         <Masonry columns={{ sm: 2, md: 3, xl: 4 }} spacing={1}>

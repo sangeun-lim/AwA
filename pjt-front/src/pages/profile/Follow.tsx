@@ -1,6 +1,6 @@
-// import { style } from "@mui/system";
 import { DividerClassKey } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import { Follow } from "../../Interface";
 import style from "./Follow.module.css";
 
@@ -52,13 +52,26 @@ function Followers(props: Props): JSX.Element {
                     return (
                       <div key={item.nickname} className={style.followList}>
                         <div className={style.followListImg}>
-                          <img
-                            src={item.profile_picture_url}
-                            alt="프로필사진"
-                          />
+                          {item.profile_picture_url ? (
+                            <img
+                              src={item.profile_picture_url}
+                              alt="프로필사진"
+                            />
+                          ) : (
+                            <img
+                              src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+                              alt="프로필사진"
+                            />
+                          )}
                         </div>
                         <div className={style.followListName}>
-                          {item.nickname}
+                          <NavLink
+                            onClick={close}
+                            to={`/profile/${item.userEmail}`}
+                            className={style.moveEmail}
+                          >
+                            {item.nickname}
+                          </NavLink>
                         </div>
                       </div>
                     );
@@ -69,13 +82,26 @@ function Followers(props: Props): JSX.Element {
                     return (
                       <div key={item.nickname} className={style.followList}>
                         <div className={style.followListImg}>
-                          <img
-                            src={item.profile_picture_url}
-                            alt="프로필사진"
-                          />
+                          {item.profile_picture_url ? (
+                            <img
+                              src={item.profile_picture_url}
+                              alt="프로필사진"
+                            />
+                          ) : (
+                            <img
+                              src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+                              alt="프로필사진"
+                            />
+                          )}
                         </div>
                         <div className={style.followListName}>
-                          {item.nickname}
+                          <NavLink
+                            onClick={close}
+                            to={`/profile/${item.userEmail}`}
+                            className={style.moveEmail}
+                          >
+                            {item.nickname}
+                          </NavLink>
                         </div>
                       </div>
                     );
