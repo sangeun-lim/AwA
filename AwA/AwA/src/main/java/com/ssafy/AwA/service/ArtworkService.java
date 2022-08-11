@@ -17,6 +17,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -375,11 +377,13 @@ public class ArtworkService {
     }
 
     public ArtworkPageDto getRecommandArtworks(String userEmail) {
-        //내가 팔로우 하는 사람들 리스트
         User targetUser = userRepository.findByEmail(userEmail);
         Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
 
         List<String> favorite_Genre = targetProfile.getFavorite_field();
+
+//        Instant start = Instant.now();
+//        System.out.println("시작시간 : " + start);
 
         List<Artwork> notLikeAndCommentArtworks = artworkRepository.findNotLikeAndCommentArtworks(targetUser, targetProfile,targetProfile);
 
@@ -402,6 +406,11 @@ public class ArtworkService {
             else
                 notLikeAndCommentArtworksNotInGenre.add(targetArtwork);
         }
+
+//        Instant finish = Instant.now();
+//        long elapsedTime = Duration.between(start, finish).toMillis();
+//        System.out.println("내가 좋아요,댓글안한 게시물 장르 분류 걸린시간 : " + elapsedTime);
+
 
         //내가 선호하는 장르
         double[] viewCount = new double[notLikeAndCommentArtworksInGenre.size()];
@@ -451,8 +460,10 @@ public class ArtworkService {
 
             }
         });
-
-
+//
+//        finish = Instant.now();
+//        elapsedTime = Duration.between(start, finish).toMillis();
+//        System.out.println("내가 좋아하는 장르 정렬까지 걸린시간 : " + elapsedTime);
         //내가 선호하지 않는 장르
         double[] viewCount2 = new double[notLikeAndCommentArtworksNotInGenre.size()];
         double[] likeCount2 = new double[notLikeAndCommentArtworksNotInGenre.size()];
@@ -501,8 +512,12 @@ public class ArtworkService {
 
             }
         });
-        //여기까지 하면 내가 좋아하는 장르 중 좋아요,댓글 없는것 정렬 완료
-        //내가 좋아하지 않는 장르 중 좋아요, 댓글 없는것 정렬 완료
+
+//        finish = Instant.now();
+//        elapsedTime = Duration.between(start, finish).toMillis();
+//        System.out.println("내가 좋아하지 않는 장르 정렬까지 걸린시간 : " + elapsedTime);
+//        //여기까지 하면 내가 좋아하는 장르 중 좋아요,댓글 없는것 정렬 완료
+//        //내가 좋아하지 않는 장르 중 좋아요, 댓글 없는것 정렬 완료
 
         List<Artwork> recommandList = new ArrayList<>();
         List<Long> userRecommandList = targetUser.getRecommandArtworks();
@@ -510,27 +525,20 @@ public class ArtworkService {
         int inGenreIdx = 0, notInGenreIdx = 0;
         boolean check=true;
         if(userRecommandList.size() > 0) {
-//            System.out.println("마지막 article id : " + userRecommandList.get(userRecommandList.size()-1));
             for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++) {
                 if(notLikeAndCommentArtworksInGenre.get(i).getArtwork_id() == userRecommandList.get(userRecommandList.size()-1)) {
                     inGenreIdx = i;
                     check = true;
-//                    System.out.println("마지막 In idx 위치 : "+i);
                 }
             }
             for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++)
                 if(notLikeAndCommentArtworksNotInGenre.get(i).getArtwork_id() == userRecommandList.get(userRecommandList.size()-1)) {
                     notInGenreIdx = i;
                     check=false;
-//                    System.out.println("마지막 Not In idx 위치 : "+i);
                 }
         }
 
 
-        System.out.println("유저가 갖고있는 추천받은 리스트");
-        for(int i=0;i<userRecommandList.size();i++) {
-            System.out.println("게시물 ID : " + userRecommandList.get(i));
-        }
         while(recommandList.size()<12) {
             if(check) {
                 for (int i = 0; i < notLikeAndCommentArtworksInGenre.size(); i++) {
@@ -542,7 +550,6 @@ public class ArtworkService {
                     }
 
                     if (userRecommandList.contains(artworkInGenre.getArtwork_id())) {
-                        System.out.println("이미 갖고있어요 : " + artworkInGenre.getArtwork_id());
                         continue;
                     } else {
                         if (userRecommandList.size() == 12) {
@@ -620,7 +627,6 @@ public class ArtworkService {
                         }
 
                         if (userRecommandList.contains(artworkInGenre.getArtwork_id())) {
-                            System.out.println("이미 갖고있어요 : " + artworkInGenre.getArtwork_id());
                             continue;
                         } else {
                             if (userRecommandList.size() == 12) {
@@ -640,11 +646,10 @@ public class ArtworkService {
             }
         }
 
-        targetUser.changeRecommandList(userRecommandList);
-        System.out.println("추천한 리스트");
-        for(int i=0;i<recommandList.size();i++) {
-            System.out.println("게시물 ID : " + recommandList.get(i).getArtwork_id());
-        }
+//
+//        finish = Instant.now();
+//        elapsedTime = Duration.between(start, finish).toMillis();
+//        System.out.println("두개 리스트 이용해 추출하는데 걸린 시간 : " + elapsedTime);
         List<ArtworkResponseDto> result = new ArrayList<>();
         for(int i=0;i< recommandList.size();i++)
         {
