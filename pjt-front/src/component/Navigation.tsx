@@ -39,18 +39,29 @@ function Navigation(): JSX.Element {
   return (
     <div className={style.nav}>
       <nav className={searchBar ? style.navBoxSearch : style.navBox}>
-        <div
-          className={!menuToggle ? style.burgerMenu : style.menu}
-          onClick={() =>
-            menuToggle ? setMenuToggle(false) : setMenuToggle(true)
-          }
-        >
-          <div className={style.burgerLine1}></div>
-          <div className={style.burgerLine2}></div>
-          <div className={style.burgerLine3}></div>
+        <div className={style.burgerBox}>
+          <div
+            className={!menuToggle ? style.burgerMenu : style.menu}
+            onClick={() =>
+              menuToggle ? setMenuToggle(false) : setMenuToggle(true)
+            }
+          >
+            <div className={style.burgerLine1}></div>
+            <div className={style.burgerLine2}></div>
+            <div className={style.burgerLine3}></div>
+          </div>
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? style.active : "")}
+          >
+            <img
+              src="./img/logo.png"
+              alt="로고"
+              className={style.burgerLogoImg}
+            />
+          </NavLink>
+          <div></div>
         </div>
-        <img src="./img/logo.png" alt="로고" className={style.burgerLogoImg} />
-        <div></div>
 
         <div
           className={[
