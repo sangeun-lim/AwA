@@ -380,9 +380,6 @@ public class ArtworkService {
         Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
 
         List<String> favorite_Genre = targetProfile.getFavorite_field();
-        System.out.println("내가 선호하는 장르" + " " + favorite_Genre.size());
-        for(int i=0;i<favorite_Genre.size();i++)
-            System.out.println(favorite_Genre.get(i));
 
         List<Artwork> notLikeAndCommentArtworks = artworkRepository.findNotLikeAndCommentArtworks(targetUser, targetProfile,targetProfile);
 
@@ -406,15 +403,7 @@ public class ArtworkService {
                 notLikeAndCommentArtworksNotInGenre.add(targetArtwork);
         }
 
-        System.out.println("내가 좋아요와 댓글을 달지 않은 게시물 중 내가 선호하는 장르에 속하는 게시물");
-        for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++)
-            System.out.println(notLikeAndCommentArtworksInGenre.get(i).getTitle());
-
-//        System.out.println("내가 좋아요와 댓글을 달지 않은 게시물 중 내가 선호하는 장르에 속하지 않는 게시물");
-//        for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++)
-//            System.out.println(notLikeAndCommentArtworksNotInGenre.get(i).getTitle());
-
-
+        //내가 선호하는 장르
         double[] viewCount = new double[notLikeAndCommentArtworksInGenre.size()];
         double[] likeCount = new double[notLikeAndCommentArtworksInGenre.size()];
         double[] commentCount = new double[notLikeAndCommentArtworksInGenre.size()];
@@ -463,13 +452,203 @@ public class ArtworkService {
             }
         });
 
-        for(int i=0;i< notLikeAndCommentArtworksInGenre.size();i++) {
-            System.out.println(notLikeAndCommentArtworksInGenre.get(i).getTitle());
+
+        //내가 선호하지 않는 장르
+        double[] viewCount2 = new double[notLikeAndCommentArtworksNotInGenre.size()];
+        double[] likeCount2 = new double[notLikeAndCommentArtworksNotInGenre.size()];
+        double[] commentCount2 = new double[notLikeAndCommentArtworksNotInGenre.size()];
+
+        //각 게시물 마다 조회수, 좋아요수, 댓글수 받기
+        for(int i=0;i< notLikeAndCommentArtworksNotInGenre.size();i++) {
+            Artwork targetArtwork = notLikeAndCommentArtworksNotInGenre.get(i);
+
+            viewCount2[i]=targetArtwork.getView_count();
+            likeCount2[i]=targetArtwork.getLike_count()+1;
+            commentCount2[i]=targetArtwork.getComments().size()+1;
+        }
+
+        //평균구하기
+        double avgViewCount2 = Arrays.stream(viewCount2).sum() / viewCount2.length;
+        double avgLikeCount2 = Arrays.stream(likeCount2).sum() / likeCount2.length;
+        double avgCommentCount2 = Arrays.stream(commentCount2).sum() / commentCount2.length;
+
+        //(x-평균)의 제곱값 구하기
+        double powViewCount2[] = new double[notLikeAndCommentArtworksNotInGenre.size()];
+        double powLikeCount2[] = new double[notLikeAndCommentArtworksNotInGenre.size()];
+        double powCommentCount2[] = new double[notLikeAndCommentArtworksNotInGenre.size()];
+        for(int i=0;i< notLikeAndCommentArtworksNotInGenre.size();i++) {
+            powViewCount2[i] = Math.pow((viewCount2[i]-avgViewCount2),2);
+            powLikeCount2[i] = Math.pow((likeCount2[i]-avgLikeCount2),2);
+            powCommentCount2[i] = Math.pow((commentCount2[i]-avgCommentCount2),2);
+        }
+
+        //표준편차 구하기 (위의 값의 평균 구한 후 제곱근)
+        double sdViewCount2 = Math.sqrt(Arrays.stream(powViewCount2).sum() / powViewCount2.length);
+        double sdLikeCount2 = Math.sqrt(Arrays.stream(powLikeCount2).sum() / powLikeCount2.length);
+        double sdCommentCount2 = Math.sqrt(Arrays.stream(powCommentCount2).sum() / powCommentCount2.length);
+
+        Collections.sort(notLikeAndCommentArtworksNotInGenre, new Comparator<Artwork>(){
+            @Override
+            public int compare(Artwork artwork, Artwork t1) {
+
+                return (int) (((((t1.getView_count() - avgViewCount2) / sdViewCount2) * 0.5 +
+                        ((t1.getLike_count() - avgLikeCount2) / (sdLikeCount2+1)) * 0.3 +
+                        ((t1.getComments().size() - avgCommentCount2)/(sdCommentCount2+1))*0.2) -
+
+                        (((artwork.getView_count() - avgViewCount2) / sdViewCount2) * 0.5 +
+                                ((artwork.getLike_count() - avgLikeCount2) / (sdLikeCount2+1)) * 0.3 +
+                                ((artwork.getComments().size() - avgCommentCount2)/(sdCommentCount2+1))*0.2))*100);
+
+            }
+        });
+        //여기까지 하면 내가 좋아하는 장르 중 좋아요,댓글 없는것 정렬 완료
+        //내가 좋아하지 않는 장르 중 좋아요, 댓글 없는것 정렬 완료
+
+        List<Artwork> recommandList = new ArrayList<>();
+        List<Long> userRecommandList = targetUser.getRecommandArtworks();
+
+        int inGenreIdx = 0, notInGenreIdx = 0;
+        boolean check=true;
+        if(userRecommandList.size() > 0) {
+//            System.out.println("마지막 article id : " + userRecommandList.get(userRecommandList.size()-1));
+            for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++) {
+                if(notLikeAndCommentArtworksInGenre.get(i).getArtwork_id() == userRecommandList.get(userRecommandList.size()-1)) {
+                    inGenreIdx = i;
+                    check = true;
+//                    System.out.println("마지막 In idx 위치 : "+i);
+                }
+            }
+            for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++)
+                if(notLikeAndCommentArtworksNotInGenre.get(i).getArtwork_id() == userRecommandList.get(userRecommandList.size()-1)) {
+                    notInGenreIdx = i;
+                    check=false;
+//                    System.out.println("마지막 Not In idx 위치 : "+i);
+                }
+        }
+
+
+        System.out.println("유저가 갖고있는 추천받은 리스트");
+        for(int i=0;i<userRecommandList.size();i++) {
+            System.out.println("게시물 ID : " + userRecommandList.get(i));
+        }
+        while(recommandList.size()<12) {
+            if(check) {
+                for (int i = 0; i < notLikeAndCommentArtworksInGenre.size(); i++) {
+                    Artwork artworkInGenre = notLikeAndCommentArtworksInGenre.get(inGenreIdx);
+                    inGenreIdx++;
+
+                    if(inGenreIdx == notLikeAndCommentArtworksInGenre.size()){
+                        inGenreIdx = 0;
+                    }
+
+                    if (userRecommandList.contains(artworkInGenre.getArtwork_id())) {
+                        System.out.println("이미 갖고있어요 : " + artworkInGenre.getArtwork_id());
+                        continue;
+                    } else {
+                        if (userRecommandList.size() == 12) {
+                            userRecommandList.remove(0);
+                            userRecommandList.add(artworkInGenre.getArtwork_id());
+                            recommandList.add(artworkInGenre);
+                        } else {
+                            recommandList.add(artworkInGenre);
+                            userRecommandList.add(artworkInGenre.getArtwork_id());
+                        }
+                        if (recommandList.size() >= 12)
+                            break;
+                    }
+                }
+
+                if (recommandList.size() < 12) {
+                    for (int i = 0; i < notLikeAndCommentArtworksNotInGenre.size(); i++) {
+                        Artwork artworkNotInGenre = notLikeAndCommentArtworksNotInGenre.get(notInGenreIdx);
+                        notInGenreIdx++;
+
+                        if(notInGenreIdx==notLikeAndCommentArtworksNotInGenre.size()) {
+                            notInGenreIdx=0;
+                        }
+                        if (userRecommandList.contains(artworkNotInGenre.getArtwork_id())) {
+                            continue;
+                        } else {
+                            if (userRecommandList.size() == 12) {
+                                userRecommandList.remove(0);
+                                userRecommandList.add(artworkNotInGenre.getArtwork_id());
+                                recommandList.add(artworkNotInGenre);
+                            } else {
+                                recommandList.add(artworkNotInGenre);
+                                userRecommandList.add(artworkNotInGenre.getArtwork_id());
+                            }
+
+                            if (recommandList.size() >= 12)
+                                break;
+                        }
+                    }
+                }
+                check=false;
+            }
+            else {
+                for (int i = 0; i < notLikeAndCommentArtworksNotInGenre.size(); i++) {
+                    Artwork artworkNotInGenre = notLikeAndCommentArtworksNotInGenre.get(notInGenreIdx);
+                    notInGenreIdx++;
+
+                    if(notInGenreIdx==notLikeAndCommentArtworksNotInGenre.size()) {
+                        notInGenreIdx=0;
+                    }
+                    if (userRecommandList.contains(artworkNotInGenre.getArtwork_id())) {
+                        continue;
+                    } else {
+                        if (userRecommandList.size() == 12) {
+                            userRecommandList.remove(0);
+                            userRecommandList.add(artworkNotInGenre.getArtwork_id());
+                            recommandList.add(artworkNotInGenre);
+                        } else {
+                            recommandList.add(artworkNotInGenre);
+                            userRecommandList.add(artworkNotInGenre.getArtwork_id());
+                        }
+
+                        if (recommandList.size() >= 12)
+                            break;
+                    }
+                }
+
+                if (recommandList.size() < 12) {
+                    for (int i = 0; i < notLikeAndCommentArtworksInGenre.size(); i++) {
+                        Artwork artworkInGenre = notLikeAndCommentArtworksInGenre.get(inGenreIdx);
+                        inGenreIdx++;
+
+                        if(inGenreIdx == notLikeAndCommentArtworksInGenre.size()){
+                            inGenreIdx = 0;
+                        }
+
+                        if (userRecommandList.contains(artworkInGenre.getArtwork_id())) {
+                            System.out.println("이미 갖고있어요 : " + artworkInGenre.getArtwork_id());
+                            continue;
+                        } else {
+                            if (userRecommandList.size() == 12) {
+                                userRecommandList.remove(0);
+                                userRecommandList.add(artworkInGenre.getArtwork_id());
+                                recommandList.add(artworkInGenre);
+                            } else {
+                                recommandList.add(artworkInGenre);
+                                userRecommandList.add(artworkInGenre.getArtwork_id());
+                            }
+                            if (recommandList.size() >= 12)
+                                break;
+                        }
+                    }
+                }
+                check=true;
+            }
+        }
+
+        targetUser.changeRecommandList(userRecommandList);
+        System.out.println("추천한 리스트");
+        for(int i=0;i<recommandList.size();i++) {
+            System.out.println("게시물 ID : " + recommandList.get(i).getArtwork_id());
         }
         List<ArtworkResponseDto> result = new ArrayList<>();
-        for(int i=0;i< notLikeAndCommentArtworksInGenre.size();i++)
+        for(int i=0;i< recommandList.size();i++)
         {
-            Artwork targetArtwork = notLikeAndCommentArtworksInGenre.get(i);
+            Artwork targetArtwork = recommandList.get(i);
 
             List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
 
@@ -507,6 +686,7 @@ public class ArtworkService {
 
         ArtworkPageDto artworkPageDto = ArtworkPageDto.builder()
                 .artworkResponseDto(result)
+                .totalCount(result.size())
                 .build();
         return artworkPageDto;
     }

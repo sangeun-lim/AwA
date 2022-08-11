@@ -43,7 +43,7 @@ public class Artwork extends BaseTimeEntity {
     @Column(length = 10000)
     private String description;
 
-    @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "artwork", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     List<Likes> likes;
 
@@ -59,7 +59,7 @@ public class Artwork extends BaseTimeEntity {
 
 
     //댓글
-    @OneToMany(mappedBy = "parent_artwork", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent_artwork", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Comment> comments;
 
@@ -70,10 +70,10 @@ public class Artwork extends BaseTimeEntity {
     private PurchaseArtwork purchase_artwork;
 
 
-    @OneToMany(mappedBy = "artwork_id")
+    @OneToMany(mappedBy = "artwork_id",fetch = FetchType.LAZY)
     List<Attachment> attachment_list = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reported_artwork",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reported_artwork",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<Report> report_list = new ArrayList<>();
 
     @Builder

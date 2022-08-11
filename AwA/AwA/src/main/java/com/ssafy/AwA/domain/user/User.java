@@ -17,9 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
@@ -66,12 +64,6 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column
     private boolean is_seller;
 
-//    @OneToMany(mappedBy = "create_room_user", cascade = CascadeType.ALL)
-//    private List<Room> chatrooms = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "purchase_user", cascade = CascadeType.ALL)
-//    private List<PurchaseArtwork> purchase_list = new ArrayList<>();
-
     @OneToMany(mappedBy = "sell_user",cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Artwork> sell_list = new ArrayList<>();
@@ -79,6 +71,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
 //    @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<Long> recommandArtworks = new ArrayList<>();
 
     //계정이 가지고 있는 권한 목록 리턴
     @Override
@@ -123,7 +118,8 @@ public class User extends BaseTimeEntity implements UserDetails {
 
 
     @Builder
-    public User(String email, String password, String nickname, boolean gender, LocalDate birth, List<String> roles, Profile profile, boolean is_manager, boolean is_seller) {
+    public User(String email, String password, String nickname, boolean gender, LocalDate birth, List<String> roles,
+                Profile profile, boolean is_manager, boolean is_seller, List<Long> recommandArtworks) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -133,6 +129,7 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.profile = profile;
         this.is_manager = is_manager;
         this.is_seller = is_seller;
+        this.recommandArtworks = recommandArtworks;
     }
     //비즈니스로직
 
@@ -146,4 +143,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     public void createProfile(Profile profile) {this.profile = profile;}
 
+    public void changeRecommandList(List<Long> userRecommandList) {
+        this.recommandArtworks = userRecommandList;
+    }
 }
