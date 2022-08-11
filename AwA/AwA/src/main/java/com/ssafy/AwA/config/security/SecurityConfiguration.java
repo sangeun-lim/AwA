@@ -1,6 +1,7 @@
 package com.ssafy.AwA.config.security;
 
 import com.ssafy.AwA.auth.PrincipalOauth2UserService;
+import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -86,8 +87,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                        roles.add(authentication.getAuthorities().toString());
 //                        String refreshToken = jwtTokenProvider.createRefreshToken(authentication.getName(), roles);
 //                        response.setHeader("RefreshToken",refreshToken);
-                        String refreshToken = userRepository.findByEmail(authentication.getName()).getRefreshToken();
-                        response.sendRedirect("https://AwA24.site/social/"+refreshToken);
+                        User targetUser = userRepository.findByEmail(authentication.getName());
+                        String refreshToken = targetUser.getRefreshToken();
+                        String token = jwtTokenProvider.createToken(targetUser.getEmail(),targetUser.getRoles());
+                        response.sendRedirect("https://AwA24.site/#/social/refreshtoken="+refreshToken+"&accesstoken="+token);
                     }
                 })
 //                .defaultSuccessUrl("http://localhost:3000/")
