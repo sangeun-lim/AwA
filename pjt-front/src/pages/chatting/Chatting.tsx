@@ -15,7 +15,9 @@ function Chatting(): JSX.Element {
       {chatPartner ? (
         <ChatBoard></ChatBoard>
       ) : (
-        <div className={style.emptyBox}></div>
+        <div className={style.emptyBox}>
+          <img src="./img/logo.png" alt="로고" className={style.logo} />
+        </div>
       )}
     </div>
   );
