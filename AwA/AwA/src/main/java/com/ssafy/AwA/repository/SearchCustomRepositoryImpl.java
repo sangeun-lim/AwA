@@ -266,6 +266,32 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
     }
 
     @Override
+    public List<Artwork> findAllSearchByWriter(String writer, SearchRequestDto searchRequestDto) {
+
+        if(searchRequestDto.getStatus() == 0) { //판매, 판매완료 게시물 전체조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.sell_user.nickname.like(writer)
+
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        } else { //판매완료된 게시물 전체 조회
+            return jpaQueryFactory.selectFrom(artwork)
+                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.sell_user.nickname.like(writer)
+                            .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
+                    .orderBy(artwork.artwork_id.desc())
+                    .fetch();
+        }
+    }
+    @Override
     public List<Artwork> findAllSearchByWriter1(String writer, SearchRequestDto searchRequestDto) {
         List<String> genre = searchRequestDto.getGenre();
 

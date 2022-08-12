@@ -14,7 +14,7 @@ public interface SearchCustomRepository {
     List<Artwork> findAllSearchByTitle4(String keyword, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByTitle5(String keyword, SearchRequestDto searchRequestDto);
 
-
+    List<Artwork> findAllSearchByWriter(String writer, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByWriter1(String writer, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByWriter2(String writer, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByWriter3(String writer, SearchRequestDto searchRequestDto);
