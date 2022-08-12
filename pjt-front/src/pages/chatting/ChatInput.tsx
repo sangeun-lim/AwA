@@ -60,6 +60,7 @@ function ChatInput() {
         createdDate: Date.now(),
         recentlyDate: Date.now(),
         recentlyMessage: message,
+        unReadChatCount: 0,
       });
 
       await addDoc(collection(dbService, "ChattingRoom"), {
@@ -68,6 +69,7 @@ function ChatInput() {
         createdDate: Date.now(),
         recentlyDate: Date.now(),
         recentlyMessage: message,
+        unReadChatCount: 1,
       });
 
       dispatch(firstChatActions.isNotFirst());
