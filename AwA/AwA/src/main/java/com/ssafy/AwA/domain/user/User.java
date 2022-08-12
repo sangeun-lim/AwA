@@ -53,7 +53,6 @@ public class User extends BaseTimeEntity implements UserDetails {
 
 
     @OneToOne(mappedBy = "owner_user",cascade = CascadeType.ALL)
-
     private Profile profile;
     @Column
     private String refreshToken;
@@ -145,5 +144,9 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     public void changeRecommandList(List<Long> userRecommandList) {
         this.recommandArtworks = userRecommandList;
+    }
+
+    public void resetPassword(String password) {
+        this.password = password;
     }
 }
