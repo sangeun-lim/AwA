@@ -11,14 +11,23 @@ function OnSocialLogin({ getUserData }: Props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let access_token = new URL(window.location.href).searchParams.get(
-      "refresh_token"
-    );
-    console.log(access_token);
-    setCookie("refresh_token", params.params || "");
-    /* eslint-disable */
-    getUserData(params.params || "");
-    navigate("/");
+    const tokens = params.params;
+
+    const refresh_start = tokens?.search("refreshtoken");
+    const access_start = tokens?.search("accesstoken");
+
+    if (refresh_start && access_start) {
+      const refreshtoken = tokens?.slice(refresh_start + 13, access_start - 1);
+      const accesstoken = tokens?.slice(access_start + 12, tokens.length);
+      console.log(accesstoken, refreshtoken);
+      sessionStorage.setItem("token", accesstoken || "");
+      setCookie("refresh_token", refreshtoken || "");
+      /* eslint-disable */
+      getUserData(params.params || "");
+      navigate("/");
+    } else {
+      navigate("/auth/login");
+    }
   }, [navigate]);
 
   return <div></div>;

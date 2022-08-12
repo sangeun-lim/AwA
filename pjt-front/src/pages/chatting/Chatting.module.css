@@ -8,5 +8,12 @@
 .emptyBox {
   width: 50%;
   height: calc(100vh - 55px);
-  background-color: gainsboro;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 200px;
 }
