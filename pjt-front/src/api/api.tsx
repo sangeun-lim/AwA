@@ -219,6 +219,15 @@ const api = {
       return response;
     },
 
+    getEmail: async (nickname: string) => {
+      const response = await axios({
+        url: rf.profile.getEmail(nickname),
+        method: "get",
+      });
+
+      return response;
+    },
+
     updateProfile: async (
       email: string,
       formData: UpdateProfileObject,

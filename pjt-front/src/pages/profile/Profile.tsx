@@ -55,7 +55,6 @@ const ProfilePage = (): JSX.Element => {
 
   const getProfile = async () => {
     dispatch(loadingActions.toggle());
-
     try {
       const response = await api.profile.getProfile(userEmail);
 
