@@ -1,8 +1,8 @@
-import { DividerClassKey } from "@mui/material";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Follow } from "../../Interface";
 import style from "./Follow.module.css";
+import api from "../../api/api";
 
 interface Props {
   open: boolean;
@@ -13,7 +13,25 @@ interface Props {
 }
 
 function Followers(props: Props): JSX.Element {
+  const navigate = useNavigate();
+
   const { open, close, checked, follower_list, following_list } = props;
+  const [getEmail, setGetEmail] = useState<string>("");
+
+  const getUserEmail = async (nickname: string) => {
+    const response = await api.profile.getEmail(nickname);
+
+    if (response.status === 200) {
+      console.log(response.data);
+      setGetEmail(response.data);
+    }
+  };
+
+  useEffect(() => {
+    if (getEmail) {
+      navigate(`/profile/${getEmail}`);
+    }
+  }, [getEmail]);
 
   return (
     <div>
@@ -64,14 +82,14 @@ function Followers(props: Props): JSX.Element {
                             />
                           )}
                         </div>
-                        <div className={style.followListName}>
-                          <NavLink
-                            onClick={close}
-                            to={`/profile/${item.userEmail}`}
-                            className={style.moveEmail}
-                          >
-                            {item.nickname}
-                          </NavLink>
+                        <div
+                          className={style.followListName}
+                          onClick={() => {
+                            getUserEmail(item.nickname);
+                            close();
+                          }}
+                        >
+                          {item.nickname}
                         </div>
                       </div>
                     );
@@ -94,14 +112,14 @@ function Followers(props: Props): JSX.Element {
                             />
                           )}
                         </div>
-                        <div className={style.followListName}>
-                          <NavLink
-                            onClick={close}
-                            to={`/profile/${item.userEmail}`}
-                            className={style.moveEmail}
-                          >
-                            {item.nickname}
-                          </NavLink>
+                        <div
+                          className={style.followListName}
+                          onClick={() => {
+                            getUserEmail(item.nickname);
+                            close();
+                          }}
+                        >
+                          {item.nickname}
                         </div>
                       </div>
                     );

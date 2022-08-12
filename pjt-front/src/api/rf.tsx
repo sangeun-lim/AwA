@@ -35,6 +35,7 @@ const rf = {
 
   profile: {
     getOrUpdateProfile: (userEmail: string) => HOST + PROFILE + `${userEmail}`,
+    getEmail: (nickname: string) => HOST + PROFILE + `email/${nickname}`,
   },
 
   follow: {
