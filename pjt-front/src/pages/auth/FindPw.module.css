@@ -1,0 +1,102 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+* {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 400px;
+}
+
+.btn {
+  width: 100px;
+  height: 30px;
+  align-self: flex-end;
+  border: 2px solid rgba(200, 200, 200);
+  background-color: white;
+  color: rgb(200, 200, 200);
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.emailInput:focus ~ .btn {
+  border: 2px solid rgb(231, 115, 92);
+  color: rgb(231, 115, 92);
+}
+
+@media (max-width: 500px) {
+  .container {
+    width: 80%;
+  }
+}
+
+.changePassword {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px 0px;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  margin: 50px 0px 0px 0px;
+  color: rgb(0, 0, 0);
+}
+
+.emailInput {
+  height: 50px;
+  /* border; */
+  width: 100%;
+}
+
+.emailInput:focus {
+  height: 50px;
+  outline: none;
+}
+
+.emailInput:focus ~ label {
+  color: #9d9d9d;
+  transform: translate(-12%, -70%) scale(0.75);
+}
+
+.emailInput:focus ~ .bar:before,
+.emailInput:focus ~ .bar:after {
+  width: 50%;
+}
+
+.emailInput:not([value=""]) ~ label {
+  color: #9d9d9d;
+  transform: translate(-12%, -70%) scale(0.75);
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0px;
+  position: relative;
+}
+
+.buttonContainer {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.buttonContainer button {
+  outline: 0;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  background: 0;
+  width: 100%;
+  border: 2px solid rgb(200, 200, 200);
+  padding: 7px 0;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: 0.3s ease;
+}

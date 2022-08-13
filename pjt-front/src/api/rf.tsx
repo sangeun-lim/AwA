@@ -18,6 +18,10 @@ const rf = {
     signup: () => HOST + AUTH + "sign-up",
     userinfo: () => HOST + AUTH + "userinfo",
     email: () => HOST + "email",
+    changePassword: (userEmail: string) =>
+      HOST + AUTH + `reset/password/${userEmail}`,
+    checkPassword: (userEmail: string) =>
+      HOST + AUTH + `check/password/${userEmail}`,
   },
 
   notice: {

@@ -68,3 +68,8 @@ export interface ReportType {
   content: string;
   report_profile_nickname: string;
 }
+
+export interface ChangePasswordType {
+  userEmail: string;
+  password: string;
+}
