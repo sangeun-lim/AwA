@@ -149,6 +149,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
                   placeholder="댓글을 작성하세요."
                   onChange={onChange}
                   value={editComment.content || ""}
+                  required
                 />
                 <input type="submit" value="수정" />
                 <button onClick={onDeleteClick}>삭제</button>
