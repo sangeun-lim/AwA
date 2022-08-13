@@ -66,11 +66,15 @@ function FindPw(): JSX.Element {
           <div className={style.inputContainer}>
             <input
               type="email"
+              name="email"
+              id="email"
               onChange={onChange}
-              required
+              value={id}
               className={style.emailInput}
+              required
             />
             <label htmlFor="email">이메일</label>
+            <div className={style.bar}></div>
             <button
               type="submit"
               onClick={checkEmailButton}
@@ -80,6 +84,7 @@ function FindPw(): JSX.Element {
               <span>이메일 인증</span>
             </button>
           </div>
+
           <div className={style.inputContainer}>
             {ce && !pass && (
               <div>
@@ -90,10 +95,11 @@ function FindPw(): JSX.Element {
                     type="text"
                     value={userInput}
                     onChange={onEmailChange}
-                    required
                     className={style.emailInput}
+                    required
                   />
-                  <label htmlFor="id">인증번호를 입력해주세요. </label>
+                  <label htmlFor="emailCheck">인증번호를 입력해주세요. </label>
+                  <div className={style.bar}></div>
                   <button
                     onClick={onCheckEmail}
                     type="button"
@@ -107,13 +113,23 @@ function FindPw(): JSX.Element {
           </div>
           {secondPass && (
             <div className={style.inputContainer}>
-              <input type="password" onChange={onCheckPw} required />
+              <input
+                type="password"
+                onChange={onCheckPw}
+                value={onPasswordChange}
+                className={style.emailInput}
+                required
+              />
               <label htmlFor="id">변경할 비밀번호를 입력해주세요. </label>
-              <div className={style.buttonContainer}>
-                <button onClick={changePassword} type="submit">
-                  <span>비밀번호 변경</span>
-                </button>
-              </div>
+              <div className={style.bar}></div>
+
+              <button
+                onClick={changePassword}
+                type="submit"
+                className={style.btn}
+              >
+                <span>비밀번호 변경</span>
+              </button>
             </div>
           )}
         </form>

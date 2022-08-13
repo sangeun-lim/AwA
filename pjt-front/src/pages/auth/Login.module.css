@@ -129,11 +129,16 @@
   transition: 0.3s ease;
 }
 
-.buttonContainer button .loginSubmit {
+.buttonContainer button .loginSubmit,
+.loginSubmitContent {
   position: relative;
   color: rgb(200, 200, 200);
   transition: 0.3s ease;
   border-radius: 100%;
+}
+
+.loginSubmitContent {
+  padding: 1px;
 }
 
 .buttonContainer button:before {
@@ -156,9 +161,10 @@
 .buttonContainer button:focus {
   border-color: rgb(231, 115, 92);
 }
-.buttonContainer button:hover .loginSubmit,
-.buttonContainer button:active .loginSubmit,
-.buttonContainer button:focus .loginSubmit {
+.buttonContainer button:hover .loginSubmit {
+  color: rgb(231, 115, 92);
+}
+.buttonContainer button:hover .loginSubmitContent {
   color: rgb(231, 115, 92);
 }
 .buttonContainer button:active .loginSubmit,
@@ -170,6 +176,10 @@
 .buttonContainer button:focus:before {
   opacity: 1;
   transform: scale(15);
+}
+.buttonContainer button:active .loginSubmitContent,
+.buttonContainer button:focus .loginSubmitContent {
+  color: #ffffff;
 }
 
 .socialButton {

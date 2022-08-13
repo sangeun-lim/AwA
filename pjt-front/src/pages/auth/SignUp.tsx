@@ -287,7 +287,7 @@ function SignUp(): JSX.Element {
                   required
                   className={style.signInput}
                 />
-                <label htmlFor="id">인증번호를 입력해주세요 </label>
+                <label htmlFor="emailCheck">인증번호를 입력해주세요 </label>
                 <button
                   onClick={onCheckEmail}
                   type="button"

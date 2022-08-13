@@ -127,12 +127,12 @@ function Login({ getUserData }: Props): JSX.Element {
             <br />
             <div className={style.buttonContainer}>
               <button onClick={moveSignUp} className={style.loginSubmit}>
-                <h5>회원가입</h5>
+                <div className={style.loginSubmitContent}>회원가입</div>
               </button>
             </div>
 
             <button onClick={moveFindFw} className={style.loginSubmit}>
-              <h5>비밀번호찾기</h5>
+              <div className={style.loginSubmitContent}>비밀번호찾기</div>
             </button>
             <br />
           </div>
