@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import style from "./Navigation.module.css";
 import { User } from "./../Interface";
 import { useDispatch, useSelector } from "react-redux";
 import { userObjectActions } from "../store";
 import { GoSearch } from "react-icons/go";
+import { BsChatFill } from "react-icons/bs";
 import SearchComponent from "./SearchComponent";
+import { debounce } from "lodash";
 
 function Navigation(): JSX.Element {
   const navigate = useNavigate();
@@ -17,6 +19,12 @@ function Navigation(): JSX.Element {
 
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
   const [searchBar, setSearchBar] = useState<boolean>(false);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  const handleResize = debounce(() => {
+    setWindowWidth(window.innerWidth);
+  }, 300);
+  const { pathname } = useLocation();
 
   const logoutRequest = async () => {
     dispatch(userObjectActions.logout());
@@ -27,6 +35,19 @@ function Navigation(): JSX.Element {
   const Logout = () => {
     logoutRequest();
   };
+
+  window.addEventListener("resize", handleResize);
+
+  useEffect(() => {
+    if (windowWidth >= 769) {
+      setMenuToggle(false);
+    }
+  }, [windowWidth]);
+
+  useEffect(() => {
+    setSearchBar(false);
+    setMenuToggle(false);
+  }, [pathname, windowWidth]);
 
   return (
     <div className={style.nav}>
@@ -42,25 +63,28 @@ function Navigation(): JSX.Element {
             <div className={style.burgerLine2}></div>
             <div className={style.burgerLine3}></div>
           </div>
-          <NavLink
-            to="/"
-            className={({ isActive }) => (isActive ? style.active : "")}
-          >
-            <img
-              src="./img/logo.png"
-              alt="로고"
-              className={style.burgerLogoImg}
+          <div>
+            <NavLink
+              to="/"
+              className={({ isActive }) => (isActive ? style.active : "")}
+            >
+              <img
+                src="./img/logo.png"
+                alt="로고"
+                className={style.burgerLogoImg}
+              />
+            </NavLink>
+          </div>
+          <div>
+            {userObject ? <BsChatFill className={style.chattingIcon} /> : null}
+            <GoSearch
+              onClick={() => setSearchBar(!searchBar)}
+              className={style.searchIcon}
             />
-          </NavLink>
-          <div></div>
+          </div>
         </div>
 
-        <div
-          className={[
-            style.menuBox,
-            !menuToggle ? style.menuBoxHidden : style.menuBoxVisible,
-          ].join(" ")}
-        >
+        <div className={style.menuBox}>
           {/* NavBar */}
           <div className={style.navList}>
             <div className={style.left}>
@@ -113,9 +137,14 @@ function Navigation(): JSX.Element {
                   </NavLink>
                   <p>님 환영합니다!</p>
                 </div>
+                <BsChatFill className={style.chattingIcon} />
                 <button onClick={Logout} className={style.btn}>
                   Logout
                 </button>
+                <GoSearch
+                  onClick={() => setSearchBar(!searchBar)}
+                  className={style.searchIcon}
+                />
               </div>
             ) : (
               // 로그인 안 했을 때
@@ -138,22 +167,24 @@ function Navigation(): JSX.Element {
                 >
                   Login
                 </NavLink>
+                <GoSearch
+                  onClick={() => setSearchBar(!searchBar)}
+                  className={style.searchIcon}
+                />
               </div>
             )}
-            <GoSearch
-              onClick={() => setSearchBar(!searchBar)}
-              className={style.searchIcon}
-            />
-            <div
+            {/* <div
               className={
                 searchBar ? style.navSearchBarActive : style.navSearchBar
               }
             >
               <SearchComponent />
-            </div>
+            </div> */}
           </div>
           {/* burgerMenu */}
-          <div className={style.burgerMenuBox}>
+          <div
+            className={!menuToggle ? style.menuBoxHidden : style.menuBoxVisible}
+          >
             <div className={style.burgerList}>
               <NavLink
                 to="/auction"
@@ -214,6 +245,12 @@ function Navigation(): JSX.Element {
               </div>
             )}
           </div>
+        </div>
+
+        <div
+          className={searchBar ? style.navSearchBarActive : style.navSearchBar}
+        >
+          <SearchComponent />
         </div>
       </nav>
     </div>

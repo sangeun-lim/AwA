@@ -107,6 +107,11 @@ function SearchComponent() {
             type="text"
             placeholder="검색어를 입력해주세요."
             onChange={onChange}
+            onKeyPress={(e) => {
+              if (e.key == "Enter") {
+                onSubmit();
+              }
+            }}
             required
           />
           <GrSearch onClick={onSubmit} className={style.searchIcon} />

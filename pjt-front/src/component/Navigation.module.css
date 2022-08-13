@@ -79,6 +79,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin: 10px;
   }
 
   .navList {
@@ -96,7 +97,7 @@
   .burgerMenu,
   .menu {
     display: block;
-    margin-left: 25px;
+    margin-left: 10px;
     cursor: pointer;
     transition: all 0.35s;
   }
@@ -123,9 +124,10 @@
   }
 
   .menuBoxVisible {
+    height: 302px;
+
     width: 180px;
     position: absolute;
-    left: 0;
     background-color: rgb(255, 255, 255);
     transition: all 0.35s;
     top: 55px;
@@ -133,6 +135,8 @@
   }
 
   .menuBoxHidden {
+    height: 302px;
+
     width: 180px;
     position: absolute;
     left: 0;
@@ -152,7 +156,12 @@
 }
 
 @media (min-width: 769px) {
-  .burgerList {
+  .menuBoxHidden,
+  .menuBoxVisible {
+    display: none;
+  }
+
+  .burgerBox {
     display: none;
   }
 
@@ -160,11 +169,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-  }
-
-  .burgerMenu,
-  .menu {
-    display: none;
   }
 
   .menuBox {
@@ -213,10 +217,6 @@
     margin: 0px;
     font-size: small;
   }
-
-  .burgerLogoImg {
-    display: none;
-  }
 }
 
 .logoImg {
@@ -225,12 +225,11 @@
 
 .burgerLogoImg {
   height: 50px;
-  padding-right: 55px;
 }
 
 /* searchBar */
 .searchIcon {
-  font-size: 55px;
+  font-size: 20px;
   margin: 10px;
   cursor: pointer;
 }
@@ -262,4 +261,11 @@ input[id="searchBar"] + label {
 
 input[id="searchBar"] {
   display: none;
+}
+
+/* chatting */
+.chattingIcon {
+  font-size: 20px;
+  margin: 10px;
+  cursor: pointer;
 }

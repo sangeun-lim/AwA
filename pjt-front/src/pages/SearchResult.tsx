@@ -15,17 +15,19 @@ function SearchResult(): JSX.Element {
     <div className={style.auction}>
       {/* 이 검색컴포넌트가 검색 결과에 필요한가? 필요없는거 같은데 */}
       {/* <SearchComponent /> */}
-
-      <Masonry columns={{ sm: 1, md: 2, xl: 4 }} spacing={1}>
-        {searchResults.length &&
-          searchResults.map((item) => {
+      {searchResults.length ? (
+        <Masonry columns={{ sm: 1, md: 2, xl: 4 }} spacing={1}>
+          {searchResults.map((item) => {
             return (
               <div key={item.artwork_id}>
                 <AuctionCard item={item} />
               </div>
             );
           })}
-      </Masonry>
+        </Masonry>
+      ) : (
+        <div className={style.noResult}>검색결과가 없습니다.</div>
+      )}
     </div>
   );
 }

@@ -18,3 +18,10 @@
     width: 80%;
   }
 }
+
+/* 검색 결과 없음 */
+.noResult {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 50px 0;
+}
