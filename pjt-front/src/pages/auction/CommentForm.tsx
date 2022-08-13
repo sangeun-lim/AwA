@@ -69,6 +69,7 @@ function CommentForm({ artworkId, setItem }: Props): JSX.Element {
           }
           onChange={onChange}
           value={newComment.content || ""}
+          required
         />
         <input type="submit" value="댓글작성" disabled={!userObject} />
       </form>
