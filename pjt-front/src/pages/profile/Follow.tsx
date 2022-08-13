@@ -22,7 +22,6 @@ function Followers(props: Props): JSX.Element {
     const response = await api.profile.getEmail(nickname);
 
     if (response.status === 200) {
-      console.log(response.data);
       setGetEmail(response.data);
     }
   };

@@ -69,6 +69,11 @@ function Login({ getUserData }: Props): JSX.Element {
     navigate("/auth/signup");
   };
 
+  const moveFindFw = async (e: any) => {
+    e.preventDefault();
+    navigate("/auth/findpw");
+  };
+
   useEffect(() => {
     if (!!userObject) {
       navigate("/");
@@ -121,14 +126,15 @@ function Login({ getUserData }: Props): JSX.Element {
             </button>
             <br />
             <div className={style.buttonContainer}>
-              <button
-                onClick={moveSignUp}
-                className={style.loginSubmit}
-                tabIndex={-1}
-              >
+              <button onClick={moveSignUp} className={style.loginSubmit}>
                 <h5>회원가입</h5>
               </button>
             </div>
+
+            <button onClick={moveFindFw} className={style.loginSubmit}>
+              <h5>비밀번호찾기</h5>
+            </button>
+            <br />
           </div>
         </form>
         <div className={style.socialButton}>

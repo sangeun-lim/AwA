@@ -71,7 +71,6 @@ function Auction(): JSX.Element {
               상품등록
             </button>
           ) : (
-            // 로그인페이지로 이동 시킬까?
             <></>
           )}
         </div>

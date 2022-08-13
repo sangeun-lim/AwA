@@ -10,6 +10,7 @@ import {
   QueryType,
   newCommentType,
   ReportType,
+  ChangePasswordType,
 } from "./apiInterface";
 import { getCookie } from "../cookie";
 
@@ -83,6 +84,32 @@ const api = {
         },
       });
 
+      return response;
+    },
+
+    changePassword: async (email: string, formData: ChangePasswordType) => {
+      const response = await axios({
+        url: rf.auth.changePassword(email),
+        method: "post",
+        headers: {
+          password: formData.password,
+        },
+        data: {
+          userEmail: formData.userEmail,
+        },
+      });
+      return response;
+    },
+
+    checkPassword: async (email: string, password: string) => {
+      const response = await axios({
+        url: rf.auth.checkPassword(email),
+        method: "post",
+        data: {
+          email: email,
+          password: password,
+        },
+      });
       return response;
     },
   },
