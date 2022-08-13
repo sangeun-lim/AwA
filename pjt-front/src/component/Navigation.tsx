@@ -75,8 +75,19 @@ function Navigation(): JSX.Element {
               />
             </NavLink>
           </div>
-          <div>
-            {userObject ? <BsChatFill className={style.chattingIcon} /> : null}
+          <div className={style.iconBox}>
+            {userObject ? (
+              <div>
+                <NavLink
+                  to="/chatting"
+                  className={({ isActive }) =>
+                    isActive ? style.chattingIconActive : style.chattingIcon
+                  }
+                >
+                  <BsChatFill />
+                </NavLink>
+              </div>
+            ) : null}
             <GoSearch
               onClick={() => setSearchBar(!searchBar)}
               className={style.searchIcon}
@@ -137,7 +148,16 @@ function Navigation(): JSX.Element {
                   </NavLink>
                   <p>님 환영합니다!</p>
                 </div>
-                <BsChatFill className={style.chattingIcon} />
+                <div>
+                  <NavLink
+                    to="/chatting"
+                    className={({ isActive }) =>
+                      isActive ? style.chattingIconActive : style.chattingIcon
+                    }
+                  >
+                    <BsChatFill />
+                  </NavLink>
+                </div>
                 <button onClick={Logout} className={style.btn}>
                   Logout
                 </button>
