@@ -1,8 +1,10 @@
 package com.ssafy.AwA.service;
 
 import com.ssafy.AwA.config.security.JwtTokenProvider;
+import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.UserDto;
+import com.ssafy.AwA.repository.ProfileRepository;
 import com.ssafy.AwA.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,8 +25,12 @@ public class UserService {
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+
+    private final ProfileRepository profileRepository;
     private final JwtTokenProvider jwtTokenProvider;
+
     private final PasswordEncoder passwordEncoder;
+
 
 
 
@@ -93,8 +99,27 @@ public class UserService {
         }
     }
 
+    public int userSecession(String userEmail, String password) {
+        User targetUser = userRepository.findByEmail(userEmail);
 
-    //회원 팔로워 조회
+        if(passwordEncoder.matches(password, targetUser.getPassword())) {
+            Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
+            profileRepository.delete(targetProfile);
+            userRepository.delete(targetUser);
+            return 1;
+        }
+        return 0;
+    }
 
-    //회원 팔로잉 조회회
+    public int userSocialSecession(String userEmail, String password) {
+        User targetUser = userRepository.findByEmail(userEmail);
+
+        if(passwordEncoder.matches(password, targetUser.getPassword())) {
+            Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
+            profileRepository.delete(targetProfile);
+            userRepository.delete(targetUser);
+            return 1;
+        }
+        return 0;
+    }
 }
