@@ -40,7 +40,7 @@ const rf = {
     getFollowItems: (userEmail: string, pageNum: number) =>
       HOST + ARTWORK + `onlyFollow/${userEmail}/${pageNum}`,
     getRecommends: (userEmail: string) =>
-      HOST + ARTWORK + `recommand/${userEmail}`,
+      HOST + ARTWORK + `recommend/${userEmail}`,
   },
 
   profile: {
