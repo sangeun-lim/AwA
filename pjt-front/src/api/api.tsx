@@ -105,10 +105,19 @@ const api = {
       const response = await axios({
         url: rf.auth.checkPassword(email),
         method: "post",
-        data: {
-          email: email,
+        headers: {
           password: password,
         },
+        data: {
+          userEmail: email,
+        },
+      });
+      return response;
+    },
+    deleteUser: async (email: string, code: string) => {
+      const response = await axios({
+        url: rf.auth.deleteUser(email, code),
+        method: "delete",
       });
       return response;
     },

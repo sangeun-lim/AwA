@@ -22,6 +22,8 @@ const rf = {
       HOST + AUTH + `reset/password/${userEmail}`,
     checkPassword: (userEmail: string) =>
       HOST + AUTH + `check/password/${userEmail}`,
+    deleteUser: (userEmail: string, emailCode: string) =>
+      HOST + `user/secession/${userEmail}/${emailCode}`,
   },
 
   notice: {

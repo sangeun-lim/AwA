@@ -19,6 +19,7 @@ import Error from "../pages/Error";
 import Navigation from "./Navigation";
 import OnSocialLogin from "./../pages/auth/OnSocialLogin";
 import ChangePw from "../pages/auth/ChangePw";
+import DeleteUser from "../pages/auth/DeleteUser";
 interface Props {
   getUserData: Function;
 }
@@ -41,7 +42,8 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
           />
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/findpw" element={<FindPw />} />
-          <Route path="/auth/changepw" element={<ChangePw />} />
+          <Route path="/auth/changepw/:email" element={<ChangePw />} />
+          <Route path="/profile/deleteuser/:email" element={<DeleteUser />} />
           <Route path="/profile/:email" element={<Profile />} />
           <Route path="/chatting" element={<Chatting />} />
           <Route path="/auction" element={<Auction />} />
