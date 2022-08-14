@@ -496,9 +496,11 @@ function AuctionDetailOrUpdate(): JSX.Element {
                   {item.like_count}
                 </p>
               ) : (
-                <p className={style.detailLike}>{item.like_count} </p>
+                <p className={style.detailLike}>
+                  <button>❤</button> {item.like_count}
+                </p>
               )}
-              <ReportModal artworkId={address} />
+              {userObject && <ReportModal artworkId={address} />}
             </div>
           </div>
 

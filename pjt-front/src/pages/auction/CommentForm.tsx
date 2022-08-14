@@ -65,7 +65,7 @@ function CommentForm({ artworkId, setItem }: Props): JSX.Element {
           name="content"
           type="text"
           placeholder={
-            !userObject ? "로그인해야 이용가능합니다" : "댓글을 입력해주세요"
+            !userObject ? "로그인 후 이용가능합니다" : "댓글을 입력해주세요"
           }
           onChange={onChange}
           value={newComment.content || ""}

@@ -14,7 +14,6 @@ import Follow from "./Follow";
 import UserArtworkList from "./UserArtworkList";
 import UserLikedArtworkList from "./UserLikedArtworkList";
 import style from "./Profile.module.css";
-import { dividerClasses, stepButtonClasses, withStyles } from "@mui/material";
 
 const ProfilePage = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -51,6 +50,13 @@ const ProfilePage = (): JSX.Element => {
 
   const onEditClick = () => {
     setEditProfile(true);
+  };
+
+  const onDeleteUserInfo = () => {
+    navigate(`/profile/deleteuser/${userObject?.email}`);
+  };
+  const onChangePassword = () => {
+    navigate(`/auth/changepw/${userObject?.email}`);
   };
 
   const getProfile = async () => {
@@ -143,15 +149,23 @@ const ProfilePage = (): JSX.Element => {
     <div className={style.profile}>
       <div className={style.profileTop}>
         {userObject && userObject.email === userEmail && (
-          <button
-            onClick={() => {
-              onEditClick();
-              openUpdate();
-            }}
-            className={style.btn}
-          >
-            수정
-          </button>
+          <div>
+            <button onClick={onChangePassword} className={style.btn}>
+              비밀번호 변경
+            </button>
+            <button
+              onClick={() => {
+                onEditClick();
+                openUpdate();
+              }}
+              className={style.btn}
+            >
+              프로필 수정
+            </button>
+            <button onClick={onDeleteUserInfo} className={style.btn}>
+              회원탈퇴
+            </button>
+          </div>
         )}
         {editProfile && userObject && userObject.email === userEmail && (
           <ProfileUpdate
@@ -252,7 +266,7 @@ const ProfilePage = (): JSX.Element => {
         <input type="radio" name="tabmenu" id="likeArtwork" />
         <div className={style.tabmenu}>
           <label htmlFor="myArtwork" className={style.myArtwork}>
-            <div>내 게시글</div>
+            <div>게시글</div>
           </label>
           <label htmlFor="likeArtwork" className={style.likeArtwork}>
             <div>좋아요 한 게시글</div>
@@ -275,7 +289,7 @@ const ProfilePage = (): JSX.Element => {
       </div>
       <div className={style.profileBottomSmall}>
         <div>
-          <div className={style.bottomTitle}>내 게시글</div>
+          <div className={style.bottomTitle}>게시글</div>
           <UserArtworkList
             artwork_list={profileObject.artwork_list}
           ></UserArtworkList>

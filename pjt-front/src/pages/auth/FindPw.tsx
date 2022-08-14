@@ -56,13 +56,11 @@ function FindPw(): JSX.Element {
     }
   };
 
-  const onSubmit = () => {};
-
   return (
     <div className="d-flex justify-content-center">
       <div className={style.container}>
-        <div className={style.title}>비밀번호 변경</div>
-        <form onSubmit={onSubmit} className={style.changePassword}>
+        <div className={style.title}>비밀번호 찾기</div>
+        <form className={style.changePassword}>
           <div className={style.inputContainer}>
             <input
               type="email"
