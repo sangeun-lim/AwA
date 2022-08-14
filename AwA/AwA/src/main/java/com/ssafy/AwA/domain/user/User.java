@@ -63,6 +63,9 @@ public class User extends BaseTimeEntity implements UserDetails {
     @Column
     private boolean is_seller;
 
+    @Column
+    private String email_code;
+
     @OneToMany(mappedBy = "sell_user",cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Artwork> sell_list = new ArrayList<>();
@@ -118,7 +121,7 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @Builder
     public User(String email, String password, String nickname, boolean gender, LocalDate birth, List<String> roles,
-                Profile profile, boolean is_manager, boolean is_seller, List<Long> recommandArtworks) {
+                Profile profile, boolean is_manager, boolean is_seller, List<Long> recommandArtworks, String email_code) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -129,6 +132,7 @@ public class User extends BaseTimeEntity implements UserDetails {
         this.is_manager = is_manager;
         this.is_seller = is_seller;
         this.recommandArtworks = recommandArtworks;
+        this.email_code = email_code;
     }
     //비즈니스로직
 
@@ -148,5 +152,9 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     public void resetPassword(String password) {
         this.password = password;
+    }
+
+    public void setEmailCode(String authKey) {
+        this.email_code = authKey;
     }
 }

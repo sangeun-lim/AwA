@@ -1,13 +1,14 @@
 package com.ssafy.AwA.service;
 
+import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.EmailRequest;
+import com.ssafy.AwA.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class EmailService {
     private final JavaMailSender javaMailSender;
+    private final UserRepository userRepository;
 
     public int sendMail(@Valid EmailRequest toEmail) throws Exception {
         Random random = new Random();
@@ -48,11 +50,21 @@ public class EmailService {
 
         try {
             javaMailSender.send(message);
+            User targetUser = userRepository.findByEmail(toEmail.getEmail());
+            targetUser.setEmailCode(authKey);
             return Integer.valueOf(authKey);
         }
         catch (Exception e)
         {
             return 0;
         }
+    }
+
+    public int checkEmailCode(String userEmail, String code) {
+        User targetUser = userRepository.findByEmail(userEmail);
+
+        if(targetUser.getEmail_code().equals(code))
+            return 1;
+        else return 0;
     }
 }

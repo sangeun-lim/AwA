@@ -4,10 +4,8 @@ import com.ssafy.AwA.dto.EmailRequest;
 import com.ssafy.AwA.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,4 +24,11 @@ public class EmailApiController {
             return 0;
         }
     }
+
+    @PostMapping("/check/{userEmail}/{emailCode}")
+    public int checkEmailCode(@PathVariable(name = "userEmail") String userEmail, @PathVariable(name = "emailCode") String emailCode)
+    {
+        return emailService.checkEmailCode(userEmail, emailCode);
+    }
+
 }
