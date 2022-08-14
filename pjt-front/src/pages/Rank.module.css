@@ -1,7 +1,10 @@
 .Container {
-  position: relative;
-  width: 320px;
-  height: 400px;
+  position: sticky;
+  top: 100px;
+  width: 80%;
+  max-width: 500px;
+  padding-top: 20px;
+  padding-left: 10%;
 }
 
 .listItem {
@@ -18,7 +21,7 @@
   border-radius: 4px;
   color: rgb(153, 153, 153);
   line-height: 40px;
-  padding-left: 32px;
+  padding-left: 5%;
   font-size: 19px;
   font-weight: 400;
   background-color: rgb(255, 255, 255);
@@ -52,7 +55,7 @@
 
 .txtLine {
   display: inline-block;
-  width: 280px;
+  width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

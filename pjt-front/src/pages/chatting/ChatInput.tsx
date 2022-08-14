@@ -69,7 +69,7 @@ function ChatInput() {
         createdDate: Date.now(),
         recentlyDate: Date.now(),
         recentlyMessage: message,
-        unReadChatCount: 1,
+        unReadChatCount: 0,
       });
 
       dispatch(firstChatActions.isNotFirst());
@@ -87,6 +87,7 @@ function ChatInput() {
       await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
         recentlyMessage: message,
         recentlyDate: newMessage.createdDate,
+        unReadChatCount: 0,
       });
     });
 
@@ -102,6 +103,7 @@ function ChatInput() {
       await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
         recentlyMessage: message,
         recentlyDate: newMessage.createdDate,
+        unReadChatCount: document.data().unReadChatCount + 1,
       });
     });
 

@@ -25,7 +25,7 @@ function ChatList(): JSX.Element {
   const getChatList = async () => {
     const q = query(
       collection(dbService, "ChattingRoom"),
-      where("myEmail", "==", userObject?.email),
+      where("myEmail", "==", userObject.email),
       orderBy("recentlyDate", "desc")
     );
 
@@ -56,9 +56,11 @@ function ChatList(): JSX.Element {
   };
 
   useEffect(() => {
-    /* eslint-disable */
-    getChatList();
-  }, []);
+    if (userObject) {
+      /* eslint-disable */
+      getChatList();
+    }
+  }, [userObject]);
 
   useEffect(() => {
     SOCKET.emit("enter_room", userObject?.email);
@@ -78,6 +80,9 @@ function ChatList(): JSX.Element {
             topChat.recentlyDate = data.createdDate;
             topChat.recentlyMessage = data.message;
             topChat.partnerEmail = data.sender;
+            topChat.unReadChatCount = chat.unReadChatCount
+              ? chat.unReadChatCount + 1
+              : 1;
           } else if (chat.partnerEmail === data.receiver) {
             topChat.id = chat.id;
             topChat.createdDate = chat.createdDate;
@@ -95,7 +100,7 @@ function ChatList(): JSX.Element {
         });
       });
 
-      if (!topChat?.id) {
+      if (!topChat?.createdDate) {
         const response = await api.chatting.getUserList([chatPartner]);
         topChat.nickname = response.data[0].nickname;
         topChat.profile_picture_url = response.data[0].profile_picture_url;
@@ -104,11 +109,12 @@ function ChatList(): JSX.Element {
         topChat.recentlyMessage = data.message;
         if (userObject?.email === data.sender) {
           topChat.partnerEmail = data.receiver;
+          topChat.unReadChatCount = 0;
         } else {
           topChat.partnerEmail = data.sender;
+          topChat.unReadChatCount = 1;
         }
       }
-      console.log(topChat);
 
       setChatList((prev) => {
         return [topChat].concat(prev);
@@ -123,7 +129,13 @@ function ChatList(): JSX.Element {
       </div>
       <div className={style.Body}>
         {chatList.map((item) => {
-          return <ChatListItem item={item} key={item.partnerEmail} />;
+          return (
+            <ChatListItem
+              item={item}
+              setChatList={setChatList}
+              key={item.partnerEmail}
+            />
+          );
         })}
       </div>
     </div>
