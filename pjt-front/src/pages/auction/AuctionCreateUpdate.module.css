@@ -346,7 +346,6 @@
 }
 
 .detailInfoSide {
-  position: sticky;
   height: 400px;
   top: 70px;
 }

@@ -207,6 +207,24 @@ const api = {
 
       return response;
     },
+
+    getFollowingItems: async (userEmail: string, pageNum: number) => {
+      const response = await axios({
+        url: rf.artwork.getFollowItems(userEmail, pageNum),
+        method: "get",
+      });
+
+      return response;
+    },
+
+    getRecommends: async (userEmail: string) => {
+      const response = await axios({
+        url: rf.artwork.getRecommends(userEmail),
+        method: "get",
+      });
+
+      return response;
+    },
   },
 
   profile: {

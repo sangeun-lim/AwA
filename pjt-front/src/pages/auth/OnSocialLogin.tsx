@@ -19,8 +19,6 @@ function OnSocialLogin({ getUserData }: Props) {
     if (refresh_start === 0 && access_start) {
       const refreshtoken = tokens?.slice(refresh_start + 13, access_start - 1);
       const accesstoken = tokens?.slice(access_start + 12, tokens.length);
-      console.log(accesstoken, refreshtoken);
-
       sessionStorage.setItem("token", accesstoken || "");
       setCookie("refresh_token", refreshtoken || "");
 

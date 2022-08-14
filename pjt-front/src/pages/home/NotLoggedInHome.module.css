@@ -6,13 +6,6 @@
   --main-color5: rgba(231, 115, 92, 0.3);
 }
 
-.Header {
-  width: 100%;
-  background-color: var(--main-color);
-  height: 35vh;
-  min-height: 300px;
-}
-
 .searchBar {
   width: 50vw;
   min-width: 350px;
@@ -56,8 +49,6 @@
   width: 80vw;
   min-width: 400px;
   max-width: 1400px;
-  display: flex;
-  justify-content: center;
   margin: auto;
 }
 
@@ -66,7 +57,7 @@
 }
 
 .secondSection {
-  min-height: 2000px;
+  min-height: 80vh;
 }
 
 .lastBox {
@@ -76,4 +67,74 @@
   align-items: center;
   color: gray;
   font-size: 24px;
+}
+
+.infinity_slide {
+  display: flex;
+  overflow: hidden;
+}
+
+@keyframes infinity-loop {
+  from {
+    transform: translateX(0vw);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.slide {
+  animation: infinity-loop 100s infinite linear;
+  display: flex;
+  list-style: none;
+}
+
+.img {
+  height: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.slide img {
+  width: auto;
+}
+
+@keyframes infinity-loop2 {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+.slide2 {
+  animation: infinity-loop2 100s infinite linear;
+  display: flex;
+  list-style: none;
+}
+
+.middleBox {
+  height: 50px;
+}
+
+.footer {
+  background-color: lightgray;
+  height: 100px;
+  text-align: center;
+}
+
+.footerText2 {
+  color: black;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 5px;
+}
+
+.footerText1 {
+  color: black;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  padding-top: 20px;
 }

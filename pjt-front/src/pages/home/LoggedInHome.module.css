@@ -1,0 +1,37 @@
+.Body {
+  display: flex;
+  min-height: 1000px;
+}
+
+@media (max-width: 768px) {
+  .ranking {
+    display: none !important;
+  }
+
+  .feed {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 1600px) {
+  .ranking {
+    width: 30%;
+    position: sticky;
+    top: 500px;
+  }
+
+  .feed {
+    width: 70%;
+  }
+}
+
+.ranking {
+  width: 30%;
+  position: sticky;
+  top: 500px;
+}
+
+.feed {
+  width: 70%;
+  padding: 20px 40px;
+}

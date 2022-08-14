@@ -29,32 +29,30 @@ function RankLike(): JSX.Element {
   }, []);
 
   return (
-    <div>
-      <div className={style.Container}>
-        <p className={style.rankTitle}>베스트 게시물</p>
-        {likeRank.map((item, index) => {
-          return (
-            <div className={style.listItem}>
-              <div className={style.itemContent}>
-                <li key={item.title + index} className={style.txtLine}>
-                  <span className={style.rankNumber}>
-                    {index + 1}
-                    {`. `}
-                  </span>{" "}
-                  <span>
-                    <NavLink
-                      to={`/auction/detail/${item.artwork_id}`}
-                      className={style.moveLink}
-                    >
-                      {item.title}
-                    </NavLink>
-                  </span>
-                </li>
-              </div>
+    <div className={style.Container}>
+      <p className={style.rankTitle}>베스트 게시물</p>
+      {likeRank.map((item, index) => {
+        return (
+          <div className={style.listItem} key={item.artwork_id}>
+            <div className={style.itemContent}>
+              <li className={style.txtLine}>
+                <span className={style.rankNumber}>
+                  {index + 1}
+                  {`. `}
+                </span>{" "}
+                <span>
+                  <NavLink
+                    to={`/auction/detail/${item.artwork_id}`}
+                    className={style.moveLink}
+                  >
+                    {item.title}
+                  </NavLink>
+                </span>
+              </li>
             </div>
-          );
-        })}
-      </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

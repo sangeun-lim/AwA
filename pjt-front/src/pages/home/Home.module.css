@@ -1,0 +1,14 @@
+:root {
+  --main-color: rgb(231, 115, 92);
+  --main-color2: rgba(231, 115, 92, 0.85);
+  --main-color3: rgba(231, 115, 92, 0.7);
+  --main-color4: rgba(231, 115, 92, 0.5);
+  --main-color5: rgba(231, 115, 92, 0.3);
+}
+
+.Header {
+  width: 100%;
+  background-color: var(--main-color);
+  height: 35vh;
+  min-height: 300px;
+}

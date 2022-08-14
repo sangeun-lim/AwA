@@ -31,6 +31,10 @@ const rf = {
     readDetailOrUpdateOrDelete: (artwork_id: string) =>
       HOST + ARTWORK + `${artwork_id}`,
     getArtworks: (pageNum: number) => HOST + ARTWORK + `page/${pageNum}`,
+    getFollowItems: (userEmail: string, pageNum: number) =>
+      HOST + ARTWORK + `onlyFollow/${userEmail}/${pageNum}`,
+    getRecommends: (userEmail: string) =>
+      HOST + ARTWORK + `recommand/${userEmail}`,
   },
 
   profile: {
