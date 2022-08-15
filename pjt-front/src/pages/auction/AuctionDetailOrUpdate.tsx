@@ -19,6 +19,7 @@ import ReportModal from "./ReportModal";
 import CommentForm from "./CommentForm";
 import style from "./AuctionCreateUpdate.module.css";
 import CommentDetailOrUpdate from "./CommentDetailOrUpdate";
+import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 
 interface ButtonProps {
   item: string;
@@ -55,6 +56,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
   const [item, setItem] = useState<ArtworkItem>(itemDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
+  const [likeCheck, setLikeCheck] = useState<boolean>(false);
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
@@ -257,6 +259,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
               like_count: prev.like_count + 1,
             };
           });
+          setLikeCheck(true);
         }
       } else {
         const unLikeResponse = await api.like.LikeArticle(
@@ -271,6 +274,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
               like_count: prev.like_count - 1,
             };
           });
+          setLikeCheck(false);
         }
       }
     }
@@ -492,12 +496,29 @@ function AuctionDetailOrUpdate(): JSX.Element {
             <div>
               {userObject?.nickname ? (
                 <p className={style.detailLike}>
-                  <button onClick={onLikeClick}>❤</button>
+                  <button onClick={onLikeClick}>
+                    <HiHeart />
+                  </button>
                   {item.like_count}
                 </p>
               ) : (
+                // likeCheck ? (
+                //   <p className={style.detailLike}>
+                //     <button onClick={onLikeClick}>
+                //       <HiHeart />
+                //     </button>
+                //     {item.like_count}
+                //   </p>
+                // ) : (
+                //   <p className={style.detailLike}>
+                //     <button onClick={onLikeClick}>
+                //       <HiOutlineHeart />
+                //     </button>
+                //     {item.like_count}
+                //   </p>
+                // )
                 <p className={style.detailLike}>
-                  <button>❤</button> {item.like_count}
+                  <HiHeart /> {item.like_count}
                 </p>
               )}
               {userObject && <ReportModal artworkId={address} />}
