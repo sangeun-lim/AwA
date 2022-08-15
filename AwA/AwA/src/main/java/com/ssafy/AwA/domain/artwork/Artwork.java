@@ -57,6 +57,7 @@ public class Artwork extends BaseTimeEntity {
 
     private String ingredient;
 
+    private boolean is_recommend;
 
     //댓글
     @OneToMany(mappedBy = "parent_artwork", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -78,7 +79,7 @@ public class Artwork extends BaseTimeEntity {
 
     @Builder
     public Artwork(Long artwork_id, User sell_user, String title, int view_count, int price, String description, List<Likes> likes, int like_count, List<String> genre, String ingredient,
-                   List<Comment> comments, int is_sell, PurchaseArtwork purchase_artwork, List<Attachment> attachment_list, List<Report> report_list) {
+                   List<Comment> comments, int is_sell, PurchaseArtwork purchase_artwork, List<Attachment> attachment_list, List<Report> report_list, boolean is_recommend) {
         this.artwork_id = artwork_id;
         this.sell_user = sell_user;
         this.title = title;
@@ -94,6 +95,7 @@ public class Artwork extends BaseTimeEntity {
         this.purchase_artwork = purchase_artwork;
         this.attachment_list = attachment_list;
         this.report_list = report_list;
+        this.is_recommend = is_recommend;
     }
 
 
@@ -156,5 +158,9 @@ public class Artwork extends BaseTimeEntity {
 
     public void updateSellStatus(int value) {
         this.is_sell = value;
+    }
+
+    public void updateIsRecommend(boolean is_recommend) {
+        this.is_recommend = is_recommend;
     }
 }

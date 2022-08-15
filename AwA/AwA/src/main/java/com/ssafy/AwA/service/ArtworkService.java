@@ -547,31 +547,46 @@ public class ArtworkService {
 
 
         while(recommandList.size()<12) {
+            boolean check = false;
+            for (int i = 0; i < notLikeAndCommentArtworksInGenre.size(); i++) {
+                if (notLikeAndCommentArtworksInGenre.get(i).is_recommend() == false)
+                    check = true;
+            }
+
+            for (int i = 0; i < notLikeAndCommentArtworksNotInGenre.size(); i++) {
+                if (notLikeAndCommentArtworksNotInGenre.get(i).is_recommend() == false) {
+                    check = true;
+                }
+            }
+
+            if (check) {
                 for (int i = 0; i < notLikeAndCommentArtworksInGenre.size(); i++) {
                     Artwork artworkInGenre = notLikeAndCommentArtworksInGenre.get(inGenreIdx);
                     inGenreIdx++;
 
-                    if(inGenreIdx == notLikeAndCommentArtworksInGenre.size()){
+                    if (inGenreIdx == notLikeAndCommentArtworksInGenre.size()) {
                         inGenreIdx = 0;
                     }
 
-                    if (userRecommandList.contains(artworkInGenre.getArtwork_id())) {
+                    if (userRecommandList.contains(artworkInGenre.getArtwork_id()) || artworkInGenre.is_recommend() == true) {
                         continue;
                     } else {
                         if (userRecommandList.size() == 12) {
                             userRecommandList.remove(0);
                             userRecommandList.add(artworkInGenre.getArtwork_id());
+                            artworkInGenre.updateIsRecommend(true);
                             recommandList.add(artworkInGenre);
-                            likeCnt ++;
-                            if(likeCnt == 3) {
+                            likeCnt++;
+                            if (likeCnt == 3) {
                                 likeCnt = 0;
                                 break;
                             }
                         } else {
                             recommandList.add(artworkInGenre);
                             userRecommandList.add(artworkInGenre.getArtwork_id());
-                            likeCnt ++;
-                            if(likeCnt == 3) {
+                            artworkInGenre.updateIsRecommend(true);
+                            likeCnt++;
+                            if (likeCnt == 3) {
                                 likeCnt = 0;
                                 break;
                             }
@@ -581,99 +596,48 @@ public class ArtworkService {
                     }
                 }
 
+
                 if (recommandList.size() < 12) {
                     for (int i = 0; i < notLikeAndCommentArtworksNotInGenre.size(); i++) {
                         Artwork artworkNotInGenre = notLikeAndCommentArtworksNotInGenre.get(notInGenreIdx);
+
                         notInGenreIdx++;
 
-                        if(notInGenreIdx==notLikeAndCommentArtworksNotInGenre.size()) {
-                            notInGenreIdx=0;
+                        if (notInGenreIdx == notLikeAndCommentArtworksNotInGenre.size()) {
+                            notInGenreIdx = 0;
                         }
-                        if (userRecommandList.contains(artworkNotInGenre.getArtwork_id())) {
+                        if (userRecommandList.contains(artworkNotInGenre.getArtwork_id()) || artworkNotInGenre.is_recommend() == true) {
                             continue;
                         } else {
                             if (userRecommandList.size() == 12) {
                                 userRecommandList.remove(0);
                                 userRecommandList.add(artworkNotInGenre.getArtwork_id());
+                                artworkNotInGenre.updateIsRecommend(true);
                                 recommandList.add(artworkNotInGenre);
                                 break;
                             } else {
                                 recommandList.add(artworkNotInGenre);
                                 userRecommandList.add(artworkNotInGenre.getArtwork_id());
+                                artworkNotInGenre.updateIsRecommend(true);
                                 break;
                             }
                         }
                     }
                 }
+            }
+            else {
+                for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++) {
+                    notLikeAndCommentArtworksInGenre.get(i).updateIsRecommend(false);
+                }
 
-
-//            else {
-//                for (int i = 0; i < notLikeAndCommentArtworksNotInGenre.size(); i++) {
-//                    Artwork artworkNotInGenre = notLikeAndCommentArtworksNotInGenre.get(notInGenreIdx);
-//                    notInGenreIdx++;
-//
-//                    if(notInGenreIdx==notLikeAndCommentArtworksNotInGenre.size()) {
-//                        notInGenreIdx=0;
-//                    }
-//                    if (userRecommandList.contains(artworkNotInGenre.getArtwork_id())) {
-//                        continue;
-//                    } else {
-//                        if (userRecommandList.size() == 12) {
-//                            userRecommandList.remove(0);
-//                            userRecommandList.add(artworkNotInGenre.getArtwork_id());
-//                            recommandList.add(artworkNotInGenre);
-//                            break;
-//                        } else {
-//                            recommandList.add(artworkNotInGenre);
-//                            userRecommandList.add(artworkNotInGenre.getArtwork_id());
-//                            break;
-//                        }
-//                    }
-//                }
-//
-//                if (recommandList.size() < 12) {
-//                    for (int i = 0; i < notLikeAndCommentArtworksInGenre.size(); i++) {
-//                        Artwork artworkInGenre = notLikeAndCommentArtworksInGenre.get(inGenreIdx);
-//                        inGenreIdx++;
-//
-//                        if(inGenreIdx == notLikeAndCommentArtworksInGenre.size()){
-//                            inGenreIdx = 0;
-//                        }
-//
-//                        if (userRecommandList.contains(artworkInGenre.getArtwork_id())) {
-//                            continue;
-//                        } else {
-//                            if (userRecommandList.size() == 12) {
-//                                userRecommandList.remove(0);
-//                                userRecommandList.add(artworkInGenre.getArtwork_id());
-//                                recommandList.add(artworkInGenre);
-//                                likeCnt ++;
-//                                if(likeCnt == 3) {
-//                                    likeCnt = 0;
-//                                    break;
-//                                }
-//                            } else {
-//                                recommandList.add(artworkInGenre);
-//                                userRecommandList.add(artworkInGenre.getArtwork_id());
-//                                likeCnt ++;
-//                                if(likeCnt == 3) {
-//                                    likeCnt = 0;
-//                                    break;
-//                                }
-//                            }
-//                            if (recommandList.size() >= 12)
-//                                break;
-//                        }
-//                    }
-//                }
-//                check=true;
-//            }
+                for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++) {
+                    notLikeAndCommentArtworksNotInGenre.get(i).updateIsRecommend(false);
+                }
+                break;
+            }
         }
 
-//
-//        finish = Instant.now();
-//        elapsedTime = Duration.between(start, finish).toMillis();
-//        System.out.println("두개 리스트 이용해 추출하는데 걸린 시간 : " + elapsedTime);
+
         List<ArtworkResponseDto> result = new ArrayList<>();
         for(int i=0;i< recommandList.size();i++)
         {
