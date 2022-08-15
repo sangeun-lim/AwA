@@ -47,14 +47,17 @@ public class Profile extends BaseTimeEntity {
 
 
     //판매목록
-
     @Builder
-    public Profile(String profile_picture_url, String nickname, String description, User owner_user) {
+    public Profile(Long profile_id, String profile_picture_url, String nickname, String description, User owner_user, List<String> favorite_field) {
+        this.profile_id = profile_id;
         this.profile_picture_url = profile_picture_url;
         this.nickname = nickname;
         this.description = description;
         this.owner_user = owner_user;
+        this.favorite_field = favorite_field;
     }
+
+
 
     public void updateNickname(String newNickname) {
         this.nickname = newNickname;

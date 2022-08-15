@@ -139,4 +139,14 @@ public class SignApiController {
     public int ValidateNickname(@PathVariable String nickname) {
         return signService.validateDuplcateNickname(nickname);
     }
+
+    @PostMapping("/check/password/{userEmail}")
+    public int checkPassword(@PathVariable(name = "userEmail") String userEmail, @RequestHeader(value="password") String password) {
+        return signService.checkPassword(userEmail, password);
+    }
+
+    @PostMapping("/reset/password/{userEmail}")
+    public int resetPassword(@PathVariable(name = "userEmail") String userEmail, @RequestHeader(value = "password") String password) {
+        return signService.resetPassword(userEmail, password);
+    }
 }

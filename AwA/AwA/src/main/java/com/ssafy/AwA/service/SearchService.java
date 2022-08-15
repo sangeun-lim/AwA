@@ -80,7 +80,9 @@ public class SearchService {
 
     public List<ArtworkResponseDto> getSearchByWriter(String writer, @RequestBody @Valid SearchRequestDto searchRequestDto) {
         List<Artwork> allSearchByWriter = new ArrayList<>();
-        if(searchRequestDto.getGenre_count() == 1)
+        if(searchRequestDto.getGenre_count()==0)
+            allSearchByWriter = searchCustomRepository.findAllSearchByWriter(writer,searchRequestDto);
+        else if(searchRequestDto.getGenre_count() == 1)
             allSearchByWriter = searchCustomRepository.findAllSearchByWriter1(writer,searchRequestDto);
         else if(searchRequestDto.getGenre_count() == 2)
             allSearchByWriter = searchCustomRepository.findAllSearchByWriter2(writer, searchRequestDto);

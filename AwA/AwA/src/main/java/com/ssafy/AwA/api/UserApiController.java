@@ -32,42 +32,10 @@ public class UserApiController {
         }
     }
 
-
-
-
     @Data
     static class Description {
         private String description;
     }
-
-    //version 1)  엔티티를 파라미터로 받지말라 !!!!!!!!!!!!!!!!!
-//    @PostMapping("/auth/signup")
-//    public CreateUserResponse saveMemberV1(@RequestBody @Valid User user) {
-//        Long user_id = userService.join(user);
-//        return new CreateUserResponse(user_id);
-//    }
-
-    //회원가입
-//    @PostMapping("/auth/signup")
-//    public CreateUserResponse saveUser(@RequestBody @Valid CreateUserRequest request)
-//    {
-//        User user = User.builder()
-//                .password(request.getPassword())
-//                .birth(request.getBirth())
-//                .email(request.getEmail())
-//                .gender(request.gender)
-//                .nickname(request.getNickname())
-//                .build();
-//        userService.join(user);
-//        return new CreateUserResponse(user.getUser_id(), user.getBirth());
-//    }
-
-
-
-
-
-
-
 
 
 
@@ -83,16 +51,6 @@ public class UserApiController {
         }
     }
 
-//    @PutMapping("/profile/{nickname}/description")
-//    public int changeDescription(@PathVariable("nickname") String nickname, @RequestBody Description newDescription)
-//    {
-//        try {
-//            return userService.changeDescription(nickname, newDescription.description);
-//        } catch (Exception e)
-//        {
-//            return 0;
-//        }
-//    }
 
     @GetMapping("/api/profile/gender/{gender}")
     public List<User> findMans(@PathVariable("gender") int gender) {
@@ -120,9 +78,14 @@ public class UserApiController {
         private String nickname;
     }
 
-//    @Data
-//    static class UpdateUserRequest {
-//        private String nickname;
-//    }
+    @DeleteMapping("/api/social/user/secession/{userEmail}")
+    public int socialUserSecession(@PathVariable("userEmail") String userEmail, @RequestHeader(value = "password") String password) {
+        return userService.userSocialSecession(userEmail,password);
+    }
 
+
+    @DeleteMapping("/api/user/secession/{userEmail}")
+    public int userSecession(@PathVariable("userEmail") String userEmail, @RequestHeader(value = "password") String password) {
+        return userService.userSecession(userEmail,password);
+    }
 }

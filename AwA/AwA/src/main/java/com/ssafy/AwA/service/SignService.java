@@ -30,6 +30,7 @@ public class SignService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
+
     public SignUpResultDto signUp(String email, String password, String nickname, boolean gender, LocalDate birth
                                   //String role 무조건 User로 회원가입 할거니까 권한 USER
                                    ) {
@@ -144,5 +145,25 @@ public class SignService {
         if(findByNicknameUser==null)
             return 1;
         return 0;
+    }
+
+    public int checkPassword(String userEmail, String password) {
+        User targetUser = userRepository.findByEmail(userEmail);
+
+        if(!passwordEncoder.matches(password, targetUser.getPassword())) {
+            return 0;
+        }
+        return 1;
+    }
+
+    public int resetPassword(String userEmail, String password) {
+        User targetUser = userRepository.findByEmail(userEmail);
+
+        try {
+            targetUser.resetPassword(passwordEncoder.encode(password));
+            return 1;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }
