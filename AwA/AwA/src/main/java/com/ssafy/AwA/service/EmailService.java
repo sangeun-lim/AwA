@@ -26,13 +26,13 @@ public class EmailService {
 
         MimeMessage message = javaMailSender.createMimeMessage();
         message.addRecipients(Message.RecipientType.TO, toEmail.getEmail());
-        message.setSubject("AwA회원가입 이메일 인증번호 입니다.");
+        message.setSubject("AwA 이메일 인증번호 입니다.");
 
         String msgg="";
         msgg+= "<div style='margin:100px;'>";
         msgg+= "<h1> 안녕하세요 AwA입니다. </h1>";
         msgg+= "<br>";
-        msgg+= "<p>아래 코드를 회원가입 창으로 돌아가 입력해주세요<p>";
+        msgg+= "<p>아래 코드를 인증번호 입력칸으로 돌아가 입력해주세요<p>";
         msgg+= "<br>";
         msgg+= "<p>감사합니다!<p>";
         msgg+= "<br>";
