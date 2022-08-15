@@ -1,7 +1,6 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "../pages/home/Home";
-import Preview from "../pages/Preview";
 import Login from "../pages/auth/Login";
 import SignUp from "../pages/auth/SignUp";
 import FindPw from "../pages/auth/FindPw";
@@ -31,7 +30,6 @@ const AppRouter = ({ getUserData }: Props): JSX.Element => {
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/preview" element={<Preview />} />
           <Route
             path="/auth/login"
             element={<Login getUserData={getUserData} />}

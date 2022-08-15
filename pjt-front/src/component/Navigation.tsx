@@ -9,6 +9,7 @@ import { GoSearch } from "react-icons/go";
 import { BsChatFill } from "react-icons/bs";
 import SearchComponent from "./SearchComponent";
 import { debounce } from "lodash";
+import { setCookie } from "../cookie";
 
 function Navigation(): JSX.Element {
   const navigate = useNavigate();
@@ -28,8 +29,9 @@ function Navigation(): JSX.Element {
 
   const logoutRequest = async () => {
     dispatch(userObjectActions.logout());
-    navigate("/preview");
-    localStorage.setItem("token", "");
+    sessionStorage.setItem("token", "");
+    setCookie("refresh_token", "");
+    navigate("/");
   };
 
   const Logout = () => {
