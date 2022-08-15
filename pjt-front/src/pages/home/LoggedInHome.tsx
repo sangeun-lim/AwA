@@ -8,6 +8,7 @@ import { loadingActions } from "./../../store";
 import { Masonry } from "@mui/lab";
 import AuctionCard from "../../component/AuctionCard";
 import { useInView } from "react-intersection-observer";
+import RankFollow from "../RankFollow";
 
 function LoggedInHome() {
   const dispatch = useDispatch();
@@ -18,6 +19,25 @@ function LoggedInHome() {
 
   const [ref, inView] = useInView();
   const [items, setItems] = useState<ArtworkItem[]>([]);
+  const [changeRank, setChangeRank] = useState<boolean>(false);
+
+  const [t, setT] = useState<number>(8);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setChangeRank(!changeRank);
+    }, 8000);
+  }, [changeRank]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setT((t) => t - 1);
+    }, 1000);
+    if (t === 0) {
+      clearInterval(id);
+    }
+    return () => clearInterval(id);
+  }, [t]);
 
   const getOnlyFollowItems = async () => {
     dispatch(loadingActions.toggle());
@@ -79,9 +99,15 @@ function LoggedInHome() {
             </Masonry>
           )}
         </div>
-        <div className={style.ranking}>
-          <RankLike></RankLike>
-        </div>
+        {changeRank ? (
+          <div className={style.ranking}>
+            <RankFollow></RankFollow>
+          </div>
+        ) : (
+          <div className={style.ranking}>
+            <RankLike></RankLike>
+          </div>
+        )}
       </div>
       <div ref={ref}>.</div>
     </>
