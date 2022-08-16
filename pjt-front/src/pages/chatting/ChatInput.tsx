@@ -8,7 +8,7 @@ import {
   where,
 } from "firebase/firestore";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { dbService } from "../../fbase";
 import { NewMessage, User } from "../../Interface";
 import socketIOClient from "socket.io-client";
@@ -17,7 +17,6 @@ import style from "./ChatInput.module.css";
 const SOCKET = socketIOClient("https://awa24.site:4002/");
 
 function ChatInput() {
-  const dispatch = useDispatch();
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );

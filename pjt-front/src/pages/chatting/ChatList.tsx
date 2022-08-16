@@ -1,6 +1,6 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import api from "../../api/api";
 import { dbService } from "../../fbase";
 import { MyChatList, User } from "../../Interface";
@@ -11,8 +11,6 @@ import socketIOClient from "socket.io-client";
 const SOCKET = socketIOClient("https://awa24.site:4002");
 
 function ChatList(): JSX.Element {
-  const dispatch = useDispatch();
-
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );
