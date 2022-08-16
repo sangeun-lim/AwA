@@ -46,11 +46,16 @@
   color: black;
 }
 
+.moveLink:hover {
+  color: rgb(231, 115, 92);
+}
+
 .profileImage {
   width: 30px;
   height: 30px;
   border-radius: 100%;
   background-color: rgb(200, 200, 200);
+  margin-bottom: 5px;
 }
 
 .txtLine {

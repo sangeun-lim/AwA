@@ -15,7 +15,7 @@ function MyAuctionCard({ item }: { item: ArtworkList }): JSX.Element {
         <img
           src={item.picture_url}
           alt="AuctionImg"
-          className={style.auctionImg}
+          className={style.myAuctionImg}
         />
         <NavLink to={`/auction/detail/${item.artwork_id}`}>
           <div className={style.overlay}></div>
