@@ -30,7 +30,6 @@ function Login({ getUserData }: Props): JSX.Element {
     try {
       const response = await api.auth.login(loginForm);
       dispatch(loadingActions.toggle());
-
       if (response.status === 200) {
         sessionStorage.setItem("token", response.data.accessToken);
         setCookie("refresh_token", response.data.refreshToken);
@@ -40,6 +39,7 @@ function Login({ getUserData }: Props): JSX.Element {
     } catch (err) {
       dispatch(loadingActions.toggle());
       console.error(err);
+      alert("아이디와 비밀번호를 확인해주세요.");
     }
   };
 
@@ -69,7 +69,7 @@ function Login({ getUserData }: Props): JSX.Element {
     navigate("/auth/signup");
   };
 
-  const moveFindFw = async (e: any) => {
+  const moveFindPw = async (e: any) => {
     e.preventDefault();
     navigate("/auth/findpw");
   };
@@ -131,7 +131,7 @@ function Login({ getUserData }: Props): JSX.Element {
               </button>
             </div>
 
-            <button onClick={moveFindFw} className={style.loginSubmit}>
+            <button onClick={moveFindPw} className={style.loginSubmit}>
               <div className={style.loginSubmitContent}>비밀번호찾기</div>
             </button>
             <br />
