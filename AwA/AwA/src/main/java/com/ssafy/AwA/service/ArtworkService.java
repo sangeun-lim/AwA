@@ -506,12 +506,11 @@ public class ArtworkService {
 //        //내가 좋아하지 않는 장르 중 좋아요, 댓글 없는것 정렬 완료
 
         int likeCnt = 0;
-        int notLikeCnt = 0;
 
         int inGenreIdx = 0, notInGenreIdx = 0;
 
         List<Artwork> recommandList = new ArrayList<>();
-        List<Long> userRecommandList = targetUser.getRecommandArtworks();
+        List<Long> userRecommandList = targetUser.getRecommendArtworks();
 
         if(userRecommandList.size() > 0) {
             for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++) {
@@ -529,13 +528,16 @@ public class ArtworkService {
         while(recommandList.size()<12) {
             boolean check = false;
             for (int i = 0; i < notLikeAndCommentArtworksInGenre.size(); i++) {
-                if (notLikeAndCommentArtworksInGenre.get(i).is_recommend() == false)
+                if (userRecommandList.contains(notLikeAndCommentArtworksInGenre.get(i).getArtwork_id()) == false) {
                     check = true;
+                    break;
+                }
             }
 
             for (int i = 0; i < notLikeAndCommentArtworksNotInGenre.size(); i++) {
-                if (notLikeAndCommentArtworksNotInGenre.get(i).is_recommend() == false) {
+                if (userRecommandList.contains(notLikeAndCommentArtworksNotInGenre.get(i).getArtwork_id()) == false) {
                     check = true;
+                    break;
                 }
             }
 
@@ -548,23 +550,22 @@ public class ArtworkService {
                         inGenreIdx = 0;
                     }
 
-                    if (userRecommandList.contains(artworkInGenre.getArtwork_id()) || artworkInGenre.is_recommend() == true) {
+                    if (userRecommandList.contains(artworkInGenre.getArtwork_id()) ) {
                         continue;
-                    } else {
-                        if (userRecommandList.size() == 12) {
-                            userRecommandList.remove(0);
+                    }
+                    else {
                             userRecommandList.add(artworkInGenre.getArtwork_id());
+                            targetUser.changeRecommandList(userRecommandList);
                             artworkInGenre.updateIsRecommend(true);
                             recommandList.add(artworkInGenre);
-                            likeCnt++;
-                            if (likeCnt == 3) {
-                                likeCnt = 0;
+
+                            //유저가 추천받은 리스트가 내가 올린 게시물 제외한 게시물 개수랑 같으면 초기화
+                            if(userRecommandList.size() == artworkRepository.findExceptMyArtworks(targetUser).size()) {
+                                targetUser.changeRecommandList(new ArrayList<>());
+                                check=false;
                                 break;
                             }
-                        } else {
-                            recommandList.add(artworkInGenre);
-                            userRecommandList.add(artworkInGenre.getArtwork_id());
-                            artworkInGenre.updateIsRecommend(true);
+
                             likeCnt++;
                             if (likeCnt == 3) {
                                 likeCnt = 0;
@@ -574,8 +575,6 @@ public class ArtworkService {
                         if (recommandList.size() >= 12)
                             break;
                     }
-                }
-
 
                 if (recommandList.size() < 12) {
                     for (int i = 0; i < notLikeAndCommentArtworksNotInGenre.size(); i++) {
@@ -586,33 +585,35 @@ public class ArtworkService {
                         if (notInGenreIdx == notLikeAndCommentArtworksNotInGenre.size()) {
                             notInGenreIdx = 0;
                         }
-                        if (userRecommandList.contains(artworkNotInGenre.getArtwork_id()) || artworkNotInGenre.is_recommend() == true) {
+                        if (userRecommandList.contains(artworkNotInGenre.getArtwork_id())) {
                             continue;
-                        } else {
-                            if (userRecommandList.size() == 12) {
-                                userRecommandList.remove(0);
-                                userRecommandList.add(artworkNotInGenre.getArtwork_id());
-                                artworkNotInGenre.updateIsRecommend(true);
-                                recommandList.add(artworkNotInGenre);
-                                break;
-                            } else {
-                                recommandList.add(artworkNotInGenre);
-                                userRecommandList.add(artworkNotInGenre.getArtwork_id());
-                                artworkNotInGenre.updateIsRecommend(true);
-                                break;
+                        }
+                        else {
+                            userRecommandList.add(artworkNotInGenre.getArtwork_id());
+                            targetUser.changeRecommandList(userRecommandList);
+                            artworkNotInGenre.updateIsRecommend(true);
+                            recommandList.add(artworkNotInGenre);
+
+                            //유저가 추천받은 리스트가 내가 올린 게시물 제외한 게시물 개수랑 같으면 초기화
+                            if(userRecommandList.size() == artworkRepository.findExceptMyArtworks(targetUser).size()) {
+                                targetUser.changeRecommandList(new ArrayList<>());
+                                check=false;
                             }
+                            break;
                         }
                     }
                 }
             }
-            else {
-                for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++) {
-                    notLikeAndCommentArtworksInGenre.get(i).updateIsRecommend(false);
-                }
 
-                for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++) {
-                    notLikeAndCommentArtworksNotInGenre.get(i).updateIsRecommend(false);
-                }
+            else {
+//                for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++) {
+//                    notLikeAndCommentArtworksInGenre.get(i).updateIsRecommend(false);
+//                }
+//
+//                for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++) {
+//                    notLikeAndCommentArtworksNotInGenre.get(i).updateIsRecommend(false);
+//                }
+                targetUser.changeRecommandList(new ArrayList<>());
                 break;
             }
         }

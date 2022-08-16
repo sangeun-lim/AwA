@@ -37,4 +37,6 @@ public interface ArtworkRepository extends JpaRepository<Artwork, Long> {
     List<Artwork> findNotLikeAndCommentArtworks(@Param("sell_user") User sell_user, @Param("profile1") Profile profile, @Param("profile2") Profile profile2);
 
 
+    @Query("select a from Artwork a where a.sell_user<>:sell_user")
+    List<Artwork> findExceptMyArtworks(@Param("sell_user") User sell_user);
 }
