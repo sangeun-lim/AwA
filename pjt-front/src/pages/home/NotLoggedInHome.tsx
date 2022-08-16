@@ -95,11 +95,6 @@ function NotLoggedInHome() {
           </div>
         </div>
       </section>
-      <footer className={style.footer}>
-        <p className={style.footerText1}>&copy; SSAFY</p>
-        <p className={style.footerText2}>후원계좌: 93....</p>
-        <p className={style.footerText2}>문의메일: seon_hyuk97@kakao.com</p>
-      </footer>
     </>
   );
 }
