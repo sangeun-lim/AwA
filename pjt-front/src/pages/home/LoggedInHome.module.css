@@ -31,6 +31,36 @@
   top: 500px;
 }
 
+.followEffect {
+  animation: loadEffect 1s ease-in-out;
+}
+
+.rankEffect {
+  animation: loadEffect2 1s ease-in-out;
+}
+
+@keyframes loadEffect {
+  from {
+    opacity: 0;
+    transform: translateX(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes loadEffect2 {
+  from {
+    opacity: 0;
+    transform: translateX(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .feed {
   width: 70%;
   padding: 20px 40px;

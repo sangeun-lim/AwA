@@ -106,11 +106,11 @@ function LoggedInHome() {
           )}
         </div>
         {changeRank ? (
-          <div className={style.ranking}>
+          <div className={`${style.ranking} ${style.followEffect}`}>
             <RankFollow></RankFollow>
           </div>
         ) : (
-          <div className={style.ranking}>
+          <div className={`${style.ranking} ${style.rankEffect}`}>
             <RankLike></RankLike>
           </div>
         )}
