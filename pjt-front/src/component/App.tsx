@@ -52,19 +52,21 @@ function App(): JSX.Element {
 
   return (
     <div>
-      {loading && (
-        <div className={style.loading}>
-          <div id={style.load}>
-            <div>다</div>
-            <div>니</div>
-            <div>입</div>
-            <div>중</div>
-            <div>딩</div>
-            <div>로</div>
+      <div className={style.body}>
+        {loading && (
+          <div className={style.loading}>
+            <div id={style.load}>
+              <div>다</div>
+              <div>니</div>
+              <div>입</div>
+              <div>중</div>
+              <div>딩</div>
+              <div>로</div>
+            </div>
           </div>
-        </div>
-      )}
-      <AppRouter getUserData={getUserData} />
+        )}
+        <AppRouter getUserData={getUserData} />
+      </div>
       <footer className={style.footer}>
         <p className={style.footerText1}>&copy; SSAFY</p>
         <p className={style.footerText2}>후원계좌: 93....</p>
