@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FormEvent, useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,6 +38,7 @@ function Login({ getUserData }: Props): JSX.Element {
         navigate("/");
       }
     } catch (err) {
+      alert("아이디와 비밀번호가 맞는지 확인해주세요!");
       dispatch(loadingActions.toggle());
       console.error(err);
     }
@@ -54,23 +55,16 @@ function Login({ getUserData }: Props): JSX.Element {
     });
   };
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    try {
-      loginRequest();
-    } catch (err) {
-      console.log(err);
-    }
+    loginRequest();
   };
 
-  const moveSignUp = async (e: any) => {
-    e.preventDefault();
+  const moveSignUp = () => {
     navigate("/auth/signup");
   };
 
-  const moveFindFw = async (e: any) => {
-    e.preventDefault();
+  const moveFindFw = () => {
     navigate("/auth/findpw");
   };
 
@@ -126,12 +120,20 @@ function Login({ getUserData }: Props): JSX.Element {
             </button>
             <br />
             <div className={style.buttonContainer}>
-              <button onClick={moveSignUp} className={style.loginSubmit}>
+              <button
+                type="button"
+                onClick={moveSignUp}
+                className={style.loginSubmit}
+              >
                 <div className={style.loginSubmitContent}>회원가입</div>
               </button>
             </div>
 
-            <button onClick={moveFindFw} className={style.loginSubmit}>
+            <button
+              type="button"
+              onClick={moveFindFw}
+              className={style.loginSubmit}
+            >
               <div className={style.loginSubmitContent}>비밀번호찾기</div>
             </button>
             <br />
