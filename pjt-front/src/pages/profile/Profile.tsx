@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  chatPartnerActions,
-  firstChatActions,
-  loadingActions,
-} from "../../store";
+import { chatPartnerActions, loadingActions } from "../../store";
 import { Profile, User } from "../../Interface";
 import { profileDefaultData } from "../../defaultData";
 import ProfileUpdate from "./ProfileUpdate";
@@ -97,7 +93,6 @@ const ProfilePage = (): JSX.Element => {
 
   const goChat = () => {
     dispatch(chatPartnerActions.setPartner(userEmail));
-    dispatch(firstChatActions.isFirst());
     navigate("/chatting");
   };
 

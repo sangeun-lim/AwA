@@ -11,7 +11,6 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { dbService } from "../../fbase";
 import { NewMessage, User } from "../../Interface";
-import { firstChatActions } from "../../store";
 import socketIOClient from "socket.io-client";
 import style from "./ChatInput.module.css";
 
@@ -25,8 +24,6 @@ function ChatInput() {
   const chatPartner = useSelector(
     (state: { chatPartner: string }) => state.chatPartner
   );
-  // 현재 채팅 상대와 처음으로 채팅하는가?
-  const isFirst = useSelector((state: { isFirst: boolean }) => state.isFirst);
 
   const [message, setMessage] = useState<string>("");
 
@@ -79,8 +76,6 @@ function ChatInput() {
         recentlyDate: newMessage.createdDate,
         recentlyMessage: message,
       });
-
-      dispatch(firstChatActions.isNotFirst());
     }
 
     const response3 = await getDocs(q);

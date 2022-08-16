@@ -12,19 +12,6 @@ const loadingSlice = createSlice({
   },
 });
 
-const firstChatSlice = createSlice({
-  name: "isFirst",
-  initialState: true,
-  reducers: {
-    isFirst(state: boolean) {
-      return true;
-    },
-    isNotFirst(state: boolean) {
-      return false;
-    },
-  },
-});
-
 const authInitialState: null | User = null;
 const userObjectSlice = createSlice({
   name: "userObject",
@@ -76,7 +63,6 @@ const store = configureStore({
     userObject: userObjectSlice.reducer,
     searchResults: searchResultsSlice.reducer,
     chatPartner: chatPartnerSlice.reducer,
-    isFirst: firstChatSlice.reducer,
   },
 });
 
@@ -84,6 +70,5 @@ export const loadingActions = loadingSlice.actions;
 export const userObjectActions = userObjectSlice.actions;
 export const searchResultsActions = searchResultsSlice.actions;
 export const chatPartnerActions = chatPartnerSlice.actions;
-export const firstChatActions = firstChatSlice.actions;
 
 export default store;
