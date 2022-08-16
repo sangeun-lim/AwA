@@ -33,9 +33,9 @@ function RankFollow(): JSX.Element {
       <p className={style.rankTitle}>팔로우 랭킹</p>
       {followRank.map((item, index) => {
         return (
-          <div className={style.listItem}>
+          <div className={style.listItem} key={item.nickname}>
             <div className={style.itemContent}>
-              <li key={item.nickname} className={style.txtLine}>
+              <li className={style.txtLine}>
                 <span className={style.rankNumber}>
                   {index + 1}
                   {`. `}

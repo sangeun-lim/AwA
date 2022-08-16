@@ -29,8 +29,9 @@ function Followers(props: Props): JSX.Element {
   useEffect(() => {
     if (getEmail) {
       navigate(`/profile/${getEmail}`);
+      setGetEmail("");
     }
-  }, [getEmail]);
+  }, [getEmail, navigate]);
 
   return (
     <div>
@@ -114,8 +115,8 @@ function Followers(props: Props): JSX.Element {
                         <div
                           className={style.followListName}
                           onClick={() => {
-                            getUserEmail(item.nickname);
                             close();
+                            getUserEmail(item.nickname);
                           }}
                         >
                           {item.nickname}
