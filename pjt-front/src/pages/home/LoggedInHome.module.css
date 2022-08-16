@@ -35,3 +35,12 @@
   width: 70%;
   padding: 20px 40px;
 }
+
+.lastBox {
+  display: flex;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  font-size: 24px;
+}

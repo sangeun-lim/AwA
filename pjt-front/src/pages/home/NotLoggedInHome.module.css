@@ -117,24 +117,3 @@
 .middleBox {
   height: 50px;
 }
-
-.footer {
-  background-color: lightgray;
-  height: 100px;
-  text-align: center;
-}
-
-.footerText2 {
-  color: black;
-  font-size: 12px;
-  font-weight: 600;
-  margin: 5px;
-}
-
-.footerText1 {
-  color: black;
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 0px;
-  padding-top: 20px;
-}

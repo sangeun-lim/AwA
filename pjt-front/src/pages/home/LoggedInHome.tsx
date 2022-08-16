@@ -20,6 +20,7 @@ function LoggedInHome() {
   const [ref, inView] = useInView();
   const [items, setItems] = useState<ArtworkItem[]>([]);
   const [changeRank, setChangeRank] = useState<boolean>(false);
+  const [isLast, setIsLast] = useState<boolean>(false);
 
   const [t, setT] = useState<number>(8);
 
@@ -60,7 +61,12 @@ function LoggedInHome() {
 
     try {
       const response = await api.artwork.getRecommends(userObject.email);
-      setItems((prev) => prev.concat(response.data.artworkResponseDto));
+
+      if (response.data.totalCount < 12) {
+        setItems((prev) => prev.concat(response.data.artworkResponseDto));
+      } else {
+        setIsLast(true);
+      }
       setTimeout(() => {
         dispatch(loadingActions.toggle());
       }, 1000);
@@ -77,7 +83,7 @@ function LoggedInHome() {
   }, []);
 
   useEffect(() => {
-    if (inView && !loading) {
+    if (inView && !loading && !isLast) {
       /* eslint-disable */
       getRecommends();
     }
@@ -109,6 +115,11 @@ function LoggedInHome() {
           </div>
         )}
       </div>
+      {isLast && (
+        <div className={style.lastBox}>
+          <span>마지막 게시글 입니다</span>
+        </div>
+      )}
       <div ref={ref}>.</div>
     </>
   );
