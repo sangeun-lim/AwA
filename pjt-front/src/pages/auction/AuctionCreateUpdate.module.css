@@ -324,6 +324,7 @@
   .detailInfoSide {
     width: 35%;
     padding-left: 70px;
+    position: sticky;
   }
 
   .detailInfo {
