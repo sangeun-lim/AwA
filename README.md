@@ -19,4 +19,5 @@ nginx
 jenkins
 
 서비스 아키텍처
+
 ![image](/uploads/a2020eaa27d06feb7fae6666ab9b9f87/image.png)
