@@ -39,6 +39,8 @@ public class QArtwork extends EntityPathBase<Artwork> {
 
     public final StringPath ingredient = createString("ingredient");
 
+    public final BooleanPath is_recommend = createBoolean("is_recommend");
+
     public final NumberPath<Integer> is_sell = createNumber("is_sell", Integer.class);
 
     public final NumberPath<Integer> like_count = createNumber("like_count", Integer.class);

@@ -31,6 +31,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath email = createString("email");
 
+    public final StringPath email_code = createString("email_code");
+
     public final BooleanPath gender = createBoolean("gender");
 
     public final BooleanPath is_manager = createBoolean("is_manager");

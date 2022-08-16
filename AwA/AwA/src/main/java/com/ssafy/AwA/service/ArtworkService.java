@@ -382,9 +382,6 @@ public class ArtworkService {
 
         List<String> favorite_Genre = targetProfile.getFavorite_field();
 
-//        Instant start = Instant.now();
-//        System.out.println("시작시간 : " + start);
-
         List<Artwork> notLikeAndCommentArtworks = artworkRepository.findNotLikeAndCommentArtworks(targetUser, targetProfile,targetProfile);
 
         List<Artwork> notLikeAndCommentArtworksNotInGenre = new ArrayList<>();
@@ -396,7 +393,6 @@ public class ArtworkService {
             for(int j=0;j<targetArtwork.getGenre().size();j++) {
                 String genre = targetArtwork.getGenre().get(j);
                 if(favorite_Genre.contains(genre)) {
-                    //유저의 선호 분야 장르에 해당하는 게시물 이라면
                     check=true;
                 }
             }
@@ -406,10 +402,6 @@ public class ArtworkService {
             else
                 notLikeAndCommentArtworksNotInGenre.add(targetArtwork);
         }
-
-//        Instant finish = Instant.now();
-//        long elapsedTime = Duration.between(start, finish).toMillis();
-//        System.out.println("내가 좋아요,댓글안한 게시물 장르 분류 걸린시간 : " + elapsedTime);
 
 
         //내가 선호하는 장르
@@ -460,10 +452,7 @@ public class ArtworkService {
 
             }
         });
-//
-//        finish = Instant.now();
-//        elapsedTime = Duration.between(start, finish).toMillis();
-//        System.out.println("내가 좋아하는 장르 정렬까지 걸린시간 : " + elapsedTime);
+
         //내가 선호하지 않는 장르
         double[] viewCount2 = new double[notLikeAndCommentArtworksNotInGenre.size()];
         double[] likeCount2 = new double[notLikeAndCommentArtworksNotInGenre.size()];
@@ -513,11 +502,6 @@ public class ArtworkService {
             }
         });
 
-//        finish = Instant.now();
-//        elapsedTime = Duration.between(start, finish).toMillis();
-//        System.out.println("내가 좋아하지 않는 장르 정렬까지 걸린시간 : " + elapsedTime);
-
-
 //        //여기까지 하면 내가 좋아하는 장르 중 좋아요,댓글 없는것 정렬 완료
 //        //내가 좋아하지 않는 장르 중 좋아요, 댓글 없는것 정렬 완료
 
@@ -529,19 +513,15 @@ public class ArtworkService {
         List<Artwork> recommandList = new ArrayList<>();
         List<Long> userRecommandList = targetUser.getRecommandArtworks();
 
-//        boolean check = true;
-
         if(userRecommandList.size() > 0) {
             for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++) {
                 if(notLikeAndCommentArtworksInGenre.get(i).getArtwork_id() == userRecommandList.get(userRecommandList.size()-1)) {
                     inGenreIdx = i;
-//                    check = true;
                 }
             }
             for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++)
                 if(notLikeAndCommentArtworksNotInGenre.get(i).getArtwork_id() == userRecommandList.get(userRecommandList.size()-1)) {
                     notInGenreIdx = i;
-//                    check=false;
                 }
         }
 

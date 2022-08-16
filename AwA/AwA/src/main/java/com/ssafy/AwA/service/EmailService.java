@@ -50,8 +50,10 @@ public class EmailService {
 
         try {
             javaMailSender.send(message);
+
             User targetUser = userRepository.findByEmail(toEmail.getEmail());
-            targetUser.setEmailCode(authKey);
+            if(targetUser!= null)
+                targetUser.setEmailCode(authKey);
             return Integer.valueOf(authKey);
         }
         catch (Exception e)
