@@ -261,6 +261,14 @@ const api = {
 
       return response;
     },
+    getArtworkInGenre: async (genre: string) => {
+      const response = await axios({
+        url: rf.artwork.getArtworkInGenre(),
+        method: "post",
+        data: [genre],
+      });
+      return response;
+    },
   },
 
   profile: {

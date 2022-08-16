@@ -41,6 +41,7 @@ const rf = {
       HOST + ARTWORK + `onlyFollow/${userEmail}/${pageNum}`,
     getRecommends: (userEmail: string) =>
       HOST + ARTWORK + `recommend/${userEmail}`,
+    getArtworkInGenre: () => HOST + ARTWORK + "genre",
   },
 
   profile: {
