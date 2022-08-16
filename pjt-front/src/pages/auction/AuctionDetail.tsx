@@ -8,7 +8,7 @@ import { ArtworkItem, User } from "../../Interface";
 import { itemDefaultData } from "../../defaultData";
 import api from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
-import { loadingActions } from "../../store";
+import { loadingActions, chatPartnerActions } from "../../store";
 import ReportModal from "./ReportModal";
 import CommentForm from "./CommentForm";
 import style from "./AuctionCreateUpdate.module.css";
@@ -66,6 +66,21 @@ function AuctionDetailOrUpdate(): JSX.Element {
         console.error(err);
       }
     }
+  };
+
+  const goChat = () => {
+    dispatch(chatPartnerActions.setPartner(item.sell_user_email));
+    navigate("/chatting");
+  };
+
+  const isSell = async () => {
+    const response = await api.artwork.sellArtwork(item.artwork_id);
+    setItem((prev) => {
+      return {
+        ...prev,
+        is_sell: response.data,
+      };
+    });
   };
 
   const onLikeClick = async (e: any) => {
@@ -172,6 +187,11 @@ function AuctionDetailOrUpdate(): JSX.Element {
                 <p className={style.detailLike}>
                   <button>❤</button> {item.like_count}
                 </p>
+              )}
+              {userObject && userObject.email !== item.sell_user_email && (
+                <button onClick={goChat} className={style.chatBtn}>
+                  판매자와 채팅하기
+                </button>
               )}
               {userObject && <ReportModal artworkId={address} />}
             </div>

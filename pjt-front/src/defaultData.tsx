@@ -45,6 +45,7 @@ export const itemDefaultData = {
   sell_user_email: "",
   sell_user_nickname: "",
   title: "",
+  is_sell: 0,
   profile_picture: "",
   view_count: 0,
   description: "",

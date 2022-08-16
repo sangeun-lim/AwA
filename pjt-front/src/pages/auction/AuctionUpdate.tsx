@@ -65,6 +65,7 @@ function AuctionUpdate({ setOnEdit }: Props) {
     price: 0,
     ingredient: "",
     description: "",
+    is_sell: 0,
   });
 
   // 수정용 이미지
@@ -214,6 +215,7 @@ function AuctionUpdate({ setOnEdit }: Props) {
           price: item.price,
           ingredient: item.ingredient,
           description: item.description,
+          is_sell: item.is_sell,
         });
 
         setGenresList(item.genre);

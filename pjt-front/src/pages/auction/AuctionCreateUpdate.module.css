@@ -506,3 +506,14 @@
 .bigImage > img {
   width: 100%;
 }
+
+.chatBtn {
+  padding: 0px 10x;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 15px;
+  cursor: pointer;
+  margin-left: 10px;
+  white-space: nowrap;
+}

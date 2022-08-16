@@ -93,6 +93,7 @@ export interface ArtworkItem {
   profile_picture: string;
   title: string;
   view_count: number;
+  is_sell: number;
   createdDate: string;
   description: string;
 }
@@ -142,6 +143,7 @@ export interface editItem {
   price: number;
   ingredient: string;
   description: string;
+  is_sell: number;
 }
 export interface editComment {
   comment_id: string;
