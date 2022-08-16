@@ -412,6 +412,7 @@ function SignUp(): JSX.Element {
                 checkNickname &&
                 !!signUpForm.pw1 &&
                 signUpForm.pw1 === signUpForm.pw2 &&
+                PASSWORD_VALIDATION.test(signUpForm.pw1) &&
                 useCheck === true &&
                 infoCheck === true
                   ? style.buttonActive

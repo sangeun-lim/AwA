@@ -211,6 +211,7 @@ function AuctionUpdate({ setOnEdit }: Props) {
         dispatch(loadingActions.toggle());
         loadData();
         setEditItem({
+          /* eslint-disable */
           title: item.title,
           price: item.price,
           ingredient: item.ingredient,
