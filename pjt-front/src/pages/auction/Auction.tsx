@@ -11,6 +11,8 @@ import SearchComponent from "../../component/SearchComponent";
 import { Masonry } from "@mui/lab";
 import { useInView } from "react-intersection-observer";
 
+const FAVORITE = ["회화", "조소", "건축", "공예", "서예", "디지털", "기타"];
+
 function Auction(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -65,7 +67,20 @@ function Auction(): JSX.Element {
             <div className={style.content}>좋은 작품을 만날 기회</div>
           </div>
         </section>
-        <div>
+        <div className={style.searchOption}>
+          <span>작품종류</span>
+          <div className={style.options}>
+            {FAVORITE.map((item) => {
+              return (
+                <div key={item}>
+                  <input type="checkbox" value={item} id={`home${item}`} />
+                  <label htmlFor={`home${item}`}>{item}</label>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className={style.auctionButtonBox}>
           {userObject ? (
             <button onClick={onClick} className={style.auctionButton}>
               상품등록

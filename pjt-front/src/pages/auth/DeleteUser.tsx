@@ -77,7 +77,7 @@ const DeleteUser = (): JSX.Element => {
                 type="submit"
                 onClick={checkEmailButton}
                 disabled={pass}
-                className={style.btn}
+                className={style.btnActive}
               >
                 <span>이메일 인증</span>
               </button>
@@ -116,7 +116,7 @@ const DeleteUser = (): JSX.Element => {
                 <button
                   type="submit"
                   onClick={deleteCurrentUser}
-                  className={style.btn}
+                  className={style.btnActive}
                 >
                   회원탈퇴
                 </button>
