@@ -92,11 +92,7 @@ public class ArtworkService {
 
     public List<ArtworkResponseDto> getAllArtwork() {
         List<Artwork> allArtworks = artworkRepository.findAllByOrderByArtwork_idDesc();
-//        PageRequest page = PageRequest.of(1, 3, Sort.by(Sort.Direction.DESC, "artwork_id"));
-//        Page<Artwork> allArtworksPage = artworkRepository.findAll(page);
-//
-//        List<Artwork> allArtworks = allArtworksPage.getContent();
-//        System.out.println(allArtworksPage.getTotalElements() + "총 개수");
+
         List<ArtworkResponseDto> artworkResponseDtoList = new ArrayList<>();
 
         for(int i=0;i<allArtworks.size();i++) {
@@ -505,6 +501,26 @@ public class ArtworkService {
 //        //여기까지 하면 내가 좋아하는 장르 중 좋아요,댓글 없는것 정렬 완료
 //        //내가 좋아하지 않는 장르 중 좋아요, 댓글 없는것 정렬 완료
 
+        for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++)
+        {
+            Artwork targetArtwork = notLikeAndCommentArtworksInGenre.get(i);
+            System.out.println("게시글제목 : " + targetArtwork.getTitle());
+            System.out.println("조회수 : " + targetArtwork.getView_count());
+            System.out.println("좋아요 수 : " + targetArtwork.getLike_count());
+            System.out.println("댓글 수 : " + targetArtwork.getComments().size());
+            System.out.println("-------------------------------------------");
+        }
+        System.out.println("여기서부터 비장르");
+        for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++)
+        {
+            Artwork targetArtwork = notLikeAndCommentArtworksNotInGenre.get(i);
+            System.out.println("게시글제목 : " + targetArtwork.getTitle());
+            System.out.println("조회수 : " + targetArtwork.getView_count());
+            System.out.println("좋아요 수 : " + targetArtwork.getLike_count());
+            System.out.println("댓글 수 : " + targetArtwork.getComments().size());
+            System.out.println("-------------------------------------------");
+        }
+
         int likeCnt = 0;
 
         int inGenreIdx = 0, notInGenreIdx = 0;
@@ -606,13 +622,6 @@ public class ArtworkService {
             }
 
             else {
-//                for(int i=0;i<notLikeAndCommentArtworksInGenre.size();i++) {
-//                    notLikeAndCommentArtworksInGenre.get(i).updateIsRecommend(false);
-//                }
-//
-//                for(int i=0;i<notLikeAndCommentArtworksNotInGenre.size();i++) {
-//                    notLikeAndCommentArtworksNotInGenre.get(i).updateIsRecommend(false);
-//                }
                 targetUser.changeRecommandList(new ArrayList<>());
                 break;
             }
@@ -663,5 +672,59 @@ public class ArtworkService {
                 .totalCount(result.size())
                 .build();
         return artworkPageDto;
+    }
+
+    public List<ArtworkResponseDto> getArtworkInGenre(List<String> genre) {
+        List<Long> targetList = new ArrayList<>();
+
+        List<Artwork> allList = artworkRepository.findAll();
+        for(int i=0;i<genre.size();i++) {
+            String targetGenre = genre.get(i);
+            for(int j=0;j<allList.size();j++) {
+                Artwork targetArtwork = allList.get(j);
+
+                if(targetArtwork.getGenre().contains(targetGenre)) {
+                    if(!(targetList.contains(targetArtwork.getArtwork_id()))) {
+                        targetList.add(targetArtwork.getArtwork_id());
+                    }
+                }
+            }
+        }
+
+        List<ArtworkResponseDto> artworkResponseDtoList = new ArrayList<>();
+
+        for(int i=0;i<targetList.size();i++) {
+            Artwork targetArtwork = artworkRepository.findByArtwork_id(targetList.get(i));
+
+            User sellUser = targetArtwork.getSell_user();
+            Profile sellUserProfile = profileRepository.findByNickname(sellUser.getNickname());
+
+            List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
+            for (int j = 0; j < targetArtwork.getAttachment_list().size(); j++)
+            {       attachmentRequestDtoList.add(AttachmentRequestDto.builder()
+                    .type(targetArtwork.getAttachment_list().get(j).getType())
+                    .url(targetArtwork.getAttachment_list().get(j).getUrl())
+                    .build()
+            );
+            }
+
+            artworkResponseDtoList.add(ArtworkResponseDto.builder()
+                    .sell_user_email(sellUser.getEmail())
+                    .profile_picture(sellUserProfile.getProfile_picture_url())
+                    .createdDate(targetArtwork.getCreatedDate())
+                    .description(targetArtwork.getDescription())
+                    .artwork_id(targetArtwork.getArtwork_id())
+                    .sell_user_nickname(sellUser.getNickname())
+                    .title(targetArtwork.getTitle())
+                    .view_count(targetArtwork.getView_count())
+                    .price(targetArtwork.getPrice())
+                    .genre(targetArtwork.getGenre())
+                    .ingredient(targetArtwork.getIngredient())
+                    .attachmentRequestDtoList(attachmentRequestDtoList)
+                    .is_sell(targetArtwork.getIs_sell())
+                    .build());
+        }
+
+        return artworkResponseDtoList;
     }
 }

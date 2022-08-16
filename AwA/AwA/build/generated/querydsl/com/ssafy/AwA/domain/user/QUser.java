@@ -48,7 +48,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final com.ssafy.AwA.domain.profile.QProfile profile;
 
-    public final ListPath<Long, NumberPath<Long>> recommandArtworks = this.<Long, NumberPath<Long>>createList("recommandArtworks", Long.class, NumberPath.class, PathInits.DIRECT2);
+    public final ListPath<Long, NumberPath<Long>> recommendArtworks = this.<Long, NumberPath<Long>>createList("recommendArtworks", Long.class, NumberPath.class, PathInits.DIRECT2);
 
     public final StringPath refreshToken = createString("refreshToken");
 

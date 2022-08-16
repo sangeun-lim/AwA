@@ -44,7 +44,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        System.out.println("실행해줘");
         httpSecurity.httpBasic().disable() //UI를 사용하는 것을 기본값으로 가진 시큐리티 설정을 비활성화
                 .csrf().disable() //csrf보안은 REST API에서 필요없어서 끔... 맞나?
                 .sessionManagement()

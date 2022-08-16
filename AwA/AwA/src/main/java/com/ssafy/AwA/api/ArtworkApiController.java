@@ -74,10 +74,14 @@ public class ArtworkApiController {
         return artworkService.getOnlyFollowingArtworksList(userEmail,pageNo);
     }
 
-    @GetMapping("recommend/{userEmail}")
-    public ArtworkPageDto getRecommandArtworks(@PathVariable("userEmail") String userEmail) {
+    @GetMapping("/recommend/{userEmail}")
+    public ArtworkPageDto getRecommendArtworks(@PathVariable("userEmail") String userEmail) {
         return artworkService.getRecommandArtworks(userEmail);
     }
 
+    @PostMapping("/genre")
+    public List<ArtworkResponseDto> getArtworkInGenre(@RequestBody List<String> genre) {
+        return artworkService.getArtworkInGenre(genre);
+    }
 
 }
