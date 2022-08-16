@@ -27,7 +27,6 @@ function AuctionDetailOrUpdate(): JSX.Element {
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
-
   const onListClick = () => {
     navigate("/auction");
   };
