@@ -8,7 +8,7 @@
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
-  /* align-items: center; */
+  align-items: center;
   z-index: 1;
 }
 
@@ -27,8 +27,7 @@
 .followModalBody {
   position: sticky;
   padding: 40px;
-  height: 50%;
-  top: 100px;
+  height: 700px;
   text-align: center;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
@@ -67,7 +66,8 @@ input[name="followTabmenu"] {
 .followtabInner {
   position: relative;
   overflow: hidden;
-  height: 300px;
+  height: 85%;
+  overflow-y: auto;
 }
 
 .followTabs {
@@ -118,6 +118,11 @@ input[id="followings"]:checked ~ .followTabmenu .followings {
 .followListName {
   margin: 15px;
   white-space: nowrap;
+  cursor: pointer;
+}
+
+.followListName:hover {
+  color: rgb(231, 115, 92);
 }
 
 /* button */

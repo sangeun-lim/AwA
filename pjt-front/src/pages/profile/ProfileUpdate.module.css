@@ -8,7 +8,7 @@
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
-  /* align-items: center; */
+  align-items: center;
   z-index: 1;
 }
 
@@ -40,7 +40,6 @@
 
 .updateModalBody {
   position: sticky;
-  top: 100px;
   padding: 30px 40px;
   text-align: center;
   background-color: rgb(255, 255, 255);
