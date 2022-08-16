@@ -117,6 +117,43 @@ public class SignService {
         return signInResultDto;
     }
 
+    public SignInResultDto signIn2(String email, String password) throws RuntimeException {
+        logger.info("[getSignInResult] signDataHandler로 회원 정보 요청");
+        User user = userRepository.findByEmail(email);
+        logger.info("[getSignInResult] Email : {} ",email);
+
+        logger.info("[getSignInResult] 패스워드 비교 수행");
+        if(!(email == password)) {
+            logger.info("비밀번호 안맞아요 !!!!!!!!!");
+            logger.info("비밀번호 안맞아요 !!!!!!!!!");
+            logger.info("비밀번호 안맞아요 !!!!!!!!!");
+            logger.info("비밀번호 안맞아요 !!!!!!!!!");
+            throw new RuntimeException();
+        }
+        logger.info("[getSignInResult] 패스워드 일치");
+
+        logger.info("[getSignInResult] SignInResultDto 생성");
+        String accessToken = jwtTokenProvider.createToken(String.valueOf(user.getEmail()), user.getRoles());
+        String refreshToken = jwtTokenProvider.createRefreshToken(String.valueOf(user.getEmail()), user.getRoles());
+
+        //반환값은 액세스토큰
+        SignInResultDto signInResultDto = SignInResultDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        //리프레시 토큰은 테이블에 저장
+        user.giveToken(refreshToken);
+
+        logger.info("[refreshToken 값] "+refreshToken);
+        logger.info("[accessToken 값] "+accessToken);
+        //user.giveToken(signInResultDto.getToken());
+        logger.info("[getSignInResult] SignInResultDto 객체에 값 주입");
+        setSuccessResult(signInResultDto);
+
+        return signInResultDto;
+    }
+
     private void setSuccessResult(SignUpResultDto result) {
         result.setSuccess(true);
         result.setCode(CommonResponse.SUCCESS.getCode());
