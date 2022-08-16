@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import api from "../../api/api";
 import { dbService } from "../../fbase";
 import { MyChatList, User } from "../../Interface";
-import { firstChatActions } from "../../store";
 import style from "./ChatList.module.css";
 import ChatListItem from "./ChatListItem";
 import socketIOClient from "socket.io-client";
@@ -17,9 +16,7 @@ function ChatList(): JSX.Element {
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );
-  const chatPartner = useSelector(
-    (state: { chatPartner: string }) => state.chatPartner
-  );
+
   const [chatList, setChatList] = useState<MyChatList[]>([]);
 
   const getChatList = async () => {
@@ -37,11 +34,6 @@ function ChatList(): JSX.Element {
     const midChatList: MyChatList[] = myChatList.docs.map((doc) => {
       // 각 채팅방 정보
       const chatRoom: MyChatList = { ...doc.data(), id: doc.id };
-
-      // 만약 채팅 상대와의 채팅방이 이미 존재한다면 채팅방을 만들 필요가 없다.
-      if (chatPartner === doc.data().partnerEmail) {
-        dispatch(firstChatActions.isNotFirst());
-      }
 
       // userEmailList에 상대 이메일을 모두 담는다.
       userEmailList.push(doc.data().partnerEmail);

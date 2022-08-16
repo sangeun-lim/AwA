@@ -7,7 +7,7 @@ import FindPw from "../pages/auth/FindPw";
 import Profile from "../pages/profile/Profile";
 import Chatting from "../pages/chatting/Chatting";
 import Auction from "../pages/auction/Auction";
-import AuctionDetailOrUpdate from "../pages/auction/AuctionDetailOrUpdate";
+import AuctionDetailOrUpdate from "../pages/auction/AuctionDetail";
 import AuctionCreate from "../pages/auction/AuctionCreate";
 import Notice from "../pages/notice/Notice";
 import NoticeDetailAndEdit from "../pages/notice/NoticeDetailAndEdit";
@@ -19,6 +19,7 @@ import Navigation from "./Navigation";
 import OnSocialLogin from "./../pages/auth/OnSocialLogin";
 import ChangePw from "../pages/auth/ChangePw";
 import DeleteUser from "../pages/auth/DeleteUser";
+
 interface Props {
   getUserData: Function;
 }
