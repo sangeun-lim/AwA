@@ -62,9 +62,8 @@ function LoggedInHome() {
     try {
       const response = await api.artwork.getRecommends(userObject.email);
 
+      setItems((prev) => prev.concat(response.data.artworkResponseDto));
       if (response.data.totalCount < 12) {
-        setItems((prev) => prev.concat(response.data.artworkResponseDto));
-      } else {
         setIsLast(true);
       }
       setTimeout(() => {
@@ -80,6 +79,7 @@ function LoggedInHome() {
   useEffect(() => {
     /* eslint-disable */
     getOnlyFollowItems();
+    getRecommends();
   }, []);
 
   useEffect(() => {

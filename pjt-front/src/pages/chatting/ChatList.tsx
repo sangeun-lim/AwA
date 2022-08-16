@@ -23,47 +23,58 @@ function ChatList(): JSX.Element {
   const [chatList, setChatList] = useState<MyChatList[]>([]);
 
   const getChatList = async () => {
+    // 내 채팅 리스트들을 불러오자
     const q = query(
       collection(dbService, "ChattingRoom"),
       where("myEmail", "==", userObject.email),
       orderBy("recentlyDate", "desc")
     );
-
     const myChatList = await getDocs(q);
 
+    // 내 채팅 리스트에 존재하는 유저들의 이메일을 담는 배열 선언
     const userEmailList: string[] = [];
+    // 이미 존재하는 내 채팅방들을 전체 순회하면서
     const midChatList: MyChatList[] = myChatList.docs.map((doc) => {
+      // 각 채팅방 정보
       const chatRoom: MyChatList = { ...doc.data(), id: doc.id };
 
+      // 만약 채팅 상대와의 채팅방이 이미 존재한다면 채팅방을 만들 필요가 없다.
       if (chatPartner === doc.data().partnerEmail) {
         dispatch(firstChatActions.isNotFirst());
       }
 
+      // userEmailList에 상대 이메일을 모두 담는다.
       userEmailList.push(doc.data().partnerEmail);
       return chatRoom;
     });
 
-    const response = await api.chatting.getUserList(userEmailList);
+    // 이메일 배열을 바탕으로
+    if (userEmailList.length > 0) {
+      // 유저들의 닉네임과 프사를 받아온다.
+      const response = await api.chatting.getUserList(userEmailList);
 
-    if (response.status === 200) {
+      // 각 채팅방에 유저의 프사와 닉네임을 넣어준다.
       const chattingList: MyChatList[] = [];
       for (let i = 0; i < midChatList.length; i++) {
         chattingList.push({ ...midChatList[i], ...response.data[i] });
       }
 
+      // 채팅방 상태를 변경한다.
       setChatList(chattingList);
     }
   };
 
   useEffect(() => {
-    if (userObject) {
+    if (userObject?.email) {
       /* eslint-disable */
       getChatList();
     }
-  }, [userObject]);
+  }, [userObject?.email]);
 
   useEffect(() => {
-    SOCKET.emit("enter_room", userObject?.email);
+    if (userObject?.email) {
+      SOCKET.emit("enter_room", userObject.email);
+    }
   }, [userObject?.email]);
 
   useEffect(() => {
@@ -72,25 +83,21 @@ function ChatList(): JSX.Element {
 
       setChatList((prev) => {
         return prev.filter((chat) => {
-          if (chat.partnerEmail === data.sender) {
+          if (
+            chat.partnerEmail === data.sender ||
+            chat.partnerEmail === data.receiver
+          ) {
             topChat.id = chat.id;
             topChat.createdDate = chat.createdDate;
             topChat.nickname = chat.nickname;
             topChat.profile_picture_url = chat.profile_picture_url;
             topChat.recentlyDate = data.createdDate;
             topChat.recentlyMessage = data.message;
-            topChat.partnerEmail = data.sender;
-            topChat.unReadChatCount = chat.unReadChatCount
-              ? chat.unReadChatCount + 1
-              : 1;
-          } else if (chat.partnerEmail === data.receiver) {
-            topChat.id = chat.id;
-            topChat.createdDate = chat.createdDate;
-            topChat.nickname = chat.nickname;
-            topChat.profile_picture_url = chat.profile_picture_url;
-            topChat.recentlyDate = data.createdDate;
-            topChat.recentlyMessage = data.message;
-            topChat.partnerEmail = data.receiver;
+            if (chat.partnerEmail === data.sender) {
+              topChat.partnerEmail = data.sender;
+            } else if (chat.partnerEmail === data.receiver) {
+              topChat.partnerEmail = data.receiver;
+            }
           }
 
           return (
@@ -100,19 +107,21 @@ function ChatList(): JSX.Element {
         });
       });
 
-      if (!topChat?.createdDate) {
-        const response = await api.chatting.getUserList([chatPartner]);
-        topChat.nickname = response.data[0].nickname;
-        topChat.profile_picture_url = response.data[0].profile_picture_url;
-        topChat.createdDate = data.createdDate;
-        topChat.recentlyDate = data.createdData;
-        topChat.recentlyMessage = data.message;
+      if (!topChat?.nickname) {
         if (userObject?.email === data.sender) {
           topChat.partnerEmail = data.receiver;
-          topChat.unReadChatCount = 0;
         } else {
           topChat.partnerEmail = data.sender;
-          topChat.unReadChatCount = 1;
+        }
+        if (topChat.partnerEmail) {
+          const response = await api.chatting.getUserList([
+            topChat.partnerEmail,
+          ]);
+          topChat.nickname = response.data[0]?.nickname;
+          topChat.profile_picture_url = response.data[0]?.profile_picture_url;
+          topChat.createdDate = data.createdDate;
+          topChat.recentlyDate = data.createdData;
+          topChat.recentlyMessage = data.message;
         }
       }
 
@@ -129,13 +138,7 @@ function ChatList(): JSX.Element {
       </div>
       <div className={style.Body}>
         {chatList.map((item) => {
-          return (
-            <ChatListItem
-              item={item}
-              setChatList={setChatList}
-              key={item.partnerEmail}
-            />
-          );
+          return <ChatListItem item={item} key={item.partnerEmail} />;
         })}
       </div>
     </div>

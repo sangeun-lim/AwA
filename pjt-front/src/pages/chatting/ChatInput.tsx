@@ -25,6 +25,7 @@ function ChatInput() {
   const chatPartner = useSelector(
     (state: { chatPartner: string }) => state.chatPartner
   );
+  // 현재 채팅 상대와 처음으로 채팅하는가?
   const isFirst = useSelector((state: { isFirst: boolean }) => state.isFirst);
 
   const [message, setMessage] = useState<string>("");
@@ -37,6 +38,7 @@ function ChatInput() {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // 채팅방 이름지정
     const roomName = [userObject.email, chatPartner];
     roomName.sort();
     const realRoomName: string = roomName[0] + roomName[1];
@@ -49,31 +51,9 @@ function ChatInput() {
       roomName: realRoomName,
     };
 
-    await addDoc(collection(dbService, "Chatting"), newMessage);
-
     SOCKET.emit("send message", newMessage, realRoomName);
 
-    if (isFirst) {
-      await addDoc(collection(dbService, "ChattingRoom"), {
-        myEmail: userObject.email,
-        partnerEmail: chatPartner,
-        createdDate: Date.now(),
-        recentlyDate: Date.now(),
-        recentlyMessage: message,
-        unReadChatCount: 0,
-      });
-
-      await addDoc(collection(dbService, "ChattingRoom"), {
-        myEmail: chatPartner,
-        partnerEmail: userObject.email,
-        createdDate: Date.now(),
-        recentlyDate: Date.now(),
-        recentlyMessage: message,
-        unReadChatCount: 0,
-      });
-
-      dispatch(firstChatActions.isNotFirst());
-    }
+    await addDoc(collection(dbService, "Chatting"), newMessage);
 
     const q = query(
       collection(dbService, "ChattingRoom"),
@@ -83,11 +63,32 @@ function ChatInput() {
 
     const response = await getDocs(q);
 
-    response.docs.forEach(async (document) => {
+    if (response.docs.length === 0) {
+      await addDoc(collection(dbService, "ChattingRoom"), {
+        myEmail: userObject.email,
+        partnerEmail: chatPartner,
+        createdDate: newMessage.createdDate,
+        recentlyDate: newMessage.createdDate,
+        recentlyMessage: message,
+      });
+
+      await addDoc(collection(dbService, "ChattingRoom"), {
+        myEmail: chatPartner,
+        partnerEmail: userObject.email,
+        createdDate: newMessage.createdDate,
+        recentlyDate: newMessage.createdDate,
+        recentlyMessage: message,
+      });
+
+      dispatch(firstChatActions.isNotFirst());
+    }
+
+    const response3 = await getDocs(q);
+
+    response3.docs.forEach(async (document) => {
       await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
         recentlyMessage: message,
         recentlyDate: newMessage.createdDate,
-        unReadChatCount: 0,
       });
     });
 
@@ -103,12 +104,12 @@ function ChatInput() {
       await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
         recentlyMessage: message,
         recentlyDate: newMessage.createdDate,
-        unReadChatCount: document.data().unReadChatCount + 1,
       });
     });
 
     setMessage("");
   };
+
   return (
     <form onSubmit={onSubmit} className={style.Footer}>
       <input
