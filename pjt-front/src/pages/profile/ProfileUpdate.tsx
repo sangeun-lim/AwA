@@ -1,5 +1,6 @@
 import { uuidv4 } from "@firebase/util";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { divide } from "lodash";
 import React, { ChangeEvent, Dispatch, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import api from "../../api/api";
@@ -39,6 +40,7 @@ function ProfileUpdate({
   const [showImage, setShowImage] = useState<string>(profileObject.picture_url);
   const [newImage, setNewImage] = useState<File | null>(null);
   const [isPossible, setIsPossible] = useState<string | boolean>(false);
+  const [nicknameComment, setNicknameComment] = useState<boolean>(false);
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -62,6 +64,8 @@ function ProfileUpdate({
     if (response.status === 200 && response.data === 1) {
       setIsPossible(editForm.nickname);
     }
+
+    setNicknameComment(true);
   };
 
   const onFavoriteChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -138,6 +142,7 @@ function ProfileUpdate({
     if (editForm.nickname !== isPossible) {
       setIsPossible(false);
     }
+    setNicknameComment(false);
   }, [editForm.nickname, isPossible]);
 
   return (
@@ -179,17 +184,35 @@ function ProfileUpdate({
               <button onClick={onBaseClick}>기본 이미지</button>
             </div>
             <div className={style.profileInfo}>
-              <div className={style.nicknameChange}>
-                <div>닉네임</div>
-                <input
-                  type="text"
-                  name="nickname"
-                  value={editForm.nickname}
-                  onChange={onChange}
-                  required
-                />
-                <button onClick={checkNickname}>중복 확인</button>
-                {isPossible && <p>사용 가능한 닉네임입니다.</p>}
+              <div className={style.nicknameChangeBox}>
+                <div className={style.nicknameChange}>
+                  <div>닉네임</div>
+                  <input
+                    type="text"
+                    name="nickname"
+                    value={editForm.nickname}
+                    onChange={onChange}
+                    required
+                  />
+                  <button onClick={checkNickname}>중복 확인</button>
+                </div>
+                {nicknameComment && (
+                  <div>
+                    {profileObject.nickname === editForm.nickname ? (
+                      <div className={style.nicknameComment}>
+                        이전에 사용하던 닉네임입니다.
+                      </div>
+                    ) : isPossible ? (
+                      <div className={style.nicknameComment}>
+                        사용 가능한 닉네임입니다.
+                      </div>
+                    ) : (
+                      <div className={style.nicknameComment}>
+                        중복된 닉네임입니다.
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <div className={style.descriptionChange}>
                 <div className={style.profileLabel}>소개글</div>

@@ -8,7 +8,7 @@
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   z-index: 1;
 }
 
@@ -24,10 +24,24 @@
   }
 }
 
+@media (max-height: 1125px) {
+  .updateModalBody {
+    height: 80%;
+    overflow-y: auto;
+  }
+}
+
+@media (min-height: 1126px) {
+  .updateModalBody {
+    height: 900px;
+    overflow-y: auto;
+  }
+}
+
 .updateModalBody {
   position: sticky;
-  padding: 40px;
   top: 100px;
+  padding: 30px 40px;
   text-align: center;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
@@ -95,11 +109,15 @@
   margin: 20px 0;
 }
 
+.nicknameChangeBox {
+  display: flex;
+  flex-direction: column;
+}
+
 .nicknameChange {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
   width: 100%;
   padding: 0 10px;
 }
@@ -127,6 +145,14 @@
   white-space: nowrap;
 }
 
+.nicknameComment {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 80px;
+  font-size: 13px;
+  color: rgb(231, 115, 92);
+}
+
 .descriptionChange {
   display: flex;
   flex-direction: column;
@@ -142,7 +168,6 @@
 
 .description {
   margin: 0 20px;
-  width: 100%;
   border: none;
   border-bottom: 1px solid rgb(200, 200, 200);
   height: 200px;
