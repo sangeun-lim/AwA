@@ -64,7 +64,6 @@ function Login({ getUserData }: Props): JSX.Element {
     navigate("/auth/signup");
   };
 
-
   const moveFindPw = async (e: any) => {
     e.preventDefault();
     navigate("/auth/findpw");
@@ -131,13 +130,11 @@ function Login({ getUserData }: Props): JSX.Element {
               </button>
             </div>
 
-
             <button
               type="button"
-              onClick={moveFindFw}
+              onClick={moveFindPw}
               className={style.loginSubmit}
             >
-
               <div className={style.loginSubmitContent}>비밀번호찾기</div>
             </button>
             <br />
