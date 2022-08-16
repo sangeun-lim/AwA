@@ -216,7 +216,7 @@ function AuctionCreate(): JSX.Element {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        if (window.confirm("사진뺄거야?")) {
+                        if (window.confirm("사진을 삭제하시겠습니까?")) {
                           handleDeleteImage(id);
                         }
                       }}
