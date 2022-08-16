@@ -86,6 +86,16 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             profileRepository.save(profile);
 
         }
+        else{
+            System.out.println("소셜로그인할건데 이미 회원가입되어있는 메일이야");
+            System.out.println(email);
+
+            signService.signIn2(email, email); //이메일 있으면 로그인처리
+
+
+
+            return new PrincipalDetails(findUser, oauth2UserInfo);
+        }
         System.out.println("순서확인1");
         User user = userRepository.findByEmail(email);
 
