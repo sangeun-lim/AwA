@@ -45,6 +45,7 @@
   height: 30px;
   border-radius: 100%;
   background-color: rgb(200, 200, 200);
+  margin-right: 7px;
 }
 
 .commentContent {
@@ -115,4 +116,10 @@
 .userName {
   text-decoration: none;
   color: black;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.userName:hover {
+  color: rgb(231, 115, 92);
 }
