@@ -35,10 +35,3 @@
   width: 70%;
   padding: 20px 40px;
 }
-
-.slide {
-  /* animation: infinity-loop 100s infinite linear; */
-  transition: transform 3s ease-in;
-  display: flex;
-  list-style: none;
-}
