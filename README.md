@@ -20,4 +20,4 @@ jenkins
 
 서비스 아키텍처
 
-![image](/uploads/a2020eaa27d06feb7fae6666ab9b9f87/image.png)
+![image](/uploads/998e564f9bd45028c1c07d21d6f5d88e/image.png)
