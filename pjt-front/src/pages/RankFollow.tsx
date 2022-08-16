@@ -58,7 +58,7 @@ function RankFollow(): JSX.Element {
                     to={`/profile/${item.email}`}
                     className={style.moveLink}
                   >
-                    {item.nickname}
+                    <div>{item.nickname}</div>
                   </NavLink>
                 </span>
               </li>

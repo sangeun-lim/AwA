@@ -31,22 +31,33 @@
   top: 500px;
 }
 
-.startEffect {
-  animation: loadEffect2 0.5s ease-in-out;
+.followEffect {
+  animation: loadEffect 1s ease-in-out;
+}
+
+.rankEffect {
+  animation: loadEffect2 1s ease-in-out;
+}
+
+@keyframes loadEffect {
+  from {
+    opacity: 0;
+    transform: translateX(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes loadEffect2 {
-  0% {
+  from {
     opacity: 0;
-    transform: translateX(-50px);
+    transform: translateX(-10%);
   }
-  50% {
-    opacity: 0.5;
-    transform: translateX(-25px);
-  }
-  100% {
+  to {
     opacity: 1;
-    transform: translateX(0px);
+    transform: translateX(0);
   }
 }
 
