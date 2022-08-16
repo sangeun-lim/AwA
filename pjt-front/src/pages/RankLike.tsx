@@ -45,7 +45,7 @@ function RankLike(): JSX.Element {
                     to={`/auction/detail/${item.artwork_id}`}
                     className={style.moveLink}
                   >
-                    {item.title}
+                    <div>{item.title}</div>
                   </NavLink>
                 </span>
               </li>
