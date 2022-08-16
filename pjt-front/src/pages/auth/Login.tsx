@@ -40,7 +40,6 @@ function Login({ getUserData }: Props): JSX.Element {
       alert("아이디와 비밀번호가 맞는지 확인해주세요!");
       dispatch(loadingActions.toggle());
       console.error(err);
-      alert("아이디와 비밀번호를 확인해주세요.");
     }
   };
 
