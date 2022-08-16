@@ -2,8 +2,11 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
 import style from "./ChangePw.module.css";
+import { useDispatch } from "react-redux";
+import { loadingActions } from "./../../store";
 
 function ChangePw(): JSX.Element {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [pw, setPw] = useState<string>("");
   const [checkPw, setCheckPw] = useState<boolean>(false);
@@ -19,13 +22,21 @@ function ChangePw(): JSX.Element {
   useEffect(() => {}, [pw]);
 
   const checkPassword = async () => {
-    const response = await api.auth.checkPassword(userEmail, pw);
-    console.log(response);
-    if (response.data === 1) {
-      setCheckPw(true);
-      alert("확인되었습니다.");
-    } else {
-      alert("비밀번호가 틀립니다.");
+    dispatch(loadingActions.toggle());
+    try {
+      const response = await api.auth.checkPassword(userEmail, pw);
+      if (response.data === 1) {
+        setCheckPw(true);
+        alert("확인되었습니다.");
+        dispatch(loadingActions.toggle());
+      } else {
+        alert("비밀번호가 틀립니다.");
+        dispatch(loadingActions.toggle());
+      }
+    } catch (err) {
+      console.error(err);
+      alert("비밀번호 변경 시도를 실패했습니다.");
+      dispatch(loadingActions.toggle());
     }
   };
 

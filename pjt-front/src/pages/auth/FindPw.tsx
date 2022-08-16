@@ -1,9 +1,12 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loadingActions } from "./../../store";
 import api from "../../api/api";
 import style from "./FindPw.module.css";
 
 function FindPw(): JSX.Element {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [id, setId] = useState<string>("");
@@ -30,8 +33,17 @@ function FindPw(): JSX.Element {
   };
 
   const checkEmailButton = async () => {
-    const response = await api.auth.email(id);
-    setCe(response.data);
+    dispatch(loadingActions.toggle());
+
+    try {
+      const response = await api.auth.email(id);
+      setCe(response.data);
+      dispatch(loadingActions.toggle());
+    } catch (err) {
+      console.error(err);
+      alert("이메일 인증 코드 전송에 실패했습니다.");
+      dispatch(loadingActions.toggle());
+    }
   };
 
   const changePassword = async () => {

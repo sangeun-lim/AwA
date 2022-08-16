@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { userObjectActions } from "../../store";
 import { useNavigate, useParams } from "react-router-dom";
+import { loadingActions } from "./../../store";
 import api from "../../api/api";
 import style from "./DeleteUser.module.css";
 
@@ -17,9 +18,17 @@ const DeleteUser = (): JSX.Element => {
   const [secondPass, setSecondPass] = useState<boolean>(false);
 
   const checkEmailButton = async () => {
-    const response = await api.auth.email(userEmail);
-    if (response.status === 200) {
-      setCe(response.data);
+    dispatch(loadingActions.toggle());
+    try {
+      const response = await api.auth.email(userEmail);
+      if (response.status === 200) {
+        setCe(response.data);
+        dispatch(loadingActions.toggle());
+      }
+    } catch (err) {
+      console.error(err);
+      alert("이메일 인증 시도를 실패했습니다.");
+      dispatch(loadingActions.toggle());
     }
   };
 
