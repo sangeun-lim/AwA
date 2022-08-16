@@ -119,7 +119,6 @@ export interface MyChatList {
   createdDate?: number;
   recentlyDate?: string;
   recentlyMessage?: string;
-  unReadChatCount?: number;
 }
 
 // 채팅메시지 Object
