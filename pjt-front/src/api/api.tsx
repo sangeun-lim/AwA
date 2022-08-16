@@ -269,6 +269,13 @@ const api = {
       });
       return response;
     },
+    sellArtwork: async (artwork_id: string) => {
+      const response = await axios({
+        url: rf.artwork.sellArtwork(artwork_id),
+        method: "put",
+      });
+      return response;
+    },
   },
 
   profile: {

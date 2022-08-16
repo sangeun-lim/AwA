@@ -42,6 +42,7 @@ const rf = {
     getRecommends: (userEmail: string) =>
       HOST + ARTWORK + `recommend/${userEmail}`,
     getArtworkInGenre: () => HOST + ARTWORK + "genre",
+    sellArtwork: (artwork_id: string) => HOST + ARTWORK + `sell/${artwork_id}`,
   },
 
   profile: {

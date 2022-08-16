@@ -14,7 +14,11 @@ import { ArtworkItem, User, editItem } from "../../Interface";
 import { itemDefaultData } from "../../defaultData";
 import api from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
-import { loadingActions } from "../../store";
+import {
+  chatPartnerActions,
+  firstChatActions,
+  loadingActions,
+} from "../../store";
 import ReportModal from "./ReportModal";
 import CommentForm from "./CommentForm";
 import style from "./AuctionCreateUpdate.module.css";
@@ -66,6 +70,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
     price: item.price,
     ingredient: item.ingredient,
     description: item.description,
+    is_sell: item.is_sell,
   });
 
   // 수정용 이미지
@@ -136,6 +141,22 @@ function AuctionDetailOrUpdate(): JSX.Element {
     setGenresList((prev) => {
       const newGenreList = prev.filter((genre) => genre !== item);
       return newGenreList;
+    });
+  };
+
+  const goChat = () => {
+    dispatch(chatPartnerActions.setPartner(item.sell_user_email));
+    dispatch(firstChatActions.isFirst());
+    navigate("/chatting");
+  };
+
+  const isSell = async () => {
+    const response = await api.artwork.sellArtwork(item.artwork_id);
+    setItem((prev) => {
+      return {
+        ...prev,
+        is_sell: response.data,
+      };
     });
   };
 
@@ -321,6 +342,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
       price: item.price,
       ingredient: item.ingredient,
       description: item.description,
+      is_sell: item.is_sell,
     });
 
     setGenresList(item.genre);
@@ -435,6 +457,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
                     <option value="기타">기타</option>
                   </select>
                 </div>
+
                 <div className={style.selectList}>
                   {genresList &&
                     genresList.map((item, i) => (
@@ -446,6 +469,33 @@ function AuctionDetailOrUpdate(): JSX.Element {
                       </div>
                     ))}
                 </div>
+
+                <div>
+                  <div>판매여부</div>
+                  <div>
+                    <input
+                      name="isSell"
+                      id="sale"
+                      type="radio"
+                      value={item.is_sell}
+                      onChange={onChange}
+                      onClick={isSell}
+                    />
+                    <label htmlFor="sale">판매 중</label>
+                  </div>
+                  <div>
+                    <input
+                      name="isSell"
+                      id="sold"
+                      type="radio"
+                      value={item.is_sell}
+                      onChange={onChange}
+                      onClick={isSell}
+                    />
+                    <label htmlFor="sold">판매 완료</label>
+                  </div>
+                </div>
+
                 <div className={style.inputContainer}>
                   <input
                     name="ingredient"
@@ -499,6 +549,12 @@ function AuctionDetailOrUpdate(): JSX.Element {
                 <p className={style.detailLike}>
                   <button>❤</button> {item.like_count}
                 </p>
+              )}
+
+              {userObject && userObject.email !== item.sell_user_email && (
+                <button onClick={goChat} className={style.chatBtn}>
+                  판매자와 채팅하기
+                </button>
               )}
               {userObject && <ReportModal artworkId={address} />}
             </div>
@@ -566,6 +622,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
                   <p>{item.ingredient}</p>
                 </div>
               </div>
+
               <div className={style.detailBox}>
                 <div>상세 정보</div>
                 <p>{item.description}</p>
