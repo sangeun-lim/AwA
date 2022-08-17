@@ -693,7 +693,7 @@ public class ArtworkService {
 
         List<ArtworkResponseDto> artworkResponseDtoList = new ArrayList<>();
 
-        for(int i=0;i<targetList.size();i++) {
+        for(int i=targetList.size()-1;i>=0;i--) {
             Artwork targetArtwork = artworkRepository.findByArtwork_id(targetList.get(i));
 
             User sellUser = targetArtwork.getSell_user();
