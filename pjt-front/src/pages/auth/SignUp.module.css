@@ -217,7 +217,7 @@ a {
   background: rgb(231, 115, 92);
 }
 
-:before,
+/* :before,
 :after {
   content: "";
   width: 1px;
@@ -225,7 +225,7 @@ a {
   position: absolute;
   transition: all 0.2s linear;
   background: rgb(231, 115, 92);
-}
+} */
 
 .radioBtn:hover:before,
 .radioBtn:hover:after {
