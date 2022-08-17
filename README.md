@@ -120,7 +120,7 @@
 
 |                              디렉토리 구조                       |
 | :------------------------------------------------------------------------------: |
-| ![image](https://user-images.githubusercontent.com/8343301/154848775-fc6afad1-816a-44b9-bc07-e1ce2af2c5b4.png) |
+| ![treeFront](/uploads/91374d1e87785a7ad776c7690907ed66/treeFront.png) |
 
 <br />
 
