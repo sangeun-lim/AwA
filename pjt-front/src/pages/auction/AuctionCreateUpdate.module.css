@@ -305,10 +305,14 @@
   margin: 0;
 }
 
-.detailLike > button {
+.likeButton {
   background-color: white;
   border: none;
   color: red;
+}
+
+.likeHeart {
+  width: 23px;
 }
 
 @media (min-width: 1001px) {
