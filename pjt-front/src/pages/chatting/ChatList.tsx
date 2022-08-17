@@ -107,10 +107,10 @@ function ChatList(): JSX.Element {
           const response = await api.chatting.getUserList([
             topChat.partnerEmail,
           ]);
-          topChat.nickname = response.data[0]?.nickname;
-          topChat.profile_picture_url = response.data[0]?.profile_picture_url;
+          topChat.nickname = response.data[0].nickname;
+          topChat.profile_picture_url = response.data[0].profile_picture_url;
           topChat.createdDate = data.createdDate;
-          topChat.recentlyDate = data.createdData;
+          topChat.recentlyDate = data.createdDate;
           topChat.recentlyMessage = data.message;
         }
       }

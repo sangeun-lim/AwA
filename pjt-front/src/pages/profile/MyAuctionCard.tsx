@@ -10,8 +10,8 @@ function MyAuctionCard({ item }: { item: ArtworkList }): JSX.Element {
   const day = date.getDate();
 
   return (
-    <div className={style.myImageCard}>
-      <div className={style.myContainer}>
+    <div className={style.imageCard}>
+      <div className={style.container}>
         <img
           src={item.picture_url}
           alt="AuctionImg"
