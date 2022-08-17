@@ -368,6 +368,7 @@
   font-size: 20px;
   text-decoration: none;
   color: black;
+  font-weight: bold;
 }
 
 .userName:hover {
@@ -516,4 +517,16 @@
   cursor: pointer;
   margin-left: 10px;
   white-space: nowrap;
+}
+
+.sell {
+  font-size: 15px;
+  color: green;
+  margin-left: 3px;
+}
+
+.soldout {
+  font-size: 15px;
+  color: rgb(150, 150, 150);
+  margin-left: 3px;
 }
