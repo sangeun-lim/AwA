@@ -40,6 +40,10 @@ public class SearchService {
             allSearchByTitle = searchCustomRepository.findAllSearchByTitle4(title, searchRequestDto);
         else if (searchRequestDto.getGenre_count() == 5)
             allSearchByTitle = searchCustomRepository.findAllSearchByTitle5(title, searchRequestDto);
+        else if (searchRequestDto.getGenre_count() == 6)
+            allSearchByTitle = searchCustomRepository.findAllSearchByTitle6(title, searchRequestDto);
+        else if (searchRequestDto.getGenre_count() == 7)
+            allSearchByTitle = searchCustomRepository.findAllSearchByTitle7(title, searchRequestDto);
 
         List<ArtworkResponseDto> artworkResponseDtos = new ArrayList<>();
         for(int i=0;i<allSearchByTitle.size();i++) {
@@ -92,6 +96,10 @@ public class SearchService {
             allSearchByWriter = searchCustomRepository.findAllSearchByWriter4(writer, searchRequestDto);
         else if (searchRequestDto.getGenre_count() == 5)
             allSearchByWriter = searchCustomRepository.findAllSearchByWriter5(writer, searchRequestDto);
+        else if (searchRequestDto.getGenre_count() == 6)
+            allSearchByWriter = searchCustomRepository.findAllSearchByWriter6(writer, searchRequestDto);
+        else if (searchRequestDto.getGenre_count() == 7)
+            allSearchByWriter = searchCustomRepository.findAllSearchByWriter7(writer, searchRequestDto);
 
         List<ArtworkResponseDto> artworkResponseDtos = new ArrayList<>();
         for(int i=0;i<allSearchByWriter.size();i++) {

@@ -13,6 +13,8 @@ public interface SearchCustomRepository {
     List<Artwork> findAllSearchByTitle3(String keyword, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByTitle4(String keyword, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByTitle5(String keyword, SearchRequestDto searchRequestDto);
+    List<Artwork> findAllSearchByTitle6(String keyword, SearchRequestDto searchRequestDto);
+    List<Artwork> findAllSearchByTitle7(String keyword, SearchRequestDto searchRequestDto);
 
     List<Artwork> findAllSearchByWriter(String writer, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByWriter1(String writer, SearchRequestDto searchRequestDto);
@@ -20,4 +22,6 @@ public interface SearchCustomRepository {
     List<Artwork> findAllSearchByWriter3(String writer, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByWriter4(String writer, SearchRequestDto searchRequestDto);
     List<Artwork> findAllSearchByWriter5(String writer, SearchRequestDto searchRequestDto);
+    List<Artwork> findAllSearchByWriter6(String writer, SearchRequestDto searchRequestDto);
+    List<Artwork> findAllSearchByWriter7(String writer, SearchRequestDto searchRequestDto);
 }
