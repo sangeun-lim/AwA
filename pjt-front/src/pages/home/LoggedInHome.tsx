@@ -9,6 +9,7 @@ import { Masonry } from "@mui/lab";
 import AuctionCard from "../../component/AuctionCard";
 import { useInView } from "react-intersection-observer";
 import RankFollow from "../RankFollow";
+import TopButton from "../../component/TopButton";
 
 function LoggedInHome() {
   const dispatch = useDispatch();
@@ -120,6 +121,7 @@ function LoggedInHome() {
           <span>마지막 게시글 입니다</span>
         </div>
       )}
+      <TopButton></TopButton>
       <div ref={ref}>.</div>
     </>
   );
