@@ -24,9 +24,11 @@ function AuctionDetailOrUpdate(): JSX.Element {
 
   const [item, setItem] = useState<ArtworkItem>(itemDefaultData);
   const [onEdit, setOnEdit] = useState<boolean>(false);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
   const userObject = useSelector(
     (state: { userObject: User | null }) => state.userObject
   );
+
   const onListClick = () => {
     navigate("/auction");
   };
@@ -89,6 +91,16 @@ function AuctionDetailOrUpdate(): JSX.Element {
     }
   };
 
+  const checkUserLike = async () => {
+    if (userObject) {
+      const response = await api.like.checkLike(userObject.nickname, address);
+
+      if (response.data === 1) {
+        setIsLiked(true);
+      }
+    }
+  };
+
   const onLikeClick = async (e: any) => {
     e.preventDefault();
     if (userObject) {
@@ -100,6 +112,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
           "post"
         );
         if (likeResponse) {
+          setIsLiked(true);
           setItem((prev) => {
             return {
               ...prev,
@@ -114,6 +127,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
           "delete"
         );
         if (unLikeResponse) {
+          setIsLiked(false);
           setItem((prev) => {
             return {
               ...prev,
@@ -121,6 +135,14 @@ function AuctionDetailOrUpdate(): JSX.Element {
             };
           });
         }
+      }
+    } else {
+      const response = window.confirm(
+        "로그인해야 이용가능합니다. 로그인하시겠습니까?"
+      );
+
+      if (response) {
+        navigate("/auth/login");
       }
     }
   };
@@ -144,6 +166,10 @@ function AuctionDetailOrUpdate(): JSX.Element {
       dispatch(loadingActions.toggle());
     }
   }, [address, navigate, dispatch, onEdit]);
+
+  useEffect(() => {
+    checkUserLike();
+  }, [address, userObject]);
 
   // detailImage 변경
   const [bigPic, setBigPic] = useState<Element | null>(null);
@@ -184,16 +210,24 @@ function AuctionDetailOrUpdate(): JSX.Element {
           <div className={style.detailTop}>
             <div>조회수 : {item.view_count}</div>
             <div>
-              {userObject?.nickname ? (
-                <p className={style.detailLike}>
-                  <button onClick={onLikeClick}>❤</button>
-                  {item.like_count}
-                </p>
-              ) : (
-                <p className={style.detailLike}>
-                  <button>❤</button> {item.like_count}
-                </p>
-              )}
+              <div>
+                <button className={style.likeButton} onClick={onLikeClick}>
+                  {isLiked ? (
+                    <img
+                      className={style.likeHeart}
+                      src="img/heart.png"
+                      alt="like"
+                    />
+                  ) : (
+                    <img
+                      className={style.likeHeart}
+                      src="img/emptyheart.png"
+                      alt="unlike"
+                    />
+                  )}
+                </button>
+                <span className={style.detailLike}>{item.like_count}</span>
+              </div>
               {userObject && userObject.email !== item.sell_user_email && (
                 <button onClick={goChat} className={style.chatBtn}>
                   판매자와 채팅하기
