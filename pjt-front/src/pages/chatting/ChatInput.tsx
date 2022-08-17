@@ -49,6 +49,8 @@ function ChatInput() {
 
     SOCKET.emit("send message", newMessage, realRoomName);
 
+    setMessage("");
+
     await addDoc(collection(dbService, "Chatting"), newMessage);
 
     const q = query(
@@ -65,7 +67,7 @@ function ChatInput() {
         partnerEmail: chatPartner,
         createdDate: newMessage.createdDate,
         recentlyDate: newMessage.createdDate,
-        recentlyMessage: message,
+        recentlyMessage: newMessage.message,
       });
 
       await addDoc(collection(dbService, "ChattingRoom"), {
@@ -73,7 +75,7 @@ function ChatInput() {
         partnerEmail: userObject.email,
         createdDate: newMessage.createdDate,
         recentlyDate: newMessage.createdDate,
-        recentlyMessage: message,
+        recentlyMessage: newMessage.message,
       });
     }
 
@@ -81,7 +83,7 @@ function ChatInput() {
 
     response3.docs.forEach(async (document) => {
       await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
-        recentlyMessage: message,
+        recentlyMessage: newMessage.message,
         recentlyDate: newMessage.createdDate,
       });
     });
@@ -96,12 +98,10 @@ function ChatInput() {
 
     response2.docs.forEach(async (document) => {
       await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
-        recentlyMessage: message,
+        recentlyMessage: newMessage.message,
         recentlyDate: newMessage.createdDate,
       });
     });
-
-    setMessage("");
   };
 
   return (
