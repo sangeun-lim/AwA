@@ -66,7 +66,7 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
               </span>
             </NavLink>
           )}
-          <div>❤ {item.like_count}</div>
+          <span>❤ {item.like_count}</span>
         </div>
       </div>
     </div>
