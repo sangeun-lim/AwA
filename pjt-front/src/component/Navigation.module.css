@@ -42,7 +42,6 @@
 .burgerList > a:hover,
 .profile > a:hover {
   color: rgb(231, 115, 92);
-  border: 1px solid rgb(231, 115, 92);
 }
 
 .navList > div > a,
@@ -210,9 +209,9 @@
 
   .profile > a {
     margin: 0px;
-    font-size: 15px;
+    font-size: 17px;
+    font-weight: 500;
     color: rgb(0, 0, 0);
-    border: 1px solid black;
     border-radius: 10px;
     padding: 1px 10px;
     margin-right: 3px;
