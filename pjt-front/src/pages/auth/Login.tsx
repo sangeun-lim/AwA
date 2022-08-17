@@ -142,26 +142,27 @@ function Login({ getUserData }: Props): JSX.Element {
         <div className={style.socialButton}>
           <a href="https://awa24.site:8081/oauth2/authorization/google">
             <img
-              src="https://firebasestorage.googleapis.com/v0/b/stately-century-349715.appspot.com/o/sang9203%40naver.com%2Fgoogleicon.PNG?alt=media&token=8b62cb84-0a9a-45ff-8f15-bfe5150ae500"
+              src="https://firebasestorage.googleapis.com/v0/b/stately-century-349715.appspot.com/o/sang9203%40naver.com%2Fbtn_google_signin_dark_normal_web.png?alt=media&token=fb8a6c74-789f-4d08-b312-23b0c47b1bba"
               alt="구글"
               className={style.socialImg}
             />
           </a>
-          <a href="https://awa24.site:8081/oauth2/authorization/naver">
+          {/* <a href="https://awa24.site:8081/oauth2/authorization/naver">
             <img
               src="https://firebasestorage.googleapis.com/v0/b/stately-century-349715.appspot.com/o/sang9203%40naver.com%2FbtnG_%EC%95%84%EC%9D%B4%EC%BD%98%EC%82%AC%EA%B0%81.png?alt=media&token=057ae52c-b9eb-48a8-a670-9943699d619d"
               alt="네이버"
               className={style.socialImg}
             />
-          </a>
+          </a> */}
           <a href="https://awa24.site:8081/oauth2/authorization/kakao">
             <img
-              src="https://firebasestorage.googleapis.com/v0/b/stately-century-349715.appspot.com/o/sang9203%40naver.com%2Fkakao_icon.png?alt=media&token=de6d1b4d-bc39-4110-9315-61d49c1fc6cd"
+              src="https://firebasestorage.googleapis.com/v0/b/stately-century-349715.appspot.com/o/sang9203%40naver.com%2Fkakao_login_large_narrow.png?alt=media&token=0db71f7b-7e95-4e98-8a31-e4dfa469c1cb"
               alt="카카오"
               className={style.socialImg}
             />
           </a>
         </div>
+        <div className={style.blank}></div>
       </div>
     </div>
   );
