@@ -1,11 +1,13 @@
 package com.ssafy.AwA.service;
 
 import com.ssafy.AwA.config.security.JwtTokenProvider;
+import com.ssafy.AwA.domain.comment.Comment;
+import com.ssafy.AwA.domain.follow.Follow;
+import com.ssafy.AwA.domain.like.Likes;
 import com.ssafy.AwA.domain.profile.Profile;
 import com.ssafy.AwA.domain.user.User;
 import com.ssafy.AwA.dto.UserDto;
-import com.ssafy.AwA.repository.ProfileRepository;
-import com.ssafy.AwA.repository.UserRepository;
+import com.ssafy.AwA.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,9 @@ public class UserService {
 
     private final ProfileRepository profileRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final CommentRepository commentRepository;
+    private final FollowRepository followRepository;
+    private final LikeRepository likeRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -99,23 +104,24 @@ public class UserService {
         }
     }
 
-    public int userSecession(String userEmail, String password) {
+    public int userSecession(String userEmail, String emailCode) {
         User targetUser = userRepository.findByEmail(userEmail);
+        Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
 
-        if(passwordEncoder.matches(password, targetUser.getPassword())) {
-            Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
-            profileRepository.delete(targetProfile);
-            userRepository.delete(targetUser);
-            return 1;
-        }
-        return 0;
-    }
+        //팔로우
+        List<Follow> allFollowByfromProfile = followRepository.findAllByfromProfile(targetProfile);
+        for(int i=0;i<allFollowByfromProfile.size();i++)
+            followRepository.delete(allFollowByfromProfile.get(i));
+        //like
+        List<Likes> allLikeByfromProfile = likeRepository.findAllByfromProfile(targetProfile);
+        for (int i=0; i<allLikeByfromProfile.size(); i++)
+            likeRepository.delete(allLikeByfromProfile.get(i));
+        //댓글
+        List<Comment> allCommentByfromProfile = commentRepository.findAllByfromProfile(targetProfile);
+        for (int i=0; i< allCommentByfromProfile.size(); i++)
+            commentRepository.delete(allCommentByfromProfile.get(i));
 
-    public int userSocialSecession(String userEmail, String password) {
-        User targetUser = userRepository.findByEmail(userEmail);
-
-        if(passwordEncoder.matches(password, targetUser.getPassword())) {
-            Profile targetProfile = profileRepository.findByNickname(targetUser.getNickname());
+        if(targetUser.getEmail_code().equals(emailCode)) {
             profileRepository.delete(targetProfile);
             userRepository.delete(targetUser);
             return 1;

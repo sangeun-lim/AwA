@@ -22,4 +22,6 @@ public interface LikeRepository extends JpaRepository<Likes, Long> {
     List<Artwork> findAllByProfile(@Param("profile") Profile profile);
 
 
+    @Query("select L from Likes L where L.profile=:profile")
+    List<Likes> findAllByfromProfile(@Param("profile") Profile profile);
 }

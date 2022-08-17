@@ -26,4 +26,9 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     @Query("SELECT F from Follow F where F.fromProfile=:fromProfile and F.toProfile=:toProfile")
     Follow findByHaveFollow(@Param("fromProfile") Profile fromProfile, @Param("toProfile") Profile toProfile);
 
+    @Query("DELETE from Follow f where f.toProfile=:toProfile")
+    void deleteByToProfile(@Param("toProfile") Profile toProfile);
+
+    @Query("select f from Follow f where f.toProfile=:profile or f.fromProfile=:profile")
+    List<Follow> findAllByfromProfile(@Param("profile") Profile targetProfile);
 }

@@ -2,6 +2,7 @@ package com.ssafy.AwA.domain.profile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ssafy.AwA.domain.BaseTimeEntity;
+import com.ssafy.AwA.domain.follow.Follow;
 import com.ssafy.AwA.domain.report.Report;
 import com.ssafy.AwA.domain.user.User;
 import lombok.Builder;
@@ -31,13 +32,13 @@ public class Profile extends BaseTimeEntity {
     @Column
     private String description;
 
+
+
     @OneToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User owner_user;
 
-//    @OneToOne(mappedBy = "report_profile")
-//    private Report report;
 
     @ElementCollection
     @CollectionTable(name = "favorite_field", joinColumns =

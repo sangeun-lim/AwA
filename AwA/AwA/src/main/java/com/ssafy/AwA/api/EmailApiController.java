@@ -25,6 +25,14 @@ public class EmailApiController {
         }
     }
 
+    @PostMapping("/find/password")
+    public int findPassword(@RequestBody @Valid EmailRequest emailRequest) {
+        try {
+            return emailService.sendMail2(emailRequest);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
     @PostMapping("/check/{userEmail}/{emailCode}")
     public int checkEmailCode(@PathVariable(name = "userEmail") String userEmail, @PathVariable(name = "emailCode") String emailCode)
     {

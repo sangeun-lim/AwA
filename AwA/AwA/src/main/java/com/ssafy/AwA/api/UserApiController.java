@@ -78,14 +78,9 @@ public class UserApiController {
         private String nickname;
     }
 
-    @DeleteMapping("/api/social/user/secession/{userEmail}")
-    public int socialUserSecession(@PathVariable("userEmail") String userEmail, @RequestHeader(value = "password") String password) {
-        return userService.userSocialSecession(userEmail,password);
-    }
 
-
-    @DeleteMapping("/api/user/secession/{userEmail}")
-    public int userSecession(@PathVariable("userEmail") String userEmail, @RequestHeader(value = "password") String password) {
-        return userService.userSecession(userEmail,password);
+    @DeleteMapping("/api/user/secession/{userEmail}/{emailCode}")
+    public int userSecession(@PathVariable("userEmail") String userEmail, @PathVariable("emailCode") String emailCode) {
+        return userService.userSecession(userEmail,emailCode);
     }
 }

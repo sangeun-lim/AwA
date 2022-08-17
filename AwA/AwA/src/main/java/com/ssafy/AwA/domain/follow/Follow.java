@@ -15,12 +15,12 @@ public class Follow {
     private Long follow_id;
 
     @JoinColumn(name = "from_profile_id")
-    @ManyToOne
-    private Profile fromProfile; //팔로우하는 유저
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Profile fromProfile;
 
     @JoinColumn(name = "to_profile_id")
-    @ManyToOne
-    private Profile toProfile; //팔로우 당하는 유저
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Profile toProfile;
 
     @Builder
     public Follow(Profile fromProfile, Profile toProfile) {
