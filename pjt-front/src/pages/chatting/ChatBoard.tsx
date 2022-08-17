@@ -7,6 +7,7 @@ import style from "./ChatBoard.module.css";
 import socketIOClient from "socket.io-client";
 import ChatInput from "./ChatInput";
 import { chatPartnerActions } from "../../store";
+import api from "../../api/api";
 
 const SOCKET = socketIOClient("https://awa24.site:4002/");
 
@@ -19,6 +20,7 @@ function ChatBoard() {
   const chatPartner = useSelector(
     (state: { chatPartner: string }) => state.chatPartner
   );
+  const [partnerNickname, setPartnerNickname] = useState<string>("");
 
   const getChats = async () => {
     const roomName = [userObject.email, chatPartner];
@@ -43,6 +45,11 @@ function ChatBoard() {
 
   const onBackClick = () => {
     dispatch(chatPartnerActions.setPartner(""));
+  };
+
+  const setNickname = async () => {
+    const response = await api.chatting.getUserList([chatPartner]);
+    setPartnerNickname(response.data[0].nickname);
   };
 
   useEffect(() => {
@@ -71,12 +78,19 @@ function ChatBoard() {
     }
   }, [messageList]);
 
+  useEffect(() => {
+    if (chatPartner) {
+      setNickname();
+    }
+  }, [chatPartner]);
+
   return (
     <div className={style.ChatBoard}>
       <div className={style.Header}>
         <span className={style.backButton} onClick={onBackClick}>
           {"<"}
         </span>
+        <span>{partnerNickname}</span>
       </div>
       <div id="chatBox" className={style.Body}>
         {messageList.map((item, i) => {
