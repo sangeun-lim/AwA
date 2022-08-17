@@ -248,6 +248,7 @@ function AuctionCreate(): JSX.Element {
                 id="price"
                 type="number"
                 min="0"
+                max="2147483000"
                 step="1000"
                 value={newItem.price}
                 onChange={onChange}

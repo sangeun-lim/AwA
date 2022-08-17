@@ -40,6 +40,12 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
           <div className={style.content}>
             <h3>{item.title}</h3>
             <div>{item.genre[0]}</div>
+            {item.is_sell === 0 || item.is_sell === 2 ? (
+              <div>판매중</div>
+            ) : (
+              <div>판매완료</div>
+            )}
+            <div>{item.price}원</div>
             <div>{`${year}.${month}.${day}`}</div>
           </div>
         </NavLink>

@@ -307,6 +307,7 @@ function AuctionUpdate({ setOnEdit }: Props) {
                 type="number"
                 placeholder="price"
                 min="0"
+                max="2147483000"
                 step="1000"
                 value={editItem.price}
                 onChange={onChange}

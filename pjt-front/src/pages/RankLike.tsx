@@ -4,9 +4,14 @@ import { NavLink } from "react-router-dom";
 import rf from "../api/rf";
 import style from "./Rank.module.css";
 
+interface Media {
+  url: string;
+}
+
 interface Like {
   title: string;
   artwork_id: string;
+  attachmentRequestDtoList: Media[];
 }
 
 function RankLike(): JSX.Element {
@@ -40,6 +45,12 @@ function RankLike(): JSX.Element {
                   {index + 1}
                   {`. `}
                 </span>{" "}
+                {item.attachmentRequestDtoList[0].url && (
+                  <img
+                    className={style.AuctionImage}
+                    src={item.attachmentRequestDtoList[0].url}
+                  />
+                )}
                 <span>
                   <NavLink
                     to={`/auction/detail/${item.artwork_id}`}
