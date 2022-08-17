@@ -253,9 +253,9 @@ function AuctionDetailOrUpdate(): JSX.Element {
                   {item.title}{" "}
                   <div>
                     {item.is_sell === 0 || item.is_sell === 2 ? (
-                      <h5>판매중</h5>
+                      <div className={style.sell}>판매중</div>
                     ) : (
-                      <h5>판매완료</h5>
+                      <div className={style.soldout}>판매완료</div>
                     )}
                   </div>
                 </div>
@@ -306,9 +306,9 @@ function AuctionDetailOrUpdate(): JSX.Element {
                 {item.title}
                 <div>
                   {item.is_sell === 0 || item.is_sell === 2 ? (
-                    <h5>판매중</h5>
+                    <div className={style.sell}>판매중</div>
                   ) : (
-                    <h5>판매완료</h5>
+                    <div className={style.soldout}>판매완료</div>
                   )}
                 </div>
               </div>

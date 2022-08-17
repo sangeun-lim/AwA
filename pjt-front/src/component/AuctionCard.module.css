@@ -103,8 +103,8 @@
 .content {
   position: absolute;
   width: 100%;
-  padding: 10%;
-  top: 5%;
+  padding: 5%;
+  top: 0;
   text-align: end;
   opacity: 0;
   transition: opacity 0.35s ease;
@@ -115,6 +115,10 @@
   opacity: 1;
 }
 
+.itemInfo {
+  padding: 5%;
+}
+
 .like {
   display: flex;
   align-items: center;
@@ -123,4 +127,30 @@
 .likeHeart {
   color: red;
   margin-right: 5px;
+}
+
+.isSell {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2%;
+}
+
+.sellBookmark {
+  font-size: 30px;
+  color: rgb(180, 240, 162);
+}
+
+.soldoutBookmark {
+  font-size: 30px;
+  color: rgb(100, 100, 100);
+}
+
+.sell {
+  font-size: 13px;
+  color: rgb(180, 240, 162);
+}
+
+.soldout {
+  font-size: 13px;
+  color: rgb(100, 100, 100);
 }

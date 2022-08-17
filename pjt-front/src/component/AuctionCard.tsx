@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { ArtworkItem } from "../Interface";
 import style from "./AuctionCard.module.css";
+import { BsFillBookmarkFill, BsBookmark } from "react-icons/bs";
 
 function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
   const date = new Date(item.createdDate);
@@ -23,17 +24,27 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
         <NavLink to={`/auction/detail/${item.artwork_id}`}>
           <div className={style.overlay}></div>
           <div className={style.content}>
-            <h3>{item.title}</h3>
-            <div>{item.genre[0]}</div>
-            {item.is_sell === 0 || item.is_sell === 2 ? (
-              <div>판매중</div>
-            ) : (
-              <div>판매완료</div>
-            )}
             <div>
-              {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+              {item.is_sell === 0 || item.is_sell === 2 ? (
+                <div className={style.isSell}>
+                  <BsBookmark className={style.sellBookmark} />
+                  <div className={style.sell}>판매중</div>
+                </div>
+              ) : (
+                <div className={style.isSell}>
+                  <BsFillBookmarkFill className={style.soldoutBookmark} />
+                  <div className={style.soldout}>판매완료</div>
+                </div>
+              )}
             </div>
-            <div>{`${year}.${month}.${day}`}</div>
+            <div className={style.itemInfo}>
+              <h3>{item.title}</h3>
+              <div>{item.genre[0]}</div>
+              <div>
+                {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+              </div>
+              <div>{`${year}.${month}.${day}`}</div>
+            </div>
           </div>
         </NavLink>
       </div>
