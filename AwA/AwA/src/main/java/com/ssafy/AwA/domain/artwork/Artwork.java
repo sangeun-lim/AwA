@@ -107,12 +107,6 @@ public class Artwork extends BaseTimeEntity {
         user.getSell_list().add(this);
     }
 
-//    public void addChatRoom(Room room)
-//    {
-//        rooms.add(room);
-//        room.connectArtwork(this);
-//    }
-
     public void addAttachement(Attachment attachment) {
         attachment_list.add(attachment);
         attachment.connectArtwork(this.artwork_id);
