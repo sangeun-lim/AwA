@@ -9,6 +9,7 @@ import { loadingActions } from "../../store";
 import { ArtworkItem, User } from "./../../Interface";
 import { Masonry } from "@mui/lab";
 import { useInView } from "react-intersection-observer";
+import TopButton from "../../component/TopButton";
 
 const FAVORITE = ["회화", "조소", "건축", "공예", "서예", "디지털", "기타"];
 
@@ -151,6 +152,8 @@ function Auction(): JSX.Element {
               <span>마지막 게시글 입니다</span>
             </div>
           )}
+          <TopButton></TopButton>
+
           <div ref={ref}>.</div>
         </div>
       ) : (
@@ -205,6 +208,7 @@ function Auction(): JSX.Element {
               <span>마지막 게시글 입니다</span>
             </div>
           )}
+          <TopButton></TopButton>
           <div ref={ref}>.</div>
         </div>
       )}
