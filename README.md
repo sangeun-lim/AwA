@@ -1,6 +1,5 @@
+![AwA로고](/uploads/390a7dfd55f76033c7c2017f40cfca21/AwA로고.png)
 <div align="center">
-<br />
-<img src="../etc/AwA로고.png" alt="AwA" />
 <br />
 <h1>SNS형 예술작품 거래 플랫폼</h1>
 <br />
