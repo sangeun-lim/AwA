@@ -112,7 +112,7 @@ function CommentDetailOrUpdate({ comment, setItem }: Props): JSX.Element {
   };
 
   const onDeleteClick = async () => {
-    const del: boolean = window.confirm("댓글 삭제?");
+    const del: boolean = window.confirm("댓글을 삭제하시겠습니까?");
     if (del) {
       try {
         const response = await api.comment.deleteComment(comment.comment_id);
