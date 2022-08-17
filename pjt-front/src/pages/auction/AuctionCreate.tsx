@@ -27,6 +27,7 @@ function GenreButton({ item, deleteGenre }: ButtonProps): JSX.Element {
     <div className={style.selected}>
       <b>{item}</b>
       <button
+        type="button"
         onClick={(e) => {
           e.preventDefault();
           if (window.confirm(`${item}을 삭제하시겠습니까?`)) {
@@ -214,6 +215,7 @@ function AuctionCreate(): JSX.Element {
                   <div key={id} className={style.imageSample}>
                     <img src={image} alt={`${image}-${id}`} />
                     <button
+                      type="button"
                       onClick={(e) => {
                         e.preventDefault();
                         if (window.confirm("사진을 삭제하시겠습니까?")) {
