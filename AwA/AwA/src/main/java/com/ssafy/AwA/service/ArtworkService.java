@@ -723,6 +723,7 @@ public class ArtworkService {
                     .ingredient(targetArtwork.getIngredient())
                     .attachmentRequestDtoList(attachmentRequestDtoList)
                     .is_sell(targetArtwork.getIs_sell())
+                    .like_count(targetArtwork.getLike_count())
                     .build());
         }
 
