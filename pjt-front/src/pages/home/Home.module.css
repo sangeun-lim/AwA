@@ -8,7 +8,112 @@
 
 .Header {
   width: 100%;
-  background-color: var(--main-color);
-  height: 35vh;
-  min-height: 300px;
+  /* background-color: var(--main-color); */
+  /* min-height: 300px; */
+  margin-bottom: 40px;
+}
+
+.slideBox {
+  width: 100vh;
+}
+
+.slideBox img {
+  width: 100%;
+}
+
+.slideContent {
+  position: absolute;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 1.5%;
+}
+
+.content1 > h1 {
+  font-weight: bold;
+  font-size: 2.5vw;
+  color: rgb(115, 50, 40);
+  margin-bottom: 2%;
+}
+
+.content1 > div {
+  color: rgb(170, 115, 115);
+  font-size: 1.2vw;
+}
+
+.slideBtn1 {
+  margin-top: 3%;
+  border: none;
+  background-color: rgb(250, 133, 112);
+  border-radius: 10px;
+  color: white;
+  padding: 5px 10px;
+  font-size: 1vw;
+}
+
+.content2 > h1 {
+  font-weight: bold;
+  font-size: 2.5vw;
+  color: rgb(0, 0, 0);
+  margin-bottom: 2%;
+}
+
+.content2 > div {
+  color: rgb(100, 100, 100);
+  font-size: 1.2vw;
+}
+
+.slideBtn2 {
+  margin-top: 3%;
+  border: none;
+  background-color: rgb(160, 160, 160);
+  border-radius: 10px;
+  color: white;
+  padding: 5px 10px;
+  font-size: 1vw;
+}
+
+.content3 > h1 {
+  font-weight: bold;
+  font-size: 2.5vw;
+  color: rgb(255, 255, 255);
+  margin-bottom: 2%;
+}
+
+.content3 > div {
+  color: rgb(200, 200, 200);
+  font-size: 1.2vw;
+}
+
+.slideBtn3 {
+  margin-top: 3%;
+  border: none;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  color: rgb(0, 0, 0);
+  padding: 5px 10px;
+  font-size: 1vw;
+}
+
+.content4 > h1 {
+  font-weight: bold;
+  font-size: 2.5vw;
+  color: rgb(146, 54, 39);
+  margin-bottom: 2%;
+}
+
+.content4 > div {
+  color: rgb(255, 255, 255);
+  font-size: 1.2vw;
+}
+
+.slideBtn4 {
+  margin-top: 3%;
+  border: none;
+  background-color: rgb(255, 231, 231);
+  border-radius: 10px;
+  color: rgb(0, 0, 0);
+  padding: 5px 10px;
+  font-size: 1vw;
 }
