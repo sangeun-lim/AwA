@@ -74,7 +74,7 @@ function Auction(): JSX.Element {
         dispatch(loadingActions.toggle());
       }, 1000);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       dispatch(loadingActions.toggle());
     }
   };
