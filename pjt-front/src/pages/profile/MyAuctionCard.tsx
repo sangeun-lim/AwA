@@ -11,7 +11,7 @@ function MyAuctionCard({ item }: { item: ArtworkList }): JSX.Element {
 
   return (
     <div className={style.imageCard}>
-      <div className={style.container}>
+      <div className={style.myContainer}>
         <img
           src={item.picture_url}
           alt="AuctionImg"

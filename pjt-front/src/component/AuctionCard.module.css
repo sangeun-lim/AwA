@@ -4,14 +4,6 @@
   padding: 3%;
 }
 
-.myImageCard {
-  position: relative;
-  width: 100%;
-  padding: 3%;
-  height: 300px;
-  margin-bottom: 20px;
-}
-
 .container {
   position: relative;
   width: 100%;
@@ -27,7 +19,6 @@
   border-radius: 10px;
   border: 1px solid rgb(200, 200, 200);
   margin-right: 0px;
-  height: 300px;
 }
 
 .profileContainer {
