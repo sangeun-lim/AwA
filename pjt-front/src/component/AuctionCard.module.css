@@ -7,7 +7,8 @@
 .container {
   position: relative;
   width: 100%;
-  border-radius: 10px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   border: 1px solid rgb(200, 200, 200);
   margin-right: 0px;
 }
@@ -17,13 +18,21 @@
   width: 100%;
   border: 1px solid rgb(200, 200, 200);
   margin-right: 0px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .profile {
   display: flex;
   text-align: center;
+  align-items: center;
   justify-content: space-between;
   margin: 10px 15px;
+}
+
+.profileInfo {
+  display: flex;
+  align-items: center;
 }
 
 .profileImg {
@@ -78,7 +87,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
 
   background: rgba(0, 0, 0, 0);
   transition: background 0.5s ease;
@@ -103,4 +113,14 @@
 
 .container:hover .content {
   opacity: 1;
+}
+
+.like {
+  display: flex;
+  align-items: center;
+}
+
+.likeHeart {
+  color: red;
+  margin-right: 5px;
 }

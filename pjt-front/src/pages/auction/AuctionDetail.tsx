@@ -269,7 +269,12 @@ function AuctionDetailOrUpdate(): JSX.Element {
                 </div>
                 <div className={style.detailInfoBox}>
                   <div>가격</div>
-                  <p>{item.price}원</p>
+                  <p>
+                    {item.price
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    원
+                  </p>
                 </div>
                 <div className={style.detailInfoBox}>
                   <div>장르</div>
@@ -317,7 +322,10 @@ function AuctionDetailOrUpdate(): JSX.Element {
               </div>
               <div className={style.detailInfoBox}>
                 <div>가격</div>
-                <p>{item.price}원</p>
+                <p>
+                  {item.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  원
+                </p>
               </div>
               <div className={style.detailInfoBox}>
                 <div>장르</div>
