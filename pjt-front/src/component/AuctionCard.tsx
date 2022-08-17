@@ -19,22 +19,7 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
             className={style.auctionImg}
           />
         )}
-        <div className={style.profile}>
-          {item.profile_picture ? (
-            <img
-              src={item.profile_picture}
-              alt="profileImg"
-              className={style.profileImg}
-            />
-          ) : (
-            <img
-              src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
-              alt="profileImg"
-              className={style.profileImg}
-            />
-          )}
-          <span className={style.profileName}>{item.sell_user_nickname}</span>
-        </div>
+
         <NavLink to={`/auction/detail/${item.artwork_id}`}>
           <div className={style.overlay}></div>
           <div className={style.content}>
@@ -49,6 +34,40 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
             <div>{`${year}.${month}.${day}`}</div>
           </div>
         </NavLink>
+      </div>
+      <div className={style.profileContainer}>
+        <div className={style.profile}>
+          {item.profile_picture ? (
+            <NavLink
+              to={`/profile/${item.sell_user_email}`}
+              className={style.moveLink}
+            >
+              <img
+                src={item.profile_picture}
+                alt="profileImg"
+                className={style.profileImg}
+              />
+              <span className={style.profileName}>
+                {item.sell_user_nickname}
+              </span>
+            </NavLink>
+          ) : (
+            <NavLink
+              to={`/profile/${item.sell_user_email}`}
+              className={style.moveLink}
+            >
+              <img
+                src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1568917764/noticon/stddia3lvzo8napn15ec.png"
+                alt="profileImg"
+                className={style.profileImg}
+              />
+              <span className={style.profileName}>
+                {item.sell_user_nickname}
+              </span>
+            </NavLink>
+          )}
+          <div>❤ {item.like_count}</div>
+        </div>
       </div>
     </div>
   );
