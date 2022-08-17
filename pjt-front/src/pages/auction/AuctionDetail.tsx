@@ -72,14 +72,21 @@ function AuctionDetailOrUpdate(): JSX.Element {
     navigate("/chatting");
   };
 
-  const isSell = async () => {
-    const response = await api.artwork.sellArtwork(item.artwork_id);
-    setItem((prev) => {
-      return {
-        ...prev,
-        is_sell: response.data,
-      };
-    });
+  const soldOut = async () => {
+    if (window.confirm("판매완료로 변경하시겠습니까?") === true) {
+      const response = await api.artwork.sellArtwork(item.artwork_id);
+      if (response.data === 1) {
+        alert("판매완료로 변경되었습니다.");
+        setItem((prev) => {
+          return {
+            ...prev,
+            is_sell: response.data,
+          };
+        });
+      }
+    } else {
+      return;
+    }
   };
 
   const onLikeClick = async (e: any) => {
@@ -192,6 +199,16 @@ function AuctionDetailOrUpdate(): JSX.Element {
                   판매자와 채팅하기
                 </button>
               )}
+              {userObject && userObject.email === item.sell_user_email && (
+                <button
+                  disabled={item.is_sell === 1}
+                  onClick={soldOut}
+                  className={style.chatBtn}
+                >
+                  판매완료
+                </button>
+              )}
+
               {userObject && <ReportModal artworkId={address} />}
             </div>
           </div>
@@ -232,7 +249,16 @@ function AuctionDetailOrUpdate(): JSX.Element {
                 )}
               </div>
               <div className={style.detailInfo}>
-                <div className={style.title}>{item.title}</div>
+                <div className={style.title}>
+                  {item.title}{" "}
+                  <div>
+                    {item.is_sell === 0 || item.is_sell === 2 ? (
+                      <h5>판매중</h5>
+                    ) : (
+                      <h5>판매완료</h5>
+                    )}
+                  </div>
+                </div>
                 <div className={style.userNameBox}>
                   <NavLink
                     to={`/profile/${item.sell_user_email}`}
@@ -271,7 +297,16 @@ function AuctionDetailOrUpdate(): JSX.Element {
             </div>
 
             <div className={style.detailInfoSide}>
-              <div className={style.title}>{item.title}</div>
+              <div className={style.title}>
+                {item.title}
+                <div>
+                  {item.is_sell === 0 || item.is_sell === 2 ? (
+                    <h5>판매중</h5>
+                  ) : (
+                    <h5>판매완료</h5>
+                  )}
+                </div>
+              </div>
               <div className={style.userNameBox}>
                 <NavLink
                   to={`/profile/${item.sell_user_email}`}
