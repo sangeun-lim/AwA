@@ -22,6 +22,10 @@ public class EmailService {
     private final UserRepository userRepository;
 
     public int sendMail(@Valid EmailRequest toEmail) throws Exception {
+        User targetUser = userRepository.findByEmail(toEmail.getEmail());
+        if(targetUser == null) {
+            return 2;
+        }
         Random random = new Random();
         String authKey = String.valueOf((random.nextInt(888888)+111111));
 
@@ -50,10 +54,6 @@ public class EmailService {
 
         try {
             javaMailSender.send(message);
-
-            User targetUser = userRepository.findByEmail(toEmail.getEmail());
-            if(targetUser!= null)
-                targetUser.setEmailCode(authKey);
             return Integer.valueOf(authKey);
         }
         catch (Exception e)
