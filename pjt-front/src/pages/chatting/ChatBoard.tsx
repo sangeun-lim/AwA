@@ -94,7 +94,7 @@ function ChatBoard() {
                 </span>
               </div>
             );
-          } else {
+          } else if (item.sender === userObject.email) {
             return (
               <div className={style.myMessageBox} key={i}>
                 <span className={style.time}>
