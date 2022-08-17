@@ -96,7 +96,8 @@
 }
 
 .profileImgBox > img {
-  width: 80%;
+  width: 50%;
+  border-radius: 100%;
 }
 
 .chattingBox {
@@ -250,4 +251,37 @@ input[id="likeArtwork"]:checked ~ .tabInner .tabs {
   border-bottom: 2px solid rgb(200, 200, 200);
   margin-top: 50px;
   margin-bottom: 20px;
+}
+
+/* userLikedArtwork */
+@media (min-width: 1501px) {
+  .userLiked {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 1500px) {
+  .userLiked {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .userLiked {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .userLiked {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(200px, 1fr));
+  }
+}
+
+.noGenre {
+  color: rgb(200, 200, 200);
 }
