@@ -1,0 +1,28 @@
+.wrap {
+  position: relative;
+  padding: 30px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.topBtn {
+  position: fixed;
+  bottom: 50px;
+  right: 70px;
+  z-index: 10;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 0 none;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: -0.06em;
+  box-shadow: 1px 1px 6px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: opacity 0.3s ease-in;
+}
+
+.topBtnctive {
+  z-index: -10;
+  opacity: 1;
+}

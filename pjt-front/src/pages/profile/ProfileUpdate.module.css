@@ -1,0 +1,299 @@
+/* Modal */
+.updateModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+@media (max-width: 700px) {
+  .updateModalBody {
+    width: 70%;
+  }
+}
+
+@media (min-width: 701px) {
+  .updateModalBody {
+    width: 500px;
+  }
+}
+
+@media (max-height: 1125px) {
+  .updateModalBody {
+    height: 80%;
+    overflow-y: auto;
+  }
+}
+
+@media (min-height: 1126px) {
+  .updateModalBody {
+    height: 900px;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 450px) {
+  .profileImageChange {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nicknameChange > div {
+    display: none;
+  }
+
+  .smallNickname {
+    font-size: 10px;
+    text-align: start;
+    margin-left: 5px;
+    color: rgb(150, 150, 150);
+  }
+
+  .profileLabel {
+    font-size: 10px;
+    margin-left: 5px;
+  }
+}
+
+@media (min-width: 451px) {
+  .smallNickname {
+    display: none;
+  }
+
+  .profileLabel {
+    font-size: 14px;
+    margin-left: 30px;
+  }
+
+  .description {
+    margin: 0 20px;
+  }
+
+  .nicknameChange {
+    padding: 0 10px;
+  }
+
+  .options {
+    margin-left: 20px;
+  }
+}
+
+.updateModalBody::-webkit-scrollbar {
+  background-color: rgb(255, 255, 255);
+  width: 7px;
+}
+
+.updateModalBody::-webkit-scrollbar-thumb {
+  background-color: rgb(230, 230, 230);
+  border-radius: 10px;
+}
+
+.updateModalBody::-webkit-scrollbar-track {
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+.updateModalBody {
+  position: sticky;
+  padding: 30px 40px;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+}
+
+/* Form */
+.updateModalBody > h3 {
+  border-bottom: 1px solid rgb(200, 200, 200);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.profileImage,
+.profileImageChange,
+.profileInfo {
+  width: 100%;
+}
+
+/* Image */
+.profileImage {
+  width: 50%;
+  margin: auto;
+}
+
+.profileImage > img {
+  width: 100%;
+}
+
+.profileImageChange {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.imageInput input[type="file"] {
+  display: none;
+}
+
+.imageInput {
+  border: 1px solid rgb(150, 150, 150);
+  border-radius: 7px;
+  padding: 2px 7px;
+  color: rgb(150, 150, 150);
+  cursor: pointer;
+}
+
+.profileImageChange > button {
+  border: 1px solid rgb(150, 150, 150);
+  border-radius: 7px;
+  color: rgb(150, 150, 150);
+  padding: 2px 7px;
+  background-color: white;
+}
+
+.imageInput:hover,
+.profileImageChange > button:hover {
+  border: 1px solid rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+}
+
+/* Info */
+.profileInfo {
+  margin: 20px 0;
+}
+
+.nicknameChangeBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.nicknameChange {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.nicknameChange > div {
+  white-space: nowrap;
+  width: 15%;
+  margin-right: 10px;
+}
+
+.nicknameChange > input {
+  border: none;
+  border-bottom: 1px solid rgb(200, 200, 200);
+  padding: 5px;
+  height: 30px;
+  width: 75%;
+}
+
+.nicknameChange > button {
+  background-color: white;
+  border: 1px solid rgb(200, 200, 200);
+  height: 30px;
+  width: 70px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.nicknameComment {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 80px;
+  font-size: 13px;
+  color: rgb(231, 115, 92);
+}
+
+.descriptionChange {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+}
+
+.profileLabel {
+  text-align: start;
+  color: rgb(150, 150, 150);
+}
+
+.description {
+  border: none;
+  border-bottom: 1px solid rgb(200, 200, 200);
+  height: 200px;
+  padding: 10px;
+}
+
+.genreChange {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.options > div > label {
+  margin: 5px 5px;
+  white-space: nowrap;
+  cursor: pointer;
+  padding: 0 15px;
+}
+
+.options > div > input[type="checkbox"]:checked + label {
+  background-color: rgb(230, 230, 230);
+  border-radius: 10px;
+  padding: 0 15px;
+}
+
+.options > div > input[type="checkbox"] {
+  display: none;
+}
+
+/* button */
+.updateCloseBtn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.updateBtn {
+  padding: 0px 10x;
+  border: none;
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 15px;
+  cursor: pointer;
+  /* margin: 0 20px; */
+  white-space: nowrap;
+}
+
+.updateBtn:hover {
+  color: rgb(0, 0, 0);
+}
+
+.submit {
+  padding: 0px 10x;
+  border: 1px solid rgb(150, 150, 150);
+  border-radius: 7px;
+  padding: 2px 10px;
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 20px;
+  white-space: nowrap;
+}
+
+.submit:hover {
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+}

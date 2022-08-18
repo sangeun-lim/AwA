@@ -1,0 +1,50 @@
+.inputBack {
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.Footer {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  /* background-color: floralwhite; */
+}
+
+.chatBox {
+  width: 95%;
+  height: 75%;
+  font-size: 18px;
+  padding: 15px;
+  padding-left: 30px;
+  border: 1.5px solid rgb(220, 220, 220);
+  border-radius: 20px;
+  margin: 10px 0px 10px 10px;
+}
+
+.chatBox:focus {
+  outline: 0px;
+}
+
+.chatBox[value=""] ~ button {
+  display: none;
+}
+
+.submitButton {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  background-color: rgb(70, 70, 70);
+  border: 0px;
+  color: rgb(255, 255, 255);
+  border-radius: 100%;
+  margin-left: -50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submitButton:hover {
+  color: black;
+}

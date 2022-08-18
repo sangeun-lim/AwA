@@ -1,0 +1,179 @@
+/* Auction */
+.auctionTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+  margin-bottom: 20px;
+  background-color: rgb(231, 115, 92, 0.2);
+}
+
+.auctionTop .title {
+  font-weight: bold;
+  font-size: 50px;
+  margin: 10px 0;
+}
+
+.auction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  min-height: 2000px;
+}
+
+.auction > div,
+.auctionTop > div {
+  width: 1280px;
+  margin: 10px 0;
+}
+
+@media (max-width: 1600px) {
+  .auction > div,
+  .auctionTop > div {
+    width: 80%;
+  }
+}
+
+.auctionButtonBox {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.auctionButton {
+  padding: 0px 10px;
+  border: 2px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 15px;
+  cursor: pointer;
+  margin: 0 20px;
+  white-space: nowrap;
+}
+
+.auctionButton:hover {
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+#grid {
+  width: 80%;
+}
+
+.auctionCard {
+  /* transition: opacity 0.4s ease-in-out; */
+  break-inside: avoid-column;
+}
+
+.grid-item {
+  width: 23%;
+}
+
+.lastBox {
+  display: flex;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  font-size: 24px;
+}
+
+/* searchOption */
+.searchOption {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid rgb(200, 200, 200);
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+@media (max-width: 450px) {
+  .searchOption {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .searchOption > span {
+    padding-left: 25px;
+  }
+}
+
+.searchOption > span {
+  width: 10%;
+  margin: 5px 10px;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  width: 85%;
+}
+
+.options > div {
+  border-right: 1px solid rgb(200, 200, 200);
+}
+
+.options > div:last-child {
+  border: none;
+}
+
+.options > div > label {
+  margin: 5px 5px;
+  white-space: nowrap;
+  cursor: pointer;
+  padding: 0 15px;
+}
+
+.options > div > input[type="checkbox"]:checked + label {
+  background-color: rgb(200, 200, 200);
+  border-radius: 5px;
+  padding: 0 15px;
+  color: white;
+}
+
+.options > div > input[type="checkbox"] {
+  display: none;
+}
+
+.searchOption > div > input[type="number"] {
+  margin: 10px;
+  width: 150px;
+}
+
+.topBtn {
+  position: fixed;
+  opacity: 0;
+  bottom: 40px;
+  right: 40px;
+  z-index: -10;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 0 none;
+  background: lightpink;
+  color: blueviolet;
+  border: 2px solid blueviolet;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: -0.06em;
+  box-shadow: 1px 1px 6px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: opacity 0.3s ease-in;
+}
+.topBtn.active {
+  z-index: 10;
+  opacity: 1;
+}
+
+.topBtn:hover,
+.topBtn:focus,
+.topBtn:active {
+  outline: 0 none;
+}

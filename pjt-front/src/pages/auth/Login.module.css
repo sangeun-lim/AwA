@@ -1,0 +1,206 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+* {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 400px;
+}
+
+@media (max-width: 500px) {
+  .container {
+    width: 80%;
+  }
+}
+
+.title {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  margin: 50px 0px 0px 0px;
+  color: rgb(0, 0, 0);
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px 0px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0px;
+  position: relative;
+}
+
+.loginInput {
+  height: 50px;
+  border: none;
+  width: 100%;
+}
+
+.loginInput:focus {
+  height: 50px;
+  outline: none;
+}
+
+.loginInput:focus ~ label {
+  color: #9d9d9d;
+  transform: translate(-12%, -70%) scale(0.75);
+}
+
+.loginInput:focus ~ .bar:before,
+.loginInput:focus ~ .bar:after {
+  width: 50%;
+}
+
+.loginInput:not([value=""]) ~ label {
+  color: #9d9d9d;
+  transform: translate(-12%, -70%) scale(0.75);
+}
+
+.inputContainer label {
+  position: absolute;
+  color: #757575;
+  font-size: 15px;
+  line-height: 50px;
+  transition: 0.3s ease;
+  cursor: auto;
+}
+
+.bar {
+  position: absolute;
+  background: rgb(200, 200, 200);
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+}
+
+.bar:before,
+.bar:after {
+  content: "";
+  position: absolute;
+  background: rgb(231, 115, 92);
+  width: 0;
+  height: 2px;
+  transition: 0.3s ease;
+}
+
+.bar:before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+.loginSubmit {
+  cursor: pointer;
+  background-color: white;
+  color: rgb(200, 200, 200);
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+}
+
+.buttonContainer {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.buttonContainer button {
+  outline: 0;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  background: 0;
+  width: 100%;
+  border: 2px solid rgb(200, 200, 200);
+  padding: 7px 0;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: 0.3s ease;
+}
+
+.buttonContainer button .loginSubmit,
+.loginSubmitContent {
+  position: relative;
+  color: rgb(200, 200, 200);
+  transition: 0.3s ease;
+  border-radius: 100%;
+}
+
+.loginSubmitContent {
+  padding: 1px;
+}
+
+.buttonContainer button:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  background: rgb(231, 115, 92);
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  margin: -15px 0 0 -15px;
+  opacity: 0;
+  transition: 0.3s ease;
+}
+
+.buttonContainer button:hover,
+.buttonContainer button:active,
+.buttonContainer button:focus {
+  border-color: rgb(231, 115, 92);
+}
+.buttonContainer button:hover .loginSubmit {
+  color: rgb(231, 115, 92);
+}
+.buttonContainer button:hover .loginSubmitContent {
+  color: rgb(231, 115, 92);
+}
+.buttonContainer button:active .loginSubmit,
+.buttonContainer button:focus .loginSubmit {
+  color: #ffffff;
+  background-color: rgb(231, 115, 92);
+}
+.buttonContainer button:active:before,
+.buttonContainer button:focus:before {
+  opacity: 1;
+  transform: scale(15);
+}
+.buttonContainer button:active .loginSubmitContent,
+.buttonContainer button:focus .loginSubmitContent {
+  color: #ffffff;
+}
+
+.socialButton {
+  display: flex;
+  justify-content: space-around;
+}
+
+@media (max-width: 450px) {
+  .socialButton {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.socialImg {
+  width: 190px;
+  height: 45px;
+}
+
+.blank {
+  height: 100px;
+}

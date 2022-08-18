@@ -1,0 +1,98 @@
+.loggedInTitle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 30px;
+  font-weight: 700;
+  width: 70%;
+  padding-top: 10px;
+  margin-left: 50px;
+  color: rgb(70, 70, 70);
+}
+
+.Body {
+  display: flex;
+  min-height: 1000px;
+}
+
+@media (max-width: 768px) {
+  .ranking {
+    display: none !important;
+  }
+
+  .feed {
+    width: 100% !important;
+  }
+
+  .loggedInTitle {
+    width: 100% !important;
+    font-size: 4vw !important;
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 1600px) {
+  .ranking {
+    width: 30%;
+    position: sticky;
+    top: 500px;
+  }
+
+  .feed {
+    width: 70%;
+  }
+
+  .loggedInTitle {
+    width: 70%;
+  }
+}
+
+.ranking {
+  width: 30%;
+  position: sticky;
+  top: 500px;
+}
+
+.followEffect {
+  animation: loadEffect 1s ease-in-out;
+}
+
+.rankEffect {
+  animation: loadEffect2 1s ease-in-out;
+}
+
+@keyframes loadEffect {
+  from {
+    opacity: 0;
+    transform: translateX(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes loadEffect2 {
+  from {
+    opacity: 0;
+    transform: translateX(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.feed {
+  width: 70%;
+  padding: 20px 40px;
+}
+
+.lastBox {
+  display: flex;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  font-size: 24px;
+}

@@ -1,0 +1,345 @@
+.nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.navBox {
+  position: sticky;
+  width: 100%;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  top: 0;
+  background-color: white;
+  border-bottom: 1px solid rgba(231, 115, 92, 0.3);
+  transition: all 0.35s;
+}
+
+.navBoxSearch {
+  width: 100%;
+  height: 55px;
+  position: sticky;
+  display: flex;
+  align-items: center;
+  top: 0;
+  background-color: white;
+  border-bottom: 1px solid rgba(231, 115, 92, 0.3);
+  transition: all 0.35s;
+}
+
+.navList,
+.burgerList {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 20px;
+  transition: all 0.35s;
+}
+
+.navList > div > a:hover,
+.burgerList > a:hover,
+.profile > a:hover {
+  color: rgb(231, 115, 92);
+}
+
+.navList > div > a,
+.burgerList > a,
+.profile > a {
+  text-decoration: none;
+  color: black;
+  margin: 20px;
+  white-space: nowrap;
+}
+
+.navList > div > .active,
+.burgerList > .active,
+.profile > .active {
+  color: rgb(231, 115, 92);
+}
+
+.btn {
+  margin: 20px;
+  padding: 0;
+  border: none;
+  background-color: white;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  text-align: left;
+}
+
+.btn:hover {
+  color: rgb(231, 115, 92);
+}
+
+@media (max-width: 768px) {
+  .burgerBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 10px;
+  }
+
+  .navList {
+    display: none;
+  }
+
+  .navSearchBar {
+    display: none;
+  }
+
+  .burgerMenuBox {
+    height: 302px;
+  }
+
+  .burgerMenu,
+  .menu {
+    display: block;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: all 0.35s;
+  }
+
+  .burgerMenu > div,
+  .menu > div {
+    width: 25px;
+    height: 3px;
+    background-color: rgb(231, 115, 92);
+    margin: 5px;
+    transition: all 0.3s ease;
+  }
+
+  .menu > .burgerLine1 {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .menu > .burgerLine2 {
+    opacity: 0;
+  }
+
+  .menu > .burgerLine3 {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+
+  .menuBoxVisible {
+    height: 302px;
+    width: 180px;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    transition: all 0.35s;
+    top: 55px;
+    left: 0px;
+  }
+
+  .menuBoxHidden {
+    height: 302px;
+    width: 180px;
+    position: absolute;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    transition: all 0.35s;
+    /* top: -302px; */
+    top: 55px;
+    left: -180px;
+  }
+
+  .burgerList {
+    position: flex;
+    top: 50px;
+    left: 50px;
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 769px) {
+  .menuBoxHidden,
+  .menuBoxVisible {
+    display: none;
+  }
+
+  .burgerBox {
+    display: none;
+  }
+
+  .navBox {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menuBox {
+    width: 100%;
+    height: fit-content;
+  }
+
+  .navList {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .navList > .left {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .navList > .center {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .navList > .right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+  }
+
+  .profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 20px;
+  }
+
+  .profile > a {
+    margin: 0px;
+    font-size: 17px;
+    font-weight: 500;
+    color: rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 1px 10px;
+    margin-right: 3px;
+  }
+
+  .profile > p {
+    white-space: nowrap;
+    margin: 0px;
+    font-size: 15px;
+  }
+}
+
+.logoImg {
+  height: 50px;
+}
+
+.burgerLogoImg {
+  height: 50px;
+}
+
+/* searchBar */
+.searchIcon {
+  font-size: 20px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.navSearchBar {
+  position: absolute;
+  top: -450px;
+  left: 0;
+  transition: all 0.35s;
+  width: 100%;
+  background-color: white;
+  border: 2px solid white;
+}
+
+.navSearchBarActive {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  transition: all 0.35s;
+  width: 100%;
+  background-color: white;
+  border: 2px solid white;
+  border-bottom: 1px solid rgba(231, 115, 92, 0.3);
+}
+
+input[id="searchBar"] + label {
+  cursor: pointer;
+}
+
+input[id="searchBar"] {
+  display: none;
+}
+
+/* chatting */
+.chattingIcon {
+  font-size: 20px;
+  margin: 10px;
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chattingIcon:hover {
+  color: rgb(231, 115, 92);
+}
+
+a {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.chattingIconActive {
+  font-size: 20px;
+  margin: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: rgb(231, 115, 92);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.iconBox {
+  display: flex;
+}
+
+@media (max-width: 450px) {
+  .searchComponent {
+    display: none;
+  }
+
+  .navBoxSearch {
+    margin-bottom: 100px;
+  }
+}
+
+@media (min-width: 451px) {
+  .smmallSearchComponent {
+    display: none;
+  }
+
+  .navBoxSearch {
+    margin-bottom: 300px;
+  }
+}
+
+.searchBar {
+  width: 50vw;
+  min-width: 300px;
+  border: 0px;
+  border-bottom: 1px var(--main-color3) solid;
+  font-size: 20px;
+}
+
+.searchBar:focus {
+  outline: 0;
+}
+
+.searchForm {
+  width: 100vw;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.searchButton {
+  border: 0px;
+  background-color: rgba(0, 0, 0, 0);
+}

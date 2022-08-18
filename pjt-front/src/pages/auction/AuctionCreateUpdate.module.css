@@ -1,0 +1,573 @@
+.auction > form,
+.auction > div,
+.auctionTop > div {
+  width: 1280px;
+  margin: 20px 0;
+}
+
+@media (max-width: 1600px) {
+  .auction > form,
+  .auction > div,
+  .auctionTop > div {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1000px) {
+  .formBox {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Auction Create & Update */
+.auctionTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+  background-color: rgb(240, 240, 240);
+  margin-bottom: 20px;
+}
+
+.auctionTop .title {
+  font-weight: bold;
+  font-size: 50px;
+  margin: 10px 0;
+}
+
+.auction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Form */
+@media (min-width: 1001px) {
+  .formBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+}
+
+.image,
+.info {
+  width: 100%;
+  margin: 10px;
+}
+
+/* image */
+.imageInput {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.imageInput input[type="file"] {
+  display: none;
+}
+
+.imageInput > .imageUpload {
+  display: inline-block;
+  height: 40px;
+  padding: 0 10px;
+  margin: 0px 10px;
+  border: 1px solid rgb(200, 200, 200);
+  color: rgb(200, 200, 200);
+  width: 85%;
+}
+
+.imageInput > span {
+  display: inline-block;
+  padding: 7px 20px;
+  color: #fff;
+  background-color: rgb(200, 200, 200);
+  cursor: pointer;
+  height: 40px;
+  margin: 0 20px 0 0;
+  white-space: nowrap;
+}
+
+.showImages {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageSample {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 10px;
+  width: 80%;
+}
+
+.imageSample > img {
+  width: 100%;
+}
+
+.imageSample > button {
+  margin: 0 5px;
+  font-size: 15px;
+  width: 20px;
+  border: none;
+}
+
+/* input */
+.inputContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 30px 0px;
+  position: relative;
+}
+
+.input {
+  height: 50px;
+  border: none;
+  width: 100%;
+  font-size: 20px;
+}
+
+.input:focus {
+  height: 50px;
+  outline: none;
+}
+
+.input:focus ~ label,
+.input:not([value=""]) ~ label,
+.labelUp {
+  color: rgb(150, 150, 150);
+  transform: translate(-10%, -60%) scale(0.8);
+}
+
+.input:focus ~ .bar:before,
+.input:focus ~ .bar:after {
+  width: 50%;
+}
+
+.inputContainer label {
+  position: absolute;
+  color: rgb(150, 150, 150);
+  font-size: 18px;
+  line-height: 50px;
+  transition: 0.3s ease;
+  cursor: auto;
+}
+
+.bar {
+  position: absolute;
+  background: rgb(200, 200, 200);
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+}
+
+.bar:before,
+.bar:after {
+  content: "";
+  position: absolute;
+  background: rgb(0, 0, 0);
+  width: 0;
+  height: 2px;
+  transition: 0.3s ease;
+}
+
+.bar:before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+/* select */
+.selectLabel {
+  color: rgb(150, 150, 150);
+  font-size: 14.5px;
+}
+
+.selectBox {
+  width: 100%;
+  margin: 10px 0;
+  border: 1px solid rgb(150, 150, 150);
+  height: 35px;
+  padding-left: 5px;
+}
+
+.selectBox > option:hover {
+  background-color: rgb(150, 150, 150);
+}
+
+.selectList {
+  display: flex;
+  margin: 2px;
+}
+
+.selected {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.selected > b {
+  font-size: 17px;
+}
+
+.selected > button {
+  margin: 0 5px;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  border: none;
+}
+
+/* textarea */
+.inputTextarea {
+  height: 350px;
+  border: none;
+  border-bottom: 2px solid rgb(200, 200, 200);
+  margin: 10px 0;
+  padding-bottom: 50px;
+}
+
+.inputTextarea:focus-visible {
+  height: 350px;
+  outline: none;
+  border-bottom: 2px solid rgb(0, 0, 0);
+}
+
+/* button */
+.formButtonBox {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px 0;
+}
+
+.btn {
+  padding: 0px 50px;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+}
+
+.submitButton {
+  padding: 0px 50px;
+  border: 1px solid rgb(150, 150, 150);
+  background: rgb(255, 255, 255);
+  color: rgb(150, 150, 150);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+}
+
+/* AuctionDetail */
+.detailTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 450px) {
+  .chatBtn {
+    margin-left: 5px;
+  }
+
+  .detailTop > div {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 451px) {
+  .chatBtn {
+    margin-left: 20px;
+  }
+}
+
+.detailTop > p {
+  font-size: 15px;
+  margin: 0;
+  color: rgb(100, 100, 100);
+}
+
+.detailTop > div {
+  display: flex;
+  align-items: center;
+}
+
+.detailLike {
+  font-size: 15px;
+  margin: 0;
+}
+
+.likeButton {
+  background-color: white;
+  border: none;
+  color: red;
+}
+
+.likeHeart {
+  width: 23px;
+}
+
+@media (min-width: 1001px) {
+  .detail {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  .detailContent {
+    width: 65%;
+  }
+
+  .detailInfoSide {
+    width: 35%;
+    padding-left: 70px;
+    position: sticky;
+  }
+
+  .detailInfo {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .detail {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .detailInfoSide {
+    display: none;
+  }
+}
+
+.detailInfo {
+  padding: 20px 20px;
+}
+
+.detailInfoSide {
+  height: 400px;
+  top: 70px;
+}
+
+.title {
+  font-size: 35px;
+  font-weight: bold;
+  margin: 20px 10px;
+  /* white-space: nowrap; */
+}
+
+.userNameBox {
+  margin: 10px;
+}
+
+.userName {
+  font-size: 20px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.userName:hover {
+  color: rgb(231, 115, 92);
+}
+
+.detailInfoBox {
+  border-top: 1px solid rgb(200, 200, 200);
+  padding: 15px 0;
+}
+
+.detailInfoBox > div {
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  margin: 0px 10px;
+}
+
+.detailInfoBox > p {
+  margin: 0px 10px;
+  font-size: 15px;
+}
+
+.detailBox {
+  padding: 20px 30px 0px 30px;
+  border-top: 2px solid black;
+  width: 100%;
+}
+
+.detailBox > div {
+  font-size: 17px;
+  font-weight: bold;
+  color: black;
+  margin: 10px 0px;
+}
+
+.detailBox > p {
+  font-size: 15px;
+  white-space: pre-wrap;
+}
+
+.detailBox > div > button {
+  font-size: 15px;
+  padding: 0px 10px;
+  margin: 20px 10px 0 0;
+  border: 2px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.detailBox > div > button:hover {
+  color: rgb(0, 0, 0);
+  border: 2px solid rgb(0, 0, 0);
+}
+
+.commentBox {
+  padding: 20px 30px 0;
+  border-top: 2px solid black;
+}
+.commentBox > div {
+  padding-bottom: 10px;
+}
+
+.detailBottom {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.detailBottom > button {
+  font-size: 15px;
+  padding: 5px 20px;
+  margin: 20px 10px 0 0;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.commentNone {
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* Image */
+@media (max-width: 450px) {
+  .detailImage {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .smallImageList {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 50px;
+  }
+
+  .smallImage > img,
+  .smallImageActive > img {
+    height: 50px;
+    width: 100%;
+  }
+
+  .bigImage {
+    width: 100%;
+    padding: 20px;
+  }
+}
+
+@media (min-width: 451px) {
+  .detailImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+  }
+
+  .smallImageList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+  }
+
+  .smallImage > img,
+  .smallImageActive > img {
+    width: 100%;
+  }
+
+  .bigImage {
+    width: 80%;
+    padding: 10px 70px;
+  }
+}
+
+.smallImage {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 7px;
+  cursor: pointer;
+}
+
+.smallImageList > div > input {
+  display: none;
+}
+
+.smallImageList > div > input:checked + label {
+  outline: 1px solid rgb(150, 150, 150);
+}
+
+.bigImage > img {
+  width: 100%;
+}
+
+.chatBtn {
+  padding: 0px 10x;
+  border: 1px solid rgb(150, 150, 150);
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sell {
+  font-size: 15px;
+  color: green;
+  margin-left: 3px;
+}
+
+.soldout {
+  font-size: 15px;
+  color: rgb(150, 150, 150);
+  margin-left: 3px;
+}

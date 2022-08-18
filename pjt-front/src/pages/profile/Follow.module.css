@@ -1,0 +1,168 @@
+/* modal창 외부화면 */
+.followModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+@media (max-width: 700px) {
+  .followModalBody {
+    width: 70%;
+  }
+}
+
+@media (min-width: 701px) {
+  .followModalBody {
+    width: 500px;
+  }
+}
+
+.followModalBody {
+  position: sticky;
+  padding: 20px 40px;
+  text-align: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+}
+
+/* Follower, Following */
+input[name="followTabmenu"] {
+  display: none;
+}
+
+.followTabmenu {
+  width: 100%;
+  display: flex;
+}
+
+.followTabmenu > label {
+  width: 50%;
+  cursor: pointer;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 2px solid rgb(255, 255, 255);
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.follwers,
+.followings {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.followtabInner {
+  position: relative;
+  overflow: hidden;
+}
+
+.followTabs {
+  width: 200%;
+  display: flex;
+  transition: 0.5s;
+  position: relative;
+  left: 0%;
+}
+
+.followTab {
+  width: 50%;
+  max-height: 40vh;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.followTab::-webkit-scrollbar {
+  background-color: rgb(255, 255, 255);
+  width: 5px;
+}
+
+.followTab::-webkit-scrollbar-thumb {
+  background-color: rgb(240, 240, 240);
+  border-radius: 10px;
+}
+
+.followTab::-webkit-scrollbar-track {
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
+input[id="follwers"]:checked ~ .followTabInner .followTabs {
+  left: 0;
+}
+
+input[id="followings"]:checked ~ .followtabInner .followTabs {
+  left: -100%;
+}
+
+input[id="follwers"]:checked ~ .followTabmenu .follwers,
+input[id="followings"]:checked ~ .followTabmenu .followings {
+  border-bottom: 2px solid rgb(231, 115, 92);
+  color: rgb(231, 115, 92);
+}
+
+.followList {
+  display: flex;
+  border-bottom: 1px solid rgb(231, 115, 92, 0.2);
+}
+
+.followListImg {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.followList > div > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  font-size: 0px;
+}
+
+.followListName {
+  margin: 15px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.followListName:hover {
+  color: rgb(231, 115, 92);
+}
+
+/* button */
+.followCloseBtn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.followBtn {
+  padding: 0px 10x;
+  border: none;
+  background-color: white;
+  color: rgb(150, 150, 150);
+  font-size: 15px;
+  cursor: pointer;
+  /* margin: 0 20px; */
+  white-space: nowrap;
+}
+
+.followBtn:hover {
+  color: rgb(0, 0, 0);
+}
+
+.moveEmail {
+  color: black;
+  text-decoration: none;
+}

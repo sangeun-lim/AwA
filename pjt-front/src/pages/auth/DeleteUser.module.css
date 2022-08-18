@@ -1,0 +1,146 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+* {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 400px;
+}
+
+.btn,
+.btnActive {
+  width: 100px;
+  height: 30px;
+  align-self: flex-end;
+  border: 2px solid rgba(200, 200, 200);
+  background-color: white;
+  color: rgb(200, 200, 200);
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+@media (max-width: 500px) {
+  .container {
+    width: 80%;
+  }
+}
+
+.changePassword {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px 0px;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  margin: 50px 0px 0px 0px;
+  color: rgb(0, 0, 0);
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0px;
+  position: relative;
+}
+
+.emailContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.emailInput {
+  height: 50px;
+  border: none;
+  width: 100%;
+}
+
+.emailInput:focus {
+  height: 50px;
+  outline: none;
+}
+
+.btnActive:hover {
+  border: 2px solid rgb(231, 115, 92);
+  color: rgb(231, 115, 92);
+}
+
+.emailInput:focus ~ .btn {
+  border: 2px solid rgb(231, 115, 92);
+  color: rgb(231, 115, 92);
+}
+
+.inputContainer label {
+  position: absolute;
+  color: #757575;
+  font-size: 15px;
+  line-height: 50px;
+  transition: 0.3s ease;
+  cursor: auto;
+}
+
+.emailInput:focus ~ label,
+.emailInput:not([value=""]) ~ label {
+  color: #9d9d9d;
+  transform: translate(-12%, -70%) scale(0.75);
+}
+
+.bar {
+  /* position: absolute; */
+  background: rgb(200, 200, 200);
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+}
+
+.bar:before,
+.bar:after {
+  content: "";
+  position: absolute;
+  background: rgb(231, 115, 92);
+  width: 0;
+  height: 2px;
+  transition: 0.3s ease;
+}
+
+.bar:before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+.emailInput:focus ~ .bar:before,
+.emailInput:focus ~ .bar:after {
+  width: 50%;
+}
+
+.buttonContainer {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.buttonContainer button {
+  outline: 0;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  background: 0;
+  width: 100%;
+  border: 2px solid rgb(200, 200, 200);
+  padding: 7px 0;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: 0.3s ease;
+}

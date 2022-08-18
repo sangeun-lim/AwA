@@ -1,0 +1,119 @@
+:root {
+  --main-color: rgb(231, 115, 92);
+  --main-color2: rgba(231, 115, 92, 0.85);
+  --main-color3: rgba(231, 115, 92, 0.7);
+  --main-color4: rgba(231, 115, 92, 0.5);
+  --main-color5: rgba(231, 115, 92, 0.3);
+}
+
+.searchBar {
+  width: 50vw;
+  min-width: 300px;
+  border: 0px;
+  border-bottom: 1px var(--main-color3) solid;
+  font-size: 20px;
+}
+
+.searchBar:focus {
+  outline: 0;
+}
+
+.searchForm {
+  width: 100vw;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.searchButton {
+  border: 0px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.searchIcon {
+  padding: 7px;
+  font-size: 40px;
+}
+
+.subTitle {
+  margin: 40px 0px;
+  text-align: center;
+}
+
+.subLine {
+  color: var(--main-color);
+}
+
+.masonryBox {
+  width: 80vw;
+  min-width: 400px;
+  max-width: 1400px;
+  margin: auto;
+}
+
+.masonryImg {
+  width: 100%;
+}
+
+.secondSection {
+  min-height: 80vh;
+}
+
+.lastBox {
+  display: flex;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  font-size: 24px;
+}
+
+.infinity_slide {
+  display: flex;
+  overflow: hidden;
+}
+
+@keyframes infinity-loop {
+  from {
+    transform: translateX(0vw);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.slide {
+  animation: infinity-loop 100s infinite linear;
+  display: flex;
+  list-style: none;
+}
+
+.img {
+  height: 300px;
+  display: flex;
+  align-items: center;
+}
+
+.slide img {
+  width: auto;
+}
+
+@keyframes infinity-loop2 {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+.slide2 {
+  animation: infinity-loop2 100s infinite linear;
+  display: flex;
+  list-style: none;
+}
+
+.middleBox {
+  height: 50px;
+}
