@@ -8,10 +8,10 @@
 
 .searchBar {
   width: 50vw;
-  min-width: 350px;
+  min-width: 300px;
   border: 0px;
   border-bottom: 1px var(--main-color3) solid;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .searchBar:focus {
@@ -20,7 +20,7 @@
 
 .searchForm {
   width: 100vw;
-  height: 200px;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;

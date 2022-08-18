@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, FormEvent, useEffect } from "react";
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import style from "./Navigation.module.css";
@@ -10,6 +10,9 @@ import { BsChatFill } from "react-icons/bs";
 import SearchComponent from "./SearchComponent";
 import { debounce } from "lodash";
 import { setCookie } from "../cookie";
+import { GrSearch } from "react-icons/gr";
+import api from "../api/api";
+import { searchResultsActions } from "../store";
 
 function Navigation(): JSX.Element {
   const navigate = useNavigate();
@@ -21,6 +24,37 @@ function Navigation(): JSX.Element {
   const [menuToggle, setMenuToggle] = useState<boolean>(false);
   const [searchBar, setSearchBar] = useState<boolean>(false);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+  const [searchWord, setSearchWord] = useState<string>("");
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setSearchWord(value);
+  };
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (searchWord.length < 2) {
+      alert("검색어를 2자 이상 입력해주세요");
+    } else {
+      const q = {
+        genres: [],
+        genre_count: 0,
+        max_price: 30000000,
+        min_price: 0,
+        status: 0,
+        word: searchWord,
+      };
+      const response = await api.search.searchTitle(q);
+      const response2 = await api.search.searchWriter(q);
+
+      const result = [...response.data, ...response2.data];
+
+      dispatch(searchResultsActions.setResults(result));
+      navigate(`/searchresult/${searchWord}`);
+    }
+  };
 
   const handleResize = debounce(() => {
     setWindowWidth(window.innerWidth);
@@ -195,13 +229,6 @@ function Navigation(): JSX.Element {
                 />
               </div>
             )}
-            {/* <div
-              className={
-                searchBar ? style.navSearchBarActive : style.navSearchBar
-              }
-            >
-              <SearchComponent />
-            </div> */}
           </div>
           {/* burgerMenu */}
           <div
@@ -272,7 +299,24 @@ function Navigation(): JSX.Element {
         <div
           className={searchBar ? style.navSearchBarActive : style.navSearchBar}
         >
-          <SearchComponent />
+          <div className={style.searchComponent}>
+            <SearchComponent />
+          </div>
+          <div className={style.smmallSearchComponent}>
+            <form onSubmit={onSubmit} className={style.searchForm}>
+              <input
+                type="text"
+                value={searchWord}
+                onChange={onChange}
+                placeholder="검색어를 입력해주세요"
+                className={style.searchBar}
+                required
+              />
+              <button className={style.searchButton}>
+                <GrSearch className={style.searchIcon} />
+              </button>
+            </form>
+          </div>
         </div>
       </nav>
     </div>
