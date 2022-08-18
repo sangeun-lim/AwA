@@ -63,7 +63,7 @@
 }
 
 .myMessageBox > .message {
-  background-color: whitesmoke;
+  background-color: rgb(255, 255, 255);
   border-radius: 15px;
   padding: 7px 12px;
   margin: 5px;
