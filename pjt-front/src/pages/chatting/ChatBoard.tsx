@@ -8,6 +8,7 @@ import socketIOClient from "socket.io-client";
 import ChatInput from "./ChatInput";
 import { chatPartnerActions } from "../../store";
 import api from "../../api/api";
+import { divide } from "lodash";
 
 const SOCKET = socketIOClient("https://awa24.site:4002/");
 
@@ -96,25 +97,37 @@ function ChatBoard() {
       <div id="chatBox" className={style.Body}>
         {messageList.map((item, i) => {
           const t = new Date(item.createdDate);
-
           const hour = t.getHours();
           const minute = t.getMinutes();
+
+          const now = new Date();
+          const date = Math.floor(
+            (now.getTime() - t.getTime()) / (1000 * 60 * 60 * 24)
+          );
 
           if (item.sender === chatPartner) {
             return (
               <div className={style.yourMessageBox} key={i}>
                 <span className={style.message}>{item.message}</span>
-                <span className={style.time}>
-                  {hour}시 {minute}분
-                </span>
+                {date < 1 ? (
+                  <span className={style.time}>
+                    {hour}시 {minute}분
+                  </span>
+                ) : (
+                  <span className={style.time}>{date}일 전</span>
+                )}
               </div>
             );
           } else if (item.sender === userObject.email) {
             return (
               <div className={style.myMessageBox} key={i}>
-                <span className={style.time}>
-                  {hour}시 {minute}분
-                </span>
+                {date < 1 ? (
+                  <span className={style.time}>
+                    {hour}시 {minute}분
+                  </span>
+                ) : (
+                  <span className={style.time}>{date}일 전</span>
+                )}
                 <span className={style.message}>{item.message}</span>
               </div>
             );
