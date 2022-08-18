@@ -4,10 +4,12 @@ import { GrSearch } from "react-icons/gr";
 import { ArtworkItem } from "../../Interface";
 import { useDispatch } from "react-redux";
 import api from "../../api/api";
-import { loadingActions } from "../../store";
+import { loadingActions, searchResultsActions } from "../../store";
+import { useNavigate } from "react-router-dom";
 
 function NotLoggedInHome() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [searchWord, setSearchWord] = useState<string>("");
 
@@ -19,8 +21,28 @@ function NotLoggedInHome() {
     setSearchWord(value);
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (searchWord.length < 2) {
+      alert("검색어를 2자 이상 입력해주세요");
+    } else {
+      const q = {
+        genres: [],
+        genre_count: 0,
+        max_price: 30000000,
+        min_price: 0,
+        status: 0,
+        word: searchWord,
+      };
+      const response = await api.search.searchTitle(q);
+      const response2 = await api.search.searchWriter(q);
+
+      const result = [...response.data, ...response2.data];
+
+      dispatch(searchResultsActions.setResults(result));
+      navigate(`/searchresult/${searchWord}`);
+    }
   };
 
   const getListItem = async () => {

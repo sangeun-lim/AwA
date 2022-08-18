@@ -13,15 +13,18 @@ function SearchResult(): JSX.Element {
   return (
     <div className={style.auction}>
       {searchResults.length ? (
-        <Masonry columns={{ sm: 1, md: 2, xl: 4 }} spacing={1}>
-          {searchResults.map((item) => {
-            return (
-              <div key={item.artwork_id}>
-                <AuctionCard item={item} />
-              </div>
-            );
-          })}
-        </Masonry>
+        <div>
+          <div className={style.noResult}>검색결과입니다.</div>
+          <Masonry columns={{ sm: 2, md: 3, xl: 4 }} spacing={1}>
+            {searchResults.map((item, i) => {
+              return (
+                <div key={i}>
+                  <AuctionCard item={item} />
+                </div>
+              );
+            })}
+          </Masonry>
+        </div>
       ) : (
         <div className={style.noResult}>검색결과가 없습니다.</div>
       )}
