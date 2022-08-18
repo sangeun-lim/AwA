@@ -65,6 +65,7 @@ function ChangePw(): JSX.Element {
           <div className={style.inputContainer}>
             <input
               type="password"
+              id="password"
               onChange={onChangePw}
               value={pw}
               className={style.emailInput}
@@ -80,12 +81,15 @@ function ChangePw(): JSX.Element {
             <div className={style.inputContainer}>
               <input
                 type="password"
+                id="changePassword"
                 onChange={onCheckPw}
                 value={onPasswordChange}
                 className={style.emailInput}
                 required
               />
-              <label htmlFor="id">변경할 비밀번호를 입력해주세요. </label>
+              <label htmlFor="changePassword">
+                변경할 비밀번호를 입력해주세요.{" "}
+              </label>
               <div className={style.bar}></div>
 
               <button onClick={changePw} type="submit" className={style.btn}>
