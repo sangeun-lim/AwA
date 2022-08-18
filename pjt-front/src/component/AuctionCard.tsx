@@ -13,7 +13,7 @@ function AuctionCard({ item }: { item: ArtworkItem }): JSX.Element {
   return (
     <div className={style.imageCard}>
       <div className={style.container}>
-        {item.attachmentRequestDtoList.length && (
+        {item.attachmentRequestDtoList[0] && (
           <img
             src={item.attachmentRequestDtoList[0].url}
             alt="AuctionImg"
