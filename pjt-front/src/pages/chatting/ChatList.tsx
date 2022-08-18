@@ -1,16 +1,18 @@
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import api from "../../api/api";
 import { dbService } from "../../fbase";
 import { MyChatList, User } from "../../Interface";
 import style from "./ChatList.module.css";
 import ChatListItem from "./ChatListItem";
 import socketIOClient from "socket.io-client";
+import { loadingActions } from "../../store";
 
 const SOCKET = socketIOClient("https://awa24.site:4002");
 
 function ChatList(): JSX.Element {
+  const dispatch = useDispatch();
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );
@@ -18,6 +20,7 @@ function ChatList(): JSX.Element {
   const [chatList, setChatList] = useState<MyChatList[]>([]);
 
   const getChatList = async () => {
+    dispatch(loadingActions.toggle());
     // 내 채팅 리스트들을 불러오자
     const q = query(
       collection(dbService, "ChattingRoom"),
@@ -52,6 +55,7 @@ function ChatList(): JSX.Element {
       // 채팅방 상태를 변경한다.
       setChatList(chattingList);
     }
+    dispatch(loadingActions.toggle());
   };
 
   useEffect(() => {
