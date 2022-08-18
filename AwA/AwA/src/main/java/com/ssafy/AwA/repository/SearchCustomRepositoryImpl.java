@@ -31,7 +31,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
         }
         else if (searchRequestDto.getStatus() == 1) { //판매중인
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.title.contains(keyword)
                             .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
                     )
@@ -40,7 +40,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
         }
         else {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.title.contains(keyword)
                             .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
                     )
@@ -64,7 +64,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
         }
         else if (searchRequestDto.getStatus() == 1) { //판매중인
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.title.contains(keyword)
                             .and(artwork.genre.contains(genre.get(0)))
                             .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
@@ -74,7 +74,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
         }
         else {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.title.contains(keyword)
                             .and(artwork.genre.contains(genre.get(0)))
                             .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price()))
@@ -102,7 +102,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1))))
@@ -113,7 +113,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1))))
@@ -143,7 +143,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -155,7 +155,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -188,7 +188,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -201,7 +201,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -236,7 +236,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -250,7 +250,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -287,7 +287,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -302,7 +302,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -341,7 +341,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -357,7 +357,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else {
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.title.contains(keyword)
                             .and((artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -385,14 +385,14 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
                     .orderBy(artwork.artwork_id.desc())
                     .fetch();
         } else { //판매완료된 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
                     .orderBy(artwork.artwork_id.desc())
@@ -413,7 +413,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0)))
                             .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
@@ -421,7 +421,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else { //판매완료된 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0)))
                             .and(artwork.price.between(searchRequestDto.getMin_price(), searchRequestDto.getMax_price())))
@@ -443,7 +443,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1))))
@@ -452,7 +452,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else { //판매완료된 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1))))
@@ -475,7 +475,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -486,7 +486,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else { //판매완료된 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -511,7 +511,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -523,7 +523,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else { //판매완료된 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -550,7 +550,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -563,7 +563,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else { //판매완료된 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -593,7 +593,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -607,7 +607,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else { //판매완료된 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -639,7 +639,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else if(searchRequestDto.getStatus() == 1) { //판매중인 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(1))
+                    .where(artwork.is_sell.eq(0))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
@@ -654,7 +654,7 @@ public class SearchCustomRepositoryImpl implements SearchCustomRepository {
                     .fetch();
         } else { //판매완료된 게시물 전체 조회
             return jpaQueryFactory.selectFrom(artwork)
-                    .where(artwork.is_sell.eq(2))
+                    .where(artwork.is_sell.eq(1))
                     .where(artwork.sell_user.nickname.like(writer)
                             .and(artwork.genre.contains(genre.get(0))
                                     .or(artwork.genre.contains(genre.get(1)))
