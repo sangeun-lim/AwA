@@ -35,9 +35,33 @@
 }
 
 /* commentDetail */
-.commentDetail {
-  display: flex;
-  justify-content: space-between;
+@media (max-width: 450px) {
+  .commentDetail {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+  }
+
+  .commentContent {
+    flex-direction: column;
+  }
+
+  .commentContent > a {
+    height: 30px;
+  }
+}
+
+@media (min-width: 451px) {
+  .commentDetail {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .commentContent {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+  }
 }
 
 .commentProfileImg {
@@ -48,15 +72,7 @@
   margin-right: 7px;
 }
 
-.commentContent {
-  display: flex;
-  font-size: 14px;
-  align-items: center;
-}
-
-.commentContent > div,
-.commentContent > b {
-  margin: 0 3px;
+.commentContent > a {
   white-space: nowrap;
 }
 

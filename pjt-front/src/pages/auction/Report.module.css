@@ -42,7 +42,7 @@
 
 .reportTitle {
   border-bottom: 2px solid rgb(200, 200, 200);
-  padding: 15px;
+  padding: 10px;
   margin-bottom: 15px;
 }
 
@@ -59,13 +59,9 @@
   margin-left: 10px;
 }
 
-.reportContent > div {
-  margin-bottom: 10px;
-}
-
 .reportContent > textarea {
   width: 90%;
-  height: 300px;
+  /* height: 300px; */
   border: 1px solid rgb(200, 200, 200);
   margin: 10px 0;
   resize: none;
@@ -77,15 +73,27 @@
 }
 
 /* button */
+
+@media (max-width: 450px) {
+  .reportBtnRed {
+    margin: 5px;
+  }
+}
+
+@media (min-width: 451px) {
+  .reportBtnRed {
+    margin: 0 20px;
+  }
+}
+
 .reportBtn {
   padding: 0px 10x;
   border: 1px solid rgb(150, 150, 150);
   background-color: white;
   color: rgb(150, 150, 150);
-  font-size: 15px;
   cursor: pointer;
-  margin: 0 20px;
   white-space: nowrap;
+  margin: 0 20px;
 }
 
 .reportBtn:hover {
@@ -100,7 +108,6 @@
   color: rgb(150, 150, 150);
   font-size: 15px;
   cursor: pointer;
-  margin: 0 20px;
   white-space: nowrap;
 }
 

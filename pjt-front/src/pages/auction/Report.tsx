@@ -102,7 +102,6 @@ function Report(props: Props): JSX.Element {
                 required
               ></textarea>
             </div>
-            <br />
             <input type="submit" value="신고" className={style.reportBtn} />
             <button onClick={close} className={style.reportBtn}>
               취소

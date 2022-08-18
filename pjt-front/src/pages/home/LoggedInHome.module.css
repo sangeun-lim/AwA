@@ -1,3 +1,15 @@
+.loggedInTitle {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 30px;
+  font-weight: 700;
+  width: 70%;
+  padding-top: 10px;
+  margin-left: 50px;
+  color: rgb(70, 70, 70);
+}
+
 .Body {
   display: flex;
   min-height: 1000px;
@@ -11,6 +23,12 @@
   .feed {
     width: 100% !important;
   }
+
+  .loggedInTitle {
+    width: 100% !important;
+    font-size: 4vw !important;
+    font-weight: 700;
+  }
 }
 
 @media (max-width: 1600px) {
@@ -21,6 +39,10 @@
   }
 
   .feed {
+    width: 70%;
+  }
+
+  .loggedInTitle {
     width: 70%;
   }
 }

@@ -38,6 +38,67 @@
   }
 }
 
+@media (max-width: 450px) {
+  .profileImageChange {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nicknameChange > div {
+    display: none;
+  }
+
+  .smallNickname {
+    font-size: 10px;
+    text-align: start;
+    margin-left: 5px;
+    color: rgb(150, 150, 150);
+  }
+
+  .profileLabel {
+    font-size: 10px;
+    margin-left: 5px;
+  }
+}
+
+@media (min-width: 451px) {
+  .smallNickname {
+    display: none;
+  }
+
+  .profileLabel {
+    font-size: 14px;
+    margin-left: 30px;
+  }
+
+  .description {
+    margin: 0 20px;
+  }
+
+  .nicknameChange {
+    padding: 0 10px;
+  }
+
+  .options {
+    margin-left: 20px;
+  }
+}
+
+.updateModalBody::-webkit-scrollbar {
+  background-color: rgb(255, 255, 255);
+  width: 7px;
+}
+
+.updateModalBody::-webkit-scrollbar-thumb {
+  background-color: rgb(230, 230, 230);
+  border-radius: 10px;
+}
+
+.updateModalBody::-webkit-scrollbar-track {
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+}
+
 .updateModalBody {
   position: sticky;
   padding: 30px 40px;
@@ -118,7 +179,6 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 0 10px;
 }
 
 .nicknameChange > div {
@@ -159,14 +219,11 @@
 }
 
 .profileLabel {
-  font-size: 14px;
   text-align: start;
-  margin-left: 30px;
   color: rgb(150, 150, 150);
 }
 
 .description {
-  margin: 0 20px;
   border: none;
   border-bottom: 1px solid rgb(200, 200, 200);
   height: 200px;
@@ -182,7 +239,6 @@
 .options {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 20px;
 }
 
 .options > div > label {

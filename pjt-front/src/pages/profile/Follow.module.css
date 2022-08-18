@@ -26,8 +26,7 @@
 
 .followModalBody {
   position: sticky;
-  padding: 40px;
-  height: 700px;
+  padding: 20px 40px;
   text-align: center;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
@@ -66,8 +65,6 @@ input[name="followTabmenu"] {
 .followtabInner {
   position: relative;
   overflow: hidden;
-  height: 85%;
-  overflow-y: auto;
 }
 
 .followTabs {
@@ -80,6 +77,24 @@ input[name="followTabmenu"] {
 
 .followTab {
   width: 50%;
+  max-height: 40vh;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.followTab::-webkit-scrollbar {
+  background-color: rgb(255, 255, 255);
+  width: 5px;
+}
+
+.followTab::-webkit-scrollbar-thumb {
+  background-color: rgb(240, 240, 240);
+  border-radius: 10px;
+}
+
+.followTab::-webkit-scrollbar-track {
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
 }
 
 input[id="follwers"]:checked ~ .followTabInner .followTabs {

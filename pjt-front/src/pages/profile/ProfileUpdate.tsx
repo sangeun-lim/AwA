@@ -185,6 +185,7 @@ function ProfileUpdate({
             </div>
             <div className={style.profileInfo}>
               <div className={style.nicknameChangeBox}>
+                <div className={style.smallNickname}>닉네임</div>
                 <div className={style.nicknameChange}>
                   <div>닉네임</div>
                   <input

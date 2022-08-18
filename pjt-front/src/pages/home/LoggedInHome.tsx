@@ -17,7 +17,6 @@ function LoggedInHome() {
   const userObject = useSelector(
     (state: { userObject: User }) => state.userObject
   );
-
   const [ref, inView] = useInView();
   const [items, setItems] = useState<ArtworkItem[]>([]);
   const [changeRank, setChangeRank] = useState<boolean>(false);
@@ -91,7 +90,10 @@ function LoggedInHome() {
   }, [inView, loading]);
 
   return (
-    <>
+    <div>
+      <div className={style.loggedInTitle}>
+        {userObject.nickname}님을 위한 추천작품
+      </div>
       <div className={style.Body}>
         <div className={style.feed}>
           {items && (
@@ -123,7 +125,7 @@ function LoggedInHome() {
       )}
       <TopButton></TopButton>
       <div ref={ref}>.</div>
-    </>
+    </div>
   );
 }
 
