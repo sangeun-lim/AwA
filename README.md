@@ -13,10 +13,9 @@
 3. [**기술 스택**]
 4. [**시스템 아키텍처**]
 5. [**주요기능 및 데모영상**]
-6. [**UCC 보러가기**]
-7. [**협업 관리**]
-8. [**프로젝트 기간**]
-9. [**프로젝트 관련 문서**]
+6. [**협업 관리**]
+7. [**프로젝트 기간**]
+8. [**프로젝트 관련 문서**]
 
 <br/>
 
@@ -26,8 +25,8 @@
 
 <table>
     <tr>
-        <td height="140px" align="center"> <a href="https://github.com/Seonhyuk"></a>
-            <img src="https://avatars.githubusercontent.com/Seonhyuk" width="140px" /><br><br> 🙂 안선혁 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/seonhyuk">
+            <img src="https://avatars.githubusercontent.com/seonhyuk" width="140px" /> <br><br> 🙂 안선혁 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/seniing">
             <img src="https://avatars.githubusercontent.com/seniing" width="140px" /> <br><br> 🙂 박세은 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/sangeun-lim">
@@ -40,7 +39,7 @@
     <tr>
         <td align="center">UI/UX<br/>React<br/>socket.io<br/>
         <td align="center">UI/UX<br/>React
-        <td align="center">UI/UX<br/>React<
+        <td align="center">UI/UX<br/>React
         <td align="center">REST API<br/>CI/CD
         <td align="center">REST API<br/>CI/CD
     </tr>
@@ -54,7 +53,7 @@
 
 ### SNS형 예술작품 거래 플랫폼
 
-> 한해 예술대학 졸업생 00 명, 수많은 졸업작품들은 어디로 가는걸까요?<br />
+> 한해 예술대학 졸업생 2~3만명, 수많은 졸업작품들은 어디로 가는걸까요?<br />
 > 피와땀으로 만들어진 좋은 작품들이 대부분 방치되거나 버려진다고 합니다. <br />
 > 주니어작가들의 작품을 많은 사람들에게 보여주고 구매자들은 보다 값싼 작품들을 접할 수 있는 기회.
 
@@ -123,7 +122,7 @@
 
 <br />
 
-<div id="4"></div>
+<div id="5"></div>
 
 ## 🖥️ 주요기능
 
@@ -177,11 +176,6 @@
 
 <br/>
 
-<div id="5"></div>
-
-## 🎥 [UCC 보러가기](https://youtu.be/Rg4kOlrdI78)
-
-<br />
 
 <div id="6"></div>
 
@@ -194,7 +188,7 @@
 
 <br />
 
-<div id="8"></div>
+<div id="7"></div>
 
 ## 📆 프로젝트 기간
 
@@ -206,7 +200,7 @@
 
 <br />
 
-<div id="9"></div>
+<div id="8"></div>
 
 ## 📋 프로젝트 관련 문서
 
@@ -216,4 +210,4 @@
 | ERD               |          [ERD 바로가기](/outputs/AwA_ERD.png)          |
 | 포팅매뉴얼        |      [포팅매뉴얼 바로가기](/exec/포팅매뉴얼.pdf)       |
 | 시연 시나리오     |    [시연 시나리오 바로가기](/etc/시연시나리오.pdf)     |
-| 발표자료          |        [발표자료 바로가기](/exec/발표자료.pdf)         |
+| 발표자료          |        [발표자료 바로가기](/outputs/AwA발표자료.pdf)         |
