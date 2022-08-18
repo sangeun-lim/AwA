@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MyChatList } from "../../Interface";
 import { chatPartnerActions } from "../../store";
 import style from "./ChatListItem.module.css";
@@ -10,6 +10,9 @@ interface Props {
 
 function ChatListItem({ item }: Props): JSX.Element {
   const dispatch = useDispatch();
+  const chatPartner = useSelector(
+    (state: { chatPartner: string }) => state.chatPartner
+  );
 
   const [time, setTime] = useState({
     year: 0,
@@ -39,7 +42,14 @@ function ChatListItem({ item }: Props): JSX.Element {
   }, [item.recentlyDate]);
 
   return (
-    <div onClick={onClick} className={style.ChatListItem}>
+    <div
+      onClick={onClick}
+      className={
+        chatPartner === item.partnerEmail
+          ? style.ChatListItem2
+          : style.ChatListItem
+      }
+    >
       {item.profile_picture_url ? (
         <img
           src={item.profile_picture_url}
