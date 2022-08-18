@@ -24,16 +24,16 @@
 ## 👪 개발 멤버 소개 
 <table>
     <tr>
-        <td height="140px" align="center"> <a href="https://github.com/Seonhyuk">
-            <img src="" width="140px" /> <br><br> 🙂 안선혁 <br>(Front-End) </a> <br></td>
+        <td height="140px" align="center"> <a href="https://github.com/Seonhyuk"></a>
+            <img src="https://avatars.githubusercontent.com/Seonhyuk" width="140px" /><br><br> 🙂 안선혁 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/seniing">
-            <img src="" width="140px" /> <br><br> 🙂 박세은 <br>(Front-End) </a> <br></td>
+            <img src="https://avatars.githubusercontent.com/seniing" width="140px" /> <br><br> 🙂 박세은 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/sangeun-lim">
-            <img src="" width="140px" /> <br><br> 😆 임상은 <br>(Front-End) </a> <br></td>
+            <img src="https://avatars.githubusercontent.com/sangeun-lim" width="140px" /> <br><br> 😆 임상은 <br>(Front-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/kimsezin">
-            <img src="" width="140px" /> <br><br> 😁 김세진 <br>(Back-End) </a> <br></td>
+            <img src="https://avatars.githubusercontent.com/kimsezin" width="140px" /> <br><br> 😁 김세진 <br>(Back-End) </a> <br></td>
         <td height="140px" align="center"> <a href="https://github.com/choiyounghyun">
-            <img src="" width="140px" /> <br><br> 🙄 최영현 <br>(Back-End) </a> <br></td>
+            <img src="https://avatars.githubusercontent.com/choiyounghyun" width="140px" /> <br><br> 🙄 최영현 <br>(Back-End) </a> <br></td>
     </tr>
     <tr>
         <td align="center">UI/UX<br/>React<br/>socket.io<br/>
@@ -69,7 +69,7 @@
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/Node.js-339939?style=for-the-badge&logo=Node.js&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <br>
 <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <img src="https://img.shields.io/badge/GitLab-FCA121?style=for-the-badge&logo=GitLab&logoColor=white" style="height : auto; margin-left : 10px; margin-right : 10px;"/> <br/>
 
-<details><summary> <b> 상세 기술스택 및 버전</b> </summary>
+<b> 상세 기술스택 및 버전</b> 
 
 | 구분       | 기술스택                    | 상세내용                 | 버전          |
 | -------- | ----------------------- | -------------------- | ----------- |
@@ -89,7 +89,7 @@
 | FrontEnd | HTML5                   |                      | \-          |
 |          | CSS3                    |                      | \-          |
 |          | JavaScript(ES6)         |                      |\-           |
-|          | React                   | React                | 17.0.2      |
+|          | React                   | React                | 18.2.0     |
 |          | React                   | Redux                | 7.2.6       |
 |          | React                   | Redux-thunk          | 2.4.1       |
 |          |                         | styled-components    | 5.3.3       |
@@ -97,13 +97,10 @@
 |          |                         | apexcharts           | 3.33.0      |
 |          |                         | toast-ui/react-editor      | 3.1.2       |
 |          |                         | toast-ui/react-calendar    | 1.0.6       |
-|          | WebSocket               | @stomp/stompjs       | 6.1.2       |
-|          | WebSocket               | stompjs              | 2.3.3       |
-|          | WebSocket               | sockjs-client        | 1.5.2       |
+|          | Socket.io               |        | 6.1.2       |
 |          | IDE                     | Visual Studio Code   | 1.63.2      |
 | Server   | 서버                      | AWS EC2              | \-          |
 |          | 플랫폼                     | Ubuntu               | 20.04.3 LTS |
-|          | 배포                      | Docker               | 20.10.12    |
 |          | 배포                      | Jenkins              | 2.319.2     |
 
 </details>
@@ -129,13 +126,39 @@
 ## 🖥️ 주요기능
 
 ### 프로필기능
-- 작가본인의 작품을 뽐낼 수 있는 작품 리스트
 - 사용자간 팔로잉 팔로우 기능
+- 본인 프로필 커스텀화로 개성적인 프로필 연출 가능
+- 작가본인의 작품을 뽐낼 수 있는 작품 리스트 / 좋아요를 누른 게시물 소개
 
+|                              프로필                      |
+| :---------------------------------------------------------------------------: |
+|  ![프로필](/uploads/7cf0c6ea3d2f7d40963e5f655d08162d/프로필.gif)  |
 
 ### 피드
 - 게시물을 무한스크롤을 통해 직관적으로 나타냄
-- 작품별 (좋아요 수 x 0.5) + (조회 수 x 0.3) + (댓글 수 x 0.2)의 표준편차를 이용한 추천 시스템
+- 팔로우 하는 사용자들의 게시물을 최신순으로 보여준 후 모든 게시물 노출 후
+- 보여주지 않은 작품들 중 작품별 (좋아요 수 x 0.5) + (조회 수 x 0.3) + (댓글 수 x 0.2)의 표준편차를 이용한 추천 시스템
+
+|                              피드                      |
+| :---------------------------------------------------------------------------: |
+|  ![피드](/uploads/ba022f8f3a0331f8fdd2f6cab1b42c70/피드.gif)  |
+
+### Auction
+- 현재 업로드된 게시물 목록 최신순으로 노출
+- 특정 게시물 선택 시 좋아요 / 댓글 기능 
+- 작품 종류별 게시물 노출오전 10:40 2022-08-18오전 10:40 2022-08-18
+
+|                              Auction                      |
+| :---------------------------------------------------------------------------: |
+|  ![Auction](/uploads/a37b8bff22029abfb1ae96770842e954/Auction.gif)  |
+
+### 검색
+- 제목 / 작가 구분 검색
+- 작품종류 / 가격범위 / 판매 상태별 검색
+
+|                              Auction                      |
+| :---------------------------------------------------------------------------: |
+|  ![검색](/uploads/3c507d6d8fbd37ff310ac59e87479dd3/검색.gif)  |
 
 ### 채팅
 - 사용자간 실시간 채팅을 이용한 의사소통 서비스
@@ -155,8 +178,8 @@
 
 |                            Notion                      |
 | :---------------------------------------------------------------------------: |
-|  <img src="./etc/노션 1.png" alt="Notion1" />  |
-|  <img src="./etc/노션 2.png" alt="Notion1" />  |
+|  ![노션_1](/uploads/861ee021664eab066d7e578b9483be7a/노션_1.png) |
+|  ![노션_2](/uploads/1fb4f4b2b180c9020ec27a9a09e993c9/노션_2.png) |
 
 <br />
 
@@ -176,13 +199,11 @@
 ## 📋 프로젝트 관련 문서
 |  구분  |  링크  |
 | :--------------- | :---------------: |
-| 공통코드 | [공통코드 바로가기](/docs/공통코드.md) |
 | 시퀀스 다이어그램 | [시퀀스 다이어그램](/outputs/AWA_시퀀스_다이어그램.md) |
 | ERD | [ERD 바로가기](/outputs/AwA_ERD.png) |
-| 빌드/배포 | [빌드/배포 바로가기](/exec/01_서울_6반_A607_빌드및배포.pdf) |
-| 외부서비스 정보 | [외부서비스 정보 바로가기](/exec/02_서울_6반_A607_외부서비스_정보.pdf) |
+| 포팅매뉴얼 | [포팅매뉴얼 바로가기](/exec/포팅매뉴얼.pdf) |
 | 시연 시나리오 | [시연 시나리오 바로가기](/etc/시연시나리오.pdf) |
-| 발표자료 | [발표자료 바로가기](/docs/서울_6반_A607_발표자료.pdf) |
+| 발표자료 | [발표자료 바로가기](/exec/발표자료.pdf) |
 
 
 <!-- BackEnd
@@ -208,3 +229,4 @@ jenkins
 서비스 아키텍처
 
 ![image](/uploads/998e564f9bd45028c1c07d21d6f5d88e/image.png) -->
+
