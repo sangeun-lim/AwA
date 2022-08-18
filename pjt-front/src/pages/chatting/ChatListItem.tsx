@@ -20,6 +20,7 @@ function ChatListItem({ item }: Props): JSX.Element {
     day: 0,
     hour: 0,
     minute: 0,
+    date: 0,
   });
 
   const onClick = async () => {
@@ -37,6 +38,9 @@ function ChatListItem({ item }: Props): JSX.Element {
         day: t.getDay(),
         hour: t.getHours(),
         minute: t.getMinutes(),
+        date: Math.floor(
+          (new Date().getTime() - t.getTime()) / (1000 * 60 * 60 * 24)
+        ),
       });
     }
   }, [item.recentlyDate]);
@@ -66,9 +70,13 @@ function ChatListItem({ item }: Props): JSX.Element {
       <div className={style.info}>
         <div className={style.infoTop}>
           <div className={style.nickname}>{item.nickname}</div>
-          <div className={style.recentlyDate}>
-            {time.hour}시 {time.minute}분
-          </div>
+          {time.date < 1 ? (
+            <div className={style.recentlyDate}>
+              {time.hour}시 {time.minute}분
+            </div>
+          ) : (
+            <div className={style.recentlyDate}>{time.date}일 전</div>
+          )}
         </div>
         <div className={style.recentlyMessage}>{item.recentlyMessage}</div>
       </div>
