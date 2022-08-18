@@ -8,7 +8,6 @@ import socketIOClient from "socket.io-client";
 import ChatInput from "./ChatInput";
 import { chatPartnerActions } from "../../store";
 import api from "../../api/api";
-import { divide } from "lodash";
 
 const SOCKET = socketIOClient("https://awa24.site:4002/");
 

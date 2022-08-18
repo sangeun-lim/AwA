@@ -1,4 +1,3 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { ArtworkItem } from "../Interface";
 import style from "./AuctionCard.module.css";

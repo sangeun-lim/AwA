@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Report from "./Report";
-import { User, ArtworkItem } from "../../Interface";
 import style from "./Report.module.css";
 
 const ReportModal = ({ artworkId }: { artworkId: string }): JSX.Element => {

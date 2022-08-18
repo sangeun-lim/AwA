@@ -177,7 +177,7 @@ function AuctionCreate(): JSX.Element {
     } else {
       navigate("/auction");
     }
-  }, []);
+  }, [userObject, navigate]);
 
   return (
     <div className={style.auction}>

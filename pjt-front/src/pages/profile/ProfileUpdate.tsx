@@ -1,6 +1,5 @@
 import { uuidv4 } from "@firebase/util";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { divide } from "lodash";
 import React, { ChangeEvent, Dispatch, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import api from "../../api/api";

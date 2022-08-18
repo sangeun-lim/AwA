@@ -1,7 +1,6 @@
 import React, { Dispatch, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { resourceLimits } from "worker_threads";
 
 import api from "../../api/api";
 import NoticeListItem from "../../component/NoticeListItem";

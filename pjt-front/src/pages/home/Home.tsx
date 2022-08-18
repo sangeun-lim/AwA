@@ -8,7 +8,6 @@ import style from "./Home.module.css";
 import Slider from "react-slick";
 import "./slick.css";
 import "./slick-theme.css";
-import { height } from "@mui/system";
 
 function Carousel(): JSX.Element {
   const settings = {
