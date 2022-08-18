@@ -103,7 +103,8 @@
 }
 
 .card:hover .overlay,
-.container:hover .overlay {
+.container:hover .overlay,
+.myContainer:hover .overlay {
   display: block;
   background: rgba(0, 0, 0, 0.3);
 }
@@ -119,7 +120,8 @@
   color: white;
 }
 
-.container:hover .content {
+.container:hover .content,
+.myContainer:hover .content {
   opacity: 1;
 }
 
