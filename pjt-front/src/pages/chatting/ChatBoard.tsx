@@ -87,10 +87,11 @@ function ChatBoard() {
   return (
     <div className={style.ChatBoard}>
       <div className={style.Header}>
-        <span className={style.backButton} onClick={onBackClick}>
+        <div className={style.backButton} onClick={onBackClick}>
           {"<"}
-        </span>
-        <span>{partnerNickname}</span>
+        </div>
+        <div className={style.partnerNickname}>{partnerNickname}</div>
+        <div></div>
       </div>
       <div id="chatBox" className={style.Body}>
         {messageList.map((item, i) => {
