@@ -160,6 +160,8 @@
 .follow > button {
   border: none;
   background-color: white;
+  white-space: nowrap;
+  color: black;
 }
 
 .follow > .followNum {
