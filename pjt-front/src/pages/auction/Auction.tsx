@@ -82,6 +82,7 @@ function Auction(): JSX.Element {
 
   useEffect(() => {
     if (selectGenre && checkByGenre) {
+      /* eslint-disable */
       callAuctionByGenre();
     }
   }, [selectGenre, checkByGenre]);

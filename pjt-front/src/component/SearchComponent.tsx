@@ -108,7 +108,7 @@ function SearchComponent() {
             placeholder="검색어를 입력해주세요."
             onChange={onChange}
             onKeyPress={(e) => {
-              if (e.key == "Enter") {
+              if (e.key === "Enter") {
                 onSubmit();
               }
             }}

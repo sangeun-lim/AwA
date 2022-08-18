@@ -168,6 +168,7 @@ function AuctionDetailOrUpdate(): JSX.Element {
   }, [address, navigate, dispatch, onEdit]);
 
   useEffect(() => {
+    /* eslint-disable */
     checkUserLike();
   }, [address, userObject]);
 

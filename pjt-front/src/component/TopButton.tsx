@@ -25,6 +25,7 @@ function TopButton(): JSX.Element {
 
   useEffect(() => {
     const watch = () => {
+      /* eslint-disable */
       window.addEventListener("scroll", handleFollow);
     };
     watch();
