@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -261,15 +262,40 @@ public class ArtworkService {
         for(int i=0;i<follwingList.size();i++) {
             System.out.println("내가 팔로우 하는 사람 : "+ follwingList.get(i).getNickname());
             User followingUser = userRepository.findByNickname(follwingList.get(i).getNickname());
-            PageRequest page = PageRequest.of(pageNo-1, 20, Sort.by(Sort.Direction.DESC, "artwork_id"));//        Pa
+            PageRequest page = PageRequest.of(pageNo-1, 20, Sort.by(Sort.Direction.DESC, "artwork_id"));
             Page<Artwork> sellListPage = artworkRepository.findAllBySell_userPage(page, followingUser);
 
-            totalCount+=sellListPage.getTotalElements();
+
 
 
             List<Artwork> sell_list = sellListPage.getContent();
+            List<Artwork> removeIdx = new ArrayList<>();
+
             for(int j=0;j<sell_list.size();j++) {
-                Artwork sellArtwork = sell_list.get(j);
+                if(LocalDateTime.now().compareTo(sell_list.get(j).getCreatedDate()) > 3) {
+
+                    removeIdx.add(sell_list.get(j));
+                }
+            }
+            List<Artwork> real_sell_list = new ArrayList<>();
+            for(int j=0;j<sell_list.size();j++) {
+                Artwork targetArtwork = sell_list.get(j);
+                boolean check = false;
+                for(int k=0;k<removeIdx.size();k++) {
+                    Artwork removeArtwork = removeIdx.get(k);
+                    if(targetArtwork.getArtwork_id() == removeArtwork.getArtwork_id()) {
+                        check = true;
+                    }
+                }
+                if(!check)
+                    real_sell_list.add(targetArtwork);
+            }
+
+            totalCount+=real_sell_list.size();
+
+            for(int j=0;j<real_sell_list.size();j++) {
+
+                Artwork sellArtwork = real_sell_list.get(j);
 
                 List<AttachmentRequestDto> attachmentRequestDtoList = new ArrayList<>();
 
