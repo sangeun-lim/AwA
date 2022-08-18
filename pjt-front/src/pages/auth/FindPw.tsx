@@ -36,7 +36,7 @@ function FindPw(): JSX.Element {
     dispatch(loadingActions.toggle());
 
     try {
-      const response = await api.auth.email(id);
+      const response = await api.auth.emailPw(id);
       setCe(response.data);
       dispatch(loadingActions.toggle());
     } catch (err) {

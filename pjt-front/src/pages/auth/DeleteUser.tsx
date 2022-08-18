@@ -20,7 +20,7 @@ const DeleteUser = (): JSX.Element => {
   const checkEmailButton = async () => {
     dispatch(loadingActions.toggle());
     try {
-      const response = await api.auth.email(userEmail);
+      const response = await api.auth.emailPw(userEmail);
       if (response.status === 200) {
         setCe(response.data);
         dispatch(loadingActions.toggle());

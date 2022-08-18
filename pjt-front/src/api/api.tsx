@@ -56,6 +56,17 @@ const api = {
 
       return response;
     },
+    emailPw: async (email: string) => {
+      const response = await axios({
+        url: rf.auth.emailPw(),
+        method: "post",
+        data: {
+          email: email,
+        },
+      });
+
+      return response;
+    },
 
     checkEmail: async (email: string) => {
       const response = await axios({
