@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../api/api";
 import AppRouter from "./Router";
 import style from "./App.module.css";
@@ -9,6 +9,7 @@ import { getCookie } from "../cookie";
 function App(): JSX.Element {
   const dispatch = useDispatch();
   const loading = useSelector((state: { loading: boolean }) => state.loading);
+  const [isChat, setIsChat] = useState<boolean>(false);
 
   const getUserData = async () => {
     dispatch(loadingActions.toggle());
@@ -24,6 +25,17 @@ function App(): JSX.Element {
       dispatch(loadingActions.toggle());
     }
   };
+
+  useEffect(() => {
+    const url = new URL(window.location.href).href;
+    const params = url.slice(url.length - 8, url.length);
+
+    if (params === "chatting") {
+      setIsChat(true);
+    } else {
+      setIsChat(false);
+    }
+  }, [loading]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -67,11 +79,13 @@ function App(): JSX.Element {
         )}
         <AppRouter getUserData={getUserData} />
       </div>
-      <footer className={style.footer}>
-        <p className={style.footerText1}>&copy; SSAFY</p>
-        <p className={style.footerText2}>후원계좌: 93....</p>
-        <p className={style.footerText2}>문의메일: seon_hyuk97@kakao.com</p>
-      </footer>
+      {!isChat && (
+        <footer className={style.footer}>
+          <p className={style.footerText1}>&copy; SSAFY</p>
+          <p className={style.footerText2}>후원계좌: 93....</p>
+          <p className={style.footerText2}>문의메일: seon_hyuk97@kakao.com</p>
+        </footer>
+      )}
     </div>
   );
 }
