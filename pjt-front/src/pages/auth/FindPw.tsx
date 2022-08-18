@@ -124,22 +124,25 @@ function FindPw(): JSX.Element {
           {secondPass && (
             <div className={style.inputContainer}>
               <input
+                id="password"
                 type="password"
                 onChange={onCheckPw}
                 value={onPasswordChange}
                 className={style.emailInput}
                 required
               />
-              <label htmlFor="id">변경할 비밀번호를 입력해주세요. </label>
+              <label htmlFor="password">변경할 비밀번호를 입력해주세요. </label>
               <div className={style.bar}></div>
-
-              <button
-                onClick={changePassword}
-                type="submit"
-                className={style.btn}
-              >
-                <span>비밀번호 변경</span>
-              </button>
+              {onPasswordChange && (
+                <button
+                  onClick={changePassword}
+                  type="submit"
+                  className={style.btn}
+                  disabled={false}
+                >
+                  <span>비밀번호 변경</span>
+                </button>
+              )}
             </div>
           )}
         </form>
