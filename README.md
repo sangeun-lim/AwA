@@ -89,19 +89,18 @@
 | FrontEnd | HTML5                   |                      | \-          |
 |          | CSS3                    |                      | \-          |
 |          | JavaScript(ES6)         |                      |\-           |
-|          | React                   | React                | 18.2.0     |
-|          | React                   | Redux                | 7.2.6       |
-|          | React                   | Redux-thunk          | 2.4.1       |
-|          |                         | styled-components    | 5.3.3       |
-|          |                         | framer-motion        | 6.0.0       |
-|          |                         | apexcharts           | 3.33.0      |
-|          |                         | toast-ui/react-editor      | 3.1.2       |
-|          |                         | toast-ui/react-calendar    | 1.0.6       |
-|          | Socket.io               |        | 6.1.2       |
-|          | IDE                     | Visual Studio Code   | 1.63.2      |
-| Server   | 서버                      | AWS EC2              | \-          |
-|          | 플랫폼                     | Ubuntu               | 20.04.3 LTS |
-|          | 배포                      | Jenkins              | 2.319.2     |
+|          | TypeScript              |                      | 4.7.4       |
+|          | React                   | React                | 18.2.0      |
+|          | React                   | React-redux          | 8.0.2       |
+|          | React                   | React-router-dom     | 6.3.0       |
+|          | Firebase                |                      | 9.9.0       |
+|          | mui                     | lab                  | 5.0.0       |
+|          | bootstrap               |                      | 5.2.0       |
+|          | Socket.io               |                      | 6.1.2       |
+|          | IDE                     | Visual Studio Code   | 1.7.0       |
+| Server   | 서버                     | AWS EC2              | \-          |
+|          | 플랫폼                    | Ubuntu               | 20.04.3 LTS |
+|          | 배포                     | Jenkins              | 2.319.2     |
 
 </details>
 
