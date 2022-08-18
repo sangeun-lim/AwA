@@ -54,13 +54,13 @@ function ChatListItem({ item }: Props): JSX.Element {
         />
       )}
       <div className={style.info}>
-        <p className={style.nickname}>{item.nickname}</p>
-        <div className={style.recentlyBox}>
-          <p className={style.recentlyMessage}>{item.recentlyMessage}</p>
-          <span className={style.recentlyDate}>
+        <div className={style.infoTop}>
+          <div className={style.nickname}>{item.nickname}</div>
+          <div className={style.recentlyDate}>
             {time.hour}시 {time.minute}분
-          </span>
+          </div>
         </div>
+        <div className={style.recentlyMessage}>{item.recentlyMessage}</div>
       </div>
     </div>
   );

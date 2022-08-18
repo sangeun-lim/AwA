@@ -7,21 +7,39 @@
 .Header {
   height: 50px;
   width: 100%;
-  background-color: beige;
+  background-color: rgb(255, 245, 245);
   justify-content: center;
   align-items: center;
   display: flex;
+  border-bottom: 1px solid rgba(231, 115, 92, 0.3);
 }
 
 .Header > span {
   text-align: center;
   font-weight: 500;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .Body {
-  overflow: scroll;
+  /* overflow: scroll; */
+  overflow-x: hidden;
+  overflow-y: auto;
   width: 100%;
   height: calc(100% - 50px);
-  background-color: bisque;
+  background-color: rgb(255, 245, 245);
+}
+
+.Body::-webkit-scrollbar {
+  background-color: rgb(255, 245, 245);
+  width: 7px;
+}
+
+.Body::-webkit-scrollbar-thumb {
+  background-color: rgb(231, 115, 92, 0.3);
+  border-radius: 10px;
+}
+
+.Body::-webkit-scrollbar-track {
+  background-color: rgb(255, 245, 245);
+  border-radius: 10px;
 }

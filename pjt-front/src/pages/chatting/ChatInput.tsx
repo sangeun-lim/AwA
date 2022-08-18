@@ -13,6 +13,7 @@ import { dbService } from "../../fbase";
 import { NewMessage, User } from "../../Interface";
 import socketIOClient from "socket.io-client";
 import style from "./ChatInput.module.css";
+import { FaArrowUp } from "react-icons/fa";
 
 const SOCKET = socketIOClient("https://awa24.site:4002/");
 
@@ -105,16 +106,20 @@ function ChatInput() {
   };
 
   return (
-    <form onSubmit={onSubmit} className={style.Footer}>
-      <input
-        type="text"
-        className={style.chatBox}
-        onChange={onChange}
-        value={message}
-        placeholder="메시지를 입력해주세요"
-      />
-      <button className={style.submitButton}>전송</button>
-    </form>
+    <div className={style.inputBack}>
+      <form onSubmit={onSubmit} className={style.Footer}>
+        <input
+          type="text"
+          className={style.chatBox}
+          onChange={onChange}
+          value={message}
+          placeholder="메시지를 입력해주세요"
+        />
+        <button className={style.submitButton}>
+          <FaArrowUp />
+        </button>
+      </form>
+    </div>
   );
 }
 

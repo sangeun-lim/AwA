@@ -1,29 +1,49 @@
+.inputBack {
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
 .Footer {
   width: 100%;
   height: 70px;
-  background-color: floralwhite;
+  display: flex;
+  align-items: center;
+  /* background-color: floralwhite; */
 }
 
 .chatBox {
-  width: 90%;
-  height: 100%;
-  font-size: 20px;
+  width: 95%;
+  height: 75%;
+  font-size: 18px;
   padding: 15px;
   padding-left: 30px;
-  border: 0px;
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 20px;
+  background-color: rgb(245, 245, 245);
+  margin: 10px 0px 10px 10px;
 }
 
 .chatBox:focus {
   outline: 0px;
 }
 
+.chatBox[value=""] ~ button {
+  display: none;
+}
+
 .submitButton {
-  width: 10%;
-  height: 100%;
+  width: 40px;
+  height: 40px;
   font-size: 20px;
-  background-color: rgba(231, 115, 92, 0.5);
+  background-color: rgba(231, 115, 92);
   border: 0px;
-  color: gray;
+  color: rgb(255, 255, 255);
+  border-radius: 100%;
+  margin-left: -50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .submitButton:hover {
