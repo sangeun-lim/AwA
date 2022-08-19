@@ -176,3 +176,158 @@
         - 포트 : 3306
         
 - CI/CD
+> ec2 인스턴스 서버에 Jenkins를 설치하고 해당 서버에서 빌드하여 배포하였음
+> 
+- Jenkins 설치 ( in ubuntu )
+    
+    <aside>
+    💡 아래와 같은 순서로 하지 않으면 jenkins 설치 X
+    
+    </aside>
+    
+    `sudo apt-get update`
+    
+    jdk 설치
+    
+    `sudo apt-get install openjdk-11-jdk`
+    
+    gradle 설치 ( Spring Boot 에서 사용한 gradle 과 같은 버전으로 )
+    
+    `sudo add-apt-repository ppa:cwchien/gradle`
+    
+    `sudo apt-get install gradle-7.4.2`
+    
+    `sudo apt-get install gradle-{원하는 버전}`
+    
+    git 설치
+    
+    `sudo apt-get install git`
+    
+    젠킨스 저장소 key 다운로드
+    
+    `sudo wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -`
+    
+    source.list.d에 jenkins.list추가
+    
+    `echo deb http://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list`
+    
+    key등록
+    
+    `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys FCEF32E745F2C3D5`
+    
+    `sudo apt-get update`
+    
+    젠킨스 설치
+    
+    `sudo apt-get install jenkins`
+    
+    젠킨스 서버 포트 번호 변경 원할 시
+    
+    `sudo vi /etc/default/jenkins에서 HTTP_PORT=8080을 원하는 포트로 변경` 
+    
+    젠킨스 상태확인(중지/시작)
+    
+    `sudo systemctl status(stop/start) jenkins`
+    
+    젠킨스 비밀번호 확인
+    
+    `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+    
+    젠킨스 접속(ec2인스턴스주소:포트번호)
+    
+    [http://ec2-xxxxxxxxxxxxxxxxx2.compute.amazonaws.com:8080](http://ec2-52-78-33-3.ap-northeast-2.compute.amazonaws.com:8080/login?from=%2F)
+    
+    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ed46b415-4e64-449b-adbd-26f4a5c1e9b9/Untitled.png)
+    
+    password는
+    
+    > `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+    > 
+    
+    ---
+    
+    에서 확인한 비밀번호 입력
+    
+    추천 플러그인 설치
+    
+    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8a192a66-320a-42e9-8be4-7cd49afdf83f/Untitled.png)
+    
+    계정명(ID), 비밀번호, 이름, 이메일 입력
+    
+    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8a7b74f0-7f12-4c5c-bd9c-ad8befe65a27/Untitled.png)
+    
+    설치, 로그인 완료
+    
+    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/38431126-cebb-401f-91f5-d67e4f0ab7be/Untitled.png)
+    
+- **Jenkins, Gitlab 연결**
+    
+    
+    Jenkins 프로젝트 생성
+    
+    - 새로운 item 클릭, 프로젝트명 입력, Freestyle project 생성
+    
+    Jenkins Plugin 설치 및 Global Tool Configuration 설정
+    
+    - Jenkins 관리 → 플러그인 관리 → 설치 가능에서 gitlab 검색 후 설치
+    - Jenkins 관리 → Glodbal Tool Configuration → Add Gradle 클릭 → 이름, 버전 선택
+    
+    생성된 프로젝트 설정
+    
+    - 소스 코드 관리 ( Git 선택 )
+        
+        Repository URL  : 연동하고자하는 gitlab repository 클론하여 입력
+        
+        Credentials → Add 선택 
+        
+         - Kind ( Username with password ) 선택
+        
+         - Username : gitlab 아이디
+        
+         - Password : gitlab 패스워드
+        
+         - ID : Jenkins에서 보일 아이디
+        
+         - Description : Jenkins에서 보일 설명
+        
+        Branch Specifier : 입력한 branch에 있는 코드를 빌드
+        
+    - 빌드 유발 ( Build when a change is pushed to Gitlab ~ 선택 )
+        
+         - 고급 선택 → Secret token 생성 ( Generate )
+        
+        <aside>
+        💡 GitLab Settings → Webhooks → URL ( Build when a change is pushed to Gitlab ~ 선택했을 때 나오는 URL 입력 ) , Secret Token은 위에서 생성한 값 입력 → Add webhook 클릭
+        
+        </aside>
+        
+    - Build ( Execute shell 선택 )
+        
+        <aside>
+        💡 Command에 아래 내용 입력
+        
+        ls -al
+        
+        REPOSITORY=/var/lib/jenkins/workspace/AwA/AwA
+        PROJECT_NAME=AwA
+        
+        cd $REPOSITORY/$PROJECT_NAME
+        
+        sudo git checkout Back
+        
+        sudo chmod +x gradlew
+        
+        sudo ./gradlew clean build
+        
+        cd $REPOSITORY
+        sudo cp $REPOSITORY/$PROJECT_NAME/build/libs/*.jar $REPOSITORY/
+        JAR_NAME=$(ls -tr $REPOSITORY | grep jar | tail -n 1)
+        
+        sudo nohup java -jar $REPOSITORY/$JAR_NAME 2>&1 &
+        
+        </aside>
+        
+    
+    ---
+    
+    끝! 깃랩 특정 branch에 push 하면 알아서 스프링부트 프로젝트가 빌드되고 백그라운드로 배포된다!
