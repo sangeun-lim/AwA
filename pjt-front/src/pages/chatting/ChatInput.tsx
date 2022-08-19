@@ -35,74 +35,76 @@ function ChatInput() {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 채팅방 이름지정
-    const roomName = [userObject.email, chatPartner];
-    roomName.sort();
-    const realRoomName: string = roomName[0] + roomName[1];
+    if (message) {
+      // 채팅방 이름지정
+      const roomName = [userObject.email, chatPartner];
+      roomName.sort();
+      const realRoomName: string = roomName[0] + roomName[1];
 
-    const newMessage: NewMessage = {
-      sender: userObject.email,
-      receiver: chatPartner,
-      message: message,
-      createdDate: Date.now(),
-      roomName: realRoomName,
-    };
+      const newMessage: NewMessage = {
+        sender: userObject.email,
+        receiver: chatPartner,
+        message: message,
+        createdDate: Date.now(),
+        roomName: realRoomName,
+      };
 
-    SOCKET.emit("send message", newMessage, realRoomName);
+      SOCKET.emit("send message", newMessage, realRoomName);
 
-    setMessage("");
+      setMessage("");
 
-    await addDoc(collection(dbService, "Chatting"), newMessage);
+      await addDoc(collection(dbService, "Chatting"), newMessage);
 
-    const q = query(
-      collection(dbService, "ChattingRoom"),
-      where("myEmail", "==", userObject.email),
-      where("partnerEmail", "==", chatPartner)
-    );
+      const q = query(
+        collection(dbService, "ChattingRoom"),
+        where("myEmail", "==", userObject.email),
+        where("partnerEmail", "==", chatPartner)
+      );
 
-    const response = await getDocs(q);
+      const response = await getDocs(q);
 
-    if (response.docs.length === 0) {
-      await addDoc(collection(dbService, "ChattingRoom"), {
-        myEmail: userObject.email,
-        partnerEmail: chatPartner,
-        createdDate: newMessage.createdDate,
-        recentlyDate: newMessage.createdDate,
-        recentlyMessage: newMessage.message,
+      if (response.docs.length === 0) {
+        await addDoc(collection(dbService, "ChattingRoom"), {
+          myEmail: userObject.email,
+          partnerEmail: chatPartner,
+          createdDate: newMessage.createdDate,
+          recentlyDate: newMessage.createdDate,
+          recentlyMessage: newMessage.message,
+        });
+
+        await addDoc(collection(dbService, "ChattingRoom"), {
+          myEmail: chatPartner,
+          partnerEmail: userObject.email,
+          createdDate: newMessage.createdDate,
+          recentlyDate: newMessage.createdDate,
+          recentlyMessage: newMessage.message,
+        });
+      }
+
+      const response3 = await getDocs(q);
+
+      response3.docs.forEach(async (document) => {
+        await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
+          recentlyMessage: newMessage.message,
+          recentlyDate: newMessage.createdDate,
+        });
       });
 
-      await addDoc(collection(dbService, "ChattingRoom"), {
-        myEmail: chatPartner,
-        partnerEmail: userObject.email,
-        createdDate: newMessage.createdDate,
-        recentlyDate: newMessage.createdDate,
-        recentlyMessage: newMessage.message,
+      const q2 = query(
+        collection(dbService, "ChattingRoom"),
+        where("myEmail", "==", chatPartner),
+        where("partnerEmail", "==", userObject.email)
+      );
+
+      const response2 = await getDocs(q2);
+
+      response2.docs.forEach(async (document) => {
+        await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
+          recentlyMessage: newMessage.message,
+          recentlyDate: newMessage.createdDate,
+        });
       });
     }
-
-    const response3 = await getDocs(q);
-
-    response3.docs.forEach(async (document) => {
-      await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
-        recentlyMessage: newMessage.message,
-        recentlyDate: newMessage.createdDate,
-      });
-    });
-
-    const q2 = query(
-      collection(dbService, "ChattingRoom"),
-      where("myEmail", "==", chatPartner),
-      where("partnerEmail", "==", userObject.email)
-    );
-
-    const response2 = await getDocs(q2);
-
-    response2.docs.forEach(async (document) => {
-      await updateDoc(doc(dbService, `ChattingRoom/${document.id}`), {
-        recentlyMessage: newMessage.message,
-        recentlyDate: newMessage.createdDate,
-      });
-    });
   };
 
   return (

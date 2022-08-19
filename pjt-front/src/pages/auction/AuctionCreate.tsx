@@ -124,7 +124,7 @@ function AuctionCreate(): JSX.Element {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-    if (userObject) {
+    if (userObject && showImages.length) {
       dispatch(loadingActions.toggle());
 
       try {
@@ -163,6 +163,8 @@ function AuctionCreate(): JSX.Element {
         dispatch(loadingActions.toggle());
         console.error(err);
       }
+    } else {
+      alert("이미지를 1개 이상 등록해주세요!");
     }
   };
 
