@@ -237,7 +237,8 @@
     
     [http://ec2-xxxxxxxxxxxxxxxxx2.compute.amazonaws.com:8080](http://ec2-52-78-33-3.ap-northeast-2.compute.amazonaws.com:8080/login?from=%2F)
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ed46b415-4e64-449b-adbd-26f4a5c1e9b9/Untitled.png)
+![image](/uploads/a1a35ef593267d5ad93eca90f54d0190/image.png)
+
     
     password는
     
@@ -250,15 +251,14 @@
     
     추천 플러그인 설치
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8a192a66-320a-42e9-8be4-7cd49afdf83f/Untitled.png)
-    
+![image](/uploads/2fb4b490a403d303a5881dd6d2da5d89/image.png)
+ 
     계정명(ID), 비밀번호, 이름, 이메일 입력
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8a7b74f0-7f12-4c5c-bd9c-ad8befe65a27/Untitled.png)
-    
+![image](/uploads/b35a0098fbcb4f9859ab8903f1b78c0a/image.png)
     설치, 로그인 완료
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/38431126-cebb-401f-91f5-d67e4f0ab7be/Untitled.png)
+![image](/uploads/f58a8611ef63eb4d6714ac41c736b3b4/image.png)       
     
 - **Jenkins, Gitlab 연결**
     
