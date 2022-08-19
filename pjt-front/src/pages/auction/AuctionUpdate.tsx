@@ -145,58 +145,71 @@ function AuctionUpdate({ setOnEdit }: Props) {
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-    dispatch(loadingActions.toggle());
+    if (showImages.length) {
+      dispatch(loadingActions.toggle());
 
-    try {
-      if (userObject) {
-        // 기존 이미지 url들을 imageUrlLists에 담는다.
-        let imageUrlLists: string[] = item.attachmentRequestDtoList.map(
-          (media: { type: string; url: string }) => {
-            return media.url;
+      try {
+        if (userObject) {
+          // 기존 이미지 url들을 imageUrlLists에 담는다.
+          let imageUrlLists: string[] = item.attachmentRequestDtoList.map(
+            (media: { type: string; url: string }) => {
+              return media.url;
+            }
+          );
+
+          // 새로 추가된 이미지들을 클라우드 스토리지에 저장후 url을 받아서 리스트에 추가하자
+          for (let i = 0; i < images.length; i++) {
+            let imageUrl: string = "";
+            const imgRef = ref(
+              storageService,
+              `${userObject.email}/${uuidv4()}`
+            );
+            const response = await uploadBytes(imgRef, images[i]);
+            imageUrl = await getDownloadURL(response.ref);
+            imageUrlLists.push(imageUrl);
           }
-        );
 
-        // 새로 추가된 이미지들을 클라우드 스토리지에 저장후 url을 받아서 리스트에 추가하자
-        for (let i = 0; i < images.length; i++) {
-          let imageUrl: string = "";
-          const imgRef = ref(storageService, `${userObject.email}/${uuidv4()}`);
-          const response = await uploadBytes(imgRef, images[i]);
-          imageUrl = await getDownloadURL(response.ref);
-          imageUrlLists.push(imageUrl);
-        }
+          // 삭제한 이미지들을 클라우드 스토리지에서 삭제하고 imageUrlLists에서 빼자
+          for (let i = 0; i < delImages.length; i++) {
+            const imgRef = ref(storageService, delImages[i]);
+            await deleteObject(imgRef);
+            imageUrlLists = imageUrlLists.filter(
+              (item) => item !== delImages[i]
+            );
+          }
 
-        // 삭제한 이미지들을 클라우드 스토리지에서 삭제하고 imageUrlLists에서 빼자
-        for (let i = 0; i < delImages.length; i++) {
-          const imgRef = ref(storageService, delImages[i]);
-          await deleteObject(imgRef);
-          imageUrlLists = imageUrlLists.filter((item) => item !== delImages[i]);
-        }
-
-        const data = {
-          sell_user_nickname: item.sell_user_nickname,
-          ...editItem,
-          genre: genresList,
-          attachmentList: imageUrlLists.map((item) => {
-            return { type: "image", url: item };
-          }),
-        };
-
-        const response = await api.artwork.updateOrDelete(address, data, "put");
-
-        setItem((prev) => {
-          return {
-            ...response.data,
-            comments: prev.comments,
-            sell_user_email: prev.sell_user_email,
+          const data = {
+            sell_user_nickname: item.sell_user_nickname,
+            ...editItem,
+            genre: genresList,
+            attachmentList: imageUrlLists.map((item) => {
+              return { type: "image", url: item };
+            }),
           };
-        });
-      }
 
-      dispatch(loadingActions.toggle());
-      setOnEdit(false);
-    } catch (err) {
-      console.log(err);
-      dispatch(loadingActions.toggle());
+          const response = await api.artwork.updateOrDelete(
+            address,
+            data,
+            "put"
+          );
+
+          setItem((prev) => {
+            return {
+              ...response.data,
+              comments: prev.comments,
+              sell_user_email: prev.sell_user_email,
+            };
+          });
+        }
+
+        dispatch(loadingActions.toggle());
+        setOnEdit(false);
+      } catch (err) {
+        console.log(err);
+        dispatch(loadingActions.toggle());
+      }
+    } else {
+      alert("이미지를 1개 이상 첨부해주세요.");
     }
   };
 
